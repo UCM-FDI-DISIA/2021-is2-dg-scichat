@@ -1,11 +1,12 @@
 package exceptions;
 
-class OutOfBoundsException extends Exception{
-    public OutOfBoundsException(){
+public class OutOfBoundsException extends Exception{
+	private static final long serialVersionUID = 5095894608330964025L;
+	public OutOfBoundsException(){
         super("Position out of bounds.");
     }
     public OutOfBoundsException(int row,int col){
-        super("Position (%d,%d) out of bounds.".format(row,col));
+        super(String.format("Position (%d,%d) out of bounds.",row,col));
     }
     public OutOfBoundsException(String message){
         super(message);
@@ -18,7 +19,7 @@ class OutOfBoundsException extends Exception{
     }
     public OutOfBoundsException(String message, Throwable cause,
         boolean enableSuppression, boolean writeableStackTrace){
-        super(message,cause, enableSuppresion, writableStackTrace);
+        super(message,cause, enableSuppression, writeableStackTrace);
     }
 
 }

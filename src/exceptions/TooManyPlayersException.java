@@ -1,7 +1,8 @@
 package exceptions;
 
-class TooManyPlayersException extends Exception{
-    public TooManyPlayersException(){
+public class TooManyPlayersException extends Exception{
+	private static final long serialVersionUID = -3356826865195160689L;
+	public TooManyPlayersException(){
         super("Too many players.");
     }
     public TooManyPlayersException(String message){
@@ -15,6 +16,6 @@ class TooManyPlayersException extends Exception{
     }
     public TooManyPlayersException(String message, Throwable cause,
         boolean enableSuppression, boolean writeableStackTrace){
-        super(message,cause, enableSuppresion, writableStackTrace);
+        super(message,cause, enableSuppression, writeableStackTrace);
     }
 }

@@ -2,7 +2,7 @@ package logic;
 
 public class Board {
 
-    private static final NUM_COL = 17, NUM_ROW = 13;
+    private static final int NUM_COL = 13, NUM_ROW = 17;
     private static final String SCHEMATIC = "......@......" +
                                             "......@@....." +
                                             ".....@@@....." +
@@ -22,25 +22,25 @@ public class Board {
                                             "......@......";
     
 
-    private Color mat[NUM_ROW][NUM_COL];
+    private Color[][] mat = new Color[NUM_ROW][NUM_COL];
 
     public Board(){
-        for(int i = 0; i < NUM_COL; ++i){
-            for(int j = 0; j < NUM_ROW; ++i){
-                mat[i][j] = (SCHEMATIC[i*NUM_ROW+j] == "."?  NotBoard : Void);
+        for(int i = 0; i < NUM_ROW; ++i){
+            for(int j = 0; j < NUM_COL; ++i){
+                mat[i][j] = (SCHEMATIC.charAt(i*NUM_COL + j) == '.'?  Color.NotBoard : Color.Void);
             }
         }
     }
 
-    public enum Color{
-        Void(0),
-        Green(1),
-        Yellow(2),
-        Orange(3),
-        Red(4),
-        Purple(5),
-        Blue(6),
-        NotBoard(7);
+    public enum Color{ // TODO: Consider renaming Color to Token or similar
+        Void,		// 0
+        Green,		// 1
+        Yellow,		// 2
+        Orange,		// 3
+        Red,		// 4
+        Purple,		// 5
+        Blue,		// 6
+        NotBoard;	// 7
     }
 
     /*public boolean validRowColum(int row, int colum){
@@ -58,8 +58,9 @@ public class Board {
         }    
     }*/
     
-    public boolean validRowColum(int row, int colum){
-        return mat[colum][row] != NotBoard;
+    // CHECK:  He añadido una n al nombre anterior, validRowColumn
+    public boolean validRowColumn(int row, int colum){
+        return mat[colum][row] != Color.NotBoard;
     }
 
     //Devuelve 
@@ -71,20 +72,20 @@ public class Board {
             return 0;
         if(rowDest < 0 || rowDest >= 17 || columDest < 0 || columDest >= 13)
             return 0;
-        if(mat[columOrigin][rowOrigin] == Void)
+        if(mat[columOrigin][rowOrigin] == Color.Void)
             return 0;
-        if(mat[columDest][rowDest] != Void)
+        if(mat[columDest][rowDest] != Color.Void)
             return 2;
         mat[columDest][rowDest] = mat[columOrigin][rowOrigin];
         return 1;
     } 
 
     public boolean available(int row, int col){
-        return mat[row][col] == Void;
+        return mat[row][col] == Color.Void;
     }
 
     //Mas vale que os ocupeis de que la casilla vale
-    public Color get();
+    // public Color get();
 }
 
 /*
