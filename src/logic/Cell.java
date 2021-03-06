@@ -2,6 +2,8 @@ package logic;
 
 import exceptions.OutOfBoundsException;
 import logic.Board;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Cell{
     private int row, col;
@@ -19,11 +21,25 @@ public class Cell{
     public int getCol(){ return col; }
 
     public void assign(Board.Color color){
-        //TODO: Completar o repensar (A lo mejor no queremos un assign, sino un place y un
-    	//		empty para poner un color y vaciar una ficha (Poner Void)
+        this.board.put(row,col,color);
+    }
+    public void remove(){
+        this.board.remove(row,col);
     }
 
-    //TODO: Implement getNeighbours() → Lista{UL,UR,R,LR,LL,L}
+    public List<Cell> getNeighbours() {
+        // Devuelve las celdas, donde 0 es R, y siguen en el sentido de 
+        // las agujas del reloj
+        List<Cell> ret = new ArrayList<Cell>();
+        ret.add(this.getRight());
+        ret.add(this.getLowerRight());
+        ret.add(this.getLowerLeft());
+        ret.add(this.getLeft());
+        ret.add(this.getUpperLeft());
+        ret.add(this.getUpperRight());
+        return Collections.unmodifiableList(ret);
+    }
+
     public Cell getUpperRight() throws OutOfBoundsException{  
         if(row%2 == 1) // Fila impar
             return new Cell(row-1,col,board);
@@ -55,8 +71,9 @@ public class Cell{
     public Cell getRight() throws OutOfBoundsException{ 
         return new Cell(row,col+1,board);
     }
-    
+
     public Cell getLeft() throws OutOfBoundsException{ 
         return new Cell(row,col-1,board);
     }
+
 }
