@@ -1,8 +1,8 @@
 package logic;
 
 import exceptions.OutOfBoundsException;
-import logic.Board;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 public class Cell{
@@ -30,13 +30,26 @@ public class Cell{
     public List<Cell> getNeighbours() {
         // Devuelve las celdas, donde 0 es R, y siguen en el sentido de 
         // las agujas del reloj
-        List<Cell> ret = new ArrayList<Cell>();
+        ArrayList<Cell> ret = new ArrayList<Cell>();
+        try {
         ret.add(this.getRight());
+        } catch(Exception e){}
+        try {
         ret.add(this.getLowerRight());
+        } catch(Exception e){}
+        try {
         ret.add(this.getLowerLeft());
+        } catch(Exception e){}
+        try {
         ret.add(this.getLeft());
+        } catch(Exception e){}
+        try {
         ret.add(this.getUpperLeft());
+        } catch(Exception e){}
+        try {
         ret.add(this.getUpperRight());
+        } catch(Exception e){}
+        // No puedes convertir de tipo List<Cell> a List
         return Collections.unmodifiableList(ret);
     }
 
