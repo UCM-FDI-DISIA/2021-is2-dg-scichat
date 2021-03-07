@@ -27,7 +27,10 @@ public class Cell {
     }
 
     public void assign(Board.Color color) {
-        this.board.put(row, col, color);
+        try {
+            this.board.put(row, col, color);
+        } catch (OutOfBoundsException e) {
+        }
     }
 
     public void remove() {
