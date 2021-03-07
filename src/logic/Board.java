@@ -25,8 +25,10 @@ public class Board {
     private Color[][] mat = new Color[NUM_ROW][NUM_COL];
 
     public Board(){
+//    	System.out.println(SCHEMATIC);
+    	
         for(int i = 0; i < NUM_ROW; ++i){
-            for(int j = 0; j < NUM_COL; ++i){
+            for(int j = 0; j < NUM_COL; ++j){
                 mat[i][j] = (SCHEMATIC.charAt(i*NUM_COL + j) == '.'?  Color.NotBoard : Color.Void);
             }
         }
@@ -94,27 +96,27 @@ public class Board {
     public String toString(){
         String answer = "";
         for(int i = 0; i < NUM_ROW;++i){
-            for(int j = 0; j<NUM_COL; ++i){
+            for(int j = 0; j < NUM_COL; ++j){
                 switch(mat[i][j]){
-                    case Color.NotBoard:
+                    case NotBoard:
                         answer+=" ";
                         break;
-                    case Color.Void:
+                    case Void:
                         answer+="*";
                         break;
-                    case Color.Orange:
+                    case Orange:
                         answer+="O";
                         break;
-                    case Color.Blue:
+                    case Blue:
                         answer+="B";
                         break;
-                    case Color.Green:
+                    case Green:
                         answer+="G";
                         break;
-                    case Color.Red:
+                    case Red:
                         answer+="R";
                         break;
-                    case Color.Yellow:
+                    case Yellow:
                         answer+="Y";
                         break;
                     default:
@@ -127,27 +129,27 @@ public class Board {
     }
     
     // CHECK:  He añadido una n al nombre anterior, validRowColumn
-    public boolean validRowColum(int row, int colum){
+    public boolean validRowColumn(int row, int colum){
         if(row < 0 || row >= 17 || colum < 0 || colum >= 13)
             return false;
-        return mat[colum][row] != Color.NotBoard;
+        return mat[row][colum] != Color.NotBoard;
     }
 
     public boolean remove(int row, int col){
-        if(!validRowColum(row,col))
+        if(!validRowColumn(row,col))
             return false;
-        if(available(row,colum))
+        if(available(row,col))
             return false;
-        mat[col][row] = Color.Void;
+        mat[row][col] = Color.Void;
         return true;
     }
 
-    public boolean put(int row, int colum, Color color){
-        if(!validRowColum(row,col))
+    public boolean put(int row, int col, Color color){
+        if(!validRowColumn(row,col))
             return false;
-        if(!available(row,colum))
+        if(!available(row,col))
             return false;
-        mat[col][row] = color;
+        mat[row][col] = color;
         return true;
     }
 
