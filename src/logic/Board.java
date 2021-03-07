@@ -1,24 +1,26 @@
 package logic;
 
+import exceptions.OutOfBoundsException;
+
 public class Board {
     private static final int NUM_COL = 13, NUM_ROW = 17;
     private static final String SCHEMATIC = "......@......" +
-                                            "......@@....." +
-                                            ".....@@@....." +
-                                            ".....@@@@...." +
-                                            "@@@@@@@@@@@@@" +
-                                            ".@@@@@@@@@@@@" +
-                                            ".@@@@@@@@@@@." +
-                                            "..@@@@@@@@@@." +
-                                            "..@@@@@@@@@.." +
-                                            "..@@@@@@@@@@." +
-                                            ".@@@@@@@@@@@." +
-                                            ".@@@@@@@@@@@@" +
-                                            "@@@@@@@@@@@@@" +
-                                            ".....@@@@...." +
-                                            ".....@@@....." +
-                                            "......@@....." +
-                                            "......@......";
+            "......@@....." +
+            ".....@@@....." +
+            ".....@@@@...." +
+            "@@@@@@@@@@@@@" +
+            ".@@@@@@@@@@@@" +
+            ".@@@@@@@@@@@." +
+            "..@@@@@@@@@@." +
+            "..@@@@@@@@@.." +
+            "..@@@@@@@@@@." +
+            ".@@@@@@@@@@@." +
+            ".@@@@@@@@@@@@" +
+            "@@@@@@@@@@@@@" +
+            ".....@@@@...." +
+            ".....@@@....." +
+            "......@@....." +
+            "......@......";
 
 
     private Color[][] mat = new Color[NUM_ROW][NUM_COL];
@@ -126,10 +128,10 @@ public class Board {
     }
 
     // CHECK:  He añadido una n al nombre anterior, validRowColumn
-    public boolean validRowColumn(int row, int colum) {
-        if (row < 0 || row >= 17 || colum < 0 || colum >= 13)
+    public boolean validRowColumn(int row, int col) {
+        if (!insideBoard(row, col))
             return false;
-        return mat[row][colum] != Color.NotBoard;
+        return mat[row][col] != Color.NotBoard;
     }
 
     public boolean remove(int row, int col) {
@@ -154,6 +156,14 @@ public class Board {
         return mat[row][col] == Color.Void;
     }
 
-    //Mas vale que os ocupeis de que la casilla vale
-    // public Color get();
+    public Color get(int row, int col) throws OutOfBoundsException {
+        if (!insideBoard(row, col))
+            throw new OutOfBoundsException();
+
+        return mat[row][col];
+    }
+
+    public boolean insideBoard(int row, int col) {
+        return (0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL);
+    }
 }
