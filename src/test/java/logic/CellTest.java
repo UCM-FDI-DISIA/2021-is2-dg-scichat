@@ -1,16 +1,21 @@
 package logic;
 
+import exceptions.InvalidOperationException;
 import exceptions.OutOfBoundsException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Assertions;
+
 public class CellTest {
 
-    private Cell cell;
+    private Cell cell, other;
     private Board board;
+    private int times; // Perdón por llenar esto de atributos
 
     @BeforeEach
     void init() {
@@ -50,19 +55,19 @@ public class CellTest {
             cell = new Cell(0, 6, board);
         });
         // The left cell of this cell is not within the board
-        assertThrows(OutOfBoundsException.class, () -> {
+        assertThrows(InvalidOperationException.class, () -> {
             cell.getLeft();
         });
         // The right cell of this cell is not within the board
-        assertThrows(OutOfBoundsException.class, () -> {
+        assertThrows(InvalidOperationException.class, () -> {
             cell.getRight();
         });
         // The left cell of this cell is not within the board
-        assertThrows(OutOfBoundsException.class, () -> {
+        assertThrows(InvalidOperationException.class, () -> {
             cell.getLeft();
         });
         // Nor the upper cells
-        assertThrows(OutOfBoundsException.class, () -> {
+        assertThrows(InvalidOperationException.class, () -> {
             cell.getUpperLeft();
             cell.getUpperRight();
         });
@@ -85,6 +90,109 @@ public class CellTest {
             cell.getUpperRight();
         });
 
+    }
+    
+
+    @Test
+    void getCellByRepeatingActions() {
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    	});
+    	other = cell;
+    	
+    	times = 4;
+    	Assertions.assertDoesNotThrow(() -> {
+	    	for(int i = 0; i < times; ++i) {
+	    		other = other.getUpperLeft();
+	    	}
+    	});
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = cell.getUpperLeft(times);
+    	});
+    	Assertions.assertEquals(other,cell);
+    	
+    	times = 3;
+    	Assertions.assertDoesNotThrow(() -> {
+    		for(int i = 0; i < times; ++i) {
+    			other = other.getRight();
+    		}
+    	});
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = cell.getRight(times);
+    	});
+    	Assertions.assertEquals(other,cell);
+    	
+    	times = 8;
+    	Assertions.assertDoesNotThrow(() -> {
+    		for(int i = 0; i < times; ++i) {
+    			other = other.getLowerLeft();
+    		}
+    	});
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = cell.getLowerLeft(times);
+    	});
+    	Assertions.assertEquals(other,cell);
+    	
+    	times = 2;
+    	Assertions.assertDoesNotThrow(() -> {
+    		for(int i = 0; i < times; ++i) {
+    			other = other.getLeft();
+    		}
+    	});
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = cell.getLeft(times);
+    	});
+    	Assertions.assertEquals(other,cell);
+    	
+      	times = 7;
+    	Assertions.assertDoesNotThrow(() -> {
+    		for(int i = 0; i < times; ++i) {
+    			other = other.getLowerRight();
+    		}
+    	});
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = cell.getLowerRight(times);
+    	});
+    	Assertions.assertEquals(other,cell);
+    }
+    
+    @Test
+    void isInSameDiagonalAsCell() {
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    		other = cell;
+    	});
+    	Assertions.assertTrue(cell.isInSameDiagonalAs(other));
+    	
+    	for(Cell.Direction dir : Cell.Direction.values()) {
+    		Assertions.assertDoesNotThrow(() -> {
+    			other = cell.getByDirection(dir,3);    			
+    		});
+        	Assertions.assertTrue(cell.isInSameDiagonalAs(other));
+        	
+        	Assertions.assertDoesNotThrow(() -> {
+        		other = other.getUpperRight().getLowerRight().getUpperRight(); // Me aseguro de sacarlo de la diagonal/horizontal
+        	});
+        	Assertions.assertFalse(cell.isInSameDiagonalAs(other));
+    	}
+    }
+    
+    Cell.Direction actualDirection;
+    @Test
+    void getDirectionTowardsCell() {
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    		other = cell;
+    	});
+    	for(Cell.Direction direction : Cell.Direction.values()) {
+    		Assertions.assertDoesNotThrow(() -> {
+    			other = cell.getByDirection(direction,3);    			
+    		});
+    		Assertions.assertDoesNotThrow(() -> {
+    			actualDirection = cell.getDirectionTowards(other);
+    		});
+        	Assertions.assertEquals(direction, actualDirection);
+    	}
     }
 }
 
