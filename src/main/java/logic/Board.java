@@ -129,8 +129,6 @@ public class Board {
 
     // CHECK:  He añadido una n al nombre anterior, validRowColumn
     public boolean validRowColumn(int row, int col) {
-        if (!insideBoard(row, col))
-            return false;
         return mat[row][col] != Color.NotBoard;
     }
 
