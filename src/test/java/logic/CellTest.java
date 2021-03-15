@@ -32,7 +32,7 @@ public class CellTest {
     }
 
     @Test
-    void assing() {
+    void assign() {
         assertDoesNotThrow(() -> {
             // The new Cell is within the board
             cell = new Cell(0, 6, board);
