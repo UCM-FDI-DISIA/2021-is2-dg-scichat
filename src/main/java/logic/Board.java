@@ -144,7 +144,7 @@ public class Board {
     }
 
     public boolean put(int row, int col, Color color) throws OutOfBoundsException {
-        if(!insideBoard(row, col))
+        if (!insideBoard(row, col))
             throw new OutOfBoundsException();
         if (!validRowColumn(row, col))
             return false;

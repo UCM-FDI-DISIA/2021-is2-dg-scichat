@@ -1,12 +1,11 @@
 package logic;
 
-import java.util.List;
-
 import exceptions.OutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CellTest {
 
@@ -43,6 +42,7 @@ public class CellTest {
             cell.assign(Board.Color.Red);
         });
     }
+
     @Test
     void getNeighbors() {
         // The new Cell is within the board
