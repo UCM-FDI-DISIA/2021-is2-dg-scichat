@@ -3,6 +3,7 @@ package logic.gameObjects;
 import java.util.Iterator;
 
 import exceptions.InvalidOperationException;
+import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import logic.Cell;
 
@@ -10,9 +11,17 @@ public class Piece {
 	private Cell position;
 	private Player owner;
 	
-	public Piece(Cell pos, Player own) {
-		this.position = pos;
+	public Piece(Cell pos, Player own) throws OccupiedCellException {
 		this.owner = own;
+
+		if(!pos.isEmpty()) 
+			throw new OccupiedCellException(pos);
+		this.position = pos;
+		this.position.assign(own.getColor());
+	}
+	
+	public Cell getPosition() {
+		return this.position;
 	}
 	
 	public void tryToMoveTo(Cell targetPosition) throws InvalidOperationException, OutOfBoundsException {
