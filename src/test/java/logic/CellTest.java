@@ -197,5 +197,15 @@ public class CellTest {
         	Assertions.assertEquals(direction, actualDirection);
     	}
     }
+    
+    @Test
+    void CellToString() {
+    	Assertions.assertDoesNotThrow(() -> {
+    		cell = new Cell(8,6,board); // Deberia ser la celda del medio
+    	});
+    	
+    	Assertions.assertEquals("(8,6)", cell.toString());
+    	
+    }
 }
 
