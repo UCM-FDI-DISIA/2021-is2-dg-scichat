@@ -10,13 +10,13 @@ public abstract class Command {
     protected static final String incorrectArgsMsg = "[ERROR]: Incorrect arguments format";
 
     /// Lo dejo de momento como una clase anidad, porque al final, estas excepciones solamente se lanza en Command
-    public class ParseException extends Exception {
+    public static class ParseException extends Exception {
         public ParseException(String message) {
             super(message);
         }
     }
 
-    public class ExecuteException extends Exception {
+    public static class ExecuteException extends Exception {
         public ExecuteException(String message) {
             super(message);
         }
