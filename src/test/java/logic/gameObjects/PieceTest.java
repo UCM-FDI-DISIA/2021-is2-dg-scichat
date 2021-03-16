@@ -16,12 +16,13 @@ class PieceTest {
 	Piece piece, piece2;
 	Cell pos = null;
 	Board board = null;
-	Board.Color color = Board.Color.Blue;
+	Board.Color color = null;
 	
     @BeforeEach
     void init() {
     	try {
     		board = new Board();
+    		color = Board.Color.Blue;
     		piece = new Piece(new Cell(8,6,board),color);
     	}
     	catch(OutOfBoundsException e) {
