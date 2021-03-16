@@ -45,12 +45,12 @@ public class Board {
     }
     
     public enum Sides{
-    	Down,
-    	DownLeft,
-    	UpLeft,
-    	Up,
-    	UpRight,
-    	DownRight;
+    	Down,		//0
+    	DownLeft,	//1
+    	UpLeft,		//2
+    	Up,			//3
+    	UpRight,	//4
+    	DownRight;	//5
     }
     
     //Esto devolvera un array con los Cell respectivos del lado que des
@@ -180,6 +180,6 @@ public class Board {
     }
 
     public boolean insideBoard(int row, int col) {
-        return (0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL) && validRowColumn(row,col);
+        return (0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL);
     }
 }
