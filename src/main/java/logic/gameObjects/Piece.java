@@ -5,19 +5,20 @@ import java.util.Iterator;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
+import logic.Board;
 import logic.Cell;
 
 public class Piece {
-	private Cell position;
-	private Player owner;
 	
-	public Piece(Cell pos, Player own) throws OccupiedCellException {
-		this.owner = own;
-
+	private Board.Color color;
+	private Cell position;
+	
+	public Piece(Cell pos, Board.Color color) throws OccupiedCellException {
+		this.color=color;
 		if(!pos.isEmpty()) 
 			throw new OccupiedCellException(pos);
 		this.position = pos;
-		this.position.assign(own.getColor());
+		this.position.assign(this.color);
 	}
 	
 	public Cell getPosition() {
@@ -53,7 +54,7 @@ public class Piece {
 		tryToMoveTo(targetPosition);
 		this.position.remove();
 		this.position = targetPosition;
-		this.position.assign(owner.getColor());
+		this.position.assign(this.color);
 	}
 	
 	public boolean isAtEnd() {

@@ -4,7 +4,10 @@ import logic.Board;
 import logic.Board.Color;
 
 public class Player{
+	
 	private Board.Color color;
+	private Piece[] pieces=new Piece[10];
+	
 	public Player(){
 		color = Color.Blue;
 	}	

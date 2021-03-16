@@ -43,6 +43,20 @@ public class Board {
         Blue,        // 6
         NotBoard;    // 7
     }
+    
+    public enum Sides{
+    	Down,
+    	DownLeft,
+    	UpLeft,
+    	Up,
+    	UpRight,
+    	DownRight;
+    }
+    
+    //Esto devolvera un array con los Cell respectivos del lado que des
+    public Cell[] getPointsOnSide(Sides side) {
+		return null;
+    }
 
     /*public boolean validRowColum(int row, int colum){
         return (row < 4 && colum <= 7 + row/2 && colum >= 7 - (row-1)/2 ) || (row > 12 && colum <= 7 + (16-row)/2 && colum >= 7 - (15-row)/2 ) || ( row >= 4 && row <= 8 && colum >= (row-3)/2 && colum >= 12 - (row-4)/2) && ( row <=  );
@@ -166,6 +180,6 @@ public class Board {
     }
 
     public boolean insideBoard(int row, int col) {
-        return (0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL);
+        return (0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL) && validRowColumn(row,col);
     }
 }

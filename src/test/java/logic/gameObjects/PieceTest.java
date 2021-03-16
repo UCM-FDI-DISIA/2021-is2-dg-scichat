@@ -16,14 +16,13 @@ class PieceTest {
 	Piece piece, piece2;
 	Cell pos = null;
 	Board board = null;
-	Player player1 = null;
+	Board.Color color = Board.Color.Blue;
 	
     @BeforeEach
     void init() {
     	try {
     		board = new Board();
-    		player1 = new Player();
-    		piece = new Piece(new Cell(8,6,board),player1);
+    		piece = new Piece(new Cell(8,6,board),color);
     	}
     	catch(OutOfBoundsException e) {
     		fail("Couldn't access middle cell in initialization.");
@@ -48,7 +47,7 @@ class PieceTest {
     	});
     	
     	Assertions.assertDoesNotThrow(() -> {
-    		piece2 = new Piece(piece.getPosition().getUpperRight(),player1);
+    		piece2 = new Piece(piece.getPosition().getUpperRight(),color);
     		piece.tryToMoveTo(piece2.getPosition().getUpperRight());
     	}); 
     	
