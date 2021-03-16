@@ -55,19 +55,19 @@ public class CellTest {
             cell = new Cell(0, 6, board);
         });
         // The left cell of this cell is not within the board
-        assertThrows(InvalidOperationException.class, () -> {
+        assertThrows(OutOfBoundsException.class, () -> {
             cell.getLeft();
         });
         // The right cell of this cell is not within the board
-        assertThrows(InvalidOperationException.class, () -> {
+        assertThrows(OutOfBoundsException.class, () -> {
             cell.getRight();
         });
         // The left cell of this cell is not within the board
-        assertThrows(InvalidOperationException.class, () -> {
+        assertThrows(OutOfBoundsException.class, () -> {
             cell.getLeft();
         });
         // Nor the upper cells
-        assertThrows(InvalidOperationException.class, () -> {
+        assertThrows(OutOfBoundsException.class, () -> {
             cell.getUpperLeft();
             cell.getUpperRight();
         });
@@ -96,7 +96,7 @@ public class CellTest {
     @Test
     void getCellByRepeatingActions() {
     	Assertions.assertDoesNotThrow(() -> {
-    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    		cell = new Cell(8,6,board); // Deberia ser la celda del medio
     	});
     	other = cell;
     	
@@ -109,7 +109,10 @@ public class CellTest {
     	Assertions.assertDoesNotThrow(() -> {
     		cell = cell.getUpperLeft(times);
     	});
-    	Assertions.assertEquals(other,cell);
+    	if( other.equals(cell) ) System.out.println("GOod job");
+    	Assertions.assertDoesNotThrow(() -> {
+    		Assertions.assertEquals(other,cell);
+    	});
     	
     	times = 3;
     	Assertions.assertDoesNotThrow(() -> {
@@ -147,11 +150,11 @@ public class CellTest {
       	times = 7;
     	Assertions.assertDoesNotThrow(() -> {
     		for(int i = 0; i < times; ++i) {
-    			other = other.getLowerRight();
+    			other = other.getUpperRight();
     		}
     	});
     	Assertions.assertDoesNotThrow(() -> {
-    		cell = cell.getLowerRight(times);
+    		cell = cell.getUpperRight(times);
     	});
     	Assertions.assertEquals(other,cell);
     }
@@ -159,7 +162,7 @@ public class CellTest {
     @Test
     void isInSameDiagonalAsCell() {
     	Assertions.assertDoesNotThrow(() -> {
-    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    		cell = new Cell(8,6,board); // Deberia ser la celda del medio
     		other = cell;
     	});
     	Assertions.assertTrue(cell.isInSameDiagonalAs(other));
@@ -181,7 +184,7 @@ public class CellTest {
     @Test
     void getDirectionTowardsCell() {
     	Assertions.assertDoesNotThrow(() -> {
-    		cell = new Cell(8,4,board); // Deberia ser la celda del medio
+    		cell = new Cell(8,6,board); // Deberia ser la celda del medio
     		other = cell;
     	});
     	for(Cell.Direction direction : Cell.Direction.values()) {
