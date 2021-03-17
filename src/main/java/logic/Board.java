@@ -175,7 +175,6 @@ public class Board {
     public Color get(int row, int col) throws OutOfBoundsException {
         if (!insideBoard(row, col))
             throw new OutOfBoundsException();
-
         return mat[row][col];
     }
 
