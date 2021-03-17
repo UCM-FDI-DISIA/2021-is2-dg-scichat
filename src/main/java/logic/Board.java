@@ -4,58 +4,99 @@ import exceptions.OutOfBoundsException;
 
 public class Board {
     private static final int NUM_COL = 13, NUM_ROW = 17;
-    private static final String SCHEMATIC = "......@......" +
-            "......@@....." +
-            ".....@@@....." +
-            ".....@@@@...." +
-            "@@@@@@@@@@@@@" +
-            ".@@@@@@@@@@@@" +
-            ".@@@@@@@@@@@." +
-            "..@@@@@@@@@@." +
+    private static final String SCHEMATIC = "......U......" +
+            "......UU....." +
+            ".....UUU....." +
+            ".....UUUU...." +
+            "LLLL@@@@@RRRR" +
+            ".LLL@@@@@@RRR" +
+            ".LL@@@@@@@RR." +
+            "..L@@@@@@@@R." +
             "..@@@@@@@@@.." +
-            "..@@@@@@@@@@." +
-            ".@@@@@@@@@@@." +
-            ".@@@@@@@@@@@@" +
-            "@@@@@@@@@@@@@" +
-            ".....@@@@...." +
-            ".....@@@....." +
-            "......@@....." +
-            "......@......";
+            "..l@@@@@@@@r." +
+            ".ll@@@@@@@rr." +
+            ".lll@@@@@@rrr" +
+            "llll@@@@@rrrr" +
+            ".....DDDD...." +
+            ".....DDD....." +
+            "......DD....." +
+            "......D......";
 
-
+    //No podemos usar Cell porque Cell usa Board
+    //Primer [] posicion (Up, Down...), segundo [] celda en lista, tercer [] 0 row, 1 column
+    private int[][][] zone= new int[6][10][2];
     private Color[][] mat = new Color[NUM_ROW][NUM_COL];
 
     public Board() {
+    	int[] nzona=new int[6];
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
+            	int pos=-1;
+            	switch(SCHEMATIC.charAt(i * NUM_COL + j)) {
+            		case 'D':
+            			pos=Sides.Down.getValue();
+            			break;
+            		case 'l':
+            			pos=Sides.DownLeft.getValue();
+            			break;
+            		case 'L':
+            			pos=Sides.UpLeft.getValue();
+            			break;
+            		case 'U':
+            			pos=Sides.Up.getValue();
+            			break;
+            		case 'R':
+            			pos=Sides.UpRight.getValue();
+            			break;
+            		case 'r':
+            			pos=Sides.DownRight.getValue();
+            			break;
+            	}
                 mat[i][j] = (SCHEMATIC.charAt(i * NUM_COL + j) == '.' ? Color.NotBoard : Color.Void);
+                if(pos!=-1) {
+                	zone[pos][nzona[pos]][0]=i;
+                	zone[pos][nzona[pos]][1]=j;
+                	nzona[pos]+=1;
+                }
             }
         }
     }
 
     public enum Color { // TODO: Consider renaming Color to Token or similar
-        Void,        // 0
-        Green,        // 1
-        Yellow,        // 2
-        Orange,        // 3
+        Void,       // 0
+        Green,      // 1
+        Yellow,     // 2
+        Orange,     // 3
         Red,        // 4
-        Purple,        // 5
-        Blue,        // 6
-        NotBoard;    // 7
+        Purple,     // 5
+        Blue,       // 6
+        NotBoard;   // 7
     }
     
     public enum Sides{
-    	Down,		//0
-    	DownLeft,	//1
-    	UpLeft,		//2
-    	Up,			//3
-    	UpRight,	//4
-    	DownRight;	//5
+    	Down(0),		//0
+    	DownLeft(1),	//1
+    	UpLeft(2),		//2
+    	Up(3),			//3
+    	UpRight(4),	//4
+    	DownRight(5);	//5
+    	
+    	private final int value;
+    	private Sides(int value) {
+            this.value = value;
+        }
+    	public int getValue() {
+            return value;
+        }
     }
     
     //Esto devolvera un array con los Cell respectivos del lado que des
-    public Cell[] getPointsOnSide(Sides side) {
-		return null;
+    public Cell[] getPointsOnSide(Sides side) throws OutOfBoundsException{
+    	Cell[] out=new Cell[10];
+    	for(int i=0;i<10;i++) {
+    		out[i]=new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this);
+    	}
+		return out;
     }
 
     /*public boolean validRowColum(int row, int colum){

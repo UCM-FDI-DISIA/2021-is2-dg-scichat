@@ -86,4 +86,5 @@ class BoardTest {
         /// Ahora ya no esta disponible
         assertFalse(board.available(0, 6));
     }
+    
 }
