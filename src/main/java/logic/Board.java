@@ -81,20 +81,21 @@ public class Board {
     }
     
     public enum Side{
-    	Down(0),		//0
-    	DownLeft(1),	//1
-    	UpLeft(2),		//2
-    	Up(3),			//3
-    	UpRight(4),		//4
-    	DownRight(5);	//5
+    	Down(0, new HashSet<Cell>()),		//0
+    	DownLeft(1, new HashSet<Cell>()),	//1
+    	UpLeft(2, new HashSet<Cell>()),		//2
+    	Up(3, new HashSet<Cell>()),			//3
+    	UpRight(4, new HashSet<Cell>()),		//4
+    	DownRight(5, new HashSet<Cell>());	//5
     	
     	private final int value;
     	private HashSet<Cell> sideCells;
     	
     	/*Constructor*/
     	
-    	private Side(int value) {
+    	private Side(int value, HashSet<Cell> sideCells) {
             this.value = value;
+            this.sideCells = sideCells;
         }
     	
     	/*Getters*/
