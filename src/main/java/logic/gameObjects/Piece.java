@@ -10,11 +10,37 @@ import logic.Cell;
 
 public class Piece {
 	
+	//El color es lo que hace que una ficha pertenezca a un jugador
 	private Board.Color color;
 	private Cell position;
+	//Si dan un Piece a un Player el Player quiere saber cual es de entre todas las que tiene
+	private int id;
 	
+	public Board.Color getColor() {
+		return color;
+	}
+
+	public void setColor(Board.Color color) {
+		this.color = color;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public Piece(Cell pos, Board.Color color) throws OccupiedCellException {
 		this.color=color;
+		//Asumimos id=-1 significa id no definido, para debug
+		this.id=-1;
+		if(!pos.isEmpty()) 
+			throw new OccupiedCellException(pos);
+		this.position = pos;
+		this.position.assign(this.color);
+	}
+	
+	public Piece(Cell pos, Board.Color color, int id) throws OccupiedCellException {
+		this.color=color;
+		this.id=id;
 		if(!pos.isEmpty()) 
 			throw new OccupiedCellException(pos);
 		this.position = pos;
@@ -57,6 +83,9 @@ public class Piece {
 		this.position.assign(this.color);
 	}
 	
+	//Tal vez se le pueda pasar como argumento cual es End con la clase Board.Side
+	//La verdad es que me vendria muy bien
+	//-Antimateria
 	public boolean isAtEnd() {
 		// TODO: Completar. Tenemos que ver como detectar que estás en el final.
 		// Probablemente se tenga que llegar a `Board` para resolverlo
