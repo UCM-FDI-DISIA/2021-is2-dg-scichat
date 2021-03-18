@@ -1,6 +1,8 @@
 package logic;
 
 import exceptions.OutOfBoundsException;
+import java.util.List;
+import java.util.HashSet;
 
 public class Board {
     private static final int NUM_COL = 13, NUM_ROW = 17;
@@ -34,22 +36,22 @@ public class Board {
             	int pos=-1;
             	switch(SCHEMATIC.charAt(i * NUM_COL + j)) {
             		case 'D':
-            			pos=Sides.Down.getValue();
+            			pos=Side.Down.getValue();
             			break;
             		case 'l':
-            			pos=Sides.DownLeft.getValue();
+            			pos=Side.DownLeft.getValue();
             			break;
             		case 'L':
-            			pos=Sides.UpLeft.getValue();
+            			pos=Side.UpLeft.getValue();
             			break;
             		case 'U':
-            			pos=Sides.Up.getValue();
+            			pos=Side.Up.getValue();
             			break;
             		case 'R':
-            			pos=Sides.UpRight.getValue();
+            			pos=Side.UpRight.getValue();
             			break;
             		case 'r':
-            			pos=Sides.DownRight.getValue();
+            			pos=Side.DownRight.getValue();
             			break;
             	}
                 mat[i][j] = (SCHEMATIC.charAt(i * NUM_COL + j) == '.' ? Color.NotBoard : Color.Void);
@@ -73,25 +75,97 @@ public class Board {
         NotBoard;   // 7
     }
     
-    public enum Sides{
+    public enum Side{
     	Down(0),		//0
     	DownLeft(1),	//1
     	UpLeft(2),		//2
     	Up(3),			//3
-    	UpRight(4),	//4
+    	UpRight(4),		//4
     	DownRight(5);	//5
     	
     	private final int value;
-    	private Sides(int value) {
+    	private HashSet<Cell> sideCells;
+    	
+    	/*Constructor*/
+    	
+    	private Side(int value, HashSet<Cell> sideCells) {
             this.value = value;
+            this.sideCells = sideCells;
         }
+    	
+    	/*Getters*/
+    	
+    	public Side getOpposite() {
+    		switch(this) {
+    		case Down:
+    			return Up;
+    		case Up:
+    			return Down;
+    		case UpLeft:
+    			return DownRight;
+    		case UpRight:
+    			return DownLeft;
+    		case DownRight:
+    			return UpLeft;
+    		case DownLeft:
+    			return UpRight;
+    		default:
+    			return null;
+    		}
+    	}
+    	
+    	/*Setters*/
+    	
+    	private void setSideCells(HashSet<Cell> set) {
+    		this.sideCells = set;
+    	}
+    	
+    	private void initializeSide() {
+    		HashSet<Cell> aux;
+    		
+    		switch(this) {
+    		case Down:
+    			aux.add(new Cell(1, 2, Cell.board));
+    		case Up:
+    			return Down;
+    		case UpLeft:
+    			return DownRight;
+    		case UpRight:
+    			return DownLeft;
+    		case DownRight:
+    			return UpLeft;
+    		case DownLeft:
+    			return UpRight;
+    		default:
+    			return null;
+    		}
+    		setSideCells(aux);
+    	}
+    	
+    	/*Metodos*/
+    	
     	public int getValue() {
             return value;
         }
+    	/**
+    	 * 
+    	 * @return	Devuelve las celdas que corresponden al lado del tablero(las que hacen esquina)
+    	 */
+    	
+    	public HashSet<Cell> getSideCells(){
+    		return sideCells;
+    	}
+    	/**
+    	 * 
+    	 * @return	Deuelve las celdas opuestas a la del lado donde nos encontramos
+    	 */
+    	public HashSet<Cell> getOpposeCells() {
+    		return getOpposite().getSideCells();
+    	}
     }
     
     //Esto devolvera un array con los Cell respectivos del lado que des
-    public Cell[] getPointsOnSide(Sides side) throws OutOfBoundsException{
+    public Cell[] getPointsOnSide(Side side) throws OutOfBoundsException{
     	Cell[] out=new Cell[10];
     	for(int i=0;i<10;i++) {
     		out[i]=new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this);

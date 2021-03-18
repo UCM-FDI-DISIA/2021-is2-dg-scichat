@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Cell {
 	private int row, col;
-	private static Board board; // TODO: Lo dejamos como estático? Y si queremos tener varias instancias del
+	public static Board board; // TODO: Lo dejamos como estático? Y si queremos tener varias instancias del
 								// juego, o varios tableros?
 
 	public enum Direction {

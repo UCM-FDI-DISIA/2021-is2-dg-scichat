@@ -2,11 +2,15 @@ package logic.gameObjects;
 
 import logic.Board;
 import logic.Board.Color;
+import java.util.HashSet;
+import logic.Cell;
+import logic.Board.Side;
 
 public class Player{
 	
-	private Board.Color color;
-	private Piece[] pieces=new Piece[10];
+	private Board.Color color;	//Color asignado al jugador
+	private Piece[] pieces = new Piece[10];	//Fichas del jugador
+	private Side side;
 	//-1 implica que no tiene ninguna pieza seleccionada
 	private int selectedPiece=-1;
 	
@@ -51,4 +55,15 @@ public class Player{
 	public boolean hasSelectedPiece() {
 		return this.selectedPiece!=-1;
 	}
+	/**
+	 * 
+	 * @return true si todas las fichas del jugador se encuentran en posiciones ganadoras
+	 */
+	public boolean isAWinner() {
+		for(Piece pc : pieces)
+			if(!side.getOpposeCells().contains(pc.getPosition())) {	return false;	}
+		return true;
+	}
+	
+	
 }
