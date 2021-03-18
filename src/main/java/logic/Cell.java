@@ -33,6 +33,11 @@ public class Cell {
 		Cell.board = board;
 	}
 
+	public Cell(int row, int col) {
+		this.col = col;
+		this.row = row;
+	}
+	
 	public int getRow() {
 		return row;
 	}

@@ -1,7 +1,6 @@
 package logic;
 
 import exceptions.OutOfBoundsException;
-import java.util.List;
 import java.util.HashSet;
 
 public class Board {
@@ -36,21 +35,27 @@ public class Board {
             	int pos=-1;
             	switch(SCHEMATIC.charAt(i * NUM_COL + j)) {
             		case 'D':
+            			Side.Down.addSideCells(new Cell(i, j));
             			pos=Side.Down.getValue();
             			break;
             		case 'l':
+            			Side.DownLeft.addSideCells(new Cell(i, j));
             			pos=Side.DownLeft.getValue();
             			break;
             		case 'L':
+            			Side.UpLeft.addSideCells(new Cell(i, j));
             			pos=Side.UpLeft.getValue();
             			break;
             		case 'U':
+            			Side.Up.addSideCells(new Cell(i, j));
             			pos=Side.Up.getValue();
             			break;
             		case 'R':
+            			Side.UpRight.addSideCells(new Cell(i, j));
             			pos=Side.UpRight.getValue();
             			break;
             		case 'r':
+            			Side.DownRight.addSideCells(new Cell(i, j));
             			pos=Side.DownRight.getValue();
             			break;
             	}
@@ -88,9 +93,8 @@ public class Board {
     	
     	/*Constructor*/
     	
-    	private Side(int value, HashSet<Cell> sideCells) {
+    	private Side(int value) {
             this.value = value;
-            this.sideCells = sideCells;
         }
     	
     	/*Getters*/
@@ -113,35 +117,9 @@ public class Board {
     			return null;
     		}
     	}
-    	
-    	/*Setters*/
-    	
-    	private void setSideCells(HashSet<Cell> set) {
-    		this.sideCells = set;
-    	}
-    	
-    	private void initializeSide() {
-    		HashSet<Cell> aux;
-    		
-    		switch(this) {
-    		case Down:
-    			aux.add(new Cell(1, 2, Cell.board));
-    		case Up:
-    			return Down;
-    		case UpLeft:
-    			return DownRight;
-    		case UpRight:
-    			return DownLeft;
-    		case DownRight:
-    			return UpLeft;
-    		case DownLeft:
-    			return UpRight;
-    		default:
-    			return null;
-    		}
-    		setSideCells(aux);
-    	}
-    	
+    
+    
+  	
     	/*Metodos*/
     	
     	public int getValue() {
@@ -161,6 +139,13 @@ public class Board {
     	 */
     	public HashSet<Cell> getOpposeCells() {
     		return getOpposite().getSideCells();
+    	}
+    	/**
+    	 * 
+    	 * @param newCell La celda que queremos anadir
+    	 */
+    	private void addSideCells(Cell newCell) {
+    		sideCells.add(newCell);
     	}
     }
     
