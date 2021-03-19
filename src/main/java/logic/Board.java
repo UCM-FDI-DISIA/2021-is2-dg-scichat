@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.HashSet;
+
 import exceptions.OutOfBoundsException;
 
 public class Board {
@@ -78,7 +80,7 @@ public class Board {
     	DownLeft(1),	//1
     	UpLeft(2),		//2
     	Up(3),			//3
-    	UpRight(4),	//4
+    	UpRight(4),		//4
     	DownRight(5);	//5
     	
     	private final int value;
@@ -91,10 +93,10 @@ public class Board {
     }
     
     //Esto devolvera un array con los Cell respectivos del lado que des
-    public Cell[] getPointsOnSide(Sides side) throws OutOfBoundsException{
-    	Cell[] out=new Cell[10];
+    public HashSet<Cell> getPointsOnSide(Sides side) throws OutOfBoundsException{
+    	HashSet<Cell> out=new HashSet<Cell>();
     	for(int i=0;i<10;i++) {
-    		out[i]=new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this);
+    		out.add(new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this));
     	}
 		return out;
     }
