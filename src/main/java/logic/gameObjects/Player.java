@@ -1,18 +1,18 @@
 package logic.gameObjects;
 
+import java.util.HashSet;
+
 import logic.Board;
 import logic.Board.Color;
 import logic.Board.Side;
 
-public class Player {
-
+public class Player{
+	
 	private Board.Color color; // Color asignado al jugador
-	private Piece[] pieces = new Piece[10]; // Fichas del jugador
-	private Side side;
-	// -1 implica que no tiene ninguna pieza seleccionada
-	private int selectedPiece = -1;
-
-	public Player() {
+	private HashSet<Piece> pieces=new HashSet<Piece>(); // Fichas del jugador
+	private Piece selectedPiece=null;
+	
+	public Player(){
 		color = Color.Blue;
 	}
 
@@ -32,9 +32,10 @@ public class Player {
 	 * @return true si es suya y puede seleccionarla, false si no
 	 */
 	public boolean selectPiece(Piece piece) {
-		if (piece.getColor() != this.color || piece.getId() == -1)
+
+		if(!pieces.contains(piece))
 			return false;
-		this.selectedPiece = piece.getId();
+		this.selectedPiece=piece;
 		return true;
 	};
 
@@ -43,7 +44,7 @@ public class Player {
 	 * no hace nada
 	 */
 	public void deselectPiece() {
-		this.selectedPiece = -1;
+		this.selectedPiece=null;
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class Player {
 	 * @return true si el jugador tiene una pieza seleccionada, false si no
 	 */
 	public boolean hasSelectedPiece() {
-		return this.selectedPiece != -1;
+		return this.selectedPiece!=null;
 	}
 
 	/**

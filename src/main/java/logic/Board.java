@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.HashSet;
+
 import exceptions.OutOfBoundsException;
 import java.util.HashSet;
 
