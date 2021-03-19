@@ -20,6 +20,7 @@ public class Cell {
 
 	/**
 	 * Crea una celda en la posición (row, col)
+	 * 
 	 * @param row
 	 * @param col
 	 * @param board
@@ -37,7 +38,7 @@ public class Cell {
 		this.col = col;
 		this.row = row;
 	}
-	
+
 	public int getRow() {
 		return row;
 	}
@@ -128,30 +129,30 @@ public class Cell {
 	// -----------------------WIP------------------------- //
 	public Cell getUpperRight(int times) throws OutOfBoundsException {
 		if (row % 2 == 1) // Fila impar
-			return new Cell(row - times, col + times/2, board);
+			return new Cell(row - times, col + times / 2, board);
 		else // Fila par
-			return new Cell(row - times, col + (times+1)/2, board);
+			return new Cell(row - times, col + (times + 1) / 2, board);
 	}
 
 	public Cell getUpperLeft(int times) throws OutOfBoundsException {
 		if (row % 2 == 1) // Fila impar
-			return new Cell(row - times, col - (times+1)/2, board);
+			return new Cell(row - times, col - (times + 1) / 2, board);
 		else // Fila par
-			return new Cell(row - times, col - times/2, board);
+			return new Cell(row - times, col - times / 2, board);
 	}
 
 	public Cell getLowerRight(int times) throws OutOfBoundsException {
 		if (row % 2 == 1) // Fila impar
-			return new Cell(row + times, col + times/2, board);
+			return new Cell(row + times, col + times / 2, board);
 		else // Fila par
-			return new Cell(row + times, col + (times+1)/2, board);
+			return new Cell(row + times, col + (times + 1) / 2, board);
 	}
 
 	public Cell getLowerLeft(int times) throws OutOfBoundsException {
 		if (row % 2 == 1) // Fila impar
-			return new Cell(row + times, col - (times+1)/2, board);
+			return new Cell(row + times, col - (times + 1) / 2, board);
 		else // Fila par
-			return new Cell(row + times, col - times/2, board);
+			return new Cell(row + times, col - times / 2, board);
 	}
 
 	public Cell getRight(int times) throws OutOfBoundsException {
@@ -192,7 +193,7 @@ public class Cell {
 				return (this.getCol() < other.getCol() ? Direction.Right : Direction.Left);
 			} else if (this.getRow() < other.getRow()) { // other está por debajo
 				return (this.getCol() < other.getCol() ? Direction.LowerRight : Direction.LowerLeft);
-			} else { // this.getRow() > other.getRow()   // other está por arriba
+			} else { // this.getRow() > other.getRow() // other está por arriba
 				return (this.getCol() < other.getCol() ? Direction.UpperRight : Direction.UpperLeft);
 			}
 		} else
@@ -291,8 +292,7 @@ public class Cell {
 		try {
 			Cell that = (Cell) other;
 			return this.getCol() == that.getCol() && this.getRow() == that.getRow();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
