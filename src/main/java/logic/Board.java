@@ -4,7 +4,11 @@ import java.util.HashSet;
 
 import exceptions.OutOfBoundsException;
 
-import java.util.HashSet;
+//import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class Board {
     private static final int NUM_COL = 13, NUM_ROW = 17;
@@ -29,49 +33,37 @@ public class Board {
     // No podemos usar Cell porque Cell usa Board
     // Primer [] posicion (Up, Down...), segundo [] celda en lista, tercer [] 0 row,
     // 1 column
-    private int[][][] zone = new int[6][10][2];
     private Color[][] mat = new Color[NUM_ROW][NUM_COL];
 
     public Board() {
-        int[] nzona = new int[6];
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
-                int pos = -1;
                 switch (SCHEMATIC.charAt(i * NUM_COL + j)) {
                     case 'D':
                         Side.Down.addSideCells(new Cell(i, j));
-                        pos = Side.Down.getValue();
                         break;
                     case 'l':
                         Side.DownLeft.addSideCells(new Cell(i, j));
-                        pos = Side.DownLeft.getValue();
                         break;
                     case 'L':
                         Side.UpLeft.addSideCells(new Cell(i, j));
-                        pos = Side.UpLeft.getValue();
                         break;
                     case 'U':
                         Side.Up.addSideCells(new Cell(i, j));
-                        pos = Side.Up.getValue();
                         break;
                     case 'R':
                         Side.UpRight.addSideCells(new Cell(i, j));
-                        pos = Side.UpRight.getValue();
                         break;
                     case 'r':
                         Side.DownRight.addSideCells(new Cell(i, j));
-                        pos = Side.DownRight.getValue();
                         break;
                 }
                 mat[i][j] = (SCHEMATIC.charAt(i * NUM_COL + j) == '.' ? Color.NotBoard : Color.Void);
-                if (pos != -1) {
-                    zone[pos][nzona[pos]][0] = i;
-                    zone[pos][nzona[pos]][1] = j;
-                    nzona[pos] += 1;
-                }
             }
         }
     }
+    
+    //Clases anidadas
 
     public enum Color { // TODO: Consider renaming Color to Token or similar
         Void, // 0
@@ -141,52 +133,22 @@ public class Board {
         /**
          * @return Deuelve las celdas opuestas a la del lado donde nos encontramos
          */
-        public HashSet<Cell> getOpposeCells() {
+        public HashSet<Cell> getOpposingCells() {
+        	
             return getOpposite().getSideCells();
         }
 
         /**
-         * @param newCell La celda que queremos anadir
+         * @param newCell La celda que queremos anadir al lado
          */
         private void addSideCells(Cell newCell) {
             sideCells.add(newCell);
         }
     }
-
-    // Esto devolvera un array con los Cell respectivos del lado que des
-    public Cell[] getPointsOnSide(Side side) throws OutOfBoundsException {
-        Cell[] out = new Cell[10];
-        for (int i = 0; i < 10; i++) {
-            out[i] = new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this);
-        }
-        return out;
-    }
-
-    /*
-     * public boolean validRowColum(int row, int colum){ return (row < 4 && colum <=
-     * 7 + row/2 && colum >= 7 - (row-1)/2 ) || (row > 12 && colum <= 7 + (16-row)/2
-     * && colum >= 7 - (15-row)/2 ) || ( row >= 4 && row <= 8 && colum >= (row-3)/2
-     * && colum >= 12 - (row-4)/2) && ( row <= ); }
-     */
-
-    /*
-     * public void initializeTable(int numPlayers){ if(numPlayers < 2 || numPlayers
-     * > 6){ switch(numPlayers){ case(1): initializeForOne(); break; case(2):
-     * initializeForTwo(); break; case(3): initializeForThree(); break; case(4):
-     * initializeForFour(); case(5): initializeForFive(); break; case(6):
-     * initializeForSix(); } } else{ throw new TooManyPlayersException(); } }
-     *
-     * private void initializeForTwo(){ for(int i = 0; i < 4; ++i){ for(Color aux :
-     * mat[i]){ if(aux != Void) aux = } } }
-     *
-     * private void initializeForThree(){}
-     *
-     * private void initializeForFour(){}
-     *
-     * private void initializeForFive(){}
-     *
-     * private void initializeForSix(){}
-     */
+    
+    
+    /*Métodos*/
+    
 
     public String toString() {
         String answer = "";
