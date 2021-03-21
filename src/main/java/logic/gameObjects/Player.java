@@ -9,6 +9,7 @@ import logic.Board.Side;
 public class Player {
     private Board.Color color; // Color asignado al jugador
     private HashSet<Piece> pieces = new HashSet<Piece>(); // Fichas del jugador
+    private Side playerSide;
     private Piece selectedPiece = null;
 
     public Player() {
@@ -21,6 +22,11 @@ public class Player {
 
     public Board.Color getColor() {
         return color;
+    }
+    
+    
+    public Side getSide() {
+    	return playerSide;
     }
 
     /**
@@ -60,7 +66,7 @@ public class Player {
      */
     public boolean isAWinner() {
         for (Piece pc : pieces)
-            if (!side.getOpposeCells().contains(pc.getPosition())) {
+            if (!playerSide.getOpposeCells().contains(pc.getPosition())) {
                 return false;
             }
         return true;
