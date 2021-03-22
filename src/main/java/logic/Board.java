@@ -4,6 +4,12 @@ import java.util.HashSet;
 
 import exceptions.OutOfBoundsException;
 
+//import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import edu.emory.mathcs.backport.java.util.Collections;
+
 public class Board {
     private static final int NUM_COL = 13, NUM_ROW = 17;
     private static final String SCHEMATIC = "......U......" +
@@ -24,130 +30,125 @@ public class Board {
             "......DD....." +
             "......D......";
 
-    //No podemos usar Cell porque Cell usa Board
-    //Primer [] posicion (Up, Down...), segundo [] celda en lista, tercer [] 0 row, 1 column
-    private int[][][] zone= new int[6][10][2];
+    // No podemos usar Cell porque Cell usa Board
+    // Primer [] posicion (Up, Down...), segundo [] celda en lista, tercer [] 0 row,
+    // 1 column
     private Color[][] mat = new Color[NUM_ROW][NUM_COL];
 
     public Board() {
-    	int[] nzona=new int[6];
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
-            	int pos=-1;
-            	switch(SCHEMATIC.charAt(i * NUM_COL + j)) {
-            		case 'D':
-            			pos=Sides.Down.getValue();
-            			break;
-            		case 'l':
-            			pos=Sides.DownLeft.getValue();
-            			break;
-            		case 'L':
-            			pos=Sides.UpLeft.getValue();
-            			break;
-            		case 'U':
-            			pos=Sides.Up.getValue();
-            			break;
-            		case 'R':
-            			pos=Sides.UpRight.getValue();
-            			break;
-            		case 'r':
-            			pos=Sides.DownRight.getValue();
-            			break;
-            	}
-                mat[i][j] = (SCHEMATIC.charAt(i * NUM_COL + j) == '.' ? Color.NotBoard : Color.Void);
-                if(pos!=-1) {
-                	zone[pos][nzona[pos]][0]=i;
-                	zone[pos][nzona[pos]][1]=j;
-                	nzona[pos]+=1;
+                switch (SCHEMATIC.charAt(i * NUM_COL + j)) {
+                    case 'D':
+                        Side.Down.addSideCells(new Cell(i, j));
+                        break;
+                    case 'l':
+                        Side.DownLeft.addSideCells(new Cell(i, j));
+                        break;
+                    case 'L':
+                        Side.UpLeft.addSideCells(new Cell(i, j));
+                        break;
+                    case 'U':
+                        Side.Up.addSideCells(new Cell(i, j));
+                        break;
+                    case 'R':
+                        Side.UpRight.addSideCells(new Cell(i, j));
+                        break;
+                    case 'r':
+                        Side.DownRight.addSideCells(new Cell(i, j));
+                        break;
                 }
+                mat[i][j] = (SCHEMATIC.charAt(i * NUM_COL + j) == '.' ? Color.NotBoard : Color.Void);
             }
         }
     }
+    
+    //Clases anidadas
 
     public enum Color { // TODO: Consider renaming Color to Token or similar
-        Void,       // 0
-        Green,      // 1
-        Yellow,     // 2
-        Orange,     // 3
-        Red,        // 4
-        Purple,     // 5
-        Blue,       // 6
-        NotBoard;   // 7
+        Void, // 0
+        Green, // 1
+        Yellow, // 2
+        Orange, // 3
+        Red, // 4
+        Purple, // 5
+        Blue, // 6
+        NotBoard; // 7
     }
-    
-    public enum Sides{
-    	Down(0),		//0
-    	DownLeft(1),	//1
-    	UpLeft(2),		//2
-    	Up(3),			//3
-    	UpRight(4),		//4
-    	DownRight(5);	//5
-    	
-    	private final int value;
-    	private Sides(int value) {
+
+    public enum Side {
+        Down(0, new HashSet<Cell>()), // 0
+        DownLeft(1, new HashSet<Cell>()), // 1
+        UpLeft(2, new HashSet<Cell>()), // 2
+        Up(3, new HashSet<Cell>()), // 3
+        UpRight(4, new HashSet<Cell>()), // 4
+        DownRight(5, new HashSet<Cell>()); // 5
+
+        private final int value;
+        private HashSet<Cell> sideCells;
+
+        /* Constructor */
+
+        private Side(int value, HashSet<Cell> sideCells) {
             this.value = value;
+            this.sideCells = sideCells;
         }
-    	public int getValue() {
+
+        /* Getters */
+
+        public Side getOpposite() {
+            switch (this) {
+                case Down:
+                    return Up;
+                case Up:
+                    return Down;
+                case UpLeft:
+                    return DownRight;
+                case UpRight:
+                    return DownLeft;
+                case DownRight:
+                    return UpLeft;
+                case DownLeft:
+                    return UpRight;
+                default:
+                    return null;
+            }
+        }
+
+        /* Metodos */
+
+        public int getValue() {
             return value;
         }
-    }
-    
-    //Esto devolvera un array con los Cell respectivos del lado que des
-    public HashSet<Cell> getPointsOnSide(Sides side) throws OutOfBoundsException{
-    	HashSet<Cell> out=new HashSet<Cell>();
-    	for(int i=0;i<10;i++) {
-    		out.add(new Cell(zone[side.getValue()][i][0], zone[side.getValue()][i][1], this));
-    	}
-		return out;
-    }
 
-    /*public boolean validRowColum(int row, int colum){
-        return (row < 4 && colum <= 7 + row/2 && colum >= 7 - (row-1)/2 ) || (row > 12 && colum <= 7 + (16-row)/2 && colum >= 7 - (15-row)/2 ) || ( row >= 4 && row <= 8 && colum >= (row-3)/2 && colum >= 12 - (row-4)/2) && ( row <=  );
-    }*/
-    
-    /*public void initializeTable(int numPlayers){
-        if(numPlayers < 2 || numPlayers > 6){
-            switch(numPlayers){
-                case(1):
-                    initializeForOne();
-                    break;
-                case(2):
-                    initializeForTwo();
-                    break;
-                case(3):
-                    initializeForThree();
-                    break;
-                case(4):
-                    initializeForFour();
-                case(5):
-                    initializeForFive();
-                    break;
-                case(6):
-                    initializeForSix();
-            }
+        /**
+         * @return Devuelve las celdas que corresponden al lado del tablero(las que
+         * hacen esquina)
+         */
+
+        public HashSet<Cell> getSideCells() {
+            return sideCells;
         }
-        else{
-            throw new TooManyPlayersException();
-        }    
-    }
 
-    private void initializeForTwo(){
-        for(int i = 0; i < 4; ++i){
-            for(Color aux : mat[i]){
-                if(aux != Void)
-                    aux = 
-            }
+        /**
+         * @return Deuelve las celdas opuestas a la del lado donde nos encontramos
+         */
+        public HashSet<Cell> getOpposingCells() {
+        	
+            return getOpposite().getSideCells();
+        }
+
+        /**
+         * @param newCell La celda que queremos anadir al lado
+         */
+        private void addSideCells(Cell newCell) {
+            sideCells.add(newCell);
         }
     }
-
-    private void initializeForThree(){}
-
-    private void initializeForFour(){}
-
-    private void initializeForFive(){}
-
-    private void initializeForSix(){}
-    */
+    
+    
+    /*Métodos*/
+    
 
     public String toString() {
         String answer = "";
@@ -184,7 +185,7 @@ public class Board {
         return answer;
     }
 
-    // CHECK:  He añadido una n al nombre anterior, validRowColumn
+    // CHECK: He añadido una n al nombre anterior, validRowColumn
     public boolean validRowColumn(int row, int col) {
         if (!insideBoard(row, col))
             return false;
