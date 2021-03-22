@@ -31,7 +31,8 @@ public class Board {
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
                 /// Comprobar si esta dentro del tablero
-                boolean insideBoard = (SCHEMATIC.charAt(i * NUM_COL + j) == '.');
+                boolean insideBoard = (SCHEMATIC.charAt(i * NUM_COL + j) != '.');
+
                 Cell cell = new Cell(i, j, this, insideBoard);
 
                 cells[i][j] = cell;
