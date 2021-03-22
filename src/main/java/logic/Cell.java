@@ -14,7 +14,6 @@ import java.util.List;
 public class Cell {
     private final int row;
     private final int col;
-    public final boolean insideBoard;
 
     private Piece piece;
     private Board board;
@@ -31,11 +30,10 @@ public class Cell {
      * @param board
      * @throws OutOfBoundsException
      */
-    public Cell(int row, int col, Board board, boolean insideBoard) {
+    public Cell(int row, int col, Board board) {
         this.row = row;
         this.col = col;
         this.board = board;
-        this.insideBoard = insideBoard;
     }
 
     public int getRow() {
@@ -60,7 +58,7 @@ public class Cell {
      * @return si no hay pieza, y es una posición dentro del tablero
      */
     public boolean isEmpty() {
-        return (this.piece == null) && (this.insideBoard);
+        return this.piece == null;
     }
 
     public void putPiece(Piece piece) throws OccupiedCellException {

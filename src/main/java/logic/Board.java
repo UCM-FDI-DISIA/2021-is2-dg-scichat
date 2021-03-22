@@ -33,8 +33,8 @@ public class Board {
                 /// Comprobar si esta dentro del tablero
                 boolean insideBoard = (SCHEMATIC.charAt(i * NUM_COL + j) != '.');
 
-                Cell cell = new Cell(i, j, this, insideBoard);
-
+                /// Crear una celda en el caso de que esté dentro del tablero solamente
+                Cell cell = (insideBoard ? new Cell(i, j, this) : null);
                 cells[i][j] = cell;
 
                 switch (SCHEMATIC.charAt(i * NUM_COL + j)) {
@@ -134,7 +134,7 @@ public class Board {
             for (int j = 0; j < NUM_COL; ++j) {
                 Cell cell = cells[i][j];
 
-                if (!cell.insideBoard) {
+                if (cell == null) {
                     /// No es una posición del tablero
                     result += " ";
                 } else if (cell.isEmpty()) {
@@ -181,7 +181,7 @@ public class Board {
         if (!((0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL)))
             return false;
 
-        return cells[row][col].insideBoard;
+        return cells[row][col] != null;
     }
 
     public Cell getCell(int row, int col) {
