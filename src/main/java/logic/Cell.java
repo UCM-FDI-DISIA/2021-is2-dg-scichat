@@ -70,6 +70,14 @@ public class Cell {
         this.piece = piece;
     }
 
+    /**
+     * Quitar la pieza de la celda
+     * <p>
+     * Este método tiene que ser invocado desde pieza, para actualizar al mismo tiempo su referencia a la nueva celda.
+     * Sino, la pieza quedaría posicionada a una celda inválida.
+     *
+     * @throws InvalidOperationException cuando no hay pieza en la celda
+     */
     public void removePiece() throws InvalidOperationException {
         if (this.piece == null) {
             throw new InvalidOperationException("No hay pieza en esta posición");
