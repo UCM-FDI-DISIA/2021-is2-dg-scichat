@@ -54,5 +54,6 @@ class PieceTest {
 
         // TODO: Check for invalid jumps
     }
+    
 
 }

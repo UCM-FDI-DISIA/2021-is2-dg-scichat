@@ -1,5 +1,6 @@
 package logic.gameObjects;
 
+import exceptions.InvalidMoveException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
@@ -45,9 +46,9 @@ public class Piece {
                 while (it.hasNext()) {
                     Cell curr = it.next();
                     if (curr != mid && !curr.isEmpty())
-                        throw new InvalidOperationException("There are cells obstructing the way.");
+                        throw new InvalidMoveException("There are cells obstructing the way.");
                     if (curr == mid && curr.isEmpty()) {
-                        throw new InvalidOperationException("There is no cell in the middle.");
+                        throw new InvalidMoveException("There is no cell in the middle.");
                     }
                 }
             }
@@ -64,19 +65,18 @@ public class Piece {
      * @throws InvalidOperationException puede ser que sea una posición ocupada o un movimiento inválido
      * @throws OutOfBoundsException
      */
-    public void move(Cell targetPosition) throws InvalidOperationException, OutOfBoundsException {
-        tryToMoveTo(targetPosition);
-        this.position.removePiece();
-        this.position = targetPosition;
-        this.position.putPiece(this);
+    public void move(Cell targetPosition) throws  InvalidMoveException{
+    	try {
+	    	tryToMoveTo(targetPosition);
+	        this.position.removePiece();
+	        this.position = targetPosition;
+	        this.position.putPiece(this);
+    	}
+    	catch(Exception e) {
+    		System.out.println(e.getMessage());
+    		throw new InvalidMoveException("The move is not possible.");
+    	}
     }
+    
 
-    // Tal vez se le pueda pasar como argumento cual es End con la clase Board.Side
-    // La verdad es que me vendria muy bien
-    // -Antimateria
-    public boolean isAtEnd() {
-        // TODO: Completar. Tenemos que ver como detectar que estás en el final.
-        // Probablemente se tenga que llegar a `Board` para resolverlo
-        return true;
-    }
 }
