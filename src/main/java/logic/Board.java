@@ -62,12 +62,12 @@ public class Board {
     }
 
     public enum Side {
-        Down(0, new HashSet<>()), // 0
-        DownLeft(1, new HashSet<>()), // 1
-        UpLeft(2, new HashSet<>()), // 2
-        Up(3, new HashSet<>()), // 3
-        UpRight(4, new HashSet<>()), // 4
-        DownRight(5, new HashSet<>()); // 5
+        Down(0, new HashSet<Cell>()), // 0
+        DownLeft(1, new HashSet<Cell>()), // 1
+        UpLeft(2, new HashSet<Cell>()), // 2
+        Up(3, new HashSet<Cell>()), // 3
+        UpRight(4, new HashSet<Cell>()), // 4
+        DownRight(5, new HashSet<Cell>()); // 5
 
         private final int value;
         private HashSet<Cell> sideCells;
