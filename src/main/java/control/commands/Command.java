@@ -7,18 +7,18 @@ public abstract class Command {
     private final String help;
 
     protected static final String incorrectNumberOfArgsMsg = "Incorrect number of arguments";
-    protected static final String incorrectArgsMsg = "[ERROR]: Incorrect arguments format";
+    protected static final String incorrectArgsMsg = "Incorrect arguments format";
 
     /// Lo dejo de momento como una clase anidad, porque al final, estas excepciones solamente se lanza en Command
     public static class ParseException extends Exception {
         public ParseException(String message) {
-            super(message);
+            super("[ERROR]: " + message);
         }
     }
 
     public static class ExecuteException extends Exception {
         public ExecuteException(String message) {
-            super(message);
+            super("[ERROR]: " + message);
         }
     }
 
@@ -42,7 +42,7 @@ public abstract class Command {
     protected Command parseNoParamsCommand(String[] words) throws ParseException {
         if (matchCommandName(words[0])) {
             if (words.length != 1)
-                throw new ParseException("[ERROR]: Command " + name + " :" + incorrectNumberOfArgsMsg);
+                throw new ParseException("Command " + name + " :" + incorrectNumberOfArgsMsg);
             else return this;
         }
         return null;

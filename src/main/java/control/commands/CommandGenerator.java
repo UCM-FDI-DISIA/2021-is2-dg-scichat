@@ -11,7 +11,7 @@ public class CommandGenerator {
             if (parsed != null) return parsed;
         }
 
-        throw new Command.ParseException("[ERROR]: Unknown command");
+        throw new Command.ParseException("Unknown command");
     }
 
     public static String commandHelp() {
