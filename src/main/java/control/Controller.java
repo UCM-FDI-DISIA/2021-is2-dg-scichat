@@ -2,32 +2,29 @@ package control;
 
 import control.commands.Command;
 import control.commands.CommandGenerator;
+import logic.Game;
 
 import java.util.Scanner;
 
 public class Controller {
     public final String prompt = "Command > ";
-    public static final String unknownCommandMsg = "Unknown command";
 
+    private Game game;
     private Scanner scanner;
 
-    public Controller(Scanner scanner) {
+    public Controller(Game game, Scanner scanner) {
+        this.game = game;
         this.scanner = scanner;
     }
 
     public void printGame() {
-        /// TODO: Imprimir el juego
-        System.out.println();
+        System.out.println(this.game);
     }
 
     public void run() {
         boolean refreshDisplay = true;
 
-        /// TODO: Hay que cambiar la condición de este bucle cuando implementemos la clase Game, a algo como !game.isFinished()
-        /// Ahora mismo esto es un bucle infinito
-        boolean isFinished = false;
-
-        while (!isFinished) {
+        while (!game.isFinished()) {
             if (refreshDisplay) printGame();
             refreshDisplay = false;
 
