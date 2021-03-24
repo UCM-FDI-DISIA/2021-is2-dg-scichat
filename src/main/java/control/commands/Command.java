@@ -1,5 +1,7 @@
 package control.commands;
 
+import logic.Game;
+
 public abstract class Command {
     protected final String name;
     protected final String shortcut;
@@ -28,9 +30,8 @@ public abstract class Command {
         this.details = details;
         this.help = help;
     }
-
-    /// Pendiente por decidir qué parámetro pasar, probablemente la referencia a la clase Game
-    public abstract boolean execute() throws ExecuteException;
+    
+    public abstract boolean execute(Game game) throws ExecuteException;
 
     public abstract Command parse(String[] commandWords) throws ParseException;
 
