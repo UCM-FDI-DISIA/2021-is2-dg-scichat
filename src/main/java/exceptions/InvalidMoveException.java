@@ -1,9 +1,9 @@
 package exceptions;
 
-public class InvalidMoveException extends InvalidOperationException{
-	private static final long serialVersionUID = 1L;
-	
-	public InvalidMoveException() {
+public class InvalidMoveException extends InvalidOperationException {
+    private static final long serialVersionUID = 1L;
+
+    public InvalidMoveException() {
         super("Invalid Move.");
     }
 

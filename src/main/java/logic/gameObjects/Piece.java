@@ -65,18 +65,17 @@ public class Piece {
      * @throws InvalidOperationException puede ser que sea una posición ocupada o un movimiento inválido
      * @throws OutOfBoundsException
      */
-    public void move(Cell targetPosition) throws  InvalidMoveException{
-    	try {
-	    	tryToMoveTo(targetPosition);
-	        this.position.removePiece();
-	        this.position = targetPosition;
-	        this.position.putPiece(this);
-    	}
-    	catch(Exception e) {
-    		System.out.println(e.getMessage());
-    		throw new InvalidMoveException("The move is not possible.");
-    	}
+    public void move(Cell targetPosition) throws InvalidMoveException {
+        try {
+            tryToMoveTo(targetPosition);
+            this.position.removePiece();
+            this.position = targetPosition;
+            this.position.putPiece(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new InvalidMoveException("The move is not possible.");
+        }
     }
-    
+
 
 }
