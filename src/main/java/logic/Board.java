@@ -6,23 +6,25 @@ public class Board {
     private static final int NUM_COL = 13;
     private static final int NUM_ROW = 17;
 
-    private static final String SCHEMATIC = "......U......" +
-            "......UU....." +
-            ".....UUU....." +
-            ".....UUUU...." +
-            "LLLL@@@@@RRRR" +
-            ".LLL@@@@@@RRR" +
-            ".LL@@@@@@@RR." +
-            "..L@@@@@@@@R." +
-            "..@@@@@@@@@.." +
-            "..l@@@@@@@@r." +
-            ".ll@@@@@@@rr." +
-            ".lll@@@@@@rrr" +
-            "llll@@@@@rrrr" +
-            ".....DDDD...." +
-            ".....DDD....." +
-            "......DD....." +
-            "......D......";
+    private static final String SCHEMATIC[] = {
+            "......U......",
+            "......UU.....",
+            ".....UUU.....",
+            ".....UUUU....",
+            "LLLL@@@@@RRRR",
+            ".LLL@@@@@@RRR",
+            ".LL@@@@@@@RR.",
+            "..L@@@@@@@@R.",
+            "..@@@@@@@@@..",
+            "..l@@@@@@@@r.",
+            ".ll@@@@@@@rr.",
+            ".lll@@@@@@rrr",
+            "llll@@@@@rrrr",
+            ".....DDDD....",
+            ".....DDD.....",
+            "......DD.....",
+            "......D......"
+    };
 
     /// Matriz de celdas
     private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
@@ -31,13 +33,13 @@ public class Board {
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
                 /// Comprobar si esta dentro del tablero
-                boolean insideBoard = (SCHEMATIC.charAt(i * NUM_COL + j) != '.');
+                boolean insideBoard = (SCHEMATIC[i].charAt(j) != '.');
 
                 /// Crear una celda en el caso de que esté dentro del tablero solamente
                 Cell cell = (insideBoard ? new Cell(i, j, this) : null);
                 cells[i][j] = cell;
 
-                switch (SCHEMATIC.charAt(i * NUM_COL + j)) {
+                switch (SCHEMATIC[i].charAt(j)) {
                     case 'D':
                         Side.Down.addSideCells(cell);
                         break;
