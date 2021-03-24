@@ -2,7 +2,9 @@ package logic;
 
 import exceptions.CellsNotLinedUpException;
 import exceptions.InvalidOperationException;
+import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
+import logic.gameObjects.Piece;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,9 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Cell {
-    private int row, col;
-    public static Board board; // TODO: Lo dejamos como estático? Y si queremos tener varias instancias del
-    // juego, o varios tableros?
+    private final int row;
+    private final int col;
+
+    private Piece piece;
+    private Board board;
 
     public enum Direction {
         Right, LowerRight, LowerLeft, Left, UpperLeft, UpperRight
@@ -26,17 +30,10 @@ public class Cell {
      * @param board
      * @throws OutOfBoundsException
      */
-    public Cell(int row, int col, Board board) throws OutOfBoundsException {
-        if (!board.validRowColumn(row, col))
-            throw new OutOfBoundsException(row, col);
+    public Cell(int row, int col, Board board) {
         this.row = row;
         this.col = col;
-        Cell.board = board;
-    }
-
-    public Cell(int row, int col) {
-        this.col = col;
-        this.row = row;
+        this.board = board;
     }
 
     public int getRow() {
@@ -47,8 +44,47 @@ public class Cell {
         return col;
     }
 
+    public Piece getPiece() {
+        return this.piece;
+    }
+
     public List<Cell> getNeighbours() {
         return getNeighbours(1);
+    }
+
+    /**
+     * Comprobar que la celda está vacía para poner una pieza
+     *
+     * @return si no hay pieza, y es una posición dentro del tablero
+     */
+    public boolean isEmpty() {
+        return this.piece == null;
+    }
+
+    public void putPiece(Piece piece) throws OccupiedCellException {
+        if (this.piece != null) {
+            /// La celda está ocupada
+            throw new OccupiedCellException();
+        }
+
+        this.piece = piece;
+    }
+
+    /**
+     * Quitar la pieza de la celda
+     * <p>
+     * Este método tiene que ser invocado desde pieza, para actualizar al mismo tiempo su referencia a la nueva celda.
+     * Sino, la pieza quedaría posicionada a una celda inválida.
+     *
+     * @throws InvalidOperationException cuando no hay pieza en la celda
+     */
+    public void removePiece() throws InvalidOperationException {
+        if (this.piece == null) {
+            throw new InvalidOperationException("No hay pieza en esta posición");
+        }
+
+        /// Si había una pieza puesta en esta posición, hay que cortar las referencias
+        this.piece = null;
     }
 
     /**
@@ -61,7 +97,7 @@ public class Cell {
     public List<Cell> getNeighbours(int dist) {
         // Devuelve las celdas, donde 0 es R, y siguen en el sentido de
         // las agujas del reloj
-        ArrayList<Cell> ret = new ArrayList<Cell>();
+        ArrayList<Cell> ret = new ArrayList<>();
         try {
             ret.add(this.getRight(dist));
         } catch (Exception e) {
@@ -92,75 +128,75 @@ public class Cell {
 
     public Cell getUpperRight() throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row - 1, col, board);
+            return this.board.getCell(row - 1, col);
         else // Fila par
-            return new Cell(row - 1, col + 1, board);
+            return this.board.getCell(row - 1, col + 1);
     }
 
     public Cell getUpperLeft() throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row - 1, col - 1, board);
+            return this.board.getCell(row - 1, col - 1);
         else // Fila par
-            return new Cell(row - 1, col, board);
+            return this.board.getCell(row - 1, col);
     }
 
     public Cell getLowerRight() throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row + 1, col, board);
+            return this.board.getCell(row + 1, col);
         else // Fila par
-            return new Cell(row + 1, col + 1, board);
+            return this.board.getCell(row + 1, col + 1);
     }
 
     public Cell getLowerLeft() throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row + 1, col - 1, board);
+            return this.board.getCell(row + 1, col - 1);
         else // Fila par
-            return new Cell(row + 1, col, board);
+            return this.board.getCell(row + 1, col);
     }
 
     public Cell getRight() throws OutOfBoundsException {
-        return new Cell(row, col + 1, board);
+        return this.board.getCell(row, col + 1);
     }
 
     public Cell getLeft() throws OutOfBoundsException {
-        return new Cell(row, col - 1, board);
+        return this.board.getCell(row, col - 1);
     }
 
     // -----------------------WIP------------------------- //
     public Cell getUpperRight(int times) throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row - times, col + times / 2, board);
+            return this.board.getCell(row - times, col + times / 2);
         else // Fila par
-            return new Cell(row - times, col + (times + 1) / 2, board);
+            return this.board.getCell(row - times, col + (times + 1) / 2);
     }
 
     public Cell getUpperLeft(int times) throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row - times, col - (times + 1) / 2, board);
+            return this.board.getCell(row - times, col - (times + 1) / 2);
         else // Fila par
-            return new Cell(row - times, col - times / 2, board);
+            return this.board.getCell(row - times, col - times / 2);
     }
 
     public Cell getLowerRight(int times) throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row + times, col + times / 2, board);
+            return this.board.getCell(row + times, col + times / 2);
         else // Fila par
-            return new Cell(row + times, col + (times + 1) / 2, board);
+            return this.board.getCell(row + times, col + (times + 1) / 2);
     }
 
     public Cell getLowerLeft(int times) throws OutOfBoundsException {
         if (row % 2 == 1) // Fila impar
-            return new Cell(row + times, col - (times + 1) / 2, board);
+            return this.board.getCell(row + times, col - (times + 1) / 2);
         else // Fila par
-            return new Cell(row + times, col - times / 2, board);
+            return this.board.getCell(row + times, col - times / 2);
     }
 
     public Cell getRight(int times) throws OutOfBoundsException {
-        return new Cell(row, col + times, board);
+        return this.board.getCell(row, col + times);
     }
 
     public Cell getLeft(int times) throws OutOfBoundsException {
-        return new Cell(row, col - times, board);
+        return this.board.getCell(row, col - times);
     }
 
     // Package-private para que puedan usarse en tests
@@ -283,10 +319,6 @@ public class Cell {
         return false;
     }
 
-    public boolean isEmpty() {
-        return this.board.available(row, col);
-    }
-
     @Override
     public boolean equals(Object other) {
         try {
@@ -296,20 +328,4 @@ public class Cell {
             return false;
         }
     }
-
-    // -----------------------WIP------------------------- //
-
-    /* MUTADORAS */
-
-    public void assign(Board.Color color) {
-        try {
-            this.board.put(row, col, color);
-        } catch (OutOfBoundsException e) {
-        }
-    }
-
-    public void remove() {
-        this.board.remove(row, col);
-    }
-
 }

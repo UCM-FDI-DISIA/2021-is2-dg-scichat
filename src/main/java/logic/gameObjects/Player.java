@@ -1,39 +1,35 @@
 package logic.gameObjects;
 
+import logic.Board.Side;
+import logic.Color;
+
 import java.util.HashSet;
 
-import logic.Board;
-import logic.Board.Color;
-import logic.Board.Side;
-
 public class Player {
-    private Board.Color color; // Color asignado al jugador
-    private HashSet<Piece> pieces = new HashSet<Piece>(); // Fichas del jugador
-    private Side playerSide;    //Lado del jugador
-    private Piece selectedPiece = null;	//Pieza seleccionada
+    private Color color; // Color asignado al jugador
+    private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
+    private Side playerSide;    // Lado del jugador
+    private Piece selectedPiece = null;    // Pieza seleccionada
 
     /*Constructores*/
-    
+
     public Player() {
         color = Color.Blue;
     }
 
-    public Player(Board.Color color) {
+    public Player(Color color) {
         this.color = color;
     }
-    
-    /*Getters*/
 
-    public Board.Color getColor() {
+    /* Getters */
+    public Color getColor() {
         return color;
     }
-    
-    
+
     public Side getSide() {
-    	return playerSide;
+        return playerSide;
     }
-    
-    
+
     /*Metodos*/
 
     /**

@@ -4,6 +4,11 @@ import logic.Cell;
 
 public class OccupiedCellException extends InvalidOperationException {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public OccupiedCellException() {
         super("Cell is occupied.");
     }
