@@ -3,204 +3,194 @@ package logic;
 import java.util.HashSet;
 
 public class Board {
-    private static final int NUM_COL = 13;
-    private static final int NUM_ROW = 17;
+	private static final int NUM_COL = 13;
+	private static final int NUM_ROW = 17;
 
-    private static final String SCHEMATIC[] = {
-            "......U......",
-            "......UU.....",
-            ".....UUU.....",
-            ".....UUUU....",
-            "LLLL@@@@@RRRR",
-            ".LLL@@@@@@RRR",
-            ".LL@@@@@@@RR.",
-            "..L@@@@@@@@R.",
-            "..@@@@@@@@@..",
-            "..l@@@@@@@@r.",
-            ".ll@@@@@@@rr.",
-            ".lll@@@@@@rrr",
-            "llll@@@@@rrrr",
-            ".....DDDD....",
-            ".....DDD.....",
-            "......DD.....",
-            "......D......"
-    };
+	private static final String SCHEMATIC[] = { "......U......", "......UU.....", ".....UUU.....", ".....UUUU....",
+			"LLLL@@@@@RRRR", ".LLL@@@@@@RRR", ".LL@@@@@@@RR.", "..L@@@@@@@@R.", "..@@@@@@@@@..", "..l@@@@@@@@r.",
+			".ll@@@@@@@rr.", ".lll@@@@@@rrr", "llll@@@@@rrrr", ".....DDDD....", ".....DDD.....", "......DD.....",
+			"......D......" };
 
-    /// Matriz de celdas
-    private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
+	/// Matriz de celdas
+	private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
 
-    public Board() {
-    	Side.Down.clear();
-    	Side.DownLeft.clear();
-    	Side.DownRight.clear();
-    	Side.UpLeft.clear();
-    	Side.UpRight.clear();
-    	Side.Up.clear();
-        for (int i = 0; i < NUM_ROW; ++i) {
-            for (int j = 0; j < NUM_COL; ++j) {
-                /// Comprobar si esta dentro del tablero
-                boolean insideBoard = (SCHEMATIC[i].charAt(j) != '.');
+	public Board() {
+		Side.Down.clear();
+		Side.DownLeft.clear();
+		Side.DownRight.clear();
+		Side.UpLeft.clear();
+		Side.UpRight.clear();
+		Side.Up.clear();
+		for (int i = 0; i < NUM_ROW; ++i) {
+			for (int j = 0; j < NUM_COL; ++j) {
+				/// Comprobar si esta dentro del tablero
+				boolean insideBoard = (SCHEMATIC[i].charAt(j) != '.');
 
-                /// Crear una celda en el caso de que esté dentro del tablero solamente
-                Cell cell = (insideBoard ? new Cell(i, j, this) : null);
-                cells[i][j] = cell;
+				/// Crear una celda en el caso de que esté dentro del tablero solamente
+				Cell cell = (insideBoard ? new Cell(i, j, this) : null);
+				cells[i][j] = cell;
 
-                switch (SCHEMATIC[i].charAt(j)) {
-                    case 'D':
-                        Side.Down.addSideCells(cell);
-                        break;
-                    case 'l':
-                        Side.DownLeft.addSideCells(cell);
-                        break;
-                    case 'L':
-                        Side.UpLeft.addSideCells(cell);
-                        break;
-                    case 'U':
-                        Side.Up.addSideCells(cell);
-                        break;
-                    case 'R':
-                        Side.UpRight.addSideCells(cell);
-                        break;
-                    case 'r':
-                        Side.DownRight.addSideCells(cell);
-                        break;
-                }
-            }
-        }
-    }
+				switch (SCHEMATIC[i].charAt(j)) {
+				case 'D':
+					Side.Down.addSideCells(cell);
+					break;
+				case 'l':
+					Side.DownLeft.addSideCells(cell);
+					break;
+				case 'L':
+					Side.UpLeft.addSideCells(cell);
+					break;
+				case 'U':
+					Side.Up.addSideCells(cell);
+					break;
+				case 'R':
+					Side.UpRight.addSideCells(cell);
+					break;
+				case 'r':
+					Side.DownRight.addSideCells(cell);
+					break;
+				}
+			}
+		}
+	}
 
-    public enum Side {
-        Down(0, new HashSet<Cell>()), // 0
-        DownLeft(1, new HashSet<Cell>()), // 1
-        UpLeft(2, new HashSet<Cell>()), // 2
-        Up(3, new HashSet<Cell>()), // 3
-        UpRight(4, new HashSet<Cell>()), // 4
-        DownRight(5, new HashSet<Cell>()); // 5
+	public enum Side {
+		Down(0, new HashSet<Cell>()), // 0
+		DownLeft(1, new HashSet<Cell>()), // 1
+		UpLeft(2, new HashSet<Cell>()), // 2
+		Up(3, new HashSet<Cell>()), // 3
+		UpRight(4, new HashSet<Cell>()), // 4
+		DownRight(5, new HashSet<Cell>()); // 5
 
-        private final int value;
-        private HashSet<Cell> sideCells;
+		private final int value;
+		private HashSet<Cell> sideCells;
 
-        /* Constructor */
-        Side(int value, HashSet<Cell> sideCells) {
-            this.value = value;
-            this.sideCells = sideCells;
-        }
+		/* Constructor */
+		Side(int value, HashSet<Cell> sideCells) {
+			this.value = value;
+			this.sideCells = sideCells;
+		}
 
-        /* Getters */
-        public Side getOpposite() {
-            switch (this) {
-                case Down:
-                    return Up;
-                case Up:
-                    return Down;
-                case UpLeft:
-                    return DownRight;
-                case UpRight:
-                    return DownLeft;
-                case DownRight:
-                    return UpLeft;
-                case DownLeft:
-                    return UpRight;
-                default:
-                    return null;
-            }
-        }
+		/* Getters */
+		public Side getOpposite() {
+			switch (this) {
+			case Down:
+				return Up;
+			case Up:
+				return Down;
+			case UpLeft:
+				return DownRight;
+			case UpRight:
+				return DownLeft;
+			case DownRight:
+				return UpLeft;
+			case DownLeft:
+				return UpRight;
+			default:
+				return null;
+			}
+		}
 
-        /* Métodos */
+		/* Métodos */
 
-        public int getValue() {
-            return value;
-        }
+		public int getValue() {
+			return value;
+		}
 
-        /**
-         * @return Devuelve las celdas que corresponden al lado del tablero(las que
-         * hacen esquina)
-         */
+		/**
+		 * @return Devuelve las celdas que corresponden al lado del tablero(las que
+		 *         hacen esquina)
+		 */
 
-        public HashSet<Cell> getSideCells() {
-            return sideCells;
-        }
+		public HashSet<Cell> getSideCells() {
+			return sideCells;
+		}
 
-        /**
-         * @return Deuelve las celdas opuestas a la del lado donde nos encontramos
-         */
-        public HashSet<Cell> getOpposingCells() {
-            return getOpposite().getSideCells();
-        }
+		/**
+		 * @return Deuelve las celdas opuestas a la del lado donde nos encontramos
+		 */
+		public HashSet<Cell> getOpposingCells() {
+			return getOpposite().getSideCells();
+		}
 
-        /**
-         * @param newCell La celda que queremos añadir al lado
-         */
-        private void addSideCells(Cell newCell) {
-            sideCells.add(newCell);
-        }
-        
-        public void clear() {
-        	sideCells.clear();
-        }
-    }
+		/**
+		 * @param newCell La celda que queremos añadir al lado
+		 */
+		private void addSideCells(Cell newCell) {
+			sideCells.add(newCell);
+		}
 
-    public String toString() {
-        String result = "";
-        for (int i = 0; i < NUM_ROW; ++i) {
-            for (int j = 0; j < NUM_COL; ++j) {
-                Cell cell = cells[i][j];
+		public void clear() {
+			sideCells.clear();
+		}
+	}
 
-                if (cell == null) {
-                    /// No es una posición del tablero
-                    result += " ";
-                } else if (cell.isEmpty()) {
-                    /// Posición sin pieza
-                    result += "*";
-                } else {
-                    /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
-                    switch (cell.getPiece().getColor()) {
-                        case Orange:
-                            result += "O";
-                            break;
-                        case Blue:
-                            result += "B";
-                            break;
-                        case Green:
-                            result += "G";
-                            break;
-                        case Red:
-                            result += "R";
-                            break;
-                        case Yellow:
-                            result += "Y";
-                            break;
-                        default:
-                            result += "P";
-                    }
-                }
-            }
+	public String toString() {
+		String result = "";
+		for (int i = 0; i < NUM_ROW; ++i) {
+			for (int isLow = 0; isLow < 2; isLow++) {
+				String current = "";
+				for (int j = 0; j < NUM_COL; ++j) {
+					Cell cell = cells[i][j];
 
-            result += "\n";
-        }
-        return result;
-    }
+					if (cell == null) {
+						/// No es una posición del tablero
+						current += "  ";
+					} else if (cell.isEmpty()) {
+						/// Posición sin pieza
+						current += (isLow == 0 ? "┌┐" : "└┘");
+					} else {
+						/// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
+						switch (cell.getPiece().getColor()) {
+						case Green:
+							current += "GG";
+							break;
+						case Yellow:
+							current += "YY";
+							break;
+						case Orange:
+							current += "OO";
+							break;
+						case Red:
+							current += "RR";
+							break;
+						case Purple:
+							current += "PP";
+							break;
+						case Blue:
+							current += "BB";
+							break;
+						default:
+							current += "--";
+						}
+					}
+				}
+				result += current.substring(i % 2) + '\n';
+			}
+		}
+		return result;
+	}
 
-    /**
-     * Función que comprueba si la posición dada esta dentro del tablero del juego
-     *
-     * @param row fila
-     * @param col columna
-     * @return true si (row, col) está dentro del tablero del juego
-     */
-    public boolean insideBoard(int row, int col) {
-        /// Si esta fuera del tamaño físico de la matriz, no está dentro del tablero
-        if (!((0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL)))
-            return false;
+	/**
+	 * Función que comprueba si la posición dada esta dentro del tablero del juego
+	 *
+	 * @param row fila
+	 * @param col columna
+	 * @return true si (row, col) está dentro del tablero del juego
+	 */
+	public boolean insideBoard(int row, int col) {
+		/// Si esta fuera del tamaño físico de la matriz, no está dentro del tablero
+		if (!((0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL)))
+			return false;
 
-        return cells[row][col] != null;
-    }
+		return cells[row][col] != null;
+	}
 
-    public Cell getCell(int row, int col) {
-        if (!insideBoard(row, col)) {
-            return null;
-        }
+	public Cell getCell(int row, int col) {
+		if (!insideBoard(row, col)) {
+			return null;
+		}
 
-        return this.cells[row][col];
-    }
+		return this.cells[row][col];
+	}
 }
