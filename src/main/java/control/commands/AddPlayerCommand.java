@@ -54,7 +54,10 @@ public class AddPlayerCommand extends Command {
         if (!(this.sideInt >= 1 && this.sideInt <= 6)) {
             throw new ParseException("Invalid side Int");
         }
-
+        
+        // Como serán usadas como índices, reducimos su valor por uno
+        colorInt--;
+        sideInt--;
         return this;
     }
 }
