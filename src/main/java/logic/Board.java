@@ -30,6 +30,12 @@ public class Board {
     private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
 
     public Board() {
+    	Side.Down.clear();
+    	Side.DownLeft.clear();
+    	Side.DownRight.clear();
+    	Side.UpLeft.clear();
+    	Side.UpRight.clear();
+    	Side.Up.clear();
         for (int i = 0; i < NUM_ROW; ++i) {
             for (int j = 0; j < NUM_COL; ++j) {
                 /// Comprobar si esta dentro del tablero
@@ -127,6 +133,10 @@ public class Board {
          */
         private void addSideCells(Cell newCell) {
             sideCells.add(newCell);
+        }
+        
+        public void clear() {
+        	sideCells.clear();
         }
     }
 

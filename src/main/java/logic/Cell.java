@@ -34,6 +34,7 @@ public class Cell {
         this.row = row;
         this.col = col;
         this.board = board;
+        this.piece=null;
     }
 
     public int getRow() {
