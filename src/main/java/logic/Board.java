@@ -135,37 +135,37 @@ public class Board {
 
 					if (cell == null) {
 						/// No es una posición del tablero
-						current += "  ";
+						current += "    ";
 					} else if (cell.isEmpty()) {
 						/// Posición sin pieza
-						current += (isLow == 0 ? "┌┐" : "└┘");
+						current += (isLow == 0 ? "┌──┐" : "└──┘");
 					} else {
 						/// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
 						switch (cell.getPiece().getColor()) {
 						case Green:
-							current += "GG";
+							current += "GGGG";
 							break;
 						case Yellow:
-							current += "YY";
+							current += "YYYY";
 							break;
 						case Orange:
-							current += "OO";
+							current += "OOOO";
 							break;
 						case Red:
-							current += "RR";
+							current += "RRRR";
 							break;
 						case Purple:
-							current += "PP";
+							current += "PPPP";
 							break;
 						case Blue:
-							current += "BB";
+							current += "BBBB";
 							break;
 						default:
-							current += "--";
+							current += "----";
 						}
 					}
 				}
-				result += current.substring(i % 2) + '\n';
+				result += current.substring((i % 2)*2) + '\n';
 			}
 		}
 		return result;
