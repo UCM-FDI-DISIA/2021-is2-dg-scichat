@@ -18,6 +18,7 @@ public class Cell {
     private Piece piece;
     private Board board;
 
+    // Convertir en su propia clase
     public enum Direction {
         Right, LowerRight, LowerLeft, Left, UpperLeft, UpperRight
     }
@@ -49,19 +50,6 @@ public class Cell {
         return this.piece;
     }
 
-    public List<Cell> getNeighbours() {
-        return getNeighbours(1);
-    }
-
-    /**
-     * Comprobar que la celda está vacía para poner una pieza
-     *
-     * @return si no hay pieza, y es una posición dentro del tablero
-     */
-    public boolean isEmpty() {
-        return this.piece == null;
-    }
-
     public void putPiece(Piece piece) throws OccupiedCellException {
         if (this.piece != null) {
             /// La celda está ocupada
@@ -88,6 +76,7 @@ public class Cell {
         this.piece = null;
     }
 
+
     /**
      * Devuelve una lista inmutable de celdas, donde la primera es la de la derecha,
      * y el resto siguen en el orden de las agujas del reloj
@@ -99,113 +88,77 @@ public class Cell {
         // Devuelve las celdas, donde 0 es R, y siguen en el sentido de
         // las agujas del reloj
         ArrayList<Cell> ret = new ArrayList<>();
-        try {
-            ret.add(this.getRight(dist));
-        } catch (Exception e) {
-        }
-        try {
-            ret.add(this.getLowerRight(dist));
-        } catch (Exception e) {
-        }
-        try {
-            ret.add(this.getLowerLeft(dist));
-        } catch (Exception e) {
-        }
-        try {
-            ret.add(this.getLeft(dist));
-        } catch (Exception e) {
-        }
-        try {
-            ret.add(this.getUpperLeft(dist));
-        } catch (Exception e) {
-        }
-        try {
-            ret.add(this.getUpperRight(dist));
-        } catch (Exception e) {
+        
+        for(Direction d : Direction.values()) {
+        	Cell c = this.getByDirection(d,dist);
+        	if(c != null) ret.add(c);
         }
         // No puedes convertir de tipo List<Cell> a List
         return Collections.unmodifiableList(ret);
     }
-
-    public Cell getUpperRight() throws OutOfBoundsException {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row - 1, col);
-        else // Fila par
-            return this.board.getCell(row - 1, col + 1);
+    public List<Cell> getNeighbours() {
+        return getNeighbours(1);
     }
 
-    public Cell getUpperLeft() throws OutOfBoundsException {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row - 1, col - 1);
-        else // Fila par
-            return this.board.getCell(row - 1, col);
+    public Cell getUpperRight()   {
+        return getUpperRight(1);
     }
-
-    public Cell getLowerRight() throws OutOfBoundsException {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row + 1, col);
-        else // Fila par
-            return this.board.getCell(row + 1, col + 1);
-    }
-
-    public Cell getLowerLeft() throws OutOfBoundsException {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row + 1, col - 1);
-        else // Fila par
-            return this.board.getCell(row + 1, col);
-    }
-
-    public Cell getRight() throws OutOfBoundsException {
-        return this.board.getCell(row, col + 1);
-    }
-
-    public Cell getLeft() throws OutOfBoundsException {
-        return this.board.getCell(row, col - 1);
-    }
-
-    // -----------------------WIP------------------------- //
-    public Cell getUpperRight(int times) throws OutOfBoundsException {
+    public Cell getUpperRight(int times)   {
         if (row % 2 == 1) // Fila impar
             return this.board.getCell(row - times, col + times / 2);
         else // Fila par
             return this.board.getCell(row - times, col + (times + 1) / 2);
     }
 
-    public Cell getUpperLeft(int times) throws OutOfBoundsException {
+    public Cell getUpperLeft()   {
+    	return getUpperLeft(1);
+    }
+    public Cell getUpperLeft(int times)   {
         if (row % 2 == 1) // Fila impar
             return this.board.getCell(row - times, col - (times + 1) / 2);
         else // Fila par
             return this.board.getCell(row - times, col - times / 2);
     }
 
-    public Cell getLowerRight(int times) throws OutOfBoundsException {
+    public Cell getLowerRight()   {
+    	return getLowerRight(1);
+    }
+    public Cell getLowerRight(int times)   {
         if (row % 2 == 1) // Fila impar
             return this.board.getCell(row + times, col + times / 2);
         else // Fila par
             return this.board.getCell(row + times, col + (times + 1) / 2);
     }
-
-    public Cell getLowerLeft(int times) throws OutOfBoundsException {
+    
+    public Cell getLowerLeft()   {
+    	return getLowerLeft(1);
+    }
+    public Cell getLowerLeft(int times)   {
         if (row % 2 == 1) // Fila impar
             return this.board.getCell(row + times, col - (times + 1) / 2);
         else // Fila par
             return this.board.getCell(row + times, col - times / 2);
     }
-
-    public Cell getRight(int times) throws OutOfBoundsException {
+    
+    public Cell getRight() {
+        return getRight(1);
+    }
+    public Cell getRight(int times)   {
         return this.board.getCell(row, col + times);
     }
-
-    public Cell getLeft(int times) throws OutOfBoundsException {
+    
+    public Cell getLeft() {
+        return getLeft(1);
+    }
+    public Cell getLeft(int times)  {
         return this.board.getCell(row, col - times);
     }
 
     // Package-private para que puedan usarse en tests
-    Cell getByDirection(Direction dir) throws CellsNotLinedUpException, OutOfBoundsException {
+    Cell getByDirection(Direction dir)  {
         return getByDirection(dir, 1);
     }
-
-    Cell getByDirection(Direction dir, int dist) throws CellsNotLinedUpException, OutOfBoundsException {
+    Cell getByDirection(Direction dir, int dist) {
         switch (dir) {
             case Right:
                 return getRight(dist);
@@ -251,8 +204,8 @@ public class Cell {
             throw new CellsNotLinedUpException("Both cells must be in the same diagonal.");
     }
 
-    public Cell getMiddleCellTowards(Cell other)
-            throws CellsNotLinedUpException, InvalidOperationException, OutOfBoundsException {
+    public Cell getMiddleCellTowards(Cell other) // TODO: Puede que no sea necesario, deprecable
+            throws CellsNotLinedUpException, InvalidOperationException {
         Direction dir = this.getDirectionTowards(other);
         int times = this.getDiagonalDistanceTo(other);
 
@@ -263,6 +216,7 @@ public class Cell {
         }
     }
 
+    // TODO: Que devuelva Iterable, no Iterator, para su uso en ForEach
     public Iterator<Cell> getIteratorTowards(Cell other) throws CellsNotLinedUpException {
         return new Iterator<Cell>() {
             private Cell pos = Cell.this;
@@ -281,8 +235,6 @@ public class Cell {
                     pos = pos.getByDirection(pos.getDirectionTowards(other));
                 } catch (CellsNotLinedUpException e) {
                     // No va a pasar nada, ya sabemos que están alineados
-                } catch (OutOfBoundsException e) {
-                    return null;
                 }
                 return prev;
             }
@@ -329,4 +281,14 @@ public class Cell {
             return false;
         }
     }
+
+    /**
+     * Comprobar que la celda está vacía para poner una pieza
+     *
+     * @return si no hay pieza, y es una posición dentro del tablero
+     */
+    public boolean isEmpty() {
+        return this.piece == null;
+    }
+
 }
