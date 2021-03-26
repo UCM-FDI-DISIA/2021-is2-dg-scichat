@@ -46,7 +46,5 @@ public class PlayerTest {
 		assertFalse(test.hasSelectedPiece());
 		
 	}
-	
-	
 
 }
