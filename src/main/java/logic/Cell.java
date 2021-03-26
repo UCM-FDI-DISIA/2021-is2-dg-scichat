@@ -313,7 +313,7 @@ public class Cell {
 		List<Cell> neighbours = middleCell.getNeighbours();
 
 		for (Cell ady : neighbours) {
-			if (ady.isInSameDiagonalAs(this)) {
+			if (ady.isInSameDiagonalAs(this) && !ady.equals(this)) {
 				return ady;
 			}
 		}

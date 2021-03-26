@@ -24,6 +24,7 @@ class PieceTest {
             board = new Board();
             color = Color.Blue;
             piece = new Piece(new Cell(8, 6, board), color);
+            
         } catch (OccupiedCellException e) {
             fail("Middle cell wasn't empty in initialization.");
         }
@@ -45,10 +46,18 @@ class PieceTest {
             piece.tryToMoveTo(pos);
         });
 
-        Assertions.assertDoesNotThrow(() -> {
-            piece2 = new Piece(piece.getPosition().getUpperRight(), color);
-            piece.tryToMoveTo(piece2.getPosition().getUpperRight());
+       /* Assertions.assertDoesNotThrow(() -> {
+            piece2 = new Piece(piece.getPosition().getUpperLeft(), color);
+            System.out.println(piece2.getPosition());
+            piece.tryToMoveTo(piece2.getPosition().getUpperLeft());
         });        
+        */
+        /*Assertions.assertDoesNotThrow(() -> {
+            piece3 = new Piece(piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(), color);
+            System.out.println(piece3.getPosition());
+            piece.tryToMoveTo(piece3.getPosition().getUpperRight());
+        });*/
+        
         
         Assertions.assertDoesNotThrow(() -> {
             piece3 = new Piece(piece.getPosition().getLowerRight(), color);
@@ -56,9 +65,8 @@ class PieceTest {
         });
 
         Assertions.assertThrows(InvalidMoveException.class, () -> {
-            piece.tryToMoveTo(piece2.getPosition().getUpperLeft(2));
+            piece.tryToMoveTo(piece2.getPosition().getLowerLeft(2));
         });
-
     }
 
 }

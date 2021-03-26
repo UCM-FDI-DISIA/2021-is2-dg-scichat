@@ -9,7 +9,6 @@ import logic.Cell;
 import logic.Color;
 
 import java.util.List;
-import java.util.Iterator;
 
 public class Piece {
 
@@ -53,15 +52,18 @@ public class Piece {
 	    throw new InvalidMoveException();
 	}
 
-	for (int i = 0; i < Board.NUM_ROW; ++i) {
-	    for (boolean chkClls : checkedCells[i])
-		chkClls = false;
-	}
+	List<Cell> neighbours = this.position.getNeighbours();
 
-	System.out.println(this.position.getRow() + " " + this.position.getCol());
+	if (!neighbours.contains(targetPosition)) {
 
-	if (!recursiveTryToMoveTo(targetPosition, this.position, checkedCells)) {
-	    throw new InvalidMoveException();
+	    for (int i = 0; i < Board.NUM_ROW; ++i) {
+		for(int j = 0; j < Board.NUM_COL; ++j)
+		    checkedCells[i][j] = false;
+	    }
+
+	    if (!recursiveTryToMoveTo(targetPosition, this.position, checkedCells)) {
+		throw new InvalidMoveException();
+	    }
 	}
 
     }
@@ -72,41 +74,31 @@ public class Piece {
      * @param targetPosition  Posición que queremos alcanzar
      * @param positionToCheck Posición en la que nos encontramos actualmente
      * @param checkedCells    Tablero con las Celdas que ya hemos mirado
-     * @return
+     * @return Devuelve si se puede llevar a cabo el movimiento
      */
     private boolean recursiveTryToMoveTo(Cell targetPosition, Cell positionToCheck, boolean[][] checkedCells) {
 	List<Cell> neighbours = positionToCheck.getNeighbours();
 
 	for (Cell ady : neighbours) {
-	    if (ady != null) {
 
-		if (ady.equals(targetPosition)) {
+	    if (!checkedCells[ady.getRow()][ady.getCol()]) {
+
+		checkedCells[ady.getRow()][ady.getCol()] = true;
+
+		Cell newJump = positionToCheck.getCellJump(ady);
+		
+		if (newJump != null && (newJump.equals(targetPosition) || (recursiveTryToMoveTo(targetPosition, newJump, checkedCells)))) {
 		    return true;
-		} else if (!checkedCells[ady.getRow()][ady.getCol()]) {
-
-		    checkedCells[ady.getRow()][ady.getCol()] = true;
-
-		    try {
-
-			Cell newJump = positionToCheck.getCellJump(ady);
-
-			if (newJump.equals(targetPosition)) {
-			    return true;
-			} else if (recursiveTryToMoveTo(targetPosition, newJump, checkedCells)) {
-			    return true;
-			}
-			
-		    } catch (NullPointerException e) {
-		    }
-
-		    checkedCells[ady.getRow()][ady.getCol()] = false;
-
 		}
 
+		checkedCells[ady.getRow()][ady.getCol()] = false;
+
 	    }
+
 	}
 
 	return false;
+
     }
 
     /**
