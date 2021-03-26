@@ -358,5 +358,21 @@ public class Cell {
     public boolean isEmpty() {
         return this.piece == null;
     }
+    
+    public Cell getCellJump(Cell middleCell) {
+    	List<Cell> neighbours = middleCell.getNeighbours();
+
+    	for (Cell ady : neighbours) {
+    	    if (ady.isInSameDiagonalAs(this)) {
+    		return ady;
+    	    }
+    	}
+
+    	return null;
+    }
+    
+    public boolean isOut() {
+    	return	!board.insideBoard(row, col);
+    }
 
 }
