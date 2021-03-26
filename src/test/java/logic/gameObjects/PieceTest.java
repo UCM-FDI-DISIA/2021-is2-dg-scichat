@@ -1,5 +1,6 @@
 package logic.gameObjects;
 
+import exceptions.InvalidMoveException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import logic.Board;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class PieceTest {
-    Piece piece, piece2;
+    Piece piece, piece2, piece3;
     Cell pos = null;
     Board board = null;
     Color color = null;
@@ -34,26 +35,30 @@ class PieceTest {
             pos = piece.getPosition();
         });
 
-        Assertions.assertThrows(InvalidOperationException.class, () -> {
+        Assertions.assertThrows(InvalidMoveException.class, () -> {
             piece.tryToMoveTo(pos);
         });
 
         Assertions.assertDoesNotThrow(() -> {
             pos = pos.getUpperLeft();
+
             piece.tryToMoveTo(pos);
         });
 
         Assertions.assertDoesNotThrow(() -> {
             piece2 = new Piece(piece.getPosition().getUpperRight(), color);
             piece.tryToMoveTo(piece2.getPosition().getUpperRight());
+        });        
+        
+        Assertions.assertDoesNotThrow(() -> {
+            piece3 = new Piece(piece.getPosition().getLowerRight(), color);
+            piece.tryToMoveTo(piece3.getPosition());
         });
 
-        Assertions.assertThrows(InvalidOperationException.class, () -> {
+        Assertions.assertThrows(InvalidMoveException.class, () -> {
             piece.tryToMoveTo(piece2.getPosition().getUpperLeft(2));
         });
 
-        // TODO: Check for invalid jumps
     }
-    
 
 }
