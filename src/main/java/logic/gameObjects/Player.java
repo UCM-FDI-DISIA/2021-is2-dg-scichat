@@ -130,6 +130,7 @@ public class Player {
     		catch(Exception e) {
     			return false;
     		}
+    		deselectPiece();
     		return true;
     	}
     	else {
