@@ -96,48 +96,45 @@ public class Player {
             }
         return true;
     }
-    
+
     /**
      * Intenta mover la pieza seleccionada a la celda targetPosition
-     * 
-     * @param targetPosition Cell a donde mover la pieza seleccionada 
+     *
+     * @param targetPosition Cell a donde mover la pieza seleccionada
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
     void move(Cell targetPosition) throws NotSelectedPieceException, InvalidMoveException {
-    	if(!this.hasSelectedPiece()) throw new NotSelectedPieceException();
-    	this.selectedPiece.move(targetPosition);
+        if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
+        this.selectedPiece.move(targetPosition);
     }
-    
+
     /**
-     * El jugador empieza seleccionando una ficha pasando su casilla como argumento, 
+     * El jugador empieza seleccionando una ficha pasando su casilla como argumento,
      * una vez que tiene una ficha seleccionada selecciona una casilla vacia para moverse
      * si el movimiento es valido devuelve true, en cualquier otro caso devuelve false.
-     * 
+     * <p>
      * Si selecciona una celda ocupada cuando ya tiene pieza seleccionada y
      * la celda contiene una pieza suya, cambia la pieza seleccionada,
      * si la pieza de la celda no es suya, deselecciona la pieza
-     * 
-     * 
+     *
      * @param targetPosition Posicion que el jugador selecciona
      * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
      */
     public boolean turn(Cell targetPosition) {
-    	if(targetPosition.isEmpty()) {
-    		try {
-    			this.move(targetPosition);
-    		}
-    		catch(Exception e) {
-    			return false;
-    		}
-    		deselectPiece();
-    		return true;
-    	}
-    	else {
-    		if(!selectPiece(targetPosition.getPiece())) {
-    			deselectPiece();
-    		}
-    		return false;
-    	}
+        if (targetPosition.isEmpty()) {
+            try {
+                this.move(targetPosition);
+            } catch (Exception e) {
+                return false;
+            }
+            deselectPiece();
+            return true;
+        } else {
+            if (!selectPiece(targetPosition.getPiece())) {
+                deselectPiece();
+            }
+            return false;
+        }
     }
 }
