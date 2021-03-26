@@ -181,9 +181,11 @@ public class Cell {
         if (this.isInSameDiagonalAs(other)) {
             if (this.getRow() == other.getRow()) { // Misma horizontal
                 return (this.getCol() < other.getCol() ? Direction.Right : Direction.Left);
-            } else if (this.getRow() < other.getRow()) { // other está por debajo
+            } 
+            else if (this.getRow() < other.getRow()) { // other está por debajo
                 return (this.getCol() < other.getCol() ? Direction.LowerRight : Direction.LowerLeft);
-            } else { // this.getRow() > other.getRow() // other está por arriba
+            } 
+            else { // this.getRow() > other.getRow() // other está por arriba
                 return (this.getCol() < other.getCol() ? Direction.UpperRight : Direction.UpperLeft);
             }
         } else
@@ -215,8 +217,74 @@ public class Cell {
             return this.getByDirection(dir, times / 2); // Shouldn't throw OutOfBoundsException
         }
     }
-
-    // TODO: Que devuelva Iterable, no Iterator, para su uso en ForEach
+    /**
+     * Devuelve un camino iterable en una dirección
+     * 
+     * @param direccion	Dirección que sigue el camino
+     * @return
+     */
+    public Iterable<Cell> getTrail(Direction direccion) {
+    	return new Iterable<Cell>() {
+    		public Iterator<Cell> iterator(){
+    			return new Iterator<Cell>() {
+    				private Cell pos = Cell.this;
+    				private Direction dir = direccion;
+    				
+					@Override
+					public boolean hasNext() {
+						return pos.getByDirection(dir) != null;
+					}
+					
+					@Override
+					public Cell next() {
+						Cell prev = pos;
+						if(hasNext()) pos = pos.getByDirection(dir);
+						return prev;
+					}
+        			
+        		};
+    		}
+    	};
+    	
+    }
+    /**
+     * Devuelve un camino iterable entre dos celdas
+     * 
+     * @param other	Otra celda con la que comparar
+     * @return
+     * @throws CellsNotLinedUpException
+     */
+    public Iterable<Cell> getTrail(Cell other) throws CellsNotLinedUpException{
+    	if(!other.isInSameDiagonalAs(other)) throw new CellsNotLinedUpException();
+    	
+    	int _left = this.getDiagonalDistanceTo(other);
+    	Direction _dir = this.getDirectionTowards(other);
+    	return new Iterable<Cell>() {
+			@Override
+			public Iterator<Cell> iterator() {
+				return new Iterator<Cell>() {
+				    private Cell pos = Cell.this;
+				    private int left = _left;
+				    private Direction dir = _dir;
+		
+					@Override
+					public boolean hasNext() {
+						return left == 0;
+					}
+					@Override
+					public Cell next() {
+						left--;
+						Cell prev = pos;
+						if(hasNext()) pos = pos.getByDirection(dir);
+						return prev;
+					}
+					
+				};
+			}
+    	};
+    }
+    
+    @Deprecated
     public Iterator<Cell> getIteratorTowards(Cell other) throws CellsNotLinedUpException {
         return new Iterator<Cell>() {
             private Cell pos = Cell.this;
@@ -289,5 +357,22 @@ public class Cell {
      */
     public boolean isEmpty() {
         return this.piece == null;
+    }
+
+    
+    public Cell getCellJump(Cell middleCell) {
+    	List<Cell> neighbours = middleCell.getNeighbours();
+
+    	for (Cell ady : neighbours) {
+    	    if (ady.isInSameDiagonalAs(this)) {
+    		return ady;
+    	    }
+    	}
+
+    	return null;
+    }
+    
+    public boolean isOut() {
+    	return	!board.insideBoard(row, col);
     }
 }
