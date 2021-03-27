@@ -126,7 +126,8 @@ public class Board {
 	}
 
 	public String toString() {
-		String result = "";
+		String result = "    0   1   2   3   4   5   6   7   8   9  10  11  12\n" +
+				"    |   |   |   |   |   |   |   |   |   |   |   |   |\n\n";
 		for (int i = 0; i < NUM_ROW; ++i) {
 			for (int isLow = 0; isLow < 2; isLow++) {
 				String current = "";
@@ -138,37 +139,37 @@ public class Board {
 						current += "    ";
 					} else if (cell.isEmpty()) {
 						/// Posición sin pieza
-						current += (isLow == 0 ? "┌──┐" : "└──┘");
+						current += (isLow == 0 ? "┌─┐ " : "└─┘ ");
 					} else {
 						/// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
 						switch (cell.getPiece().getColor()) {
 						case Green:
-							current += "GGGG";
+							current += "GGG ";
 							break;
 						case Yellow:
-							current += "YYYY";
+							current += "YYY ";
 							break;
 						case Orange:
-							current += "OOOO";
+							current += "OOO ";
 							break;
 						case Red:
-							current += "RRRR";
+							current += "RRR ";
 							break;
 						case Purple:
-							current += "PPPP";
+							current += "PPP ";
 							break;
 						case Blue:
-							current += "BBBB";
+							current += "BBB ";
 							break;
 						default:
-							current += "----";
+							current += "--- ";
 						}
 					}
 				}
-				result += current.substring((i % 2)*2) + '\n';
+				result += (isLow == 1?(i < 10? " " + i : Integer.toString(i)) + "  " : "  _ ") + current.substring((i % 2)*2) + '\n';
 			}
 		}
-		return result;
+		return result + "\n";
 	}
 
 	/**
