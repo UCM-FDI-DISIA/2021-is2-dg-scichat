@@ -14,19 +14,22 @@ public class Player {
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide;    // Lado del jugador
     private Piece selectedPiece = null;    // Pieza seleccionada
+    private boolean surrender;	//Jugador se ha rendido
 
     /*Constructores*/
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        color = Color.Blue;
-        playerSide = Side.Down;
+        this.color = Color.Blue;
+        this.playerSide = Side.Down;
+        this.surrender = false;
         createPieces();
     }
 
     public Player(Color color, Side start) throws OccupiedCellException {
         this.color = color;
-        playerSide = start;
+        this.playerSide = start;
+        this.surrender = false;
         createPieces();
     }
 
@@ -136,5 +139,13 @@ public class Player {
             }
             return false;
         }
+    }
+
+    public boolean hasSurrender() {
+	return surrender;
+    }
+
+    public void surrender() {
+	this.surrender = true;
     }
 }
