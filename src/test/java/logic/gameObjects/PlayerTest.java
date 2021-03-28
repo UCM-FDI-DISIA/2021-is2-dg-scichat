@@ -3,7 +3,7 @@ package logic.gameObjects;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ public class PlayerTest {
     void init() {
         try {
             board = new Board();
-            test = new Player(Color.Blue, Board.Side.Down);
+            test = new Player(Color.BLUE, Board.Side.Down);
         } catch (OccupiedCellException e) {
             fail("Player start Cell previously occupied");
         }
@@ -29,7 +29,7 @@ public class PlayerTest {
 
         assertFalse(test.hasSelectedPiece());
 
-        assertFalse(test.selectPiece(new Piece(new Cell(6, 6, board), Color.Blue)));
+        assertFalse(test.selectPiece(new Piece(new Cell(6, 6, board), Color.BLUE)));
 
         assertFalse(test.hasSelectedPiece());
 

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Color;
+
 public class CellTest {
     private Cell cell, other;
     private Board board;
@@ -34,7 +36,7 @@ public class CellTest {
 
         assertDoesNotThrow(() -> {
             /// Crear un nueva pieza, y poner en esa posición libre
-            Piece piece = new Piece(cell, Color.Red);
+            Piece piece = new Piece(cell, Color.RED);
         });
 
         /// Ya estaría ocupada ahora
@@ -51,7 +53,7 @@ public class CellTest {
         assertThrows(OccupiedCellException.class, () -> {
             /// Intentamos poner una pieza en esa misma posición
             /// Se invoca el método putPiece desde el constructor de Piece
-            new Piece(cell, Color.Red);
+            new Piece(cell, Color.RED);
         });
 
         Cell cell2 = board.getCell(1, 7);
@@ -61,7 +63,7 @@ public class CellTest {
         assertDoesNotThrow(() -> {
             /// Intentamos poner una pieza en otra posición libre
             /// Ahora no tiene que haber problema
-            new Piece(cell2, Color.Red);
+            new Piece(cell2, Color.RED);
         });
     }
 
@@ -75,7 +77,7 @@ public class CellTest {
 
         assertDoesNotThrow(() -> {
             /// Crear un nueva pieza, y poner en esa posición libre
-            new Piece(cell, Color.Red);
+            new Piece(cell, Color.RED);
         });
 
         assertDoesNotThrow(() -> {
