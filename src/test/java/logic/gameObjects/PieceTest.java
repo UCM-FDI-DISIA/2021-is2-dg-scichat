@@ -4,7 +4,7 @@ import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class PieceTest {
     void init() {
         try {
             board = new Board();
-            color = Color.Blue;
+            color = Color.BLUE;
             piece = new Piece(new Cell(8, 6, board), color);
         } catch (OccupiedCellException e) {
             fail("Middle cell wasn't empty in initialization.");
@@ -54,6 +54,6 @@ class PieceTest {
 
         // TODO: Check for invalid jumps
     }
-    
+
 
 }

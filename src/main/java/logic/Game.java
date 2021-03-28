@@ -3,6 +3,7 @@ package logic;
 import exceptions.OccupiedCellException;
 import logic.gameObjects.Player;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,22 @@ public class Game {
      */
     public boolean isFinished() {
         return this.stopped;
+    }
+    
+    /**
+     * Comprueba si hay un ganador y lo devuelve si hay, si no devuelve null
+     * 
+     * @return null si no hay ganador por rendicion, si lo hay devuelve el ganador
+     */
+    public Player wonBySurrender() {
+	Player out=null;
+	for(Player i: players) {
+	    if(!i.hasSurrender()) {
+		if(out!=null)return null;
+		else out=i;
+	    }
+	}
+	return out;
     }
 
     @Override

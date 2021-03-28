@@ -5,7 +5,7 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import logic.Board.Side;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 
 import java.util.HashSet;
 
@@ -14,19 +14,22 @@ public class Player {
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide;    // Lado del jugador
     private Piece selectedPiece = null;    // Pieza seleccionada
+    private boolean surrender;	//Jugador se ha rendido
 
     /*Constructores*/
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        color = Color.Blue;
-        playerSide = Side.Down;
+        this.color = Color.BLUE;
+        this.playerSide = Side.Down;
+        this.surrender = false;
         createPieces();
     }
 
     public Player(Color color, Side start) throws OccupiedCellException {
         this.color = color;
-        playerSide = start;
+        this.playerSide = start;
+        this.surrender = false;
         createPieces();
     }
 
@@ -96,47 +99,53 @@ public class Player {
             }
         return true;
     }
-    
+
     /**
      * Intenta mover la pieza seleccionada a la celda targetPosition
-     * 
-     * @param targetPosition Cell a donde mover la pieza seleccionada 
+     *
+     * @param targetPosition Cell a donde mover la pieza seleccionada
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
     void move(Cell targetPosition) throws NotSelectedPieceException, InvalidMoveException {
-    	if(!this.hasSelectedPiece()) throw new NotSelectedPieceException();
-    	this.selectedPiece.move(targetPosition);
+        if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
+        this.selectedPiece.move(targetPosition);
     }
-    
+
     /**
-     * El jugador empieza seleccionando una ficha pasando su casilla como argumento, 
+     * El jugador empieza seleccionando una ficha pasando su casilla como argumento,
      * una vez que tiene una ficha seleccionada selecciona una casilla vacia para moverse
      * si el movimiento es valido devuelve true, en cualquier otro caso devuelve false.
-     * 
+     * <p>
      * Si selecciona una celda ocupada cuando ya tiene pieza seleccionada y
      * la celda contiene una pieza suya, cambia la pieza seleccionada,
      * si la pieza de la celda no es suya, deselecciona la pieza
-     * 
-     * 
+     *
      * @param targetPosition Posicion que el jugador selecciona
      * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
      */
     public boolean turn(Cell targetPosition) {
-    	if(targetPosition.isEmpty()) {
-    		try {
-    			this.move(targetPosition);
-    		}
-    		catch(Exception e) {
-    			return false;
-    		}
-    		return true;
-    	}
-    	else {
-    		if(!selectPiece(targetPosition.getPiece())) {
-    			deselectPiece();
-    		}
-    		return false;
-    	}
+        if (targetPosition.isEmpty()) {
+            try {
+                this.move(targetPosition);
+            } catch (Exception e) {
+                return false;
+            }
+            deselectPiece();
+            return true;
+        } else {
+            if (!selectPiece(targetPosition.getPiece())) {
+                deselectPiece();
+            }
+            return false;
+        }
+    }
+
+    public boolean hasSurrender() {
+	return surrender;
+    }
+
+    public void surrender() {
+	this.surrender = true;
     }
 }

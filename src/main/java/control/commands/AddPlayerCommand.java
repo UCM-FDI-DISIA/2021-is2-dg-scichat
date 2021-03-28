@@ -2,7 +2,7 @@ package control.commands;
 
 import exceptions.OccupiedCellException;
 import logic.Board;
-import logic.Color;
+import java.awt.Color;
 import logic.Game;
 
 public class AddPlayerCommand extends Command {
@@ -16,7 +16,26 @@ public class AddPlayerCommand extends Command {
 
     @Override
     public boolean execute(Game game) throws ExecuteException {
-        Color color = Color.values()[colorInt];
+        Color color = null;
+        switch(colorInt) {
+        case 0:
+            color=Color.GREEN;
+            break;
+        case 1:
+            color=Color.YELLOW;
+            break;
+        case 2:
+            color=Color.ORANGE;
+            break;
+        case 3:
+            color=Color.RED;
+            break;
+        case 4:
+            color=Color.MAGENTA;
+            break;
+        case 5:
+            color=Color.BLUE;
+        }
         Board.Side side = Board.Side.values()[sideInt];
 
         try {
@@ -54,7 +73,7 @@ public class AddPlayerCommand extends Command {
         if (!(this.sideInt >= 1 && this.sideInt <= 6)) {
             throw new ParseException("Invalid side Int");
         }
-        
+
         // Como serán usadas como índices, reducimos su valor por uno
         colorInt--;
         sideInt--;
