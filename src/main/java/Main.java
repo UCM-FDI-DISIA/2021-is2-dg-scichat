@@ -1,9 +1,10 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
 import logic.Board;
-import java.awt.Color;
 import logic.Game;
 
+import java.awt.*;
+import java.util.Queue;
 import java.util.*;
 
 public class Main {
@@ -40,8 +41,7 @@ public class Main {
 
         public void run() {
             printWelcome();
-            setNumPlayers();
-            setPlayers();
+            selectGame();
         }
 
         private void printWelcome() {
@@ -54,6 +54,59 @@ public class Main {
             }
 
             System.out.println(Separator);
+        }
+
+        /**
+         * Mostrar menú para seleccionar si empezar una partida nueva, o cargar
+         * <p>
+         * (El nombre del método puede ser discutible)
+         */
+        private void selectGame() {
+            Runnable displayMessage = () -> {
+                System.out.println("Selecciona una opción: ");
+                System.out.println();
+                System.out.println("    [1]: Empezar una partida nueva");
+                System.out.println("    [2]: Cargar una partida antigua");
+                System.out.println();
+                System.out.print("Opción: ");
+            };
+
+            displayMessage.run();
+            int option = -1;
+
+            if (scanner.hasNextInt()) {
+                option = scanner.nextInt();
+            }
+
+            while (!(option == 1 || option == 2)) {
+                /// Pedir que introduzca una opción válida mientras que no lo sea
+                System.out.println("Opción no válida.");
+                System.out.println(Separator);
+                displayMessage.run();
+
+                option = scanner.nextInt();
+            }
+
+            if (option == 1) {
+                this.newGame();
+            } else {    /// Opción 2 sería
+                this.loadGame();
+            }
+        }
+
+        /**
+         * Método que inicializa la configuración de un nuevo juego
+         */
+        private void newGame() {
+            setNumPlayers();
+            setPlayers();
+        }
+
+        /**
+         * Método para cargar un juego guardado
+         */
+        private void loadGame() {
+
         }
 
         private void setNumPlayers() {
