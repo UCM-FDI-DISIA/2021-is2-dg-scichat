@@ -5,7 +5,7 @@ import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 
 import java.util.Iterator;
 

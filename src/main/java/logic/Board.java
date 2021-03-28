@@ -1,5 +1,6 @@
 package logic;
 
+import java.awt.Color;
 import java.util.HashSet;
 
 public class Board {
@@ -141,28 +142,21 @@ public class Board {
                         current += (isLow == 0 ? "┌──┐" : "└──┘");
                     } else {
                         /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
-                        switch (cell.getPiece().getColor()) {
-                            case Green:
-                                current += "GGGG";
-                                break;
-                            case Yellow:
-                                current += "YYYY";
-                                break;
-                            case Orange:
-                                current += "OOOO";
-                                break;
-                            case Red:
-                                current += "RRRR";
-                                break;
-                            case Purple:
-                                current += "PPPP";
-                                break;
-                            case Blue:
-                                current += "BBBB";
-                                break;
-                            default:
-                                current += "----";
-                        }
+                	Color in=cell.getPiece().getColor();
+                        if(in==Color.GREEN)
+                            current += "GGGG";
+                        else if(in==Color.YELLOW)
+                            current += "YYYY";
+                        else if(in==Color.ORANGE)
+                            current += "OOOO";
+                        else if(in==Color.RED)
+                            current += "RRRR";
+                        else if(in==Color.MAGENTA)
+                            current += "PPPP";
+                        else if(in==Color.BLUE)
+                            current += "BBBB";
+                        else
+                            current += "----";
                     }
                 }
                 result += current.substring((i % 2) * 2) + '\n';

@@ -1,7 +1,7 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
 import logic.Board;
-import logic.Color;
+import java.awt.Color;
 import logic.Game;
 
 import java.util.*;
@@ -29,7 +29,12 @@ public class Main {
             this.scanner = _scanner;
 
             /// Inicialmente todos los colores disponibles
-            Collections.addAll(this.availableColors, Color.values());
+            this.availableColors.add(Color.GREEN);
+            this.availableColors.add(Color.YELLOW);
+            this.availableColors.add(Color.ORANGE);
+            this.availableColors.add(Color.RED);
+            this.availableColors.add(Color.MAGENTA);
+            this.availableColors.add(Color.BLUE);
         }
 
 

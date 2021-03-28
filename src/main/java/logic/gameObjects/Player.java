@@ -5,7 +5,7 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import logic.Board.Side;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 
 import java.util.HashSet;
 
@@ -20,7 +20,7 @@ public class Player {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this.color = Color.Blue;
+        this.color = Color.BLUE;
         this.playerSide = Side.Down;
         this.surrender = false;
         createPieces();
