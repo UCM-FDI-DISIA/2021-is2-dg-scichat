@@ -7,6 +7,12 @@ import java.util.Scanner;
 public abstract class Option {
     public final String title;
 
+    public static class ExecuteException extends Exception {
+        public ExecuteException(String message) {
+            super("[ERROR]: " + message);
+        }
+    }
+
     protected Option(String title) {
         this.title = title;
     }
@@ -18,5 +24,5 @@ public abstract class Option {
      * @param scanner referencia al scanner
      * @return devuelve true si se pasa del turno del jugador
      */
-    public abstract boolean execute(Game game, Scanner scanner);
+    public abstract boolean execute(Game game, Scanner scanner) throws ExecuteException;
 }

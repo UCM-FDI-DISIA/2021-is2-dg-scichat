@@ -79,4 +79,8 @@ public class Game {
     public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
     }
+
+    public Cell getCell(int row, int col) {
+        return this.board.getCell(row, col);
+    }
 }

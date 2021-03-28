@@ -161,12 +161,16 @@ public class Player {
 
     public String piecesToString() {
         StringBuilder result = new StringBuilder();
-        result.append("Piezas disponibles:");
+        result.append("Piezas disponibles: \n\n");
 
         for (Piece piece : this.pieces) {
             result.append(String.format("   (%s, %s) \n", piece.getPosition().getRow(), piece.getPosition().getCol()));
         }
 
         return result.toString();
+    }
+
+    public Boolean hasPiece(Piece piece) {
+        return this.pieces.contains(piece);
     }
 }
