@@ -30,7 +30,8 @@ public class Controller {
 
             try {
                 Option option = OptionGenerator.parse(scanner);
-                refreshDisplay = option.execute(game);
+                System.out.format("[DEBUG]: Se ha seleccionado la opción: [%s] \n\n", option.title);
+                refreshDisplay = option.execute(game, scanner);
             } catch (Exception ex) {
                 System.out.format(ex.getMessage() + "%n%n");
             }
