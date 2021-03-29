@@ -126,44 +126,51 @@ public class Board {
         }
     }
 
-    public String toString() {
-        String result = "";
-        for (int i = 0; i < NUM_ROW; ++i) {
-            for (int isLow = 0; isLow < 2; isLow++) {
-                String current = "";
-                for (int j = 0; j < NUM_COL; ++j) {
-                    Cell cell = cells[i][j];
-
-                    if (cell == null) {
-                        /// No es una posición del tablero
-                        current += "    ";
-                    } else if (cell.isEmpty()) {
-                        /// Posición sin pieza
-                        current += (isLow == 0 ? "┌──┐" : "└──┘");
-                    } else {
-                        /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
-                	Color in=cell.getPiece().getColor();
-                        if(in==Color.GREEN)
-                            current += "GGGG";
-                        else if(in==Color.YELLOW)
-                            current += "YYYY";
-                        else if(in==Color.ORANGE)
-                            current += "OOOO";
-                        else if(in==Color.RED)
-                            current += "RRRR";
-                        else if(in==Color.MAGENTA)
-                            current += "PPPP";
-                        else if(in==Color.BLUE)
-                            current += "BBBB";
-                        else
-                            current += "----";
-                    }
-                }
-                result += current.substring((i % 2) * 2) + '\n';
-            }
-        }
-        return result;
-    }
+	public String toString() {
+		String result = "    0   1   2   3   4   5   6   7   8   9  10  11  12\n" +
+				"    |   |   |   |   |   |   |   |   |   |   |   |   |\n\n";
+		for (int i = 0; i < NUM_ROW; ++i) {
+			for (int isLow = 0; isLow < 2; isLow++) {
+				String current = "";
+				for (int j = 0; j < NUM_COL; ++j) {
+					Cell cell = cells[i][j];
+					if (cell == null) {
+						/// No es una posición del tablero
+						current += "    ";
+					} else if (cell.isEmpty()) {
+						/// Posición sin pieza
+						current += (isLow == 0 ? "┌─┐ " : "└─┘ ");
+					} else {
+						/// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
+						Color val = cell.getPiece().getColor();
+						if(val == Color.GREEN) {
+							current += "GGG ";
+						}
+						else if(val == Color.YELLOW) {
+							current += "YYY ";
+						}
+						else if(val == Color.ORANGE) {
+							current += "OOO ";
+						}
+						else if(val == Color.RED) {
+							current += "RRR ";
+						}
+						else if(val == Color.MAGENTA) {
+							current += "PPP ";
+						}
+						else if(val == Color.BLUE) {
+							current += "BBB ";
+						}
+						else {
+							current += "--- ";
+						}
+					}
+				}
+				result += (isLow == 1?(i < 10? " " + i : Integer.toString(i)) + "  " : "  _ ") + current.substring((i % 2)*2) + '\n';
+			}
+		}
+		return result + "\n";
+	}
 
     /**
      * Función que comprueba si la posición dada esta dentro del tablero del juego
