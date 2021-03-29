@@ -17,10 +17,10 @@ public class MovePieceOption extends Option {
     public boolean execute(Game game, Scanner scanner) throws ExecuteException {
         Player currentPlayer = game.getCurrentPlayer();
 
+        /// Imprimir las piezas del jugador actual
         System.out.println(currentPlayer.piecesToString());
 
         System.out.println("Introducir las coordenadas de la ficha que quieres mover (-1 -1 para volver al menú): ");
-
         int row = scanner.nextInt();
         int col = scanner.nextInt();
 
@@ -52,10 +52,8 @@ public class MovePieceOption extends Option {
             throw new ExecuteException(String.format("No existe una celda en posición (%d, %d) \n", newRow, newCol));
         }
 
-        if (!newCell.isEmpty()) {
-            throw new ExecuteException(String.format("La celda (%d, %d) está ocupada \n", newRow, newCol));
-        }
-
+        /// Intentar mover a la nueva celda
+        /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
             selectedPiece.move(newCell);
         } catch (InvalidMoveException e) {

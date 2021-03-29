@@ -7,6 +7,9 @@ import java.util.Scanner;
 public abstract class Option {
     public final String title;
 
+    /**
+     * Excepción que se lanza cuando produce un error en ejecución
+     */
     public static class ExecuteException extends Exception {
         public ExecuteException(String message) {
             super("[ERROR]: " + message);

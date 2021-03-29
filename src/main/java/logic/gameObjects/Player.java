@@ -149,6 +149,9 @@ public class Player {
         this.surrender = true;
     }
 
+    /**
+     * Imprime el color y posición en el tablero del jugador
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -159,6 +162,11 @@ public class Player {
         return result.toString();
     }
 
+    /**
+     * Hacer una lista de piezas disponibles del jugador, con sus coordenadas
+     *
+     * @return string con piezas disponibles del jugador
+     */
     public String piecesToString() {
         StringBuilder result = new StringBuilder();
         result.append("Piezas disponibles: \n\n");
