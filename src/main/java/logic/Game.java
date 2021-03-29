@@ -3,14 +3,14 @@ package logic;
 import exceptions.OccupiedCellException;
 import logic.gameObjects.Player;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
     private Board board = new Board();
     private boolean stopped = false;            /// Si el jugador ha parado el juego
-    private List<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
+    private int currentPlayerIndex = 0;
 
     public Game() {
 
@@ -28,21 +28,21 @@ public class Game {
     public boolean isFinished() {
         return this.stopped;
     }
-    
+
     /**
      * Comprueba si hay un ganador y lo devuelve si hay, si no devuelve null
-     * 
+     *
      * @return null si no hay ganador por rendicion, si lo hay devuelve el ganador
      */
     public Player wonBySurrender() {
-	Player out=null;
-	for(Player i: players) {
-	    if(!i.hasSurrender()) {
-		if(out!=null)return null;
-		else out=i;
-	    }
-	}
-	return out;
+        Player out = null;
+        for (Player i : players) {
+            if (!i.hasSurrender()) {
+                if (out != null) return null;
+                else out = i;
+            }
+        }
+        return out;
     }
 
     @Override
@@ -51,13 +51,36 @@ public class Game {
 
         result.append(this.board.toString());
 
-        result.append("List of players: \n");
+        result.append("List of players: \n\n");
 
         for (int i = 0; i < this.players.size(); ++i) {
-            result.append(String.format("[%s]: %s - %s", i + 1, this.players.get(i).getColor(), this.players.get(i).getSide()));
+            result.append(String.format("   [%s]: %s - %s", i + 1, this.players.get(i).getColor(), this.players.get(i).getSide()));
             result.append("\n");
         }
 
+        result.append("\n");
+        result.append(String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1));
+
         return result.toString();
+    }
+
+    /**
+     * Avanzar en turno
+     */
+    public void advance() {
+        this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+    }
+
+    /**
+     * Obtener jugador del turno actual
+     *
+     * @return referencia al jugador del turno actual
+     */
+    public Player getCurrentPlayer() {
+        return this.players.get(this.currentPlayerIndex);
+    }
+
+    public Cell getCell(int row, int col) {
+        return this.board.getCell(row, col);
     }
 }

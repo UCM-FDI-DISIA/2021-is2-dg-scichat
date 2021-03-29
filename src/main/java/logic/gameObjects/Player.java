@@ -5,8 +5,8 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import logic.Board.Side;
 import logic.Cell;
-import java.awt.Color;
 
+import java.awt.*;
 import java.util.HashSet;
 
 public class Player {
@@ -14,7 +14,7 @@ public class Player {
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide;    // Lado del jugador
     private Piece selectedPiece = null;    // Pieza seleccionada
-    private boolean surrender;	//Jugador se ha rendido
+    private boolean surrender;    //Jugador se ha rendido
 
     /*Constructores*/
 
@@ -142,10 +142,43 @@ public class Player {
     }
 
     public boolean hasSurrender() {
-	return surrender;
+        return surrender;
     }
 
     public void surrender() {
-	this.surrender = true;
+        this.surrender = true;
+    }
+
+    /**
+     * Imprime el color y posición en el tablero del jugador
+     */
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+
+        result.append(String.format("Color: %s", this.color));
+        result.append(String.format("Posición: %s", this.playerSide));
+
+        return result.toString();
+    }
+
+    /**
+     * Hacer una lista de piezas disponibles del jugador, con sus coordenadas
+     *
+     * @return string con piezas disponibles del jugador
+     */
+    public String piecesToString() {
+        StringBuilder result = new StringBuilder();
+        result.append("Piezas disponibles: \n\n");
+
+        for (Piece piece : this.pieces) {
+            result.append(String.format("   (%s, %s) \n", piece.getPosition().getRow(), piece.getPosition().getCol()));
+        }
+
+        return result.toString();
+    }
+
+    public Boolean hasPiece(Piece piece) {
+        return this.pieces.contains(piece);
     }
 }
