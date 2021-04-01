@@ -24,7 +24,7 @@ public class Main {
         private int numPlayers;
         private Game game = new Game();
         private ArrayList<Color> availableColors = new ArrayList<>();
-        private Queue<Board.Side> availableSides = new LinkedList();
+        private Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
 
         private SetupWizard(Scanner _scanner) {
             this.scanner = _scanner;
@@ -137,9 +137,12 @@ public class Main {
             System.out.println("> Colores disponibles: ");
             System.out.println();
 
-            for (int j = 0; j < this.availableColors.size(); ++j) {
-                System.out.format("     [%d]: %s \n", j + 1, this.availableColors.get(j));
-            }
+            System.out.println("     [1]: GREEN \n");
+            System.out.println("     [2]: YELLOW \n");
+            System.out.println("     [3]: ORANGE \n");
+            System.out.println("     [4]: RED \n");
+            System.out.println("     [5]: MAGENTA \n");
+            System.out.println("     [6]: BlUE \n");
 
             System.out.println();
         }
