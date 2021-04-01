@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class OptionGenerator {
     private static final Option[] availableOptions = {
-            new MovePieceOption("Mover una pieza")
+            new MovePieceOption("Mover una pieza"),
+            new SurrenderOption("Rendirse")
     };
 
     public static class ParseException extends Exception {
