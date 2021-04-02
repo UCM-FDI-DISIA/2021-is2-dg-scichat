@@ -140,9 +140,8 @@ public class Main {
             System.out.println("> Colores disponibles: ");
             System.out.println();
 
-            String format = "     [%d]: %s \n";
             for(int i = 0; i < availableColors.size(); ++i) {
-        	System.out.println(String.format(format, i+1 ,Util.col2str(this.availableColors.get(i))));
+        	System.out.format("     [%d]: %s \n\n", i+1 ,Util.col2str(this.availableColors.get(i)));
             }
             System.out.println();
         }
@@ -180,7 +179,7 @@ public class Main {
                     /// No va a lanzar nunca esta excepción, teóricamente
                 }
 
-                System.out.format("Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n", i + 1, color, side);
+                System.out.format("Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n", i + 1, Util.col2str(color), side);
                 System.out.println();
             }
         }
