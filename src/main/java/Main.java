@@ -2,6 +2,7 @@ import control.Controller;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Game;
+import utils.Util;
 
 import java.awt.*;
 import java.util.Queue;
@@ -106,7 +107,7 @@ public class Main {
          * Método para cargar un juego guardado
          */
         private void loadGame() {
-
+            // TODO
         }
 
         private void setNumPlayers() {
@@ -133,17 +134,16 @@ public class Main {
             this.setAvailableSides();
         }
 
+        
+        
         private void printAvailableColors() {
             System.out.println("> Colores disponibles: ");
             System.out.println();
 
-            System.out.println("     [1]: GREEN \n");
-            System.out.println("     [2]: YELLOW \n");
-            System.out.println("     [3]: ORANGE \n");
-            System.out.println("     [4]: RED \n");
-            System.out.println("     [5]: MAGENTA \n");
-            System.out.println("     [6]: BlUE \n");
-
+            String format = "     [%d]: %s \n";
+            for(int i = 0; i < availableColors.size(); ++i) {
+        	System.out.println(String.format(format, i+1 ,Util.col2str(this.availableColors.get(i))));
+            }
             System.out.println();
         }
 
