@@ -371,6 +371,13 @@ public class Cell {
     public boolean isEmpty() {
 	return this.piece == null;
     }
+    
+    /**
+     * Función encargada de obtener la posición resultante de efectuar un salto desde la posición de partida this
+     * por encima de middleCell
+     * @param middleCell	Celda a saltar
+     * @return	Devuelve la posición antes descrita o null en caso de que no exista.
+     */
 
     public Cell getCellJump(Cell middleCell) {
 	if (!middleCell.isEmpty()) {
@@ -380,7 +387,7 @@ public class Cell {
 		directionJump = this.getDirectionTowards(middleCell);
 	    } catch (CellsNotLinedUpException e) {
 	    }
-	    Cell newJump = this.getByDirection(directionJump, 2);
+	    Cell newJump = this.getByDirection(directionJump, 2); //Obtenemos la posición en la misma dirección pero una casilla más lejos.
 	    if (newJump.isEmpty()) {
 		return newJump;
 	    } else {
@@ -389,9 +396,5 @@ public class Cell {
 	} else {
 	    return null;
 	}
-    }
-
-    public boolean isOut() {
-	return !board.insideBoard(row, col);
     }
 }
