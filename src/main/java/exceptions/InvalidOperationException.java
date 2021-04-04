@@ -1,9 +1,9 @@
 package exceptions;
 
 public class InvalidOperationException extends Exception {
-	private static final long serialVersionUID = 1L;
-	
-	public InvalidOperationException() {
+    private static final long serialVersionUID = 1L;
+
+    public InvalidOperationException() {
         super("Invalid operation.");
     }
 
@@ -20,7 +20,7 @@ public class InvalidOperationException extends Exception {
     }
 
     public InvalidOperationException(String message, Throwable cause,
-                                boolean enableSuppression, boolean writeableStackTrace) {
+                                     boolean enableSuppression, boolean writeableStackTrace) {
         super(message, cause, enableSuppression, writeableStackTrace);
     }
 }

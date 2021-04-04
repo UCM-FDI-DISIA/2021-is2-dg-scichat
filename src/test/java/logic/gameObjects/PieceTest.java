@@ -4,7 +4,7 @@ import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

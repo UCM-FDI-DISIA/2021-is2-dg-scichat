@@ -6,7 +6,7 @@ import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import logic.Board;
 import logic.Cell;
-import logic.Color;
+import java.awt.Color;
 
 import java.util.List;
 import java.util.Queue;
