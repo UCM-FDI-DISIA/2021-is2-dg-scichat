@@ -13,8 +13,7 @@ public class LoadGameOption extends Option {
     protected LoadGameOption(String title) {
 	super(title);
     }
-
-    @Override
+    
     public boolean execute(Game game, Scanner scanner) throws ExecuteException {
 
 	System.out.println("Ingrese el nombre del archivo desde donde desea cargar el juego: ");
@@ -29,6 +28,7 @@ public class LoadGameOption extends Option {
 
 		Game newGame = (Game)in.readObject();
 		
+		//Actualizamos juego al nuevo juego
 		game.setBoard(newGame.getBoard());
 		game.setCurrentPlayerIndex(newGame.getCurrentPlayerIndex());
 		game.setPlayers(newGame.getPlayers());
