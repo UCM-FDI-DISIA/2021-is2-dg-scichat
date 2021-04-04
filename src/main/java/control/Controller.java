@@ -18,6 +18,10 @@ public class Controller {
     public void printGame() {
         System.out.println(this.game);
     }
+    
+    public void setGame(Game newGame) {
+	game = newGame;
+    }
 
     public void run() {
         boolean refreshDisplay = true;

@@ -1,14 +1,10 @@
 package control.options;
 
 import java.util.Scanner;
-import java.io.*;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Scanner;
 
-import control.options.Option.ExecuteException;
 import exceptions.LoadGameException;
 import logic.Game;
 
@@ -31,7 +27,13 @@ public class LoadGameOption extends Option {
 		in = new ObjectInputStream(new FileInputStream(file));
 		// Cargamos los objetos
 
-		game = (Game) in.readObject();
+		Game newGame = (Game)in.readObject();
+		
+		game.setBoard(newGame.getBoard());
+		game.setCurrentPlayerIndex(newGame.getCurrentPlayerIndex());
+		game.setPlayers(newGame.getPlayers());
+		game.setStopped(newGame.getStopped());
+		
 
 	    } catch (IOException ex) {
 		System.out.println(ex.getMessage());

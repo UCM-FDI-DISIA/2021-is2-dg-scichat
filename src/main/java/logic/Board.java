@@ -61,7 +61,7 @@ public class Board implements Serializable{
         }
     }
 
-    public enum Side {
+    public enum Side implements Serializable{
         Down(0, new HashSet<Cell>()), // 0
         DownLeft(1, new HashSet<Cell>()), // 1
         UpLeft(2, new HashSet<Cell>()), // 2

@@ -8,6 +8,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Game implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private Board board = new Board();
     private boolean stopped = false;            /// Si el jugador ha parado el juego
     private ArrayList<Player> players = new ArrayList<>();
@@ -16,6 +21,39 @@ public class Game implements Serializable{
     public Game() {
 
     }
+
+    
+    /*Getters*/
+    
+    public Board getBoard() {
+	return board;
+    }
+    
+    public boolean getStopped() {
+	return stopped;
+    }
+    
+    public ArrayList<Player> getPlayers() {
+	return players;
+    }
+    
+    public int getCurrentPlayerIndex() {
+	return currentPlayerIndex;
+    }
+    /*Setters*/
+    
+    public void setBoard(Board board) {
+	this.board = board;
+    }
+    
+    public void setPlayers(ArrayList<Player> players) {
+	this.players = players;
+    }
+    
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+	this.currentPlayerIndex = currentPlayerIndex;
+    }
+    
 
     public void addNewPlayer(Color color, Board.Side side) throws OccupiedCellException {
         this.players.add(new Player(color, side));

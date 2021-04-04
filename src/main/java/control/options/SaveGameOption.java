@@ -3,7 +3,6 @@ package control.options;
 import java.util.Scanner;
 import java.io.*;
 
-import control.options.Option.ExecuteException;
 import exceptions.SaveGameException;
 import logic.Game;
 
@@ -44,6 +43,8 @@ public class SaveGameOption extends Option {
 	} catch (SaveGameException ex) {
 	    throw new ExecuteException(ex.getMessage());
 	}
+	
+	System.out.println("Su archivo se ha guardado con éxito.");
 
 	return true;
     }
