@@ -7,9 +7,15 @@ import logic.Board.Side;
 import logic.Cell;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Player {
+public class Player implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private Color color; // Color asignado al jugador
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide;    // Lado del jugador

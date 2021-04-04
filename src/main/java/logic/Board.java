@@ -1,9 +1,15 @@
 package logic;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Board {
+public class Board implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final int NUM_COL = 13;
     private static final int NUM_ROW = 17;
 

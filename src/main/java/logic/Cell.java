@@ -4,14 +4,21 @@ import exceptions.CellsNotLinedUpException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
+
 import logic.gameObjects.Piece;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
-public class Cell {
+public class Cell implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private final int row;
     private final int col;
 

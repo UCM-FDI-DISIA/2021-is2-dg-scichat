@@ -4,9 +4,10 @@ import exceptions.OccupiedCellException;
 import logic.gameObjects.Player;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable{
     private Board board = new Board();
     private boolean stopped = false;            /// Si el jugador ha parado el juego
     private ArrayList<Player> players = new ArrayList<>();

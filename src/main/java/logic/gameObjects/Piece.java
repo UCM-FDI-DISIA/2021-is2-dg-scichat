@@ -6,11 +6,16 @@ import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import logic.Cell;
 import java.awt.Color;
-
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class Piece {
+public class Piece implements Serializable{
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     // El color es lo que hace que una ficha pertenezca a un jugador
     private final Color color;
     private Cell position;
