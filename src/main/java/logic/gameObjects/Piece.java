@@ -9,6 +9,8 @@ import logic.Cell;
 import logic.Color;
 
 import java.util.List;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Piece {
 
@@ -43,8 +45,8 @@ public class Piece {
      *                                   posible
      */
     public void tryToMoveTo(Cell targetPosition) throws InvalidMoveException, OutOfBoundsException {
-	boolean[][] checkedCells = new boolean[Board.NUM_ROW][Board.NUM_COL]; // No se a que se inicializan, asumo que
-									      // false, sino luego lo cambio
+	boolean[][] checkedCells = new boolean[Board.NUM_ROW][Board.NUM_COL];
+
 	if (targetPosition.isOut()) {
 	    throw new OutOfBoundsException();
 	}
@@ -57,12 +59,15 @@ public class Piece {
 	if (!neighbours.contains(targetPosition)) {
 
 	    for (int i = 0; i < Board.NUM_ROW; ++i) {
-		for(int j = 0; j < Board.NUM_COL; ++j)
+		for (int j = 0; j < Board.NUM_COL; ++j)
 		    checkedCells[i][j] = false;
 	    }
 
-	    if (!recursiveTryToMoveTo(targetPosition, this.position, checkedCells)) {
-		throw new InvalidMoveException();
+	    Queue<Cell> positionQueue = new LinkedList<Cell>();
+	    positionQueue.add(this.position);
+
+	    if (!recursiveTryToMoveTo(targetPosition, checkedCells, positionQueue)) {
+		throw new InvalidMoveException("No se puede acceder a la casilla " + targetPosition);
 	    }
 	}
 
@@ -76,29 +81,33 @@ public class Piece {
      * @param checkedCells    Tablero con las Celdas que ya hemos mirado
      * @return Devuelve si se puede llevar a cabo el movimiento
      */
-    private boolean recursiveTryToMoveTo(Cell targetPosition, Cell positionToCheck, boolean[][] checkedCells) {
-	List<Cell> neighbours = positionToCheck.getNeighbours();
+    private boolean recursiveTryToMoveTo(Cell targetPosition, boolean[][] checkedCells, Queue<Cell> positionQueue) {
 
-	for (Cell ady : neighbours) {
-
-	    if (!checkedCells[ady.getRow()][ady.getCol()]) {
-
-		checkedCells[ady.getRow()][ady.getCol()] = true;
-
-		Cell newJump = positionToCheck.getCellJump(ady);
-		
-		if (newJump != null && (newJump.equals(targetPosition) || (recursiveTryToMoveTo(targetPosition, newJump, checkedCells)))) {
-		    return true;
-		}
-
-		checkedCells[ady.getRow()][ady.getCol()] = false;
-
+	Cell positionToCheck = positionQueue.peek();
+	if (!checkedCells[positionToCheck.getRow()][positionToCheck.getCol()]) {
+	    positionQueue.poll();
+	    List<Cell> neighbours = positionToCheck.getNeighbours();
+	    
+	    for(Cell ng : neighbours) {
+		if(!ng.isEmpty()) {	System.out.println("Vecino " + ng);	}
 	    }
 
+	    for (Cell ady : neighbours) {
+		Cell newJump = positionToCheck.getCellJump(ady);
+		if (newJump != null) {
+		    System.out.println("Nuevo salto " + newJump + " desde la posicion " + positionToCheck + ", saltando " + ady);
+		    if (newJump.equals(targetPosition))
+			return true;
+		    positionQueue.add(newJump);
+		}
+	    }
+
+	    checkedCells[positionToCheck.getRow()][positionToCheck.getCol()] = true;
+
+	    return recursiveTryToMoveTo(targetPosition, checkedCells, positionQueue);
 	}
 
 	return false;
-
     }
 
     /**

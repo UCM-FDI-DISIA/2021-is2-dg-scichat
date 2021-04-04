@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class PieceTest {
     Piece piece, piece2, piece3;
-    Cell pos = null;
+    Cell posAux = null;
     Board board = null;
     Color color = null;
 
@@ -24,6 +24,8 @@ class PieceTest {
             board = new Board();
             color = Color.Blue;
             piece = new Piece(new Cell(8, 6, board), color);
+            piece2 = new Piece(piece.getPosition().getUpperLeft(), color);
+            piece3 = new Piece(piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(), color);
             
         } catch (OccupiedCellException e) {
             fail("Middle cell wasn't empty in initialization.");
@@ -32,39 +34,41 @@ class PieceTest {
 
     @Test
     void tryToMoveToCell() { // TODO: Expand in all directions, more movement
-        Assertions.assertDoesNotThrow(() -> {
-            pos = piece.getPosition();
+      Assertions.assertDoesNotThrow(() -> {
+            posAux = piece.getPosition();
         });
 
         Assertions.assertThrows(InvalidMoveException.class, () -> {
-            piece.tryToMoveTo(pos);
+            piece.tryToMoveTo(posAux);
         });
 
         Assertions.assertDoesNotThrow(() -> {
-            pos = pos.getUpperLeft();
+            posAux = posAux.getUpperLeft();
 
-            piece.tryToMoveTo(pos);
+            piece.tryToMoveTo(posAux);
         });
 
-       /* Assertions.assertDoesNotThrow(() -> {
-            piece2 = new Piece(piece.getPosition().getUpperLeft(), color);
-            System.out.println(piece2.getPosition());
+      Assertions.assertDoesNotThrow(() -> {
+            System.out.println("Pieza de la que partimos " + piece.getPosition());
+            System.out.println("Pieza que queremos saltar: " + piece2.getPosition());
+            System.out.println("Pieza a la que queremos llegar" + piece2.getPosition().getUpperLeft());
             piece.tryToMoveTo(piece2.getPosition().getUpperLeft());
-        });        
-        */
-        /*Assertions.assertDoesNotThrow(() -> {
-            piece3 = new Piece(piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(), color);
-            System.out.println(piece3.getPosition());
-            piece.tryToMoveTo(piece3.getPosition().getUpperRight());
-        });*/
-        
+        }); 
         
         Assertions.assertDoesNotThrow(() -> {
-            piece3 = new Piece(piece.getPosition().getLowerRight(), color);
+            System.out.println("Pieza de la que partimos " + piece.getPosition());
+            System.out.println("Pieza que queeremos saltar primero: " + piece2.getPosition());
+            System.out.println("Pieza que queremos saltar después: " + piece3.getPosition());
+            System.out.println("Pieza a la que queremos llegar" + piece3.getPosition().getUpperRight());
+            piece.tryToMoveTo(piece3.getPosition().getUpperRight());
+        });
+        
+        
+        Assertions.assertThrows(InvalidMoveException.class, () -> {
             piece.tryToMoveTo(piece3.getPosition());
         });
 
-        Assertions.assertThrows(InvalidMoveException.class, () -> {
+       Assertions.assertThrows(InvalidMoveException.class, () -> {
             piece.tryToMoveTo(piece2.getPosition().getLowerLeft(2));
         });
     }
