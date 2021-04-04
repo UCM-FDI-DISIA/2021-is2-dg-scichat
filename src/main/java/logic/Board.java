@@ -13,9 +13,23 @@ public class Board implements Serializable{
     private static final int NUM_COL = 13;
     private static final int NUM_ROW = 17;
 
-    private static final String[] SCHEMATIC = {"......U......", "......UU.....", ".....UUU.....", ".....UUUU....",
-            "LLLL@@@@@RRRR", ".LLL@@@@@@RRR", ".LL@@@@@@@RR.", "..L@@@@@@@@R.", "..@@@@@@@@@..", "..l@@@@@@@@r.",
-            ".ll@@@@@@@rr.", ".lll@@@@@@rrr", "llll@@@@@rrrr", ".....DDDD....", ".....DDD.....", "......DD.....",
+    private static final String[] SCHEMATIC = {
+	    "......U......", 
+	    "......UU.....",
+	    ".....UUU.....",
+	    ".....UUUU....",	    
+            "LLLL@@@@@RRRR",
+            ".LLL@@@@@@RRR",
+            ".LL@@@@@@@RR.",
+            "..L@@@@@@@@R.",
+            "..@@@@@@@@@..",
+            "..l@@@@@@@@r.",
+            ".ll@@@@@@@rr.",
+            ".lll@@@@@@rrr",
+            "llll@@@@@rrrr",
+            ".....DDDD....",
+            ".....DDD.....",
+            "......DD.....",
             "......D......"};
 
     /// Matriz de celdas
