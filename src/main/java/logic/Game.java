@@ -2,6 +2,7 @@ package logic;
 
 import exceptions.OccupiedCellException;
 import logic.gameObjects.Player;
+import utils.Util;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -123,7 +124,7 @@ public class Game implements Serializable{
         result.append("List of players: \n\n");
 
         for (int i = 0; i < this.players.size(); ++i) {
-            result.append(String.format("   [%s]: %s - %s", i + 1, this.players.get(i).getColor(), this.players.get(i).getSide()));
+            result.append(String.format("   [%s]: %s - %s", i + 1, Util.col2str(this.players.get(i).getColor()), this.players.get(i).getSide()));
             result.append("\n");
         }
 
