@@ -5,6 +5,7 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import logic.Board.Side;
 import logic.Cell;
+import utils.Mode;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -29,25 +30,27 @@ public class Player implements Serializable{
         this.color = Color.BLUE;
         this.playerSide = Side.Down;
         this.surrender = false;
-        createPieces();
+        createPieces(Mode.Traditional);
     }
 
-    public Player(Color color, Side start) throws OccupiedCellException {
+    public Player(Color color, Side start, Mode playMode) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
-        createPieces();
+        createPieces(playMode);
     }
 
     /**
      * Genera las fichas de Player, solo se llama una vez al principio de la partida
+     * 
+     * @param playMode Reglas de movimiento de las fichas
      *
      * @throws OccupiedCellException si la zona en la que empieza esta ocupada
      */
-    private void createPieces() throws OccupiedCellException {
+    private void createPieces(Mode playMode) throws OccupiedCellException {
         HashSet<Cell> in = this.playerSide.getSideCells();
         for (Cell i : in) {
-            Piece aux = new Piece(i, this.color);
+            Piece aux = new Piece(i, this.color, playMode);
             pieces.add(aux);
         }
     }
@@ -110,6 +113,7 @@ public class Player implements Serializable{
      * Intenta mover la pieza seleccionada a la celda targetPosition
      *
      * @param targetPosition Cell a donde mover la pieza seleccionada
+     * @param  
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */

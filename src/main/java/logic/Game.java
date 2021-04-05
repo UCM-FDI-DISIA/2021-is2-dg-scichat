@@ -2,6 +2,7 @@ package logic;
 
 import exceptions.OccupiedCellException;
 import logic.gameObjects.Player;
+import utils.Mode;
 import utils.Util;
 
 import java.awt.*;
@@ -66,8 +67,8 @@ public class Game implements Serializable{
     
     /*Métodos*/
 
-    public void addNewPlayer(Color color, Board.Side side) throws OccupiedCellException {
-        this.players.add(new Player(color, side));
+    public void addNewPlayer(Color color, Board.Side side, Mode playMode) throws OccupiedCellException {
+        this.players.add(new Player(color, side, playMode));
     }
 
     /**

@@ -2,6 +2,7 @@ import control.Controller;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Game;
+import utils.Mode;
 import utils.Util;
 
 import java.awt.*;
@@ -173,7 +174,7 @@ public class Main {
                 /// Se ha elegido un color, crear el nuevo jugador
                 try {
                     /// Añadir el jugador, y quitar el color de la lista
-                    this.game.addNewPlayer(color, side);
+                    this.game.addNewPlayer(color, side, Mode.Traditional);
                     this.availableColors.remove(colorInt - 1);
                 } catch (OccupiedCellException e) {
                     /// No va a lanzar nunca esta excepción, teóricamente

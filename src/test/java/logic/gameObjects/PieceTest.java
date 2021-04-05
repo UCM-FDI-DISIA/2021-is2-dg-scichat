@@ -4,6 +4,8 @@ import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
 import logic.Board;
 import logic.Cell;
+import utils.Mode;
+
 import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +24,9 @@ class PieceTest {
 	try {
 	    board = new Board();
 	    color = Color.BLUE;
-	    piece = new Piece(new Cell(8, 6, board), color);
-	    piece2 = new Piece(piece.getPosition().getUpperLeft(), color);
-	    piece3 = new Piece(piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(), color);
+	    piece = new Piece(new Cell(8, 6, board), color, Mode.Traditional);
+	    piece2 = new Piece(piece.getPosition().getUpperLeft(), color, Mode.Traditional);
+	    piece3 = new Piece(piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(), color, Mode.Traditional);
 
 	} catch (OccupiedCellException e) {
 	    fail("Middle cell wasn't empty in initialization.");

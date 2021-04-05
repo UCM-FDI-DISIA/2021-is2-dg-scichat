@@ -4,6 +4,8 @@ import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import logic.gameObjects.Piece;
+import utils.Mode;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -36,7 +38,7 @@ public class CellTest {
 
         assertDoesNotThrow(() -> {
             /// Crear un nueva pieza, y poner en esa posición libre
-            Piece piece = new Piece(cell, Color.RED);
+            Piece piece = new Piece(cell, Color.RED, Mode.Traditional);
         });
 
         /// Ya estaría ocupada ahora
@@ -53,7 +55,7 @@ public class CellTest {
         assertThrows(OccupiedCellException.class, () -> {
             /// Intentamos poner una pieza en esa misma posición
             /// Se invoca el método putPiece desde el constructor de Piece
-            new Piece(cell, Color.RED);
+            new Piece(cell, Color.RED, Mode.Traditional);
         });
 
         Cell cell2 = board.getCell(1, 7);
@@ -63,7 +65,7 @@ public class CellTest {
         assertDoesNotThrow(() -> {
             /// Intentamos poner una pieza en otra posición libre
             /// Ahora no tiene que haber problema
-            new Piece(cell2, Color.RED);
+            new Piece(cell2, Color.RED, Mode.Traditional);
         });
     }
 
@@ -77,7 +79,7 @@ public class CellTest {
 
         assertDoesNotThrow(() -> {
             /// Crear un nueva pieza, y poner en esa posición libre
-            new Piece(cell, Color.RED);
+            new Piece(cell, Color.RED, Mode.Traditional);
         });
 
         assertDoesNotThrow(() -> {
