@@ -24,9 +24,11 @@ public class Main {
 
         private Scanner scanner;
         private int numPlayers;
+        private Mode playMode;
         private Game game = new Game();
         private ArrayList<Color> availableColors = new ArrayList<>();
         private Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
+        private ArrayList<Mode> gameModes = new ArrayList<>();
 
         private SetupWizard(Scanner _scanner) {
             this.scanner = _scanner;
@@ -38,6 +40,9 @@ public class Main {
             this.availableColors.add(Color.RED);
             this.availableColors.add(Color.MAGENTA);
             this.availableColors.add(Color.BLUE);
+            
+            this.gameModes.add(Mode.Traditional);
+            this.gameModes.add(Mode.Fast);
         }
 
 
@@ -100,11 +105,46 @@ public class Main {
          * Método que inicializa la configuración de un nuevo juego
          */
         private void newGame() {
+            setGameMode();
             setNumPlayers();
             setPlayers();
         }
 
-        /**
+        private void printGameModes() {
+            System.out.println("> Seleccione un modo de juego: ");
+            System.out.println();
+
+            for(int i = 0; i < this.gameModes.size(); ++i) {
+        	System.out.format("     [%d]: %s \n\n", i+1 ,Util.mode2str(this.gameModes.get(i)));
+            }
+            
+            System.out.print("Opción: ");
+        }
+        
+        private void setGameMode() {
+            System.out.println();
+            printGameModes();
+            
+            int nmode=0;
+            if (scanner.hasNextInt()) {
+                nmode = scanner.nextInt();
+            }
+            nmode--;
+            while(nmode>=this.gameModes.size() || nmode<0) {
+        	System.out.println("Opción no válida.");
+                System.out.println(Separator);
+                printGameModes();
+    
+                if (scanner.hasNextInt()) {
+                    nmode = scanner.nextInt();
+                }
+                nmode--;
+            }
+            this.playMode=this.gameModes.get(nmode);
+            System.out.println();
+	}
+
+	/**
          * Método para cargar un juego guardado
          */
         private void loadGame() {
@@ -174,7 +214,7 @@ public class Main {
                 /// Se ha elegido un color, crear el nuevo jugador
                 try {
                     /// Añadir el jugador, y quitar el color de la lista
-                    this.game.addNewPlayer(color, side, Mode.Traditional);
+                    this.game.addNewPlayer(color, side, this.playMode);
                     this.availableColors.remove(colorInt - 1);
                 } catch (OccupiedCellException e) {
                     /// No va a lanzar nunca esta excepción, teóricamente

@@ -15,4 +15,15 @@ public class Util {
 	if(color == Color.ORANGE) return "ORANGE";
 	return "TO BE IMPLEMENTED IN Util.col2str";
     }
+    
+    public static String mode2str(Mode playMode) {
+	switch(playMode) {
+	case Fast:
+	    return "Fast Mode";
+	case Traditional:
+	    return "Traditional Mode";
+	default:
+	    return "TO BE IMPLEMENTED IN Util.mode2str";
+	}
+    }
 }
