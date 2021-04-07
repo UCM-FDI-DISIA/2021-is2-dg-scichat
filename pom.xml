@@ -34,7 +34,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <plugin.prettier.goal>check</plugin.prettier.goal>
+        <plugin.prettier.goal>write</plugin.prettier.goal>
     </properties>
 
     <build>
@@ -92,4 +92,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <properties>
+                <plugin.prettier.goal>check</plugin.prettier.goal>
+            </properties>
+        </profile>
+    </profiles>
 </project>
