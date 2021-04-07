@@ -1,10 +1,10 @@
 package exceptions;
 
-public class SaveGameException extends Exception{
+public class SaveGameException extends Exception {
     private static final long serialVersionUID = 1L;
 
     public SaveGameException() {
-        super("There was an error while saving the game.");
+        super("Ha ocurrido un error mientras se guardaba el juego.");
     }
 
     public SaveGameException(String message) {
@@ -19,8 +19,12 @@ public class SaveGameException extends Exception{
         super(message, cause);
     }
 
-    public SaveGameException(String message, Throwable cause,
-                                     boolean enableSuppression, boolean writeableStackTrace) {
+    public SaveGameException(
+        String message,
+        Throwable cause,
+        boolean enableSuppression,
+        boolean writeableStackTrace
+    ) {
         super(message, cause, enableSuppression, writeableStackTrace);
     }
 }

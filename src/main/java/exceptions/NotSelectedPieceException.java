@@ -3,7 +3,7 @@ package exceptions;
 public class NotSelectedPieceException extends Exception {
 
     public NotSelectedPieceException() {
-        super("No piece selected");
+        super("No hay una pieza seleccionada.");
     }
 
     public NotSelectedPieceException(String arg0) {
@@ -18,8 +18,12 @@ public class NotSelectedPieceException extends Exception {
         super(arg0, arg1);
     }
 
-    public NotSelectedPieceException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
+    public NotSelectedPieceException(
+        String arg0,
+        Throwable arg1,
+        boolean arg2,
+        boolean arg3
+    ) {
         super(arg0, arg1, arg2, arg3);
     }
-
 }

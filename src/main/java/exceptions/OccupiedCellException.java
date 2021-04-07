@@ -3,18 +3,17 @@ package exceptions;
 import logic.Cell;
 
 public class OccupiedCellException extends InvalidOperationException {
-
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
     public OccupiedCellException() {
-        super("Cell is occupied.");
+        super("La celda está ocupada.");
     }
 
     public OccupiedCellException(Cell pos) {
-        super(String.format("Cell %s is occupied.", pos.toString()));
+        super(String.format("La celda %s está ocupada.", pos.toString()));
     }
 
     public OccupiedCellException(String message) {
@@ -29,8 +28,12 @@ public class OccupiedCellException extends InvalidOperationException {
         super(message, cause);
     }
 
-    public OccupiedCellException(String message, Throwable cause,
-                                 boolean enableSuppression, boolean writeableStackTrace) {
+    public OccupiedCellException(
+        String message,
+        Throwable cause,
+        boolean enableSuppression,
+        boolean writeableStackTrace
+    ) {
         super(message, cause, enableSuppression, writeableStackTrace);
     }
 }

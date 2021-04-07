@@ -4,7 +4,7 @@ public class InvalidOperationException extends Exception {
     private static final long serialVersionUID = 1L;
 
     public InvalidOperationException() {
-        super("Invalid operation.");
+        super("Operación Inválida.");
     }
 
     public InvalidOperationException(String message) {
@@ -19,8 +19,12 @@ public class InvalidOperationException extends Exception {
         super(message, cause);
     }
 
-    public InvalidOperationException(String message, Throwable cause,
-                                     boolean enableSuppression, boolean writeableStackTrace) {
+    public InvalidOperationException(
+        String message,
+        Throwable cause,
+        boolean enableSuppression,
+        boolean writeableStackTrace
+    ) {
         super(message, cause, enableSuppression, writeableStackTrace);
     }
 }
