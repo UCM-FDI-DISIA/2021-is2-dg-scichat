@@ -3,25 +3,24 @@ package logic.gameObjects;
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import logic.Board.Side;
 import logic.Cell;
 import utils.Mode;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.util.HashSet;
-
-public class Player implements Serializable{
+public class Player implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     private Color color; // Color asignado al jugador
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
-    private Side playerSide;    // Lado del jugador
-    private Piece selectedPiece = null;    // Pieza seleccionada
-    private boolean surrender;    //Jugador se ha rendido
+    private Side playerSide; // Lado del jugador
+    private Piece selectedPiece = null; // Pieza seleccionada
+    private boolean surrender; //Jugador se ha rendido
 
     /*Constructores*/
 
@@ -42,7 +41,7 @@ public class Player implements Serializable{
 
     /**
      * Genera las fichas de Player, solo se llama una vez al principio de la partida
-     * 
+     *
      * @param playMode Reglas de movimiento de las fichas
      *
      * @throws OccupiedCellException si la zona en la que empieza esta ocupada
@@ -74,8 +73,7 @@ public class Player implements Serializable{
      * @return true si es suya y puede seleccionarla, false si no
      */
     boolean selectPiece(Piece piece) {
-        if (!pieces.contains(piece))
-            return false;
+        if (!pieces.contains(piece)) return false;
         this.selectedPiece = piece;
         return true;
     }
@@ -102,10 +100,11 @@ public class Player implements Serializable{
      * ganadoras
      */
     public boolean isAWinner() {
-        for (Piece pc : pieces)
-            if (!playerSide.getOpposingCells().contains(pc.getPosition())) {
-                return false;
-            }
+        for (Piece pc : pieces) if (
+            !playerSide.getOpposingCells().contains(pc.getPosition())
+        ) {
+            return false;
+        }
         return true;
     }
 
@@ -113,11 +112,12 @@ public class Player implements Serializable{
      * Intenta mover la pieza seleccionada a la celda targetPosition
      *
      * @param targetPosition Cell a donde mover la pieza seleccionada
-     * @param  
+     * @param
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
-    void move(Cell targetPosition) throws NotSelectedPieceException, InvalidMoveException {
+    void move(Cell targetPosition)
+        throws NotSelectedPieceException, InvalidMoveException {
         if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
         this.selectedPiece.move(targetPosition);
     }
@@ -182,7 +182,13 @@ public class Player implements Serializable{
         result.append("Piezas disponibles: \n\n");
 
         for (Piece piece : this.pieces) {
-            result.append(String.format("   (%s, %s) \n", piece.getPosition().getRow(), piece.getPosition().getCol()));
+            result.append(
+                String.format(
+                    "   (%s, %s) \n",
+                    piece.getPosition().getRow(),
+                    piece.getPosition().getCol()
+                )
+            );
         }
 
         return result.toString();

@@ -4,21 +4,19 @@ import exceptions.CellsNotLinedUpException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
-
-import logic.gameObjects.Piece;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.io.Serializable;
+import logic.gameObjects.Piece;
 
-public class Cell implements Serializable{
+public class Cell implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     private final int row;
     private final int col;
 
@@ -27,7 +25,12 @@ public class Cell implements Serializable{
 
     // Convertir en su propia clase
     public enum Direction {
-	Right, LowerRight, LowerLeft, Left, UpperLeft, UpperRight
+        Right,
+        LowerRight,
+        LowerLeft,
+        Left,
+        UpperLeft,
+        UpperRight
     }
 
     /**
@@ -39,7 +42,6 @@ public class Cell implements Serializable{
      * @throws OutOfBoundsException
      */
     public Cell(int row, int col, Board board) {
-
         this.row = row;
         this.col = col;
         this.board = board;
@@ -47,24 +49,24 @@ public class Cell implements Serializable{
     }
 
     public int getRow() {
-	return row;
+        return row;
     }
 
     public int getCol() {
-	return col;
+        return col;
     }
 
     public Piece getPiece() {
-	return this.piece;
+        return this.piece;
     }
 
     public void putPiece(Piece piece) throws OccupiedCellException {
-	if (this.piece != null) {
-	    /// La celda está ocupada
-	    throw new OccupiedCellException();
-	}
+        if (this.piece != null) {
+            /// La celda está ocupada
+            throw new OccupiedCellException();
+        }
 
-	this.piece = piece;
+        this.piece = piece;
     }
 
     /**
@@ -77,12 +79,12 @@ public class Cell implements Serializable{
      * @throws InvalidOperationException cuando no hay pieza en la celda
      */
     public void removePiece() throws InvalidOperationException {
-	if (this.piece == null) {
-	    throw new InvalidOperationException("No hay pieza en esta posición");
-	}
+        if (this.piece == null) {
+            throw new InvalidOperationException("No hay pieza en esta posición");
+        }
 
-	/// Si había una pieza puesta en esta posición, hay que cortar las referencias
-	this.piece = null;
+        /// Si había una pieza puesta en esta posición, hay que cortar las referencias
+        this.piece = null;
     }
 
     /**
@@ -99,15 +101,14 @@ public class Cell implements Serializable{
 
         for (Direction d : Direction.values()) {
             Cell c = this.getByDirection(d, dist);
-            if (c != null)
-                ret.add(c);
+            if (c != null) ret.add(c);
         }
         // No puedes convertir de tipo List<Cell> a List
         return Collections.unmodifiableList(ret);
     }
 
     public List<Cell> getNeighbours() {
-	return getNeighbours(1);
+        return getNeighbours(1);
     }
 
     public Cell getUpperRight() {
@@ -115,10 +116,10 @@ public class Cell implements Serializable{
     }
 
     public Cell getUpperRight(int times) {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row - times, col + times / 2);
-        else // Fila par
-            return this.board.getCell(row - times, col + (times + 1) / 2);
+        if (row % 2 == 1) return this.board.getCell( // Fila impar
+                row - times,
+                col + times / 2
+            ); else return this.board.getCell(row - times, col + (times + 1) / 2); // Fila par
     }
 
     public Cell getUpperLeft() {
@@ -126,10 +127,10 @@ public class Cell implements Serializable{
     }
 
     public Cell getUpperLeft(int times) {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row - times, col - (times + 1) / 2);
-        else // Fila par
-            return this.board.getCell(row - times, col - times / 2);
+        if (row % 2 == 1) return this.board.getCell( // Fila impar
+                row - times,
+                col - (times + 1) / 2
+            ); else return this.board.getCell(row - times, col - times / 2); // Fila par
     }
 
     public Cell getLowerRight() {
@@ -137,10 +138,10 @@ public class Cell implements Serializable{
     }
 
     public Cell getLowerRight(int times) {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row + times, col + times / 2);
-        else // Fila par
-            return this.board.getCell(row + times, col + (times + 1) / 2);
+        if (row % 2 == 1) return this.board.getCell( // Fila impar
+                row + times,
+                col + times / 2
+            ); else return this.board.getCell(row + times, col + (times + 1) / 2); // Fila par
     }
 
     public Cell getLowerLeft() {
@@ -148,14 +149,14 @@ public class Cell implements Serializable{
     }
 
     public Cell getLowerLeft(int times) {
-        if (row % 2 == 1) // Fila impar
-            return this.board.getCell(row + times, col - (times + 1) / 2);
-        else // Fila par
-            return this.board.getCell(row + times, col - times / 2);
+        if (row % 2 == 1) return this.board.getCell( // Fila impar
+                row + times,
+                col - (times + 1) / 2
+            ); else return this.board.getCell(row + times, col - times / 2); // Fila par
     }
 
     public Cell getRight() {
-	return getRight(1);
+        return getRight(1);
     }
 
     public Cell getRight(int times) {
@@ -163,7 +164,7 @@ public class Cell implements Serializable{
     }
 
     public Cell getLeft() {
-	return getLeft(1);
+        return getLeft(1);
     }
 
     public Cell getLeft(int times) {
@@ -176,35 +177,44 @@ public class Cell implements Serializable{
     }
 
     Cell getByDirection(Direction dir, int dist) {
-	switch (dir) {
-	case Right:
-	    return getRight(dist);
-	case LowerRight:
-	    return getLowerRight(dist);
-	case LowerLeft:
-	    return getLowerLeft(dist);
-	case Left:
-	    return getLeft(dist);
-	case UpperLeft:
-	    return getUpperLeft(dist);
-	case UpperRight:
-	    return getUpperRight(dist);
-	}
-	return null; // Should never happen
+        switch (dir) {
+            case Right:
+                return getRight(dist);
+            case LowerRight:
+                return getLowerRight(dist);
+            case LowerLeft:
+                return getLowerLeft(dist);
+            case Left:
+                return getLeft(dist);
+            case UpperLeft:
+                return getUpperLeft(dist);
+            case UpperRight:
+                return getUpperRight(dist);
+        }
+        return null; // Should never happen
     }
 
     // package private para test
     Direction getDirectionTowards(Cell other) throws CellsNotLinedUpException {
         if (this.isInSameDiagonalAs(other)) {
             if (this.getRow() == other.getRow()) { // Misma horizontal
-                return (this.getCol() < other.getCol() ? Direction.Right : Direction.Left);
+                return (
+                    this.getCol() < other.getCol() ? Direction.Right : Direction.Left
+                );
             } else if (this.getRow() < other.getRow()) { // other está por debajo
-                return (this.getCol() < other.getCol() ? Direction.LowerRight : Direction.LowerLeft);
+                return (
+                    this.getCol() < other.getCol()
+                        ? Direction.LowerRight
+                        : Direction.LowerLeft
+                );
             } else { // this.getRow() > other.getRow() // other está por arriba
-                return (this.getCol() < other.getCol() ? Direction.UpperRight : Direction.UpperLeft);
+                return (
+                    this.getCol() < other.getCol()
+                        ? Direction.UpperRight
+                        : Direction.UpperLeft
+                );
             }
-        } else
-            throw new CellsNotLinedUpException("Cells do not line up.");
+        } else throw new CellsNotLinedUpException("Cells do not line up.");
     }
 
     /**
@@ -215,22 +225,26 @@ public class Cell implements Serializable{
      * @throws InvalidOperationException
      */
     public int getDiagonalDistanceTo(Cell other) throws CellsNotLinedUpException {
-	if (this.isInSameDiagonalAs(other)) {
-	    return Math.max(Math.abs(this.getCol() - other.getCol()), Math.abs(this.getRow() - other.getRow()));
-	} else
-	    throw new CellsNotLinedUpException("Both cells must be in the same diagonal.");
+        if (this.isInSameDiagonalAs(other)) {
+            return Math.max(
+                Math.abs(this.getCol() - other.getCol()),
+                Math.abs(this.getRow() - other.getRow())
+            );
+        } else throw new CellsNotLinedUpException(
+            "Both cells must be in the same diagonal."
+        );
     }
 
-    public Cell getMiddleCellTowards(Cell other) // TODO: Puede que no sea necesario, deprecable
-	    throws CellsNotLinedUpException, InvalidOperationException {
-	Direction dir = this.getDirectionTowards(other);
-	int times = this.getDiagonalDistanceTo(other);
+    public Cell getMiddleCellTowards(Cell other)  // TODO: Puede que no sea necesario, deprecable
+        throws CellsNotLinedUpException, InvalidOperationException {
+        Direction dir = this.getDirectionTowards(other);
+        int times = this.getDiagonalDistanceTo(other);
 
-	if (times % 2 == 1)
-	    throw new InvalidOperationException("There is no middle cell.");
-	else {
-	    return this.getByDirection(dir, times / 2); // Shouldn't throw OutOfBoundsException
-	}
+        if (times % 2 == 1) throw new InvalidOperationException(
+            "There is no middle cell."
+        ); else {
+            return this.getByDirection(dir, times / 2); // Shouldn't throw OutOfBoundsException
+        }
     }
 
     /**
@@ -241,6 +255,7 @@ public class Cell implements Serializable{
      */
     public Iterable<Cell> getTrail(Direction direccion) {
         return new Iterable<Cell>() {
+
             public Iterator<Cell> iterator() {
                 return new Iterator<Cell>() {
                     private Cell pos = Cell.this;
@@ -254,15 +269,12 @@ public class Cell implements Serializable{
                     @Override
                     public Cell next() {
                         Cell prev = pos;
-                        if (hasNext())
-                            pos = pos.getByDirection(dir);
+                        if (hasNext()) pos = pos.getByDirection(dir);
                         return prev;
                     }
-
                 };
             }
         };
-
     }
 
     /**
@@ -273,12 +285,12 @@ public class Cell implements Serializable{
      * @throws CellsNotLinedUpException
      */
     public Iterable<Cell> getTrail(Cell other) throws CellsNotLinedUpException {
-        if (!other.isInSameDiagonalAs(other))
-            throw new CellsNotLinedUpException();
+        if (!other.isInSameDiagonalAs(other)) throw new CellsNotLinedUpException();
 
         int _left = this.getDiagonalDistanceTo(other);
         Direction _dir = this.getDirectionTowards(other);
         return new Iterable<Cell>() {
+
             @Override
             public Iterator<Cell> iterator() {
                 return new Iterator<Cell>() {
@@ -295,11 +307,9 @@ public class Cell implements Serializable{
                     public Cell next() {
                         left--;
                         Cell prev = pos;
-                        if (hasNext())
-                            pos = pos.getByDirection(dir);
+                        if (hasNext()) pos = pos.getByDirection(dir);
                         return prev;
                     }
-
                 };
             }
         };
@@ -307,31 +317,31 @@ public class Cell implements Serializable{
 
     @Deprecated
     public Iterator<Cell> getIteratorTowards(Cell other) throws CellsNotLinedUpException {
-	return new Iterator<Cell>() {
-	    private Cell pos = Cell.this;
-	    private int left = Cell.this.getDiagonalDistanceTo(other);
+        return new Iterator<Cell>() {
+            private Cell pos = Cell.this;
+            private int left = Cell.this.getDiagonalDistanceTo(other);
 
-	    @Override
-	    public boolean hasNext() {
-		return left == 0;
-	    }
+            @Override
+            public boolean hasNext() {
+                return left == 0;
+            }
 
-	    @Override
-	    public Cell next() {
-		left--;
-		Cell prev = pos;
-		try {
-		    pos = pos.getByDirection(pos.getDirectionTowards(other));
-		} catch (CellsNotLinedUpException e) {
-		    // No va a pasar nada, ya sabemos que están alineados
-		}
-		return prev;
-	    }
-	};
+            @Override
+            public Cell next() {
+                left--;
+                Cell prev = pos;
+                try {
+                    pos = pos.getByDirection(pos.getDirectionTowards(other));
+                } catch (CellsNotLinedUpException e) {
+                    // No va a pasar nada, ya sabemos que están alineados
+                }
+                return prev;
+            }
+        };
     }
 
     public String toString() {
-	return String.format("(%d,%d)", row, col);
+        return String.format("(%d,%d)", row, col);
     }
 
     /* CHECKS Y FUNCIONES COMPROBADORAS */
@@ -344,31 +354,28 @@ public class Cell implements Serializable{
      *         diagonal
      */
     public boolean isInSameDiagonalAs(Cell other) {
+        // Básicamente, queremos comprobar si la celda `other`, con
+        // coordenadas en el tablero (a,b), está en diagonal con
+        // esta celda, de coordenadas (x,y)
 
-	// Básicamente, queremos comprobar si la celda `other`, con
-	// coordenadas en el tablero (a,b), está en diagonal con
-	// esta celda, de coordenadas (x,y)
+        // Primero comprobamos que esten en la misma horizontal
+        if (other.getRow() == this.getRow()) return true;
 
-	// Primero comprobamos que esten en la misma horizontal
-	if (other.getRow() == this.getRow())
-	    return true;
-
-	int distance = Math.abs(this.getRow() - other.getRow());
-	for (Cell candidate : this.getNeighbours(distance)) {
-	    if (candidate.equals(other))
-		return true;
-	}
-	return false;
+        int distance = Math.abs(this.getRow() - other.getRow());
+        for (Cell candidate : this.getNeighbours(distance)) {
+            if (candidate.equals(other)) return true;
+        }
+        return false;
     }
 
     @Override
     public boolean equals(Object other) {
-	try {
-	    Cell that = (Cell) other;
-	    return this.getCol() == that.getCol() && this.getRow() == that.getRow();
-	} catch (Exception e) {
-	    return false;
-	}
+        try {
+            Cell that = (Cell) other;
+            return this.getCol() == that.getCol() && this.getRow() == that.getRow();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -377,9 +384,9 @@ public class Cell implements Serializable{
      * @return si no hay pieza, y es una posición dentro del tablero
      */
     public boolean isEmpty() {
-	return this.piece == null;
+        return this.piece == null;
     }
-    
+
     /**
      * Función encargada de obtener la posición resultante de efectuar un salto desde la posición de partida this
      * por encima de middleCell
@@ -388,21 +395,20 @@ public class Cell implements Serializable{
      */
 
     public Cell getCellJump(Cell middleCell) {
-	if (!middleCell.isEmpty()) {
-	    Direction directionJump = null;
-	    try { // Esta excepción no va a ocrurrir porque middleCell y this son vecinos por lo
-		  // que tienen que estar alineadads
-		directionJump = this.getDirectionTowards(middleCell);
-	    } catch (CellsNotLinedUpException e) {
-	    }
-	    Cell newJump = this.getByDirection(directionJump, 2); //Obtenemos la posición en la misma dirección pero una casilla más lejos.
-	    if (newJump.isEmpty()) {
-		return newJump;
-	    } else {
-		return null;
-	    }
-	} else {
-	    return null;
-	}
-   }
+        if (!middleCell.isEmpty()) {
+            Direction directionJump = null;
+            try { // Esta excepción no va a ocrurrir porque middleCell y this son vecinos por lo
+                // que tienen que estar alineadads
+                directionJump = this.getDirectionTowards(middleCell);
+            } catch (CellsNotLinedUpException e) {}
+            Cell newJump = this.getByDirection(directionJump, 2); //Obtenemos la posición en la misma dirección pero una casilla más lejos.
+            if (newJump.isEmpty()) {
+                return newJump;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }

@@ -1,8 +1,7 @@
 package control.options;
 
-import logic.Game;
-
 import java.util.Scanner;
+import logic.Game;
 
 public abstract class Option {
     public final String title;
@@ -11,6 +10,7 @@ public abstract class Option {
      * Excepción que se lanza cuando produce un error en ejecución
      */
     public static class ExecuteException extends Exception {
+
         public ExecuteException(String message) {
             super("[ERROR]: " + message);
         }

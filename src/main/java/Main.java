@@ -1,24 +1,24 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
+import java.awt.*;
+import java.util.*;
+import java.util.Queue;
 import logic.Board;
 import logic.Game;
 import utils.Mode;
 import utils.Util;
 
-import java.awt.*;
-import java.util.Queue;
-import java.util.*;
-
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     private static class SetupWizard {
-        private static final String asciiLogo = "       __                                   __    _                 \n" +
-                "  ____/ /___ _____ ___  ____ ______   _____/ /_  (_)___  ____ ______\n" +
-                " / __  / __ `/ __ `__ \\/ __ `/ ___/  / ___/ __ \\/ / __ \\/ __ `/ ___/\n" +
-                "/ /_/ / /_/ / / / / / / /_/ (__  )  / /__/ / / / / / / / /_/ (__  ) \n" +
-                "\\__,_/\\__,_/_/ /_/ /_/\\__,_/____/   \\___/_/ /_/_/_/ /_/\\__,_/____/  \n" +
-                "                                                                    ";
+        private static final String asciiLogo =
+            "       __                                   __    _                 \n" +
+            "  ____/ /___ _____ ___  ____ ______   _____/ /_  (_)___  ____ ______\n" +
+            " / __  / __ `/ __ `__ \\/ __ `/ ___/  / ___/ __ \\/ / __ \\/ __ `/ ___/\n" +
+            "/ /_/ / /_/ / / / / / / /_/ (__  )  / /__/ / / / / / / / /_/ (__  ) \n" +
+            "\\__,_/\\__,_/_/ /_/ /_/\\__,_/____/   \\___/_/ /_/_/_/ /_/\\__,_/____/  \n" +
+            "                                                                    ";
 
         private static final String Separator = "--------------------------";
 
@@ -40,11 +40,10 @@ public class Main {
             this.availableColors.add(Color.RED);
             this.availableColors.add(Color.MAGENTA);
             this.availableColors.add(Color.BLUE);
-            
+
             this.gameModes.add(Mode.Traditional);
             this.gameModes.add(Mode.Fast);
         }
-
 
         public void run() {
             printWelcome();
@@ -57,8 +56,7 @@ public class Main {
 
             try {
                 System.in.read();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             System.out.println(Separator);
         }
@@ -96,7 +94,7 @@ public class Main {
 
             if (option == 1) {
                 this.newGame();
-            } else {    /// Opción 2 sería
+            } else { /// Opción 2 sería
                 this.loadGame();
             }
         }
@@ -114,37 +112,41 @@ public class Main {
             System.out.println("> Seleccione un modo de juego: ");
             System.out.println();
 
-            for(int i = 0; i < this.gameModes.size(); ++i) {
-        	System.out.format("     [%d]: %s \n\n", i+1 ,Util.mode2str(this.gameModes.get(i)));
+            for (int i = 0; i < this.gameModes.size(); ++i) {
+                System.out.format(
+                    "     [%d]: %s \n\n",
+                    i + 1,
+                    Util.mode2str(this.gameModes.get(i))
+                );
             }
-            
+
             System.out.print("Opción: ");
         }
-        
+
         private void setGameMode() {
             System.out.println();
             printGameModes();
-            
-            int nmode=0;
+
+            int nmode = 0;
             if (scanner.hasNextInt()) {
                 nmode = scanner.nextInt();
             }
             nmode--;
-            while(nmode>=this.gameModes.size() || nmode<0) {
-        	System.out.println("Opción no válida.");
+            while (nmode >= this.gameModes.size() || nmode < 0) {
+                System.out.println("Opción no válida.");
                 System.out.println(Separator);
                 printGameModes();
-    
+
                 if (scanner.hasNextInt()) {
                     nmode = scanner.nextInt();
                 }
                 nmode--;
             }
-            this.playMode=this.gameModes.get(nmode);
+            this.playMode = this.gameModes.get(nmode);
             System.out.println();
-	}
+        }
 
-	/**
+        /**
          * Método para cargar un juego guardado
          */
         private void loadGame() {
@@ -158,14 +160,17 @@ public class Main {
                 numPlayers = scanner.nextInt();
             }
 
-            while (!(
+            while (
+                !(
                     numPlayers == 2 ||
-                            numPlayers == 3 ||
-                            numPlayers == 4 ||
-                            numPlayers == 6
-            )) {
-
-                System.out.print("Número de jugadores inválido, vuelve a introducir (2, 3, 4, 6): ");
+                    numPlayers == 3 ||
+                    numPlayers == 4 ||
+                    numPlayers == 6
+                )
+            ) {
+                System.out.print(
+                    "Número de jugadores inválido, vuelve a introducir (2, 3, 4, 6): "
+                );
 
                 if (scanner.hasNextInt()) {
                     numPlayers = scanner.nextInt();
@@ -175,14 +180,16 @@ public class Main {
             this.setAvailableSides();
         }
 
-        
-        
         private void printAvailableColors() {
             System.out.println("> Colores disponibles: ");
             System.out.println();
 
-            for(int i = 0; i < availableColors.size(); ++i) {
-        	System.out.format("     [%d]: %s \n\n", i+1 ,Util.col2str(this.availableColors.get(i)));
+            for (int i = 0; i < availableColors.size(); ++i) {
+                System.out.format(
+                    "     [%d]: %s \n\n",
+                    i + 1,
+                    Util.col2str(this.availableColors.get(i))
+                );
             }
             System.out.println();
         }
@@ -220,7 +227,12 @@ public class Main {
                     /// No va a lanzar nunca esta excepción, teóricamente
                 }
 
-                System.out.format("Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n", i + 1, Util.col2str(color), side);
+                System.out.format(
+                    "Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n",
+                    i + 1,
+                    Util.col2str(color),
+                    side
+                );
                 System.out.println();
             }
         }

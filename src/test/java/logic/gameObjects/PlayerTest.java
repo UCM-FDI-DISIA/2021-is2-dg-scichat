@@ -1,18 +1,16 @@
 package logic.gameObjects;
 
-import exceptions.OccupiedCellException;
-import logic.Board;
-import logic.Cell;
-import utils.Mode;
-
-import java.awt.Color;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlayerTest {
+import exceptions.OccupiedCellException;
+import java.awt.Color;
+import logic.Board;
+import logic.Cell;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import utils.Mode;
 
+public class PlayerTest {
     Player test;
     Board board;
 
@@ -28,10 +26,13 @@ public class PlayerTest {
 
     @Test
     void selectedPiece() throws Exception {
-
         assertFalse(test.hasSelectedPiece());
 
-        assertFalse(test.selectPiece(new Piece(new Cell(6, 6, board), Color.BLUE, Mode.Traditional)));
+        assertFalse(
+            test.selectPiece(
+                new Piece(new Cell(6, 6, board), Color.BLUE, Mode.Traditional)
+            )
+        );
 
         assertFalse(test.hasSelectedPiece());
 
@@ -42,7 +43,5 @@ public class PlayerTest {
         test.deselectPiece();
 
         assertFalse(test.hasSelectedPiece());
-
     }
-
 }
