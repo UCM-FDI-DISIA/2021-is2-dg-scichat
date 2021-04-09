@@ -114,12 +114,12 @@ public class Main {
 
             for (int i = 0; i < this.gameModes.size(); ++i) {
                 System.out.format(
-                    "     [%d]: %s \n\n",
+                    "     [%d]: %s \n",
                     i + 1,
                     Util.mode2str(this.gameModes.get(i))
                 );
             }
-
+            System.out.println();
             System.out.print("Opción: ");
         }
 
@@ -186,7 +186,7 @@ public class Main {
 
             for (int i = 0; i < availableColors.size(); ++i) {
                 System.out.format(
-                    "     [%d]: %s \n\n",
+                    "     [%d]: %s \n",
                     i + 1,
                     Util.col2str(this.availableColors.get(i))
                 );
