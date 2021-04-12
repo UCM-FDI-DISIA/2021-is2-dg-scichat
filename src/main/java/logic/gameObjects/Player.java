@@ -23,6 +23,9 @@ public class Player implements Serializable {
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
     private int id; //Jugador numero id
+    private long time; //Tiempo que lleva jugando
+    
+    private long timeAtTurnStart;
 
     /*Constructores*/
 
@@ -32,6 +35,7 @@ public class Player implements Serializable {
         this.playerSide = Side.Down;
         this.surrender = false;
         this.id = 0;
+        this.time=0;
         createPieces(Mode.Traditional);
     }
 
@@ -40,6 +44,7 @@ public class Player implements Serializable {
         this.playerSide = start;
         this.surrender = false;
         this.id = id;
+        this.time=0;
         createPieces(playMode);
     }
 
@@ -128,35 +133,6 @@ public class Player implements Serializable {
         this.selectedPiece.move(targetPosition);
     }
 
-    /**
-     * El jugador empieza seleccionando una ficha pasando su casilla como argumento,
-     * una vez que tiene una ficha seleccionada selecciona una casilla vacia para moverse
-     * si el movimiento es valido devuelve true, en cualquier otro caso devuelve false.
-     * <p>
-     * Si selecciona una celda ocupada cuando ya tiene pieza seleccionada y
-     * la celda contiene una pieza suya, cambia la pieza seleccionada,
-     * si la pieza de la celda no es suya, deselecciona la pieza
-     *
-     * @param targetPosition Posicion que el jugador selecciona
-     * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
-     */
-    public boolean turn(Cell targetPosition) {
-        if (targetPosition.isEmpty()) {
-            try {
-                this.move(targetPosition);
-            } catch (Exception e) {
-                return false;
-            }
-            deselectPiece();
-            return true;
-        } else {
-            if (!selectPiece(targetPosition.getPiece())) {
-                deselectPiece();
-            }
-            return false;
-        }
-    }
-
     public boolean hasSurrender() {
         return surrender;
     }
@@ -164,7 +140,25 @@ public class Player implements Serializable {
     public void surrender() {
         this.surrender = true;
     }
+    
+    /**
+     * Funcion para medir el tiempo de juego
+     */
+    public void startTurn() {
+	this.timeAtTurnStart=System.currentTimeMillis();
+    }
 
+    /**
+     * Funcion para medir el tiempo de juego
+     */
+    public void endTurn() {
+	this.time+=System.currentTimeMillis()-this.timeAtTurnStart;
+    }
+    
+    public long timePlaying() {
+	return time;
+    }
+    
     /**
      * Imprime el color y posición en el tablero del jugador
      */

@@ -3,6 +3,9 @@ package logic;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import org.apache.commons.lang.time.DurationFormatUtils;
+
 import logic.gameObjects.Player;
 import utils.Mode;
 import utils.PieceColor;
@@ -135,7 +138,7 @@ public class Game implements Serializable {
         result.append(
             String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1)
         );
-
+        result.append("Tiempo de juego " + DurationFormatUtils.formatDuration(this.getCurrentPlayer().timePlaying(), "HH:mm:ss.S")+"\n");
         return result.toString();
     }
 }

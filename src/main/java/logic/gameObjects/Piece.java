@@ -228,7 +228,6 @@ public class Piece implements Serializable {
         try {
             // Vemos que podemos llevar a cavo el movimiento
             if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); 
-            
             else if (playMode == Mode.Fast) tryToMoveFast(targetPosition);
             this.position.removePiece(); // Actualizamos las posiciones(celdas)
             this.position = targetPosition;
