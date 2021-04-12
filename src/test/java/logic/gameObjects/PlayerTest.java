@@ -18,7 +18,7 @@ public class PlayerTest {
     void init() {
         try {
             board = new Board();
-            test = new Player(Color.BLUE, Board.Side.Down, Mode.Traditional);
+            test = new Player(Color.BLUE, Board.Side.Down, Mode.Traditional, 0);
         } catch (OccupiedCellException e) {
             fail("Player start Cell previously occupied");
         }

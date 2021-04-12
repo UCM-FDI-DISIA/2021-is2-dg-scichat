@@ -21,6 +21,7 @@ public class Player implements Serializable {
     private Side playerSide; // Lado del jugador
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
+    private int id; //Jugador numero id
 
     /*Constructores*/
 
@@ -29,13 +30,15 @@ public class Player implements Serializable {
         this.color = Color.BLUE;
         this.playerSide = Side.Down;
         this.surrender = false;
+        this.id=0;
         createPieces(Mode.Traditional);
     }
 
-    public Player(Color color, Side start, Mode playMode) throws OccupiedCellException {
+    public Player(Color color, Side start, Mode playMode, int id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
+        this.id=id;
         createPieces(playMode);
     }
 
@@ -63,7 +66,9 @@ public class Player implements Serializable {
         return playerSide;
     }
 
-    /*Metodos*/
+    public int getId() {
+        return id;
+    }
 
     /**
      * Pone piece como pieza seleccionada por el jugador con la que realizara varias

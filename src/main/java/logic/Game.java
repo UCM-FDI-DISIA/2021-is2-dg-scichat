@@ -65,7 +65,7 @@ public class Game implements Serializable {
 
     public void addNewPlayer(Color color, Board.Side side, Mode playMode)
         throws OccupiedCellException {
-        this.players.add(new Player(color, side, playMode));
+        this.players.add(new Player(color, side, playMode, players.size()+1));
     }
 
     /**
