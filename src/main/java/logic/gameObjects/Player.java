@@ -9,6 +9,7 @@ import java.util.HashSet;
 import logic.Board.Side;
 import logic.Cell;
 import utils.Mode;
+import utils.PieceColor;
 
 public class Player implements Serializable {
     /**
@@ -16,7 +17,7 @@ public class Player implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private Color color; // Color asignado al jugador
+    private PieceColor color; // Color asignado al jugador
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide; // Lado del jugador
     private Piece selectedPiece = null; // Pieza seleccionada
@@ -27,18 +28,18 @@ public class Player implements Serializable {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this.color = Color.BLUE;
+        this.color = PieceColor.BLUE;
         this.playerSide = Side.Down;
         this.surrender = false;
-        this.id=0;
+        this.id = 0;
         createPieces(Mode.Traditional);
     }
 
-    public Player(Color color, Side start, Mode playMode, int id) throws OccupiedCellException {
+    public Player(PieceColor color, Side start, Mode playMode, int id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
-        this.id=id;
+        this.id = id;
         createPieces(playMode);
     }
 
@@ -58,7 +59,7 @@ public class Player implements Serializable {
     }
 
     /* Getters */
-    public Color getColor() {
+    public PieceColor getColor() {
         return color;
     }
 

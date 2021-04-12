@@ -4,7 +4,6 @@ import exceptions.InvalidMoveException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.Queue;
 import logic.Board;
 import logic.Cell;
 import utils.Mode;
+import utils.PieceColor;
 
 public class Piece implements Serializable {
     /**
@@ -20,13 +20,13 @@ public class Piece implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // El color es lo que hace que una ficha pertenezca a un jugador
-    private final Color color;
+    private final PieceColor color;
     private Cell position;
     private Mode playMode;
 
     /* Constructor */
 
-    public Piece(Cell pos, Color color, Mode playMode) throws OccupiedCellException {
+    public Piece(Cell pos, PieceColor color, Mode playMode) throws OccupiedCellException {
         this.color = color;
         this.playMode = playMode;
         if (!pos.isEmpty()) throw new OccupiedCellException(pos);
@@ -36,7 +36,7 @@ public class Piece implements Serializable {
 
     /* Getters */
 
-    public Color getColor() {
+    public PieceColor getColor() {
         return color;
     }
 

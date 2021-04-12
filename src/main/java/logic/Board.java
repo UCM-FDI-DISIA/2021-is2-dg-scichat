@@ -1,6 +1,7 @@
 package logic;
 
-import java.awt.Color;
+import utils.PieceColor;
+
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -164,22 +165,8 @@ public class Board implements Serializable {
                         current += (isLow == 0 ? "┌─┐ " : "└─┘ ");
                     } else {
                         /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
-                        Color val = cell.getPiece().getColor();
-                        if (val == Color.GREEN) {
-                            current += "GGG ";
-                        } else if (val == Color.YELLOW) {
-                            current += "YYY ";
-                        } else if (val == Color.ORANGE) {
-                            current += "OOO ";
-                        } else if (val == Color.RED) {
-                            current += "RRR ";
-                        } else if (val == Color.MAGENTA) {
-                            current += "PPP ";
-                        } else if (val == Color.BLUE) {
-                            current += "BBB ";
-                        } else {
-                            current += "--- ";
-                        }
+                        PieceColor color = cell.getPiece().getColor();
+                        current += color.getBoardString();
                     }
                 }
                 result +=

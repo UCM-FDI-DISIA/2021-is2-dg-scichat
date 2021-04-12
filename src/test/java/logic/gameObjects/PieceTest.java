@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Mode;
+import utils.PieceColor;
 
 class PieceTest {
     Piece piece, piece2, piece3;
     Cell posAux = null;
     Board board = null;
-    Color color = null;
+    PieceColor color = null;
 
     @BeforeEach
     void init() {
         try {
             board = new Board();
-            color = Color.BLUE;
+            color = PieceColor.BLUE;
             piece = new Piece(new Cell(8, 6, board), color, Mode.Traditional);
             piece2 =
                 new Piece(piece.getPosition().getUpperLeft(), color, Mode.Traditional);
