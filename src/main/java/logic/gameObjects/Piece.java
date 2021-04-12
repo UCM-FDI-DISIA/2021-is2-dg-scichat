@@ -227,9 +227,8 @@ public class Piece implements Serializable {
     public void move(Cell targetPosition) throws InvalidMoveException {
         try {
             // Vemos que podemos llevar a cavo el movimiento
-            if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); else if (
-                playMode == Mode.Fast
-            ) tryToMoveFast(targetPosition);
+            if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); 
+            else if (playMode == Mode.Fast) tryToMoveFast(targetPosition);
             this.position.removePiece(); // Actualizamos las posiciones(celdas)
             this.position = targetPosition;
             this.position.putPiece(this);
