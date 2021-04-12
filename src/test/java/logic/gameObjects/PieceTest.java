@@ -23,14 +23,13 @@ class PieceTest {
         try {
             board = new Board();
             color = Color.BLUE;
-            piece = new Piece(new Cell(8, 6, board), color, Mode.Traditional);
+            piece = new Piece(new Cell(8, 6, board), color);
             piece2 =
-                new Piece(piece.getPosition().getUpperLeft(), color, Mode.Traditional);
+                new Piece(piece.getPosition().getUpperLeft(), color);
             piece3 =
                 new Piece(
                     piece.getPosition().getUpperLeft().getUpperLeft().getUpperRight(),
-                    color,
-                    Mode.Traditional
+                    color
                 );
         } catch (OccupiedCellException e) {
             fail("Middle cell wasn't empty in initialization.");
@@ -96,7 +95,7 @@ class PieceTest {
         Assertions.assertDoesNotThrow(
             () -> {
                 posAux = piece.getPosition();
-                piece.move(piece2.getPosition().getUpperLeft());
+                piece.move(piece2.getPosition().getUpperLeft(),Mode.Traditional);
             }
         );
         // Tratamos de movernos a una posición inválida por no tener ningina pieza
@@ -104,7 +103,7 @@ class PieceTest {
         Assertions.assertThrows(
             InvalidMoveException.class,
             () -> {
-                piece.move(piece2.getPosition().getLowerLeft(2));
+                piece.move(piece2.getPosition().getLowerLeft(2),Mode.Traditional);
             }
         );
         // Comprobamos que se han actualizado correctamente las variables(se han vaciado

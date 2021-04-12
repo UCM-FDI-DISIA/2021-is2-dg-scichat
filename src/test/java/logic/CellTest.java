@@ -37,7 +37,7 @@ public class CellTest {
         assertDoesNotThrow(
             () -> {
                 /// Crear un nueva pieza, y poner en esa posición libre
-                Piece piece = new Piece(cell, Color.RED, Mode.Traditional);
+                Piece piece = new Piece(cell, Color.RED);
             }
         );
 
@@ -57,7 +57,7 @@ public class CellTest {
             () -> {
                 /// Intentamos poner una pieza en esa misma posición
                 /// Se invoca el método putPiece desde el constructor de Piece
-                new Piece(cell, Color.RED, Mode.Traditional);
+                new Piece(cell, Color.RED);
             }
         );
 
@@ -69,7 +69,7 @@ public class CellTest {
             () -> {
                 /// Intentamos poner una pieza en otra posición libre
                 /// Ahora no tiene que haber problema
-                new Piece(cell2, Color.RED, Mode.Traditional);
+                new Piece(cell2, Color.RED);
             }
         );
     }
@@ -85,7 +85,7 @@ public class CellTest {
         assertDoesNotThrow(
             () -> {
                 /// Crear un nueva pieza, y poner en esa posición libre
-                new Piece(cell, Color.RED, Mode.Traditional);
+                new Piece(cell, Color.RED);
             }
         );
 
