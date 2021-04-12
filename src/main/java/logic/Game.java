@@ -18,6 +18,7 @@ public class Game implements Serializable {
     private boolean stopped = false; /// Si el jugador ha parado el juego
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex = 0;
+    private Mode gameMode;
 
     public Game() {}
 
@@ -42,6 +43,10 @@ public class Game implements Serializable {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
+    
+    public Mode getGameMode() {
+	return gameMode;
+    }
 
     /*Setters*/
 
@@ -60,12 +65,16 @@ public class Game implements Serializable {
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
+    
+    public void setGameMode(Mode modo) {
+   	gameMode = modo;
+   }
 
     /*Métodos*/
 
-    public void addNewPlayer(Color color, Board.Side side, Mode playMode)
+    public void addNewPlayer(Color color, Board.Side side)
         throws OccupiedCellException {
-        this.players.add(new Player(color, side, playMode));
+        this.players.add(new Player(color, side));
     }
 
     /**

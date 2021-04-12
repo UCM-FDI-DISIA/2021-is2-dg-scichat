@@ -73,7 +73,7 @@ public class MovePieceOption extends Option {
         /// Intentar mover a la nueva celda
         /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
-            selectedPiece.move(newCell);
+            selectedPiece.move(newCell, game.getGameMode());
         } catch (InvalidMoveException e) {
             throw new ExecuteException(
                 String.format(

@@ -26,17 +26,14 @@ public class Player implements Serializable {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this.color = Color.BLUE;
-        this.playerSide = Side.Down;
-        this.surrender = false;
-        createPieces(Mode.Traditional);
+        this(Color.BLUE, Side.Down);
     }
 
-    public Player(Color color, Side start, Mode playMode) throws OccupiedCellException {
+    public Player(Color color, Side start) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
-        createPieces(playMode);
+        createPieces();
     }
 
     /**
@@ -46,10 +43,10 @@ public class Player implements Serializable {
      *
      * @throws OccupiedCellException si la zona en la que empieza esta ocupada
      */
-    private void createPieces(Mode playMode) throws OccupiedCellException {
+    private void createPieces() throws OccupiedCellException {
         HashSet<Cell> in = this.playerSide.getSideCells();
         for (Cell i : in) {
-            Piece aux = new Piece(i, this.color, playMode);
+            Piece aux = new Piece(i, this.color);
             pieces.add(aux);
         }
     }
@@ -116,10 +113,10 @@ public class Player implements Serializable {
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
-    void move(Cell targetPosition)
+    void move(Cell targetPosition, Mode playMode)
         throws NotSelectedPieceException, InvalidMoveException {
         if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
-        this.selectedPiece.move(targetPosition);
+        this.selectedPiece.move(targetPosition, playMode);
     }
 
     /**
@@ -132,12 +129,13 @@ public class Player implements Serializable {
      * si la pieza de la celda no es suya, deselecciona la pieza
      *
      * @param targetPosition Posicion que el jugador selecciona
+     * @param playMode 	     Modo de juego actual
      * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
      */
-    public boolean turn(Cell targetPosition) {
+    public boolean turn(Cell targetPosition, Mode playMode) {
         if (targetPosition.isEmpty()) {
             try {
-                this.move(targetPosition);
+                this.move(targetPosition, playMode);
             } catch (Exception e) {
                 return false;
             }
