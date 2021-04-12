@@ -1,12 +1,11 @@
 package logic;
 
 import exceptions.OccupiedCellException;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import logic.gameObjects.Player;
 import utils.Mode;
-import utils.Util;
+import utils.PieceColor;
 
 public class Game implements Serializable {
     /**
@@ -63,7 +62,7 @@ public class Game implements Serializable {
 
     /*Métodos*/
 
-    public void addNewPlayer(Color color, Board.Side side, Mode playMode)
+    public void addNewPlayer(PieceColor color, Board.Side side, Mode playMode)
         throws OccupiedCellException {
         this.players.add(new Player(color, side, playMode, players.size()+1));
     }
@@ -125,7 +124,7 @@ public class Game implements Serializable {
                 String.format(
                     "   [%s]: %s - %s",
                     i + 1,
-                    Util.col2str(this.players.get(i).getColor()),
+                    this.players.get(i).getColor().getName(),
                     this.players.get(i).getSide()
                 )
             );
