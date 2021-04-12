@@ -165,22 +165,8 @@ public class Board implements Serializable {
                         current += (isLow == 0 ? "┌─┐ " : "└─┘ ");
                     } else {
                         /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
-                        PieceColor val = cell.getPiece().getColor();
-                        if (val == PieceColor.GREEN) {
-                            current += "GGG ";
-                        } else if (val == PieceColor.YELLOW) {
-                            current += "YYY ";
-                        } else if (val == PieceColor.ORANGE) {
-                            current += "OOO ";
-                        } else if (val == PieceColor.RED) {
-                            current += "RRR ";
-                        } else if (val == PieceColor.MAGENTA) {
-                            current += "PPP ";
-                        } else if (val == PieceColor.BLUE) {
-                            current += "BBB ";
-                        } else {
-                            current += "--- ";
-                        }
+                        PieceColor color = cell.getPiece().getColor();
+                        current += color.getBoardString();
                     }
                 }
                 result +=
