@@ -9,6 +9,7 @@ import java.util.HashSet;
 import logic.Board.Side;
 import logic.Cell;
 import utils.Mode;
+import utils.PieceColor;
 
 public class Player implements Serializable {
     /**
@@ -16,23 +17,30 @@ public class Player implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private Color color; // Color asignado al jugador
+    private PieceColor color; // Color asignado al jugador
     private HashSet<Piece> pieces = new HashSet<>(); // Fichas del jugador
     private Side playerSide; // Lado del jugador
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
+    private int id; //Jugador numero id
+    private long time; //Tiempo que lleva jugando
+    
+    private long timeAtTurnStart;
 
     /*Constructores*/
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this(Color.BLUE, Side.Down);
+        this(Color.BLUE, Side.Down, 0);
     }
 
-    public Player(Color color, Side start) throws OccupiedCellException {
+
+    public Player(PieceColor color, Side start, int id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
+        this.id = id;
+        this.time=0;
         createPieces();
     }
 
@@ -52,7 +60,7 @@ public class Player implements Serializable {
     }
 
     /* Getters */
-    public Color getColor() {
+    public PieceColor getColor() {
         return color;
     }
 
@@ -60,7 +68,9 @@ public class Player implements Serializable {
         return playerSide;
     }
 
-    /*Metodos*/
+    public int getId() {
+        return id;
+    }
 
     /**
      * Pone piece como pieza seleccionada por el jugador con la que realizara varias
@@ -156,7 +166,25 @@ public class Player implements Serializable {
     public void surrender() {
         this.surrender = true;
     }
+    
+    /**
+     * Funcion para medir el tiempo de juego
+     */
+    public void startTurn() {
+	this.timeAtTurnStart=System.currentTimeMillis();
+    }
 
+    /**
+     * Funcion para medir el tiempo de juego
+     */
+    public void endTurn() {
+	this.time+=System.currentTimeMillis()-this.timeAtTurnStart;
+    }
+    
+    public long timePlaying() {
+	return time;
+    }
+    
     /**
      * Imprime el color y posición en el tablero del jugador
      */

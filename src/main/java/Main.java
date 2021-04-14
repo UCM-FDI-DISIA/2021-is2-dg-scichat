@@ -1,12 +1,12 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
-import java.awt.*;
 import java.util.*;
 import java.util.Queue;
 import logic.Board;
 import logic.Game;
 import utils.Mode;
 import utils.Util;
+import utils.PieceColor;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -25,7 +25,7 @@ public class Main {
         private Scanner scanner;
         private int numPlayers;
         private Game game = new Game();
-        private ArrayList<Color> availableColors = new ArrayList<>();
+        private ArrayList<PieceColor> availableColors = new ArrayList<>();
         private Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
         private ArrayList<Mode> gameModes = new ArrayList<>();
 
@@ -33,12 +33,12 @@ public class Main {
             this.scanner = _scanner;
 
             /// Inicialmente todos los colores disponibles
-            this.availableColors.add(Color.GREEN);
-            this.availableColors.add(Color.YELLOW);
-            this.availableColors.add(Color.ORANGE);
-            this.availableColors.add(Color.RED);
-            this.availableColors.add(Color.MAGENTA);
-            this.availableColors.add(Color.BLUE);
+            this.availableColors.add(PieceColor.GREEN);
+            this.availableColors.add(PieceColor.YELLOW);
+            this.availableColors.add(PieceColor.ORANGE);
+            this.availableColors.add(PieceColor.RED);
+            this.availableColors.add(PieceColor.MAGENTA);
+            this.availableColors.add(PieceColor.BLUE);
 
             this.gameModes.add(Mode.Traditional);
             this.gameModes.add(Mode.Fast);
@@ -187,7 +187,7 @@ public class Main {
                 System.out.format(
                     "     [%d]: %s \n",
                     i + 1,
-                    Util.col2str(this.availableColors.get(i))
+                    this.availableColors.get(i).getName()
                 );
             }
             System.out.println();
@@ -216,7 +216,7 @@ public class Main {
                     colorInt = scanner.nextInt();
                 }
 
-                Color color = this.availableColors.get(colorInt - 1);
+                PieceColor color = this.availableColors.get(colorInt - 1);
                 /// Se ha elegido un color, crear el nuevo jugador
                 try {
                     /// Añadir el jugador, y quitar el color de la lista
@@ -229,7 +229,7 @@ public class Main {
                 System.out.format(
                     "Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n",
                     i + 1,
-                    Util.col2str(color),
+                    color.getName(),
                     side
                 );
                 System.out.println();

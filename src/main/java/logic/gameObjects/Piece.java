@@ -4,7 +4,6 @@ import exceptions.InvalidMoveException;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +16,7 @@ import logic.Board;
 import logic.Cell;
 import logic.Cell.Direction;
 import utils.Mode;
+import utils.PieceColor;
 
 public class Piece implements Serializable {
     /**
@@ -25,23 +25,24 @@ public class Piece implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // El color es lo que hace que una ficha pertenezca a un jugador
-    private final Color color;
+    private final PieceColor color;
     private Cell position;
 
     /* Constructor */
-
     public Piece(Cell pos, Color color) throws OccupiedCellException {
 	this.color = color;
 	if (!pos.isEmpty())
 	    throw new OccupiedCellException(pos);
 	this.position = pos;
 	this.position.putPiece(this);
+
     }
 
     /* Getters */
 
-    public Color getColor() {
-	return color;
+
+    public PieceColor getColor() {
+        return color;
     }
 
     public Cell getPosition() {
@@ -176,9 +177,9 @@ public class Piece implements Serializable {
 	try {
 	    // Vemos que podemos llevar a cavo el movimiento
 	    if (playMode == Mode.Traditional)
-		tryToMoveTo(targetPosition);
+		      tryToMoveTo(targetPosition);
 	    else if (playMode == Mode.Fast)
-		tryToMoveFast(targetPosition);
+		      tryToMoveFast(targetPosition);
 
 	    this.position.removePiece(); // Actualizamos las posiciones(celdas)
 	    this.position = targetPosition;
@@ -187,5 +188,6 @@ public class Piece implements Serializable {
 	    System.out.println(ioe.getMessage());
 	    throw new InvalidMoveException("The move is not possible.", ioe);
 	}
+
     }
 }

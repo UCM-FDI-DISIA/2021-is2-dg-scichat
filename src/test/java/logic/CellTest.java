@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
-import java.awt.Color;
 import logic.gameObjects.Piece;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.Mode;
+import utils.PieceColor;
 
 public class CellTest {
     private Cell cell, other;
@@ -37,7 +37,7 @@ public class CellTest {
         assertDoesNotThrow(
             () -> {
                 /// Crear un nueva pieza, y poner en esa posición libre
-                Piece piece = new Piece(cell, Color.RED);
+                Piece piece = new Piece(cell, PieceColor.RED);
             }
         );
 
@@ -57,7 +57,7 @@ public class CellTest {
             () -> {
                 /// Intentamos poner una pieza en esa misma posición
                 /// Se invoca el método putPiece desde el constructor de Piece
-                new Piece(cell, Color.RED);
+                new Piece(cell, PieceColor.RED);
             }
         );
 
@@ -69,7 +69,8 @@ public class CellTest {
             () -> {
                 /// Intentamos poner una pieza en otra posición libre
                 /// Ahora no tiene que haber problema
-                new Piece(cell2, Color.RED);
+
+                new Piece(cell2, PieceColor.RED);
             }
         );
     }
@@ -85,7 +86,7 @@ public class CellTest {
         assertDoesNotThrow(
             () -> {
                 /// Crear un nueva pieza, y poner en esa posición libre
-                new Piece(cell, Color.RED);
+                new Piece(cell, PieceColor.RED);
             }
         );
 

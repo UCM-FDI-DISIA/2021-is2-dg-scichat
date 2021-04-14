@@ -1,12 +1,14 @@
 package logic;
 
 import exceptions.OccupiedCellException;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import org.apache.commons.lang.time.DurationFormatUtils;
+
 import logic.gameObjects.Player;
 import utils.Mode;
-import utils.Util;
+import utils.PieceColor;
 
 public class Game implements Serializable {
     /**
@@ -72,9 +74,10 @@ public class Game implements Serializable {
 
     /*Métodos*/
 
-    public void addNewPlayer(Color color, Board.Side side)
+
+    public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
-        this.players.add(new Player(color, side));
+        this.players.add(new Player(color, side, players.size()+1));
     }
 
     /**
@@ -134,7 +137,7 @@ public class Game implements Serializable {
                 String.format(
                     "   [%s]: %s - %s",
                     i + 1,
-                    Util.col2str(this.players.get(i).getColor()),
+                    this.players.get(i).getColor().getName(),
                     this.players.get(i).getSide()
                 )
             );
@@ -145,7 +148,7 @@ public class Game implements Serializable {
         result.append(
             String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1)
         );
-
+        result.append("Tiempo de juego " + DurationFormatUtils.formatDuration(this.getCurrentPlayer().timePlaying(), "HH:mm:ss.S")+"\n");
         return result.toString();
     }
 }
