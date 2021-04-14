@@ -24,7 +24,6 @@ public class Main {
 
         private Scanner scanner;
         private int numPlayers;
-        private Mode playMode;
         private Game game = new Game();
         private ArrayList<PieceColor> availableColors = new ArrayList<>();
         private Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
@@ -142,7 +141,7 @@ public class Main {
                 }
                 nmode--;
             }
-            this.playMode = this.gameModes.get(nmode);
+            game.setGameMode(this.gameModes.get(nmode));
             System.out.println();
         }
 
@@ -221,7 +220,7 @@ public class Main {
                 /// Se ha elegido un color, crear el nuevo jugador
                 try {
                     /// Añadir el jugador, y quitar el color de la lista
-                    this.game.addNewPlayer(color, side, this.playMode);
+                    this.game.addNewPlayer(color, side);
                     this.availableColors.remove(colorInt - 1);
                 } catch (OccupiedCellException e) {
                     /// No va a lanzar nunca esta excepción, teóricamente

@@ -31,21 +31,17 @@ public class Player implements Serializable {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this.color = PieceColor.BLUE;
-        this.playerSide = Side.Down;
-        this.surrender = false;
-        this.id = 0;
-        this.time=0;
-        createPieces(Mode.Traditional);
+        this(Color.BLUE, Side.Down, 0);
     }
 
-    public Player(PieceColor color, Side start, Mode playMode, int id) throws OccupiedCellException {
+
+    public Player(PieceColor color, Side start, int id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
         this.id = id;
         this.time=0;
-        createPieces(playMode);
+        createPieces();
     }
 
     /**
@@ -55,10 +51,10 @@ public class Player implements Serializable {
      *
      * @throws OccupiedCellException si la zona en la que empieza esta ocupada
      */
-    private void createPieces(Mode playMode) throws OccupiedCellException {
+    private void createPieces() throws OccupiedCellException {
         HashSet<Cell> in = this.playerSide.getSideCells();
         for (Cell i : in) {
-            Piece aux = new Piece(i, this.color, playMode);
+            Piece aux = new Piece(i, this.color);
             pieces.add(aux);
         }
     }
@@ -127,10 +123,40 @@ public class Player implements Serializable {
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
-    void move(Cell targetPosition)
+    void move(Cell targetPosition, Mode playMode)
         throws NotSelectedPieceException, InvalidMoveException {
         if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
-        this.selectedPiece.move(targetPosition);
+        this.selectedPiece.move(targetPosition, playMode);
+    }
+
+    /**
+     * El jugador empieza seleccionando una ficha pasando su casilla como argumento,
+     * una vez que tiene una ficha seleccionada selecciona una casilla vacia para moverse
+     * si el movimiento es valido devuelve true, en cualquier otro caso devuelve false.
+     * <p>
+     * Si selecciona una celda ocupada cuando ya tiene pieza seleccionada y
+     * la celda contiene una pieza suya, cambia la pieza seleccionada,
+     * si la pieza de la celda no es suya, deselecciona la pieza
+     *
+     * @param targetPosition Posicion que el jugador selecciona
+     * @param playMode 	     Modo de juego actual
+     * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
+     */
+    public boolean turn(Cell targetPosition, Mode playMode) {
+        if (targetPosition.isEmpty()) {
+            try {
+                this.move(targetPosition, playMode);
+            } catch (Exception e) {
+                return false;
+            }
+            deselectPiece();
+            return true;
+        } else {
+            if (!selectPiece(targetPosition.getPiece())) {
+                deselectPiece();
+            }
+            return false;
+        }
     }
 
     public boolean hasSurrender() {

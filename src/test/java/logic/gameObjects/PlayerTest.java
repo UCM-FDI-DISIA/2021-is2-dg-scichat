@@ -18,7 +18,8 @@ public class PlayerTest {
     void init() {
         try {
             board = new Board();
-            test = new Player(PieceColor.BLUE, Board.Side.Down, Mode.Traditional, 0);
+
+            test = new Player(PieceColor.BLUE, Board.Side.Down, 0);
         } catch (OccupiedCellException e) {
             fail("Player start Cell previously occupied");
         }
@@ -30,7 +31,7 @@ public class PlayerTest {
 
         assertFalse(
                 test.selectPiece(
-                        new Piece(new Cell(6, 6, board), PieceColor.BLUE, Mode.Traditional)
+                        new Piece(new Cell(6, 6, board), PieceColor.BLUE)
                 )
         );
 
