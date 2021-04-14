@@ -3,6 +3,7 @@ package utils;
 import java.awt.Color;
 
 public class Util {
+
     public static String mode2str(Mode playMode) {
         switch (playMode) {
             case Fast:

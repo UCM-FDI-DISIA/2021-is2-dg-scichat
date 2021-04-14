@@ -1,9 +1,8 @@
 package logic;
 
-import utils.PieceColor;
-
 import java.io.Serializable;
 import java.util.HashSet;
+import utils.PieceColor;
 
 public class Board implements Serializable {
     /**

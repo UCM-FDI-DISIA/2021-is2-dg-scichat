@@ -3,10 +3,8 @@ package logic;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import org.apache.commons.lang.time.DurationFormatUtils;
-
 import logic.gameObjects.Player;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -45,9 +43,9 @@ public class Game implements Serializable {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
-    
+
     public Mode getGameMode() {
-	return gameMode;
+        return gameMode;
     }
 
     /*Setters*/
@@ -67,17 +65,16 @@ public class Game implements Serializable {
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
-    
+
     public void setGameMode(Mode modo) {
-   	gameMode = modo;
-   }
+        gameMode = modo;
+    }
 
     /*Métodos*/
 
-
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
-        this.players.add(new Player(color, side, players.size()+1));
+        this.players.add(new Player(color, side, players.size() + 1));
     }
 
     /**
@@ -148,7 +145,14 @@ public class Game implements Serializable {
         result.append(
             String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1)
         );
-        result.append("Tiempo de juego " + DurationFormatUtils.formatDuration(this.getCurrentPlayer().timePlaying(), "HH:mm:ss.S")+"\n");
+        result.append(
+            "Tiempo de juego " +
+            DurationFormatUtils.formatDuration(
+                this.getCurrentPlayer().timePlaying(),
+                "HH:mm:ss.S"
+            ) +
+            "\n"
+        );
         return result.toString();
     }
 }

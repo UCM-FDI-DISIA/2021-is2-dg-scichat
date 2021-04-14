@@ -5,8 +5,8 @@ import java.util.Queue;
 import logic.Board;
 import logic.Game;
 import utils.Mode;
-import utils.Util;
 import utils.PieceColor;
+import utils.Util;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);

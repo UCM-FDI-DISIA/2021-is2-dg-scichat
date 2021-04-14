@@ -24,7 +24,7 @@ public class Player implements Serializable {
     private boolean surrender; //Jugador se ha rendido
     private int id; //Jugador numero id
     private long time; //Tiempo que lleva jugando
-    
+
     private long timeAtTurnStart;
 
     /*Constructores*/
@@ -34,13 +34,12 @@ public class Player implements Serializable {
         this(Color.BLUE, Side.Down, 0);
     }
 
-
     public Player(PieceColor color, Side start, int id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
         this.id = id;
-        this.time=0;
+        this.time = 0;
         createPieces();
     }
 
@@ -166,25 +165,25 @@ public class Player implements Serializable {
     public void surrender() {
         this.surrender = true;
     }
-    
+
     /**
      * Funcion para medir el tiempo de juego
      */
     public void startTurn() {
-	this.timeAtTurnStart=System.currentTimeMillis();
+        this.timeAtTurnStart = System.currentTimeMillis();
     }
 
     /**
      * Funcion para medir el tiempo de juego
      */
     public void endTurn() {
-	this.time+=System.currentTimeMillis()-this.timeAtTurnStart;
+        this.time += System.currentTimeMillis() - this.timeAtTurnStart;
     }
-    
+
     public long timePlaying() {
-	return time;
+        return time;
     }
-    
+
     /**
      * Imprime el color y posición en el tablero del jugador
      */
