@@ -31,7 +31,7 @@ public class Player implements Serializable {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this(Color.BLUE, Side.Down, 0);
+        this(PieceColor.BLUE, Side.Down, 0);
     }
 
     public Player(PieceColor color, Side start, int id) throws OccupiedCellException {

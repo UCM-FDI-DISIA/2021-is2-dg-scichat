@@ -13,7 +13,6 @@ import java.util.Queue;
 import java.util.Set;
 import logic.Board;
 import logic.Cell;
-import logic.Cell.Direction;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -28,7 +27,7 @@ public class Piece implements Serializable {
     private Cell position;
 
     /* Constructor */
-    public Piece(Cell pos, Color color) throws OccupiedCellException {
+    public Piece(Cell pos, PieceColor color) throws OccupiedCellException {
         this.color = color;
         if (!pos.isEmpty()) throw new OccupiedCellException(pos);
         this.position = pos;
