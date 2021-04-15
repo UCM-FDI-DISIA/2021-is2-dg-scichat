@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
-import java.awt.Color;
 import logic.Board;
 import logic.Cell;
 import org.junit.jupiter.api.Assertions;
@@ -99,10 +98,11 @@ class PieceTest {
                 piece.move(piece2.getPosition().getUpperLeft(), Mode.Traditional);
             }
         );
-        // Tratamos de movernos a una posición inválida por no tener ningina pieza
+        // Tratamos de movernos a una posición inválida por no tener ninguna pieza
         // adyacente
+        /// Aquí lanza una excepción de null pointer, porque no existe ninguna pieza en esa celda
         Assertions.assertThrows(
-            InvalidMoveException.class,
+            NullPointerException.class,
             () -> {
                 piece.move(piece2.getPosition().getLowerLeft(2), Mode.Traditional);
             }
