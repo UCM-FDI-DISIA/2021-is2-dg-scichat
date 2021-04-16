@@ -6,7 +6,6 @@ import logic.Board;
 import logic.Game;
 import utils.Mode;
 import utils.PieceColor;
-import utils.Util;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -115,7 +114,7 @@ public class Main {
                 System.out.format(
                     "     [%d]: %s \n",
                     i + 1,
-                    Util.mode2str(this.gameModes.get(i))
+                    this.gameModes.get(i).getName()
                 );
             }
             System.out.println();
