@@ -128,36 +128,6 @@ public class Player implements Serializable {
         this.selectedPiece.move(targetPosition, playMode);
     }
 
-    /**
-     * El jugador empieza seleccionando una ficha pasando su casilla como argumento,
-     * una vez que tiene una ficha seleccionada selecciona una casilla vacia para moverse
-     * si el movimiento es valido devuelve true, en cualquier otro caso devuelve false.
-     * <p>
-     * Si selecciona una celda ocupada cuando ya tiene pieza seleccionada y
-     * la celda contiene una pieza suya, cambia la pieza seleccionada,
-     * si la pieza de la celda no es suya, deselecciona la pieza
-     *
-     * @param targetPosition Posicion que el jugador selecciona
-     * @param playMode 	     Modo de juego actual
-     * @return True si el jugador ha hecho una jugada (movido una ficha), false si no
-     */
-    public boolean turn(Cell targetPosition, Mode playMode) {
-        if (targetPosition.isEmpty()) {
-            try {
-                this.move(targetPosition, playMode);
-            } catch (Exception e) {
-                return false;
-            }
-            deselectPiece();
-            return true;
-        } else {
-            if (!selectPiece(targetPosition.getPiece())) {
-                deselectPiece();
-            }
-            return false;
-        }
-    }
-
     public boolean hasSurrender() {
         return surrender;
     }
