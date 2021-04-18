@@ -71,6 +71,10 @@ public class Player implements Serializable {
         return id;
     }
 
+    public HashSet<Piece> getPieces() {
+        return pieces;
+    }
+
     /**
      * Pone piece como pieza seleccionada por el jugador con la que realizara varias
      * de sus acciones
@@ -172,22 +176,6 @@ public class Player implements Serializable {
      *
      * @return string con piezas disponibles del jugador
      */
-    public String piecesToString() {
-        StringBuilder result = new StringBuilder();
-        result.append("Piezas disponibles: \n\n");
-
-        for (Piece piece : this.pieces) {
-            result.append(
-                String.format(
-                    "   (%s, %s) \n",
-                    piece.getPosition().getRow(),
-                    piece.getPosition().getCol()
-                )
-            );
-        }
-
-        return result.toString();
-    }
 
     public Boolean hasPiece(Piece piece) {
         return this.pieces.contains(piece);
