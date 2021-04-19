@@ -1,16 +1,15 @@
 package logic;
 
+import Graphic.GameObserver;
+import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 import org.apache.commons.lang.time.DurationFormatUtils;
-
-import control.options.Option.ExecuteException;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -25,15 +24,16 @@ public class Game implements Serializable {
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex = 0;
     private Mode gameMode;
+    private ArrayList<GameObserver> observers = new ArrayList<>();
 
     public Game() {}
 
     /*Getters*/
 
     public Board getBoard() {
-	return board;
+        return board;
     }
-    
+
     public Cell getCell(int row, int col) {
         return this.board.getCell(row, col);
     }
@@ -58,6 +58,9 @@ public class Game implements Serializable {
 
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
+        for (GameObserver i : observers) {
+            i.onGameEnded(this);
+        }
     }
 
     public void setBoard(Board board) {
@@ -76,25 +79,36 @@ public class Game implements Serializable {
         gameMode = modo;
     }
 
+    public void addObserver(GameObserver observer) {
+	observer.onRegister(this);
+        observers.add(observer);
+    }
+
     /*Métodos*/
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
         this.players.add(new Player(color, side, players.size() + 1));
     }
-    
+
     public void startTurn() {
-	getCurrentPlayer().startTurn();
+        getCurrentPlayer().startTurn();
     }
-    
+
     public void endTurn() {
-	getCurrentPlayer().endTurn();
+        getCurrentPlayer().endTurn();
+        for (GameObserver i : observers) {
+    		i.onEndTurn(this);
+        }
     }
-    
+
     public Player currentPlayerSurrender() {
-	this.getCurrentPlayer().surrender();
-	deleteCurrentPlayer();
-	return this.wonBySurrender();
+        this.getCurrentPlayer().surrender();
+        deleteCurrentPlayer();
+        for (GameObserver i : observers) {
+    		i.onSurrendered(this);
+        }
+        return this.wonBySurrender();
     }
 
     /**
@@ -133,47 +147,44 @@ public class Game implements Serializable {
      *
      * @return referencia al jugador del turno actual
      */
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
     }
 
     public void deleteCurrentPlayer() {
         players.remove(this.currentPlayerIndex);
     }
-    
-    public HashSet<Piece> getCurrentPlayerPieces(){
-	return this.getCurrentPlayer().getPieces();
+
+    public HashSet<Piece> getCurrentPlayerPieces() {
+        return this.getCurrentPlayer().getPieces();
     }
-    
-    public void movePiece(Cell from, Cell to) throws ExecuteException {
-	Player currentPlayer=getCurrentPlayer();
-	if (from == null) {
-            throw new ExecuteException(
-                String.format("No existe la celda con la ficha que quieres mover")
-            );
-        }
-	Piece selectedPiece = from.getPiece();
+
+    public boolean setSelectedPiece(Cell position) {
+        boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
+        if(out)
+            for (GameObserver i : observers) {
+        	i.onSelectedPiece(this);
+            }
+        return out;
+    }
+
+    public boolean hasSelectedPiece() {
+        return this.getCurrentPlayer().hasSelectedPiece();
+    }
+
+    public void movePiece(Cell to) throws ExecuteException {
+        Player currentPlayer = getCurrentPlayer();
+
+        Piece selectedPiece = getCurrentPlayer().getSelectedPiece();
         if (selectedPiece == null) {
-            throw new ExecuteException(
-                String.format("No existe una pieza en posición (%d, %d) \n", from.getRow(), from.getCol())
-            );
-        }
-        if (!currentPlayer.hasPiece(selectedPiece)) {
-            throw new ExecuteException(
-                String.format(
-                    "El jugador actual no tiene una pieza en posición (%d, %d) \n",
-                    from.getRow(), from.getCol()
-                )
-            );
+            throw new ExecuteException(String.format("No hay una pieza seleccionada"));
         }
         if (to == null) {
             throw new ExecuteException(
-                String.format(
-                    "No existe la celda a la que quieres mover la pieza \n"
-                )
+                String.format("No existe la celda a la que quieres mover la pieza \n")
             );
         }
-        
+
         /// Intentar mover a la nueva celda
         /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
@@ -182,13 +193,14 @@ public class Game implements Serializable {
             throw new ExecuteException(
                 String.format(
                     " Movimiento inválido a posición (%d, %d) \n",
-                    to.getRow(), to.getCol()
+                    to.getRow(),
+                    to.getCol()
                 )
             );
         }
-        
     }
 
+    //Para Debug
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();

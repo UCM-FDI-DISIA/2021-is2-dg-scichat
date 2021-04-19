@@ -1,5 +1,6 @@
 package control;
 
+import Graphic.GameObserver;
 import control.options.Option;
 import control.options.OptionGenerator;
 import java.util.Scanner;
@@ -20,6 +21,10 @@ public class Controller {
 
     public void setGame(Game newGame) {
         game = newGame;
+    }
+
+    public void addObserver(GameObserver in) {
+        game.addObserver(in);
     }
 
     public void run() {

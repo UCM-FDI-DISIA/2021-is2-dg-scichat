@@ -75,6 +75,10 @@ public class Player implements Serializable {
         return pieces;
     }
 
+    public Piece getSelectedPiece() {
+        return selectedPiece;
+    }
+
     /**
      * Pone piece como pieza seleccionada por el jugador con la que realizara varias
      * de sus acciones
@@ -82,8 +86,8 @@ public class Player implements Serializable {
      * @param piece Piece que el jugador quiere seleccionar
      * @return true si es suya y puede seleccionarla, false si no
      */
-    boolean selectPiece(Piece piece) {
-        if (!pieces.contains(piece)) return false;
+    public boolean selectPiece(Piece piece) {
+        if (piece == null || !pieces.contains(piece)) return false;
         this.selectedPiece = piece;
         return true;
     }
@@ -92,7 +96,7 @@ public class Player implements Serializable {
      * Deselecciona la ficha seleccionada si tiene alguna fica seleccionada, si no
      * no hace nada
      */
-    void deselectPiece() {
+    public void deselectPiece() {
         this.selectedPiece = null;
     }
 
@@ -101,7 +105,7 @@ public class Player implements Serializable {
      *
      * @return true si el jugador tiene una pieza seleccionada, false si no
      */
-    boolean hasSelectedPiece() {
+    public boolean hasSelectedPiece() {
         return this.selectedPiece != null;
     }
 
@@ -126,7 +130,7 @@ public class Player implements Serializable {
      * @throws NotSelectedPieceException
      * @throws InvalidMoveException
      */
-    void move(Cell targetPosition, Mode playMode)
+    public void move(Cell targetPosition, Mode playMode)
         throws NotSelectedPieceException, InvalidMoveException {
         if (!this.hasSelectedPiece()) throw new NotSelectedPieceException();
         this.selectedPiece.move(targetPosition, playMode);
