@@ -80,7 +80,7 @@ public class Game implements Serializable {
     }
 
     public void addObserver(GameObserver observer) {
-	observer.onRegister(this);
+        observer.onRegister(this);
         observers.add(observer);
     }
 
@@ -98,7 +98,7 @@ public class Game implements Serializable {
     public void endTurn() {
         getCurrentPlayer().endTurn();
         for (GameObserver i : observers) {
-    		i.onEndTurn(this);
+            i.onEndTurn(this);
         }
     }
 
@@ -106,7 +106,7 @@ public class Game implements Serializable {
         this.getCurrentPlayer().surrender();
         deleteCurrentPlayer();
         for (GameObserver i : observers) {
-    		i.onSurrendered(this);
+            i.onSurrendered(this);
         }
         return this.wonBySurrender();
     }
@@ -161,10 +161,9 @@ public class Game implements Serializable {
 
     public boolean setSelectedPiece(Cell position) {
         boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
-        if(out)
-            for (GameObserver i : observers) {
-        	i.onSelectedPiece(this);
-            }
+        if (out) for (GameObserver i : observers) {
+            i.onSelectedPiece(this);
+        }
         return out;
     }
 
