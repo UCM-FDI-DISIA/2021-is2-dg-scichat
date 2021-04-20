@@ -1,8 +1,8 @@
 package control;
 
-import Graphic.GameObserver;
 import control.options.Option;
 import control.options.OptionGenerator;
+import graphic.GameObserver;
 import java.util.Scanner;
 import logic.Game;
 

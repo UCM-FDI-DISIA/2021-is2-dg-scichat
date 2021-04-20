@@ -1,9 +1,9 @@
 package logic;
 
-import Graphic.GameObserver;
 import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
+import graphic.GameObserver;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -165,8 +165,6 @@ public class Game implements Serializable {
             for (GameObserver i : observers) {
                 i.onSelectedPiece(this);
             }
-        }
-            i.onSelectedPiece(this);
         }
         return out;
     }

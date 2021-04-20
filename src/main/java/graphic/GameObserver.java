@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import logic.Game;
 

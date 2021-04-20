@@ -1,20 +1,26 @@
-package Graphic;
+package graphic;
 
 import control.Controller;
-import java.awt.LayoutManager;
-import javax.swing.JPanel;
+import java.awt.GraphicsConfiguration;
+import java.awt.HeadlessException;
+import javax.swing.JFrame;
+import logic.Board;
 import logic.Game;
+import logic.gameObjects.Player;
 
-public class PanelStandarDeEjemplo extends JPanel implements GameObserver {
+//Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
+public class MainWindow extends JFrame implements GameObserver {
+    private Controller ctrl;
 
-    public PanelStandarDeEjemplo(Controller ctrl) {
-        ctrl.addObserver(this);
+    public MainWindow(Controller ctrl) {
+        super("Damas Chinas");
+        this.ctrl = ctrl;
         initGUI();
     }
 
     private void initGUI() {
-        // TODO montar el componente
-
+        ctrl.addObserver(this); //Necesitamos incluirlo como observador para que pueda darse cuenta de que la partida a terminado
+        //TODO crear la ventana juntando los distintos componentes
     }
 
     @Override
