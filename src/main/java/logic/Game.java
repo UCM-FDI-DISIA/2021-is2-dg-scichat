@@ -161,7 +161,11 @@ public class Game implements Serializable {
 
     public boolean setSelectedPiece(Cell position) {
         boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
-        if (out) for (GameObserver i : observers) {
+        if (out) {
+            for (GameObserver i : observers) {
+                i.onSelectedPiece(this);
+            }
+        }
             i.onSelectedPiece(this);
         }
         return out;
