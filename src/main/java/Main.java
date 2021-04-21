@@ -1,5 +1,7 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
+import graphic.WelcomeWindow;
+
 import java.util.*;
 import java.util.Queue;
 import logic.Board;
