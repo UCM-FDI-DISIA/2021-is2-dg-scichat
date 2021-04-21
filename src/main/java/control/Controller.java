@@ -4,6 +4,7 @@ import control.options.Option;
 import control.options.OptionGenerator;
 import graphic.GameObserver;
 import java.util.Scanner;
+import logic.Cell;
 import logic.Game;
 
 public class Controller {
@@ -53,5 +54,10 @@ public class Controller {
 
         if (refreshDisplay) printGame();
         System.out.println("[GAME OVER]");
+    }
+
+    public void handleClick(Cell position) {
+        // TODO Auto-generated method stub
+
     }
 }
