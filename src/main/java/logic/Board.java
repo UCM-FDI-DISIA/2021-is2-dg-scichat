@@ -2,9 +2,10 @@ package logic;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import utils.PieceColor;
 
-public class Board implements Serializable {
+public class Board implements Serializable, Iterable<Cell> {
     /**
      *
      */
@@ -48,7 +49,7 @@ public class Board implements Serializable {
                 /// Comprobar si esta dentro del tablero
                 boolean insideBoard = (SCHEMATIC[i].charAt(j) != '.');
 
-                /// Crear una celda en el caso de que esté dentro del tablero solamente
+                /// Crear una celda en el caso de que estÃ© dentro del tablero solamente
                 Cell cell = (insideBoard ? new Cell(i, j, this) : null);
                 cells[i][j] = cell;
 
@@ -113,7 +114,7 @@ public class Board implements Serializable {
             }
         }
 
-        /* Métodos */
+        /* MÃ©todos */
 
         public int getValue() {
             return value;
@@ -136,7 +137,7 @@ public class Board implements Serializable {
         }
 
         /**
-         * @param newCell La celda que queremos añadir al lado
+         * @param newCell La celda que queremos aÃ±adir al lado
          */
         private void addSideCells(Cell newCell) {
             sideCells.add(newCell);
@@ -157,13 +158,13 @@ public class Board implements Serializable {
                 for (int j = 0; j < NUM_COL; ++j) {
                     Cell cell = cells[i][j];
                     if (cell == null) {
-                        /// No es una posición del tablero
+                        /// No es una posiciÃ³n del tablero
                         current += "    ";
                     } else if (cell.isEmpty()) {
-                        /// Posición sin pieza
+                        /// PosiciÃ³n sin pieza
                         current += (isLow == 0 ? "┌─┐ " : "└─┘ ");
                     } else {
-                        /// Contiene una pieza en esta posición. Por lo tanto, tiene un color asociado
+                        /// Contiene una pieza en esta posiciÃ³n. Por lo tanto, tiene un color asociado
                         PieceColor color = cell.getPiece().getColor();
                         current += color.getBoardString();
                     }
@@ -182,14 +183,14 @@ public class Board implements Serializable {
     }
 
     /**
-     * Función que comprueba si la posición dada esta dentro del tablero del juego
+     * FunciÃ³n que comprueba si la posiciÃ³n dada esta dentro del tablero del juego
      *
      * @param row fila
      * @param col columna
-     * @return true si (row, col) está dentro del tablero del juego
+     * @return true si (row, col) estÃ¡ dentro del tablero del juego
      */
     public boolean insideBoard(int row, int col) {
-        /// Si esta fuera del tamaño físico de la matriz, no está dentro del tablero
+        /// Si esta fuera del tamaÃ±o fÃ­sico de la matriz, no estÃ¡ dentro del tablero
         if (!((0 <= row && row < NUM_ROW) && (0 <= col && col < NUM_COL))) return false;
 
         return cells[row][col] != null;
@@ -201,5 +202,35 @@ public class Board implements Serializable {
         }
 
         return this.cells[row][col];
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return new Iterator<Cell>() {
+            int row = 0, col = 0;
+            boolean hasNext = true;
+
+            @Override
+            public boolean hasNext() {
+                return hasNext;
+            }
+
+            @Override
+            public Cell next() {
+                hasNext = false;
+                Cell rv = Board.this.getCell(row, col);
+                int y = row, x = col;
+                for (y = row; y < NUM_ROW && !hasNext; ++y) {
+                    for (x = col; x < NUM_COL && !hasNext; ++x) {
+                        hasNext = Board.this.insideBoard(y, x);
+                        if (hasNext) x--; // Si hasNext, no queremos avanzar
+                    }
+                    if (hasNext) y--; // Si hasNext, no queremos avanzar
+                }
+                row = y;
+                col = x;
+                return rv;
+            }
+        };
     }
 }
