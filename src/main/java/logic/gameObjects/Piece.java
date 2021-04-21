@@ -53,10 +53,11 @@ public class Piece implements Serializable {
      *                                   posible
      */
     public void tryToMoveTo(Cell targetPosition) throws InvalidMoveException {
-        if (targetPosition.equals(this.position)) { // Comprobamos que la posición que queremos alcanzar no es la de
+        if (targetPosition.equals(this.position) || !targetPosition.isEmpty()) { // Comprobamos que la posición que queremos alcanzar no es la de
             // partida
             throw new InvalidMoveException();
         }
+        
 
         List<Cell> neighbours = this.position.getNeighbours(); // Obtenemos los vecinos
 
