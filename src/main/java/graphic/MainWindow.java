@@ -23,40 +23,4 @@ public class MainWindow extends JFrame implements GameObserver {
     private void initGUI() {
         //TODO crear la ventana juntando los distintos componentes
     }
-
-    @Override
-    public void onRegister(Game game) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onSelectedPiece(Piece piece) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onEndTurn(Game game) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onSurrendered(Game game) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onReset(Game game) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onGameEnded(Game game) {
-        // TODO Auto-generated method stub
-
-    }
 }
