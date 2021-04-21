@@ -13,15 +13,12 @@ public class SurrenderOption extends Option {
     @Override
     public boolean execute(Game game, Scanner scanner) throws ExecuteException {
         boolean out = true;
-        Player currentPlayer = game.getCurrentPlayer();
-        currentPlayer.surrender();
-        currentPlayer = game.wonBySurrender();
-        if (currentPlayer != null) {
+        Player victoryPlayer = game.currentPlayerSurrender();
+        if (victoryPlayer != null) {
             game.setStopped(true);
-            System.out.println("Ha ganado el jugador " + currentPlayer.getId() + "\n");
+            System.out.println("Ha ganado el jugador " + victoryPlayer.getId() + "\n");
             out = false;
         }
-        game.deleteCurrentPlayer();
         return out;
     }
 }

@@ -2,6 +2,7 @@ package control;
 
 import control.options.Option;
 import control.options.OptionGenerator;
+import graphic.GameObserver;
 import java.util.Scanner;
 import logic.Game;
 
@@ -22,11 +23,15 @@ public class Controller {
         game = newGame;
     }
 
+    public void addObserver(GameObserver in) {
+        game.addObserver(in);
+    }
+
     public void run() {
         boolean refreshDisplay = true;
 
         while (!game.isFinished()) {
-            game.getCurrentPlayer().startTurn();
+            game.startTurn();
             if (refreshDisplay) printGame();
             refreshDisplay = false;
 
@@ -39,7 +44,7 @@ public class Controller {
                     option.title
                 );
                 refreshDisplay = option.execute(game, scanner);
-                game.getCurrentPlayer().endTurn();
+                game.endTurn();
                 if (refreshDisplay) game.advance();
             } catch (Exception ex) {
                 System.out.format(ex.getMessage() + "%n%n");
