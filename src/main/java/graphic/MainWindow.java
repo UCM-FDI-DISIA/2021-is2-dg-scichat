@@ -6,6 +6,7 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 import logic.Board;
 import logic.Game;
+import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
@@ -30,7 +31,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     @Override
-    public void onSelectedPiece(Game game) {
+    public void onSelectedPiece(Piece piece) {
         // TODO Auto-generated method stub
 
     }
