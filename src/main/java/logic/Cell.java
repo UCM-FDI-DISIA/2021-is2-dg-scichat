@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import logic.Cell.Direction;
 import logic.gameObjects.Piece;
 
 public class Cell implements Serializable {

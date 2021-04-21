@@ -174,8 +174,6 @@ public class Game implements Serializable {
     }
 
     public void movePiece(Cell to) throws ExecuteException {
-        Player currentPlayer = getCurrentPlayer();
-
         Piece selectedPiece = getCurrentPlayer().getSelectedPiece();
         if (selectedPiece == null) {
             throw new ExecuteException(String.format("No hay una pieza seleccionada"));

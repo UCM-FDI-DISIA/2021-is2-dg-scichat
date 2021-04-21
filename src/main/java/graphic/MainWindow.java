@@ -15,11 +15,11 @@ public class MainWindow extends JFrame implements GameObserver {
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
         this.ctrl = ctrl;
+        ctrl.addObserver(this); //Necesitamos incluirlo como observador para que pueda darse cuenta de que la partida a terminado
         initGUI();
     }
 
     private void initGUI() {
-        ctrl.addObserver(this); //Necesitamos incluirlo como observador para que pueda darse cuenta de que la partida a terminado
         //TODO crear la ventana juntando los distintos componentes
     }
 
