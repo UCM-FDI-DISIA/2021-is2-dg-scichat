@@ -163,7 +163,7 @@ public class Game implements Serializable {
         boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
         if (out) {
             for (GameObserver i : observers) {
-                i.onSelectedPiece(this);
+                i.onSelectedPiece(this.getCurrentPlayer().getSelectedPiece());
             }
         }
         return out;
