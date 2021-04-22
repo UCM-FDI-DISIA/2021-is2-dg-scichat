@@ -57,7 +57,6 @@ public class Piece implements Serializable {
             // partida
             throw new InvalidMoveException();
         }
-        
 
         List<Cell> neighbours = this.position.getNeighbours(); // Obtenemos los vecinos
 
