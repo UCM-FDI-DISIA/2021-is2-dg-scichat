@@ -15,6 +15,10 @@ import javax.swing.SwingUtilities;
 
 
 public class FinishedWindow extends JFrame{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     MainWindow father;
     
     
@@ -29,7 +33,7 @@ public class FinishedWindow extends JFrame{
     
     public void initGUI() {
 	//Creamos la ventana
-	this.setSize(900, 700);
+	this.setSize(900, 400);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         
@@ -47,23 +51,29 @@ public class FinishedWindow extends JFrame{
         
         
         JPanel exitPanel = new JPanel();
+        JPanel newGame = new JPanel();
         JButton exitGame = new JButton("Salir del juego");
         exitGame.setPreferredSize(new Dimension(200, 50));
         exitGame.setForeground(new Color(86, 81, 177));
         exitGame.setFont(new Font("Impact", 0, 16));
         exitGame.setFocusable(false);
-        JButton reloadGame = new JButton("Salir del juego");
-        reloadGame.setPreferredSize(new Dimension(200, 50));
+        JButton reloadGame = new JButton("Nueva partida(mismos parámetros)");
+        reloadGame.setPreferredSize(new Dimension(350, 50));
         reloadGame.setForeground(new Color(86, 81, 177));
         reloadGame.setFont(new Font("Impact", 0, 16));
         reloadGame.setFocusable(false);
-        
+        JButton backToStart = new JButton("Volver al menú de inicio");
+        backToStart.setPreferredSize(new Dimension(200, 50));
+        backToStart.setForeground(new Color(86, 81, 177));
+        backToStart.setFont(new Font("Impact", 0, 16));
+        backToStart.setFocusable(false);
 
         mainPanel.add(exitPanel);
+        //mainPanel.add(newGame);
         exitPanel.add(exitGame, BorderLayout.CENTER);
         exitPanel.add(reloadGame, BorderLayout.CENTER);
-        JButton newGame = new JButton();
-        JButton backToStart = new JButton();
+        exitPanel.add(backToStart);
+
         
         
         this.add(title, BorderLayout.NORTH);
