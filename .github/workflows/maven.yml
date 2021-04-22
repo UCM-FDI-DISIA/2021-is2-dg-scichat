@@ -48,4 +48,4 @@ jobs:
                   restore-keys: ${{ runner.os }}-m2
 
             - name: Unit Test
-              run: mvn surefire:test
+              run: mvn test
