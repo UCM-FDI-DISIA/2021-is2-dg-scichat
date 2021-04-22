@@ -47,7 +47,10 @@ public class CellLabel extends JLabel {
         this.setFocusable(false);
         this.setOpaque(false);
         this.setBackground(Color.white);
-
+        this.place();
+    }
+    
+    private void place() {
         int height = 2 * radius;
         int width = (int) (Math.sqrt(4.0 / 3) * height);
 
@@ -55,7 +58,12 @@ public class CellLabel extends JLabel {
         int actual_y = y * height;
 
         this.setBounds(actual_x, actual_y, 2 * (radius + 4), 2 * (radius + 4));
-        this.setPreferredSize(new Dimension(2 * radius, 2 * radius));
+        this.setPreferredSize(new Dimension(2 * radius, 2 * radius));	
+    }
+    
+    public void setRadius(int r) {
+	this.radius = r;
+	this.place(); // Replace in the JPanel with new radius
     }
 
     public CellLabel(BoardPanel parent, Cell cell, int radius) {
