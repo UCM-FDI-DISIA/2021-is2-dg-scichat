@@ -92,7 +92,6 @@ public class Piece implements Serializable {
      * nos lleva a la misma.
      *
      * @param targetPosition  Posición que queremos alcanzar
-     * @param positionToCheck Posición en la que nos encontramos actualmente
      * @param checkedCells    Tablero con las Celdas que ya hemos mirado
      * @return Devuelve si se puede llevar a cabo el movimiento
      */

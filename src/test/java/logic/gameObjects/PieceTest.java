@@ -55,7 +55,7 @@ class PieceTest {
         // Nos movemos a una posición adyacente
         Assertions.assertDoesNotThrow(
             () -> {
-                posAux = posAux.getUpperLeft();
+                posAux = posAux.getUpperRight();
 
                 piece.tryToMoveTo(posAux);
             }
