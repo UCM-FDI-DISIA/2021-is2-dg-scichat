@@ -196,6 +196,13 @@ public class Board implements Serializable, Iterable<Cell> {
         return cells[row][col] != null;
     }
 
+    /**
+     * Get cell at a specific row and column
+     * 
+     * @param row
+     * @param col
+     * @return
+     */
     public Cell getCell(int row, int col) {
         if (!insideBoard(row, col)) {
             return null;
@@ -207,7 +214,7 @@ public class Board implements Serializable, Iterable<Cell> {
     @Override
     public Iterator<Cell> iterator() {
         return new Iterator<Cell>() {
-            int row = 0, col = 0;
+            int row = 0, col = 6;
             boolean hasNext = true;
 
             @Override
@@ -220,8 +227,8 @@ public class Board implements Serializable, Iterable<Cell> {
                 hasNext = false;
                 Cell rv = Board.this.getCell(row, col);
                 int y = row, x = col;
-                for (y = row; y < NUM_ROW && !hasNext; ++y) {
-                    for (x = col; x < NUM_COL && !hasNext; ++x) {
+                for (; y < NUM_ROW && !hasNext; ++y) {
+                    for (x = (y == row? col+1 : 0); x < NUM_COL && !hasNext; ++x) {
                         hasNext = Board.this.insideBoard(y, x);
                         if (hasNext) x--; // Si hasNext, no queremos avanzar
                     }

@@ -19,11 +19,11 @@ public class MainWindow extends JFrame implements GameObserver {
     private Controller ctrl;
 
     //Pantallas principales
-    private JPanel startScreen;
-    private JPanel gameScreen;
-    private JPanel winnerScreen;
-    private JPanel gameOptionsScreen;
-    private JPanel selectFileScreen;
+    private JPanel startScreen = null;
+    private JPanel gameScreen = null;
+    private JPanel winnerScreen = null;
+    private JPanel gameOptionsScreen = null;
+    private JPanel selectFileScreen = null;
 
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
@@ -33,31 +33,34 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     private void initGUI() {
-        initStart();
-        initGameOptions();
-        this.setContentPane(startScreen);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
-        this.setVisible(true);
+        initStart();
     }
 
     private void initStart() {
         //TODO crear pantalla initScreen
+        if (startScreen == null) startScreen = new WelcomeWindow(this);
+        this.setContentPane(startScreen);
+        this.pack();
+        this.setSize(900, 700);
+        this.setVisible(true);
     }
 
-    private void initGame() {
+    public void initGame() {
         //TODO crear pantalla gameScreen
     }
 
-    private void initWinner() {
+    public void initWinner() {
         //TODO crear pantalla winnerScreen
     }
 
-    private void initGameOptions() {
+    public void initGameOptions() {
         //TODO crear pantalla gameOptionsScreen
+        System.out.println("Ahora se abriria el panel de opciones de partida");
     }
 
-    private void initSelectFile() {
+    public void initSelectFile() {
         //TODO crear pantalla selectFileScreen
+        System.out.println("Ahora se abriria el panel de seleccionar partida");
     }
 }
