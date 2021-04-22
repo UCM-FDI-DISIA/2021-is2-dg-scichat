@@ -26,7 +26,7 @@ public class HelpWindow extends JFrame {
         /// Cargar el contenido del fichero HTML en StringBuilder
         StringBuilder sb = new StringBuilder();
 
-        try (BufferedReader in = new BufferedReader(new FileReader("resources/HelpWindow.html"))) {
+        try (BufferedReader in = new BufferedReader(new FileReader("resources/html/HelpWindow.html"))) {
             String str;
             while ((str = in.readLine()) != null) sb.append(str);
         } catch (IOException e) {
