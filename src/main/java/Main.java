@@ -1,13 +1,10 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
 import graphic.WelcomeWindow;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Queue;
-
 import javax.swing.SwingUtilities;
-
 import logic.Board;
 import logic.Game;
 import utils.Mode;
@@ -276,12 +273,15 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-	SwingUtilities.invokeAndWait(new Runnable() {
-	    	@Override 
-		public void run() {
-		    new graphic.MainWindow(new Controller(new Game(), scanner));
-		}
-	 });
+        SwingUtilities.invokeAndWait(
+            new Runnable() {
+
+                @Override
+                public void run() {
+                    new graphic.MainWindow(new Controller(new Game(), scanner));
+                }
+            }
+        );
         /*SetupWizard s = new SetupWizard(scanner);
 
         s.run();

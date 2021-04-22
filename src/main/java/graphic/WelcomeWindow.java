@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,17 +15,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class WelcomeWindow extends JPanel {
-
     MainWindow father;
-    
+
     public WelcomeWindow(MainWindow father) {
-	this.father=father;
+        this.father = father;
         initGUI();
     }
 
     public void initGUI() {
         // aqui van las movidas de la propia ventana
-	this.setSize(900, 700);
+        this.setSize(900, 700);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         // esta es la imagen del tablero
@@ -71,11 +69,14 @@ public class WelcomeWindow extends JPanel {
         newButton.setBorderPainted(true);
         newButton.setFocusPainted(false);
         newButton.setContentAreaFilled(false);
-        newButton.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		father.initGameOptions();
-	    }  
-        });
+        newButton.addActionListener(
+            new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    father.initGameOptions();
+                }
+            }
+        );
         panel2.add(newButton, BorderLayout.WEST);
         // boton de cargar partida y toda su configuracion
         JButton loadButton = new JButton("Cargar Partida");
@@ -86,11 +87,14 @@ public class WelcomeWindow extends JPanel {
         loadButton.setBorderPainted(true);
         loadButton.setFocusPainted(false);
         loadButton.setContentAreaFilled(false);
-        loadButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-        	father.initSelectFile();
+        loadButton.addActionListener(
+            new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    father.initSelectFile();
+                }
             }
-        });;
+        );
         panel2.add(loadButton, BorderLayout.EAST);
         // aqui lo añadimos todo a la ventana
         panel.add(panel2, BorderLayout.CENTER);
