@@ -38,7 +38,7 @@ public class MainWindow extends JFrame implements GameObserver {
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	initStart();
     }
-    
+ 
     private void initStart() {
 	//TODO crear pantalla initScreen
 	if(startScreen==null)
