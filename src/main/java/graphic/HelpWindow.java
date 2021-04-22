@@ -1,10 +1,8 @@
 package graphic;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -14,25 +12,23 @@ public class HelpWindow extends JFrame {
         super("Ayuda del juego");
         JPanel mainPanel = new JPanel();
 
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
+        /// Configurar como panel principal de la ventana
         this.setContentPane(mainPanel);
 
-        this.getContentPane()
-                .setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        /// Añadir espacios en el panel
+        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
+        mainPanel.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+
+        /// Crear un EditorPane para incrustar HTML
         JEditorPane panel = new JEditorPane();
 
+        /// Cargar el contenido del fichero HTML en StringBuilder
         StringBuilder sb = new StringBuilder();
-        String str;
 
-        try {
-            BufferedReader in = new BufferedReader(
-                    new FileReader("src/main/java/view/HelpWindow.html")
-            );
+        try (BufferedReader in = new BufferedReader(new FileReader("resources/HelpWindow.html"))) {
+            String str;
             while ((str = in.readLine()) != null) sb.append(str);
-
-            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,11 +38,12 @@ public class HelpWindow extends JFrame {
         panel.setContentType("text/html");
         panel.setText(content);
 
-        this.getContentPane().add(panel);
-        this.getContentPane().setBackground(Color.WHITE);
+        mainPanel.add(panel);
+        mainPanel.setBackground(Color.WHITE);
 
+        /// Configurar tamaño de la ventana
         this.setSize(new Dimension(800, 700));
-        this.setPreferredSize(new Dimension(800, 700));
+        this.setResizable(false);
         this.setVisible(true);
     }
 
