@@ -20,20 +20,22 @@ public class CellLabel extends JLabel {
 
     private int radius, x, y;
     private Color borderColor, bgColor;
-    private final Color accentColor = new Color(0xFF4500);
+//    private final Color accentColor = new Color(0x559999);
     private final Color selectColor = new Color(0xff66ff);
     private boolean selected = false;
     private BoardPanel parent = null;
     private Cell position = null;
 
-    public CellLabel(BoardPanel parent, Cell cell, int radius, Color bg) {
+    public CellLabel(BoardPanel parent, Cell cell, int radius) {
         this.x = cell.getCol();
         this.y = cell.getRow();
         this.parent = parent;
         this.position = cell;
         this.radius = radius;
 
-        this.bgColor = bg;
+
+        if(!this.position.isEmpty()) this.bgColor = this.position.getPiece().getColor().getColor();
+        else this.bgColor = default_bg_color;
         this.borderColor = Color.white;
 
         initGUI();
@@ -49,7 +51,7 @@ public class CellLabel extends JLabel {
         this.setBackground(Color.white);
         this.place();
     }
-    
+
     private void place() {
         int height = 2 * radius;
         int width = (int) (Math.sqrt(4.0 / 3) * height);
@@ -58,16 +60,12 @@ public class CellLabel extends JLabel {
         int actual_y = y * height;
 
         this.setBounds(actual_x, actual_y, 2 * (radius + 4), 2 * (radius + 4));
-        this.setPreferredSize(new Dimension(2 * radius, 2 * radius));	
-    }
-    
-    public void setRadius(int r) {
-	this.radius = r;
-	this.place(); // Replace in the JPanel with new radius
+        this.setPreferredSize(new Dimension(2 * radius, 2 * radius));
     }
 
-    public CellLabel(BoardPanel parent, Cell cell, int radius) {
-        this(parent, cell, radius, default_bg_color);
+    public void setRadius(int r) {
+        this.radius = r;
+        this.place(); // Replace in the JPanel with new radius
     }
 
     public CellLabel(BoardPanel parent, Cell cell) {
@@ -77,7 +75,7 @@ public class CellLabel extends JLabel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
-
+        
         g2D.setPaint(bgColor);
         g2D.fillOval(0, 0, 2 * radius, 2 * radius);
 
@@ -86,12 +84,18 @@ public class CellLabel extends JLabel {
         g2D.drawOval(0, 0, 2 * radius, 2 * radius);
     }
 
+    public void setColor() {
+	setColor(default_bg_color);
+    }
     public void setColor(Color color) {
         this.bgColor = color;
     }
 
     public void setSelected(boolean b) {
         this.selected = b;
+    }
+    public boolean getSelected() {
+	return this.selected;
     }
 
     private boolean inside(Point pt) {
@@ -116,7 +120,7 @@ public class CellLabel extends JLabel {
 
             //			System.out.println("(" + pointer.getX() + ", " + pointer.getY() + ")");
             if (inside(pointer)) {
-                borderColor = accentColor;
+                borderColor = bgColor;
             } else {
                 borderColor = Color.white;
             }
@@ -129,17 +133,18 @@ public class CellLabel extends JLabel {
         public void mouseClicked(MouseEvent e) {
             Point pointer = e.getPoint();
             if (inside(pointer)) {
-                JOptionPane.showOptionDialog(
+        	JOptionPane.showOptionDialog(
                     CellLabel.this,
-                    "Esta parte del juego a�n no se ha implementado\n" +
+                    "Se va a mandar la celda seleccinada a Controller\n" +
                     pointer.toString(),
                     "Error!",
-                    JOptionPane.WARNING_MESSAGE,
+                    JOptionPane.INFORMATION_MESSAGE,
                     JOptionPane.OK_OPTION,
                     null,
                     null,
                     null
                 );
+        	CellLabel.this.parent.handleClick(CellLabel.this.position);
             }
         }
 

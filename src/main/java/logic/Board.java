@@ -198,7 +198,7 @@ public class Board implements Serializable, Iterable<Cell> {
 
     /**
      * Get cell at a specific row and column
-     * 
+     *
      * @param row
      * @param col
      * @return
@@ -228,7 +228,7 @@ public class Board implements Serializable, Iterable<Cell> {
                 Cell rv = Board.this.getCell(row, col);
                 int y = row, x = col;
                 for (; y < NUM_ROW && !hasNext; ++y) {
-                    for (x = (y == row? col+1 : 0); x < NUM_COL && !hasNext; ++x) {
+                    for (x = (y == row ? col + 1 : 0); x < NUM_COL && !hasNext; ++x) {
                         hasNext = Board.this.insideBoard(y, x);
                         if (hasNext) x--; // Si hasNext, no queremos avanzar
                     }
