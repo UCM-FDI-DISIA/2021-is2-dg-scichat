@@ -35,22 +35,35 @@ public class MainWindow extends JFrame implements GameObserver {
     private void initGUI() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initStart();
+        this.setVisible(true);
     }
 
     private void initStart() {
-        //TODO crear pantalla initScreen
+        //No queremos que el juego anterior influya en el nuevo
+	if(gameScreen!=null) {
+	    ctrl.reset();
+	    gameScreen=null;
+	}
         if (startScreen == null) startScreen = new WelcomeWindow(this);
         this.setContentPane(startScreen);
         this.pack();
         this.setSize(900, 700);
-        this.setVisible(true);
     }
 
     public void initGame() {
         //TODO crear pantalla gameScreen
+	if(gameScreen==null) {
+	    
+	}
+	else {
+	    ctrl.softReset();
+	}
+	this.setContentPane(gameScreen);
+        this.pack();
+        this.setSize(900, 700);
     }
 
-    public void initWinner() {
+    public void initWinner(Player winner) {
         //TODO crear pantalla winnerScreen
     }
 
@@ -62,5 +75,9 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initSelectFile() {
         //TODO crear pantalla selectFileScreen
         System.out.println("Ahora se abriria el panel de seleccionar partida");
+    }
+    
+    public void onGameEnded(Game game) {
+	//initWinner(game.getWinner());
     }
 }
