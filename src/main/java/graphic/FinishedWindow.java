@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,6 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import control.Controller;
+import logic.gameObjects.Player;
+
 
 
 public class FinishedWindow extends JFrame{
@@ -19,70 +24,90 @@ public class FinishedWindow extends JFrame{
      * 
      */
     private static final long serialVersionUID = 1L;
+    
+    
     MainWindow father;
+    Player winner;
+    Controller controller;
     
     
     public FinishedWindow() {
 	initGUI();
     }
     
-    public FinishedWindow(MainWindow father) {
+    public FinishedWindow(MainWindow father, Player winner, Controller control) {
 	this.father = father;
+	this.winner = winner;
+	this.controller = control;
 	initGUI();
     }
     
     public void initGUI() {
+	
 	//Creamos la ventana
 	this.setSize(900, 400);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         
-        //Creamos los componentes de la misma
-        JLabel title = new JLabel("El juego ha terminado");
-        
-        title.setForeground(Color.black);
-        title.setFont(new Font("Batang", 3, 70));
-        
-        //Botones diversos
-        
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(Color.BLUE);
-        
-        
-        JPanel exitPanel = new JPanel();
-        JPanel newGame = new JPanel();
-        JButton exitGame = new JButton("Salir del juego");
-        exitGame.setPreferredSize(new Dimension(200, 50));
-        exitGame.setForeground(new Color(86, 81, 177));
-        exitGame.setFont(new Font("Impact", 0, 16));
-        exitGame.setFocusable(false);
-        JButton reloadGame = new JButton("Nueva partida(mismos parámetros)");
-        reloadGame.setPreferredSize(new Dimension(350, 50));
-        reloadGame.setForeground(new Color(86, 81, 177));
-        reloadGame.setFont(new Font("Impact", 0, 16));
-        reloadGame.setFocusable(false);
-        JButton backToStart = new JButton("Volver al menú de inicio");
-        backToStart.setPreferredSize(new Dimension(200, 50));
-        backToStart.setForeground(new Color(86, 81, 177));
-        backToStart.setFont(new Font("Impact", 0, 16));
-        backToStart.setFocusable(false);
+        //Marcamos el título en función de quien haya gando
+        JLabel title = new JLabel();
 
-        mainPanel.add(exitPanel);
-        //mainPanel.add(newGame);
-        exitPanel.add(exitGame, BorderLayout.CENTER);
-        exitPanel.add(reloadGame, BorderLayout.CENTER);
-        exitPanel.add(backToStart);
+
+        if(winner == null) {
+            title = new JLabel("No ha ganado nadie");
+        }
+        else {
+            title = new JLabel("Ha ganado el jugador " + winner.getId());
+        }
+        
+        
+        //jpanel para los botones
+        
+        JPanel optionsPanel = new JPanel();
+        
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+        
+        //Botones diversos y sus action listeners
+        //Creamos el botón de volver a inicio
+        JButton newGameButton = new JButton("Volver a inicio");
+        newGameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent action) {
+        	
+            }
+        });
+        
+        //Creamos el botón de salir del juego
+        JButton exitButton = new JButton("Salir");
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent action) {
+        	System.exit(0);
+            }
+        });
+        
+        //Creamos el botón de revancha
+        JButton revengeButton  = new JButton("Revancha");
+        revengeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent action) {
+        	father.initGame();
+            }
+        });
+
 
         
         
+        
+        
+        optionsPanel.add(newGameButton, BorderLayout.CENTER);
+        optionsPanel.add(exitButton, BorderLayout.CENTER);
+        optionsPanel.add(revengeButton, BorderLayout.CENTER);
+        this.add(optionsPanel, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
-        this.add(mainPanel, BorderLayout.SOUTH);
         this.setVisible(true);
     }
     
     public static void main(String[] args) {
 	SwingUtilities.invokeLater(new Runnable() {
+	    	
 		public void run() {
 			new FinishedWindow();
 		}
