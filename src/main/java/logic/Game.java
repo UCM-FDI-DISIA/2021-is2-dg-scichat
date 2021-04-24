@@ -172,6 +172,17 @@ public class Game implements Serializable {
     public boolean hasSelectedPiece() {
         return this.getCurrentPlayer().hasSelectedPiece();
     }
+    
+    public void reset() {
+	board=new Board();
+	stopped = false;
+	players = new ArrayList<>();
+	observers = new ArrayList<>();
+    }
+    
+    public void softReset() {
+	//TODO preparar la partida para volver a empezar
+    }
 
     public void movePiece(Cell to) throws ExecuteException {
         Piece selectedPiece = getCurrentPlayer().getSelectedPiece();
@@ -234,4 +245,5 @@ public class Game implements Serializable {
         );
         return result.toString();
     }
+
 }

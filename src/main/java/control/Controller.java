@@ -60,4 +60,12 @@ public class Controller {
         // TODO Auto-generated method stub
 
     }
+    
+    public void reset() {
+	game.reset();
+    }
+    
+    public void softReset() {
+	game.softReset();
+    }
 }
