@@ -1,13 +1,11 @@
 package control;
 
 import control.options.Option;
-import control.options.OptionGenerator;
 import control.options.Option.ExecuteException;
+import control.options.OptionGenerator;
 import graphic.GameObserver;
 import java.util.Scanner;
-
 import javax.swing.JOptionPane;
-
 import logic.Cell;
 import logic.Game;
 
@@ -72,18 +70,22 @@ public class Controller {
     public void softReset() {
         game.softReset();
     }
-    
-	public void showError(ExecuteException ex) {
-		showError(ex, "Prueba de nuevo");
-	}
-	public void showError(ExecuteException ex, String optTxt) {
-		String[] opt = {optTxt};
-		JOptionPane.showOptionDialog(
-				null, 
-				ex.getMessage(), 
-				"Execute Exception", 
-				JOptionPane.OK_OPTION,
-				JOptionPane.ERROR_MESSAGE, 
-				null, opt, null);
-	}
+
+    public void showError(ExecuteException ex) {
+        showError(ex, "Prueba de nuevo");
+    }
+
+    public void showError(ExecuteException ex, String optTxt) {
+        String[] opt = { optTxt };
+        JOptionPane.showOptionDialog(
+            null,
+            ex.getMessage(),
+            "Execute Exception",
+            JOptionPane.OK_OPTION,
+            JOptionPane.ERROR_MESSAGE,
+            null,
+            opt,
+            null
+        );
+    }
 }
