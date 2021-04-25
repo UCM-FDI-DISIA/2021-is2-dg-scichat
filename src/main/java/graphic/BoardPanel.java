@@ -75,21 +75,21 @@ public class BoardPanel extends JPanel implements GameObserver {
                             h / 34
                         );
 
-                        //                        /*HORRIBLE HACK*/
-                        //                        		// Tenemos dos posibles tamaños a los que reducirnos:
-                        //                        		// Dimension(aspectRatio * h, h)
-                        //                        		// Dimension(w, w /aspectRatio)
-                        //                        		// Escogemos el mayor o menor dependiendo de si crecemos o encogemos
-                        //                        		Dimension newDim = new Dimension((int)(h*aspectRatio), h);
+                        // /*HORRIBLE HACK*/
+                        // Tenemos dos posibles tamaños a los que reducirnos:
+                        // Dimension(aspectRatio * h, h)
+                        // Dimension(w, w /aspectRatio)
+                        // Escogemos el mayor o menor dependiendo de si crecemos o encogemos
+                        // Dimension newDim = new Dimension((int)(h*aspectRatio), h);
                         //
-                        //                        		// We are growing and h*aspectRatio < w or we are shrinking and h*aspectRatio > w
-                        //                        		if(newRadius > radius == h * aspectRatio < w)
-                        //                        		    newDim = new Dimension(w, (int)(w/aspectRatio));
+                        //  We are growing and h*aspectRatio < w or we are shrinking and h*aspectRatio > w
+                        // if(newRadius > radius == h * aspectRatio < w)
+                        //     newDim = new Dimension(w, (int)(w/aspectRatio));
                         //
-                        //                        		BoardPanel.this.setSize(newDim);
+                        // BoardPanel.this.setSize(newDim);
 
                         setRadius(newRadius);
-                        //                        locked = true;
+                        // locked = true;
                     }
 
                     @Override
