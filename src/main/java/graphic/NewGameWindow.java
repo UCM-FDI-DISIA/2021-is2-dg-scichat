@@ -153,6 +153,8 @@ public class NewGameWindow extends JFrame {
                                 colorComboBoxes.get(i).addElement(current);
                                 colorComboBoxes.get(i).removeElement(newSelected);
                             }
+
+                            current = newSelected;
                         }
                     }
                 }
