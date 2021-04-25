@@ -18,7 +18,7 @@ import utils.PieceColor;
 public class NewGameWindow extends JFrame {
     private int numPlayers = 2;
     private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
-    private final ArrayList<Boolean> isBot = new ArrayList<>();
+    private final ArrayList<Integer> botStrategy = new ArrayList<>();
     private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
 
     private JPanel playersConfigPanel;
@@ -111,6 +111,8 @@ public class NewGameWindow extends JFrame {
         /// Para cada jugador, se necesita un combobox para seleccionar el color
         this.colorComboBoxes.clear();
 
+        this.botStrategy.clear();
+
         for (int i = 0; i < this.numPlayers; ++i) {
             colorComboBoxes.add(NewGameWindow.DefaultAvailableColors());
         }
@@ -124,6 +126,7 @@ public class NewGameWindow extends JFrame {
 
             final int _index = i;
             final PieceColor _initialColor = comboBoxModel.getElementAt(0);
+
             /// Seleccionar por defecto el primer color disponible
             comboBoxModel.setSelectedItem(_initialColor);
 
@@ -158,14 +161,25 @@ public class NewGameWindow extends JFrame {
             playerConfigPanel.add(playerName);
             playerConfigPanel.add(colorCombo);
 
-            JCheckBox isBotCheckBox = new JCheckBox("Es Jugador Máquina?");
-            isBotCheckBox.setSelected(this.isBot.get(_index));
-            isBotCheckBox.addChangeListener(
-                e -> {
-                    this.isBot.set(_index, isBotCheckBox.isSelected());
+            JComboBox<String> botStrategyComboBox = new JComboBox<>(
+                new String[] {
+                    "Jugador Humano",
+                    "Estrategia 1",
+                    "Estrategia 2",
+                    "Estrategia 3"
                 }
             );
-            playerConfigPanel.add(isBotCheckBox);
+
+            /// Por defecto, es jugador humano
+            this.botStrategy.add(0);
+
+            botStrategyComboBox.addActionListener(
+                e -> {
+                    this.botStrategy.set(_index, botStrategyComboBox.getSelectedIndex());
+                }
+            );
+
+            playerConfigPanel.add(botStrategyComboBox);
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
@@ -195,7 +209,8 @@ public class NewGameWindow extends JFrame {
         for (int i = 0; i < this.numPlayers; ++i) {
             PieceColor color = (PieceColor) this.colorComboBoxes.get(i).getSelectedItem();
 
-            Boolean bot = this.isBot.get(i);
+            /// Si es 0, es jugador humano
+            int botStrategy = this.botStrategy.get(i);
 
             try {
                 players.add(new Player(color, this.availableSides.poll(), i + 1));
