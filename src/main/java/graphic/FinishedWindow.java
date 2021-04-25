@@ -92,6 +92,11 @@ public class FinishedWindow extends JFrame {
 	JButton newGameButton = new JButton("Volver a inicio");
 	newGameButton.setFont(new Font("Tahoma", Font.PLAIN, 26));
 	newGameButton.setBounds(545, 392, 162, 73);
+	newGameButton.setForeground(new Color(86, 81, 177));
+	newGameButton.setFocusable(true);
+	newGameButton.setBorderPainted(true);
+	newGameButton.setFocusPainted(true);
+	newGameButton.setContentAreaFilled(true);
 	newGameButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent action) {
 		father.initGameOptions();
@@ -107,6 +112,11 @@ public class FinishedWindow extends JFrame {
 	JButton exitButton = new JButton("Salir del juego");
 	exitButton.setFont(new Font("Tahoma", Font.PLAIN, 26));
 	exitButton.setBounds(545, 392, 162, 73);
+	exitButton.setForeground(new Color(86, 81, 177));
+	exitButton.setFocusable(true);
+	exitButton.setBorderPainted(true);
+	exitButton.setFocusPainted(true);
+	exitButton.setContentAreaFilled(true);
 	exitButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent action) {
 		System.exit(0);
@@ -123,6 +133,11 @@ public class FinishedWindow extends JFrame {
 	JButton revengeButton = new JButton("Revancha");
 	revengeButton.setFont(new Font("Tahoma", Font.PLAIN, 26));
 	revengeButton.setBounds(545, 392, 162, 73);
+	revengeButton.setForeground(new Color(86, 81, 177));
+	revengeButton.setFocusable(true);
+	revengeButton.setBorderPainted(true);
+	revengeButton.setFocusPainted(true);
+	revengeButton.setContentAreaFilled(true);
 	revengeButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent action) {
 		father.initGame();
