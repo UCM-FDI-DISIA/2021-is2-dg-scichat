@@ -92,7 +92,7 @@ public class Game implements Serializable {
     }
 
     /*Metodos de control de tiempo de juego*/
-    
+
     /**
      * Empieza el temporizador del jugador actual
      */
@@ -109,21 +109,21 @@ public class Game implements Serializable {
             i.onEndTurn(this);
         }
     }
-    
+
     /**
-     * 
+     *
      * @return	Tiempo en milisegundos que el jugador actual lleva jugando
      */
     public long getCurrentPlayerTime() {
-	return this.getCurrentPlayer().timePlaying();
+        return this.getCurrentPlayer().timePlaying();
     }
-    
+
     /**
      * Lleva a cabo instruccionees basicas para empezar una partida
      */
     public void start() {
-	this.startTurn();
-	for(GameObserver i: this.observers)i.onGameStart(this);
+        this.startTurn();
+        for (GameObserver i : this.observers) i.onGameStart(this);
     }
 
     public Player currentPlayerSurrender() {

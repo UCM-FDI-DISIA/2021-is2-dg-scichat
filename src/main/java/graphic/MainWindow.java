@@ -2,7 +2,6 @@ package graphic;
 
 import control.Controller;
 import exceptions.OccupiedCellException;
-
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
@@ -13,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import logic.Board;
-import logic.Game;
 import logic.Board.Side;
+import logic.Game;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 import utils.Mode;
@@ -23,11 +22,11 @@ import utils.PieceColor;
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver {
     private Controller ctrl;
-    
+
     //Datos de diseno
-    public static int width=930;
-    public static int height=700;
-    
+    public static int width = 930;
+    public static int height = 700;
+
     //Pantallas principales
     private JPanel startScreen = null;
     private JPanel gameScreen = null;
@@ -63,9 +62,9 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initGame() {
         //TODO crear pantalla gameScreen
         if (gameScreen == null) {
-            gameScreen=new JPanel(new BorderLayout());
-            gameScreen.add(new BoardPanel(ctrl),BorderLayout.LINE_START);
-            gameScreen.add(new OptionsPanel(ctrl),BorderLayout.LINE_END);
+            gameScreen = new JPanel(new BorderLayout());
+            gameScreen.add(new BoardPanel(ctrl), BorderLayout.LINE_START);
+            gameScreen.add(new OptionsPanel(ctrl), BorderLayout.LINE_END);
             ctrl.addObserver(this);
         } else {
             ctrl.softReset();

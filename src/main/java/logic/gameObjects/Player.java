@@ -24,7 +24,7 @@ public class Player implements Serializable {
     private boolean surrender; //Jugador se ha rendido
     private int id; //Jugador numero id
     private long time; //Tiempo que lleva jugando
-    private boolean playing=false;
+    private boolean playing = false;
 
     private long timeAtTurnStart;
 
@@ -150,7 +150,7 @@ public class Player implements Serializable {
      */
     public void startTurn() {
         this.timeAtTurnStart = System.currentTimeMillis();
-        playing=true;
+        playing = true;
     }
 
     /**
@@ -158,12 +158,13 @@ public class Player implements Serializable {
      */
     public void endTurn() {
         this.time += System.currentTimeMillis() - this.timeAtTurnStart;
-        playing=false;
+        playing = false;
     }
 
     public long timePlaying() {
-        if(playing)return time + System.currentTimeMillis() - this.timeAtTurnStart;
-        else return time;
+        if (playing) return (
+            time + System.currentTimeMillis() - this.timeAtTurnStart
+        ); else return time;
     }
 
     /**

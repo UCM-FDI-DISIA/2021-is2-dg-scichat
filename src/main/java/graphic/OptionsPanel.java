@@ -1,5 +1,6 @@
 package graphic;
 
+import control.Controller;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,40 +10,40 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
-
+import logic.Game;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
-import control.Controller;
-import logic.Game;
-
-public class OptionsPanel extends JPanel implements GameObserver{
-
+public class OptionsPanel extends JPanel implements GameObserver {
     private Controller ctrl;
     private JLabel labelTime;
-    private boolean onGame=true;
+    private boolean onGame = true;
     private Game game;
-    private SwingWorker<Integer,Integer> hora;
-    
+    private SwingWorker<Integer, Integer> hora;
+
     public OptionsPanel(Controller ctrl) {
         initGUI();
         ctrl.addObserver(this);
-        hora=new SwingWorker<Integer,Integer>() {
-            protected Integer doInBackground() {
-        	while(onGame) {
-                	try {
-                	    long calcTime=System.currentTimeMillis();
-                	    labelTime.setText(DurationFormatUtils.formatDuration(
-                                                    game.getCurrentPlayerTime(),
-                                                    "HH:mm:ss"
-                                                ));
-        		    Thread.sleep(1000-calcTime+System.currentTimeMillis());
-        		} catch (InterruptedException e) {
-        		    e.printStackTrace();
-        		}
-        	}
-        	return null;
-            }
-        };
+        hora =
+            new SwingWorker<Integer, Integer>() {
+
+                protected Integer doInBackground() {
+                    while (onGame) {
+                        try {
+                            long calcTime = System.currentTimeMillis();
+                            labelTime.setText(
+                                DurationFormatUtils.formatDuration(
+                                    game.getCurrentPlayerTime(),
+                                    "HH:mm:ss"
+                                )
+                            );
+                            Thread.sleep(1000 - calcTime + System.currentTimeMillis());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+            };
     }
 
     public void initGUI() {
@@ -57,7 +58,6 @@ public class OptionsPanel extends JPanel implements GameObserver{
         labelTime.setHorizontalAlignment(SwingConstants.CENTER);
         labelTime.setFont(new Font("Impact", 0, 20));
         this.add(labelTime);
-        
 
         // Etiqueta de ejemplo del modo de juego
         JLabel gameMode = new JLabel("Modo de juego tradicional");
@@ -91,16 +91,16 @@ public class OptionsPanel extends JPanel implements GameObserver{
         surrenderButton.setContentAreaFilled(false);
         this.add(surrenderButton);
     }
-    
+
     public void onGameEnded(Game game) {
-	onGame=false;
+        onGame = false;
     }
-    
+
     public void onRegister(Game game) {
-	this.game=game;
+        this.game = game;
     }
-    
+
     public void onGameStart(Game game) {
-	hora.execute();
+        hora.execute();
     }
 }
