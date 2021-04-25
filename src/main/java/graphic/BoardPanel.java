@@ -2,7 +2,6 @@ package graphic;
 
 import control.Controller;
 import exceptions.OccupiedCellException;
-
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -11,9 +10,9 @@ import java.util.Map;
 import javax.swing.JPanel;
 import logic.Board;
 import logic.Board.Side;
-import logic.gameObjects.Piece;
 import logic.Cell;
 import logic.Game;
+import logic.gameObjects.Piece;
 import utils.PieceColor;
 import utils.Tools;
 
@@ -56,7 +55,8 @@ public class BoardPanel extends JPanel implements GameObserver {
         this.setPreferredSize(dim);
         this.addComponentListener(
                 new ComponentListener() {
-//                    private boolean locked = false;
+
+                    //                    private boolean locked = false;
                     @Override
                     public void componentHidden(ComponentEvent arg0) {}
 
@@ -65,8 +65,8 @@ public class BoardPanel extends JPanel implements GameObserver {
 
                     @Override
                     public void componentResized(ComponentEvent arg0) {
-//                	if(locked) return;
-//                	locked = true;
+                        //                	if(locked) return;
+                        //                	locked = true;
                         int w = BoardPanel.this.getWidth(), h = // w = 13 * label_width = 13 * 1/cos(30) * label_height = 26/cos(30) * radius
                             BoardPanel.this.getHeight(); // h = 17 * label_height = 34 * radius
 
@@ -75,21 +75,21 @@ public class BoardPanel extends JPanel implements GameObserver {
                             h / 34
                         );
 
-//                        /*HORRIBLE HACK*/
-//                        		// Tenemos dos posibles tamaños a los que reducirnos:
-//                        		// Dimension(aspectRatio * h, h)
-//                        		// Dimension(w, w /aspectRatio)
-//                        		// Escogemos el mayor o menor dependiendo de si crecemos o encogemos
-//                        		Dimension newDim = new Dimension((int)(h*aspectRatio), h);
-//                        
-//                        		// We are growing and h*aspectRatio < w or we are shrinking and h*aspectRatio > w
-//                        		if(newRadius > radius == h * aspectRatio < w)
-//                        		    newDim = new Dimension(w, (int)(w/aspectRatio));
-//                        
-//                        		BoardPanel.this.setSize(newDim);
+                        //                        /*HORRIBLE HACK*/
+                        //                        		// Tenemos dos posibles tamaños a los que reducirnos:
+                        //                        		// Dimension(aspectRatio * h, h)
+                        //                        		// Dimension(w, w /aspectRatio)
+                        //                        		// Escogemos el mayor o menor dependiendo de si crecemos o encogemos
+                        //                        		Dimension newDim = new Dimension((int)(h*aspectRatio), h);
+                        //
+                        //                        		// We are growing and h*aspectRatio < w or we are shrinking and h*aspectRatio > w
+                        //                        		if(newRadius > radius == h * aspectRatio < w)
+                        //                        		    newDim = new Dimension(w, (int)(w/aspectRatio));
+                        //
+                        //                        		BoardPanel.this.setSize(newDim);
 
                         setRadius(newRadius);
-//                        locked = true;
+                        //                        locked = true;
                     }
 
                     @Override
@@ -118,69 +118,61 @@ public class BoardPanel extends JPanel implements GameObserver {
     public void handleClick(Cell position) {
         this.ctrl.handleClick(position);
     }
-    
+
     @Override
     public void onRegister(Game game) {
-	this.setBoard(game.getBoard(), this.radius);
+        this.setBoard(game.getBoard(), this.radius);
     }
-    
+
     @Override
     public void onSelectedPiece(Piece piece) {
-	CellLabel cellLabel = this.cellLabels.get(piece.getPosition());
-	cellLabel.setSelected(!cellLabel.getSelected());
+        CellLabel cellLabel = this.cellLabels.get(piece.getPosition());
+        cellLabel.setSelected(!cellLabel.getSelected());
     }
-    
+
     @Override
     public void onMovedPiece(Cell from, Piece piece) {
-	CellLabel fromLabel, toLabel;
-	
-	fromLabel = this.cellLabels.get(from);
-	fromLabel.setSelected(false);
-	fromLabel.setColor();
-	
-	toLabel = this.cellLabels.get(piece.getPosition());
-	toLabel.setColor(piece.getColor().getColor());
+        CellLabel fromLabel, toLabel;
+
+        fromLabel = this.cellLabels.get(from);
+        fromLabel.setSelected(false);
+        fromLabel.setColor();
+
+        toLabel = this.cellLabels.get(piece.getPosition());
+        toLabel.setColor(piece.getColor().getColor());
     }
-    
+
     @Override
-    public void onEndTurn(Game game) {
-	
-    }
-    
+    public void onEndTurn(Game game) {}
+
     @Override
-    public void onSurrendered(Game game) {
-	
-    }
-    
+    public void onSurrendered(Game game) {}
+
     @Override
-    public void onReset(Game game) {
-	
-    } 
-    
+    public void onReset(Game game) {}
+
     @Override
-    public void onGameEnded(Game game) {
-	
-    }
+    public void onGameEnded(Game game) {}
 
     public static void main(String[] args) {
-	Game g = new Game();
-	try {
-	    g.addNewPlayer(PieceColor.BLUE, Side.Down);
-	    g.addNewPlayer(PieceColor.RED, Side.Up);
+        Game g = new Game();
+        try {
+            g.addNewPlayer(PieceColor.BLUE, Side.Down);
+            g.addNewPlayer(PieceColor.RED, Side.Up);
 
-	    g.addNewPlayer(PieceColor.GREEN, Side.DownLeft);
-	    g.addNewPlayer(PieceColor.MAGENTA, Side.UpRight);
+            g.addNewPlayer(PieceColor.GREEN, Side.DownLeft);
+            g.addNewPlayer(PieceColor.MAGENTA, Side.UpRight);
 
-	    g.addNewPlayer(PieceColor.ORANGE, Side.DownRight);
-	    g.addNewPlayer(PieceColor.YELLOW, Side.UpLeft);
-	} catch (OccupiedCellException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-//        for (Cell c : b) {
-//            System.out.println(c);
-//            assert (c != null);
-//        }
+            g.addNewPlayer(PieceColor.ORANGE, Side.DownRight);
+            g.addNewPlayer(PieceColor.YELLOW, Side.UpLeft);
+        } catch (OccupiedCellException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //        for (Cell c : b) {
+        //            System.out.println(c);
+        //            assert (c != null);
+        //        }
         Tools.showComp(new BoardPanel(null, 20, g.getBoard()));
     }
 }
