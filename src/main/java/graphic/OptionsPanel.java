@@ -8,11 +8,41 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
-public class OptionsPanel extends JPanel {
+import org.apache.commons.lang.time.DurationFormatUtils;
 
-    public OptionsPanel() {
+import control.Controller;
+import logic.Game;
+
+public class OptionsPanel extends JPanel implements GameObserver{
+
+    private Controller ctrl;
+    private JLabel labelTime;
+    private boolean onGame=true;
+    private Game game;
+    private SwingWorker<Integer,Integer> hora;
+    
+    public OptionsPanel(Controller ctrl) {
         initGUI();
+        ctrl.addObserver(this);
+        hora=new SwingWorker<Integer,Integer>() {
+            protected Integer doInBackground() {
+        	while(onGame) {
+                	try {
+                	    long calcTime=System.currentTimeMillis();
+                	    labelTime.setText(DurationFormatUtils.formatDuration(
+                                                    game.getCurrentPlayerTime(),
+                                                    "HH:mm:ss"
+                                                ));
+        		    Thread.sleep(1000-calcTime+System.currentTimeMillis());
+        		} catch (InterruptedException e) {
+        		    e.printStackTrace();
+        		}
+        	}
+        	return null;
+            }
+        };
     }
 
     public void initGUI() {
@@ -23,10 +53,11 @@ public class OptionsPanel extends JPanel {
         // Añadir los componentes aqui para que los botones queden abajo
 
         // Etiqueta de ejemplo de la duración de la partida
-        JLabel tiempo = new JLabel("03:42");
-        tiempo.setHorizontalAlignment(SwingConstants.CENTER);
-        tiempo.setFont(new Font("Impact", 0, 20));
-        this.add(tiempo);
+        labelTime = new JLabel("00:00:00");
+        labelTime.setHorizontalAlignment(SwingConstants.CENTER);
+        labelTime.setFont(new Font("Impact", 0, 20));
+        this.add(labelTime);
+        
 
         // Etiqueta de ejemplo del modo de juego
         JLabel gameMode = new JLabel("Modo de juego tradicional");
@@ -59,5 +90,17 @@ public class OptionsPanel extends JPanel {
         surrenderButton.setFocusPainted(false);
         surrenderButton.setContentAreaFilled(false);
         this.add(surrenderButton);
+    }
+    
+    public void onGameEnded(Game game) {
+	onGame=false;
+    }
+    
+    public void onRegister(Game game) {
+	this.game=game;
+    }
+    
+    public void onGameStart(Game game) {
+	hora.execute();
     }
 }

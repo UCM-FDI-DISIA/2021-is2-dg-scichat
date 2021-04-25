@@ -68,4 +68,14 @@ public class Controller {
     public void softReset() {
         game.softReset();
     }
+    
+    public void nextTurn() {
+	game.endTurn();
+	game.advance();
+	game.startTurn();
+    }
+    
+    public void initGame() {
+	game.start();
+    }
 }

@@ -45,9 +45,10 @@ public class BoardPanel extends JPanel implements GameObserver {
 
         int label_height = 2 * radius;
         int label_width = (int) (Math.sqrt(4.0 / 3) * label_height);
-
+        
         initGUI(new Dimension(13 * label_width, 17 * label_height));
-        this.setBoard(board, radius); // Puede que mejor mover esto a 	onRegister
+        if(ctrl!=null)ctrl.addObserver(this);
+        this.setBoard(board, radius);
     }
 
     private void initGUI(Dimension dim) {
