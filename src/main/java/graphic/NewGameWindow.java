@@ -1,18 +1,26 @@
 package graphic;
 
+import exceptions.OccupiedCellException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import logic.Board;
 import logic.gameObjects.Player;
 import utils.PieceColor;
 
 public class NewGameWindow extends JFrame {
     private int numPlayers = 2;
-    private ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
+    private final ArrayList<Boolean> isBot = new ArrayList<>();
+    private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
+
     private JPanel playersConfigPanel;
 
     NewGameWindow() {
@@ -66,6 +74,32 @@ public class NewGameWindow extends JFrame {
         this.getContentPane().add(numPlayerSection);
     }
 
+    void setAvailableSides() {
+        switch (this.numPlayers) {
+            case 2:
+                /// Entonces juega en arriba y abajo
+                this.availableSides.add(Board.Side.Up);
+                this.availableSides.add(Board.Side.Down);
+                break;
+            case 3:
+                /// Juega en triangulo invertido
+                this.availableSides.add(Board.Side.UpLeft);
+                this.availableSides.add(Board.Side.UpRight);
+                this.availableSides.add(Board.Side.Down);
+                break;
+            case 4:
+                this.availableSides.add(Board.Side.UpLeft);
+                this.availableSides.add(Board.Side.UpRight);
+                this.availableSides.add(Board.Side.DownLeft);
+                this.availableSides.add(Board.Side.DownRight);
+                break;
+            case 6:
+                /// Entonces todos los lados están disponibles
+                this.availableSides.addAll(Arrays.asList(Board.Side.values()));
+                break;
+        }
+    }
+
     /// Método para crear configuraciones para cada jugador
     void refreshPlayerConfiguration() {
         /// Tantas columnas como el numero de jugadores que haya
@@ -75,7 +109,7 @@ public class NewGameWindow extends JFrame {
         this.playersConfigPanel.removeAll();
 
         /// Para cada jugador, se necesita un combobox para seleccionar el color
-        ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
+        this.colorComboBoxes.clear();
 
         for (int i = 0; i < this.numPlayers; ++i) {
             colorComboBoxes.add(NewGameWindow.DefaultAvailableColors());
@@ -125,8 +159,13 @@ public class NewGameWindow extends JFrame {
             playerConfigPanel.add(colorCombo);
 
             JCheckBox isBotCheckBox = new JCheckBox("Es Jugador Máquina?");
+            isBotCheckBox.setSelected(this.isBot.get(_index));
+            isBotCheckBox.addChangeListener(
+                e -> {
+                    this.isBot.set(_index, isBotCheckBox.isSelected());
+                }
+            );
             playerConfigPanel.add(isBotCheckBox);
-
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
@@ -144,6 +183,29 @@ public class NewGameWindow extends JFrame {
         availableColors.addElement(PieceColor.BLUE);
 
         return availableColors;
+    }
+
+    ArrayList<Player> getPlayers() {
+        /// Refrescar los lados disponibles
+        this.setAvailableSides();
+
+        /// Crear una lista de players con las opciones
+        ArrayList<Player> players = new ArrayList<>();
+
+        for (int i = 0; i < this.numPlayers; ++i) {
+            PieceColor color = (PieceColor) this.colorComboBoxes.get(i).getSelectedItem();
+
+            Boolean bot = this.isBot.get(i);
+
+            try {
+                players.add(new Player(color, this.availableSides.poll(), i + 1));
+            } catch (OccupiedCellException e) {
+                /// Esto nunca va a pasar
+                e.printStackTrace();
+            }
+        }
+
+        return players;
     }
 
     public static void main(String[] args) {
