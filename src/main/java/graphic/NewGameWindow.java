@@ -38,14 +38,23 @@ public class NewGameWindow extends JFrame {
         titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
         mainPanel.setBorder(titled);
 
+        this.playersConfigPanel = new JPanel(new GridLayout(6, 1));
+        preparePlayersConfigPanel();
+        refreshPlayerConfiguration();
+        mainPanel.add(this.playersConfigPanel);
+    }
+
+    void preparePlayersConfigPanel() {
         JPanel numPlayerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
         numPlayerSection.setBackground(Color.WHITE);
+
         JComboBox<Integer> numPlayerComboBox = new JComboBox<>(
             new Integer[] { 2, 3, 4, 6 }
         );
 
         numPlayerComboBox.addActionListener(
             e -> {
+                /// Cuando cambia el numero de jugadores, actualizar la lista de configuraciones
                 NewGameWindow.this.numPlayers =
                     (Integer) numPlayerComboBox.getSelectedItem();
                 NewGameWindow.this.refreshPlayerConfiguration();
@@ -54,11 +63,7 @@ public class NewGameWindow extends JFrame {
 
         numPlayerSection.add(new JLabel("Número de jugadores: "));
         numPlayerSection.add(numPlayerComboBox);
-        mainPanel.add(numPlayerSection);
-
-        this.playersConfigPanel = new JPanel(new GridLayout(6, 1));
-        mainPanel.add(this.playersConfigPanel);
-        refreshPlayerConfiguration();
+        this.getContentPane().add(numPlayerSection);
     }
 
     /// Método para crear configuraciones para cada jugador
@@ -118,6 +123,10 @@ public class NewGameWindow extends JFrame {
 
             playerConfigPanel.add(playerName);
             playerConfigPanel.add(colorCombo);
+
+            JCheckBox isBotCheckBox = new JCheckBox("Es Jugador Máquina?");
+            playerConfigPanel.add(isBotCheckBox);
+
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
@@ -126,7 +135,7 @@ public class NewGameWindow extends JFrame {
     }
 
     static DefaultComboBoxModel<PieceColor> DefaultAvailableColors() {
-        DefaultComboBoxModel<PieceColor> availableColors = new DefaultComboBoxModel<PieceColor>();
+        DefaultComboBoxModel<PieceColor> availableColors = new DefaultComboBoxModel<>();
         availableColors.addElement(PieceColor.GREEN);
         availableColors.addElement(PieceColor.YELLOW);
         availableColors.addElement(PieceColor.ORANGE);
