@@ -42,7 +42,7 @@ public class NewGameWindow extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
 
         TitledBorder titled = new TitledBorder("Nueva Partida");
-        titled.setTitleFont(new Font("Comic sans", Font.BOLD, 20));
+        titled.setTitleFont(new Font("Comic sans MS", Font.BOLD, 20));
         titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
         mainPanel.setBorder(titled);
 
