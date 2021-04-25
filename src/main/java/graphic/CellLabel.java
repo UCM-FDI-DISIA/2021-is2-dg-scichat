@@ -20,7 +20,7 @@ public class CellLabel extends JLabel {
 
     private int radius, x, y;
     private Color borderColor, bgColor;
-//    private final Color accentColor = new Color(0x559999);
+    //    private final Color accentColor = new Color(0x559999);
     private final Color selectColor = new Color(0xff66ff);
     private boolean selected = false;
     private BoardPanel parent = null;
@@ -33,9 +33,9 @@ public class CellLabel extends JLabel {
         this.position = cell;
         this.radius = radius;
 
-
-        if(!this.position.isEmpty()) this.bgColor = this.position.getPiece().getColor().getColor();
-        else this.bgColor = default_bg_color;
+        if (!this.position.isEmpty()) this.bgColor =
+            this.position.getPiece().getColor().getColor(); else this.bgColor =
+            default_bg_color;
         this.borderColor = Color.white;
 
         initGUI();
@@ -75,7 +75,7 @@ public class CellLabel extends JLabel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
-        
+
         g2D.setPaint(bgColor);
         g2D.fillOval(0, 0, 2 * radius, 2 * radius);
 
@@ -85,8 +85,9 @@ public class CellLabel extends JLabel {
     }
 
     public void setColor() {
-	setColor(default_bg_color);
+        setColor(default_bg_color);
     }
+
     public void setColor(Color color) {
         this.bgColor = color;
     }
@@ -94,8 +95,9 @@ public class CellLabel extends JLabel {
     public void setSelected(boolean b) {
         this.selected = b;
     }
+
     public boolean getSelected() {
-	return this.selected;
+        return this.selected;
     }
 
     private boolean inside(Point pt) {
@@ -133,7 +135,7 @@ public class CellLabel extends JLabel {
         public void mouseClicked(MouseEvent e) {
             Point pointer = e.getPoint();
             if (inside(pointer)) {
-        	JOptionPane.showOptionDialog(
+                JOptionPane.showOptionDialog(
                     CellLabel.this,
                     "Se va a mandar la celda seleccinada a Controller\n" +
                     pointer.toString(),
@@ -144,7 +146,7 @@ public class CellLabel extends JLabel {
                     null,
                     null
                 );
-        	CellLabel.this.parent.handleClick(CellLabel.this.position);
+                CellLabel.this.parent.handleClick(CellLabel.this.position);
             }
         }
 
