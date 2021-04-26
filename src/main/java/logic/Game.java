@@ -122,13 +122,13 @@ public class Game implements Serializable {
      * Lleva a cabo instruccionees basicas para empezar una partida
      */
     public void start() {
+	this.stopped=false;
         this.startTurn();
         for (GameObserver i : this.observers) i.onGameStart(this);
     }
 
     public Player currentPlayerSurrender() {
         this.getCurrentPlayer().surrender();
-        deleteCurrentPlayer();
         for (GameObserver i : observers) {
             i.onSurrendered(this);
         }
@@ -163,7 +163,9 @@ public class Game implements Serializable {
      * Avanzar en turno
      */
     public void advance() {
-        this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+        do{
+            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+        }while(this.getCurrentPlayer().hasSurrender());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
@@ -176,10 +178,6 @@ public class Game implements Serializable {
      */
     public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
-    }
-
-    public void deleteCurrentPlayer() {
-        players.remove(this.currentPlayerIndex);
     }
 
     public HashSet<Piece> getCurrentPlayerPieces() {

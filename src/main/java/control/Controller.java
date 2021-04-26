@@ -62,6 +62,12 @@ public class Controller {
         // TODO Auto-generated method stub
 
     }
+    
+    public void surrender() {
+	game.currentPlayerSurrender();
+	if(game.wonBySurrender()!=null)game.setStopped(true);
+	nextTurn();
+    }
 
     public void reset() {
         game.reset();
@@ -70,8 +76,8 @@ public class Controller {
     public void softReset() {
         game.softReset();
     }
-
-    public void nextTurn() {
+    
+    private void nextTurn() {
         game.endTurn();
         game.advance();
         game.startTurn();

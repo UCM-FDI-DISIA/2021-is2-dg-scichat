@@ -77,6 +77,7 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initWinner(Player winner) {
         //TODO crear pantalla winnerScreen
+	System.out.println("Ha ganado el jugador "+winner.getId());
     }
 
     public void initGameOptions() {
@@ -93,6 +94,7 @@ public class MainWindow extends JFrame implements GameObserver {
 
             g.addNewPlayer(PieceColor.ORANGE, Side.DownRight);
             g.addNewPlayer(PieceColor.YELLOW, Side.UpLeft);
+            g.setGameMode(Mode.Traditional);
         } catch (OccupiedCellException e) {
             e.printStackTrace();
         }
@@ -106,6 +108,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
-        //initWinner(game.getWinner());
+	//TODO
+        initWinner(game.wonBySurrender());
     }
 }

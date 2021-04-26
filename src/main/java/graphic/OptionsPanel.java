@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,15 +17,21 @@ import logic.Game;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 public class OptionsPanel extends JPanel implements GameObserver {
+    
     private Controller ctrl;
-    private JLabel labelTime;
     private boolean onGame = true;
     private Game game;
     private SwingWorker<Integer, Integer> hora;
+    
+    //Componentes
+    private JLabel labelTime;
+    private JLabel gameMode;
+    private JLabel turn;
 
 
     public OptionsPanel(Controller ctrl) {
         initGUI();
+        this.ctrl=ctrl;
         ctrl.addObserver(this);
         hora =
             new SwingWorker<Integer, Integer>() {
@@ -62,14 +71,14 @@ public class OptionsPanel extends JPanel implements GameObserver {
         this.add(labelTime);
 
         // Etiqueta de ejemplo del modo de juego
-        JLabel gameMode = new JLabel("Modo de juego tradicional");
+        gameMode = new JLabel("Modo de juego tradicional");
         gameMode.setHorizontalAlignment(SwingConstants.CENTER);
         gameMode.setFont(new Font("Impact", 0, 20));
         this.add(gameMode);
 
         // Etiqueta de ejemplo del turno
 
-        JLabel turn = new JLabel("Turno del jugador 1");
+        turn = new JLabel("Turno del jugador 1");
         turn.setHorizontalAlignment(SwingConstants.CENTER);
         turn.setFont(new Font("Impact", 0, 20));
         this.add(turn);
@@ -92,6 +101,12 @@ public class OptionsPanel extends JPanel implements GameObserver {
         surrenderButton.setBorderPainted(true);
         surrenderButton.setFocusPainted(false);
         surrenderButton.setContentAreaFilled(false);
+        surrenderButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		ctrl.surrender();
+	    }     
+        });
         this.add(surrenderButton);
     }
 
@@ -101,9 +116,15 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
     public void onRegister(Game game) {
         this.game = game;
+        this.turn.setText("Turno del jugador "+(game.getCurrentPlayerIndex()+1));
+        this.gameMode.setText(game.getGameMode().toString());
     }
 
     public void onGameStart(Game game) {
         hora.execute();
+    }
+    
+    public void onEndTurn(Game game) {
+	this.turn.setText("Turno del jugador "+(game.getCurrentPlayerIndex()+1));
     }
 }
