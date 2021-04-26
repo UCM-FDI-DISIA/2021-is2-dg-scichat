@@ -24,6 +24,7 @@ public class Game implements Serializable {
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex = 0;
     private Mode gameMode;
+    private Player winner = null;
     private ArrayList<GameObserver> observers = new ArrayList<>();
 
     public Game() {}
@@ -54,7 +55,9 @@ public class Game implements Serializable {
         return gameMode;
     }
 
-    /* Setters */
+    public Player getWinner() {
+        return winner;
+    }
 
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
@@ -79,6 +82,10 @@ public class Game implements Serializable {
         gameMode = modo;
     }
 
+    public void setWinner(Player player) {
+        winner = player;
+    }
+
     public void addObserver(GameObserver observer) {
         observer.onRegister(this);
         observers.add(observer);
@@ -91,10 +98,18 @@ public class Game implements Serializable {
         this.players.add(new Player(color, side, players.size() + 1));
     }
 
+    /*Metodos de control de tiempo de juego*/
+
+    /**
+     * Empieza el temporizador del jugador actual
+     */
     public void startTurn() {
         getCurrentPlayer().startTurn();
     }
 
+    /**
+     * Termina el temporizador del jugador actual
+     */
     public void endTurn() {
         getCurrentPlayer().endTurn();
         for (GameObserver i : observers) {
@@ -102,9 +117,25 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     *
+     * @return	Tiempo en milisegundos que el jugador actual lleva jugando
+     */
+    public long getCurrentPlayerTime() {
+        return this.getCurrentPlayer().timePlaying();
+    }
+
+    /**
+     * Lleva a cabo instruccionees basicas para empezar una partida
+     */
+    public void start() {
+        this.stopped = false;
+        this.startTurn();
+        for (GameObserver i : this.observers) i.onGameStart(this);
+    }
+
     public Player currentPlayerSurrender() {
         this.getCurrentPlayer().surrender();
-        deleteCurrentPlayer();
         for (GameObserver i : observers) {
             i.onSurrendered(this);
         }
@@ -139,7 +170,13 @@ public class Game implements Serializable {
      * Avanzar en turno
      */
     public void advance() {
-        this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+        //TODO evitar que se atasque
+        do {
+            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+        } while (this.getCurrentPlayer().hasSurrender());
+        for (GameObserver i : observers) {
+            i.onEndTurn(this);
+        }
     }
 
     /**
@@ -149,10 +186,6 @@ public class Game implements Serializable {
      */
     public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
-    }
-
-    public void deleteCurrentPlayer() {
-        players.remove(this.currentPlayerIndex);
     }
 
     public HashSet<Piece> getCurrentPlayerPieces() {
@@ -178,10 +211,11 @@ public class Game implements Serializable {
         stopped = false;
         players = new ArrayList<>();
         observers = new ArrayList<>();
+        winner = null;
     }
 
     public void softReset() {
-        // TODO preparar la partida para volver a empezar
+        //TODO preparar la partida para volver a empezar
     }
 
     public void movePiece(Cell to) throws ExecuteException {
@@ -199,6 +233,10 @@ public class Game implements Serializable {
         /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
             selectedPiece.move(to, getGameMode());
+            Player currentPlayer = getCurrentPlayer();
+            if (currentPlayer.isAWinner()) {
+                winner = currentPlayer;
+            }
         } catch (InvalidMoveException e) {
             throw new ExecuteException(
                 String.format(
