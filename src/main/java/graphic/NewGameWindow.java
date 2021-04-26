@@ -60,7 +60,7 @@ public class NewGameWindow extends JFrame {
 
     void preparePlayersConfigPanel() {
         /// Crear la configuracion de numero de jugadores
-        JPanel numPlayerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel numPlayerSection = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         numPlayerSection.setBackground(Color.WHITE);
 
         JComboBox<Integer> numPlayerComboBox = new JComboBox<>(
@@ -81,7 +81,7 @@ public class NewGameWindow extends JFrame {
         container.add(numPlayerSection, BorderLayout.NORTH);
 
         /// Crear la configuracion del modo del juego
-        JPanel modeSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel modeSection = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         modeSection.setBackground(Color.WHITE);
         DefaultComboBoxModel<Mode> modeComboBoxModel = new DefaultComboBoxModel<>();
         modeComboBoxModel.addElement(Mode.Fast);
@@ -137,7 +137,9 @@ public class NewGameWindow extends JFrame {
         }
 
         for (int i = 0; i < this.numPlayers; ++i) {
-            JPanel playerConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JPanel playerConfigPanel = new JPanel(
+                new FlowLayout(FlowLayout.LEFT, 10, 10)
+            );
             JLabel playerName = new JLabel("Jugador #" + (i + 1));
 
             DefaultComboBoxModel<PieceColor> comboBoxModel = colorComboBoxes.get(i);
