@@ -56,9 +56,13 @@ public class NewGameWindow extends JFrame {
         refreshPlayerConfiguration();
 
         mainPanel.add(container);
+
+        container.add(new JButton("Start"), BorderLayout.SOUTH);
     }
 
     void preparePlayersConfigPanel() {
+        JPanel wrapper = new JPanel(new FlowLayout());
+
         /// Crear la configuracion de numero de jugadores
         JPanel numPlayerSection = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         numPlayerSection.setBackground(Color.WHITE);
@@ -78,7 +82,7 @@ public class NewGameWindow extends JFrame {
 
         numPlayerSection.add(new JLabel("Número de jugadores: "));
         numPlayerSection.add(numPlayerComboBox);
-        container.add(numPlayerSection, BorderLayout.NORTH);
+        wrapper.add(numPlayerSection);
 
         /// Crear la configuracion del modo del juego
         JPanel modeSection = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -90,7 +94,9 @@ public class NewGameWindow extends JFrame {
         JComboBox<Mode> modeJComboBox = new JComboBox<>(modeComboBoxModel);
         modeSection.add(new JLabel("Modo del juego: "));
         modeSection.add(modeJComboBox);
-        container.add(modeSection, BorderLayout.SOUTH);
+        wrapper.add(modeSection);
+
+        container.add(wrapper, BorderLayout.NORTH);
     }
 
     void setAvailableSides() {
