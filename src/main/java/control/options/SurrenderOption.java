@@ -15,6 +15,7 @@ public class SurrenderOption extends Option {
         boolean out = true;
         Player victoryPlayer = game.currentPlayerSurrender();
         if (victoryPlayer != null) {
+            game.setWinner(victoryPlayer);
             game.setStopped(true);
             System.out.println("Ha ganado el jugador " + victoryPlayer.getId() + "\n");
             out = false;

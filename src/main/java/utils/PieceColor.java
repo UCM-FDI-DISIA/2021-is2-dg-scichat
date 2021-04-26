@@ -31,4 +31,8 @@ public enum PieceColor {
     public String getBoardString() {
         return boardString;
     }
+
+    public String toString() {
+        return name;
+    }
 }

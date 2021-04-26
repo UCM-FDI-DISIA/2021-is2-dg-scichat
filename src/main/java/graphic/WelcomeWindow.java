@@ -17,6 +17,9 @@ import javax.swing.SwingConstants;
 public class WelcomeWindow extends JPanel {
     MainWindow father;
 
+    private JButton newButton;
+    private JButton loadButton;
+
     public WelcomeWindow(MainWindow father) {
         this.father = father;
         initGUI();
@@ -27,17 +30,21 @@ public class WelcomeWindow extends JPanel {
         this.setSize(900, 700);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
+
         // esta es la imagen del tablero
         ImageIcon icon = new ImageIcon("tablero.png");
+
         // aqui van las movidas del titulo
         JLabel title = new JLabel("DAMAS CHINAS");
         title.setForeground(new Color(86, 81, 177));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(new Font("Impact", 3, 70));
+
         //este es el panel principal, situado debajo del titulo
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBackground(Color.WHITE);
+
         // estos paneles son para rellenar el panel principal
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.WHITE);
@@ -47,6 +54,7 @@ public class WelcomeWindow extends JPanel {
         panel.add(rightPanel, BorderLayout.EAST);
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
+
         // en este subpanel, que va arriba, es donde va la imagen
         topPanel.setPreferredSize(new Dimension(420, 468));
         JLabel label = new JLabel();
@@ -56,12 +64,14 @@ public class WelcomeWindow extends JPanel {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.WHITE);
         panel.add(bottomPanel, BorderLayout.SOUTH);
+
         // este panel es que ira al centro del panel principal y que contiene los botones
         JPanel panel2 = new JPanel();
         panel2.setBackground(Color.WHITE);
         panel2.setPreferredSize(new Dimension(300, 500));
+
         // boton de nueva partida y toda su configuracion
-        JButton newButton = new JButton("Nueva Partida");
+        newButton = new JButton("Nueva Partida");
         newButton.setPreferredSize(new Dimension(200, 50));
         newButton.setForeground(new Color(86, 81, 177));
         newButton.setFont(new Font("Impact", 0, 16));
@@ -78,8 +88,9 @@ public class WelcomeWindow extends JPanel {
             }
         );
         panel2.add(newButton, BorderLayout.WEST);
+
         // boton de cargar partida y toda su configuracion
-        JButton loadButton = new JButton("Cargar Partida");
+        loadButton = new JButton("Cargar Partida");
         loadButton.setPreferredSize(new Dimension(200, 50));
         loadButton.setForeground(new Color(86, 81, 177));
         loadButton.setFont(new Font("Impact", 0, 16));
