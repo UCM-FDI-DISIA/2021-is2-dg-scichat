@@ -8,14 +8,12 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
@@ -82,12 +80,12 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initWinner(Player winner) {
         //TODO crear pantalla winnerScreen
-	System.out.println("Ha ganado el jugador "+winner.getId());
+        System.out.println("Ha ganado el jugador " + winner.getId());
     }
 
     public void initGameOptions() {
-	if(this.gameOptionsScreen==null)
-	    this.gameOptionsScreen=new NewGameWindow(ctrl,this);
+        if (this.gameOptionsScreen == null) this.gameOptionsScreen =
+            new NewGameWindow(ctrl, this);
         this.gameOptionsScreen.open();
     }
 
@@ -97,7 +95,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
-	//TODO
+        //TODO
         initWinner(game.wonBySurrender());
     }
 }

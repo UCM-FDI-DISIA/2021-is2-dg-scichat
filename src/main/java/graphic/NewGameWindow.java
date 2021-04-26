@@ -1,5 +1,6 @@
 package graphic;
 
+import control.Controller;
 import exceptions.OccupiedCellException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,8 +12,6 @@ import java.util.Queue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-import control.Controller;
 import logic.Board;
 import logic.Game;
 import logic.gameObjects.Player;
@@ -27,15 +26,15 @@ public class NewGameWindow extends JDialog {
     private Controller ctrl;
     private MainWindow father;
     private boolean nuevo;
-    
+
     private JPanel playersConfigPanel = new JPanel();
     private JPanel container;
     private JComboBox<Mode> modeJComboBox;
 
     NewGameWindow(Controller ctrl, MainWindow father) {
-        this.ctrl=ctrl;
-        this.father=father;
-        this.numPlayers=2;
+        this.ctrl = ctrl;
+        this.father = father;
+        this.numPlayers = 2;
         this.initGUI();
         /// Tamaño mínimo de 800x800
         this.setMinimumSize(new Dimension(600, 275));
@@ -43,9 +42,9 @@ public class NewGameWindow extends JDialog {
     }
 
     private void initGUI() {
-	this.setResizable(false);
-	JPanel mainPanel=new JPanel();
-	this.setContentPane(mainPanel);
+        this.setResizable(false);
+        JPanel mainPanel = new JPanel();
+        this.setContentPane(mainPanel);
         /// Añadir espacios en el panel
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -67,19 +66,22 @@ public class NewGameWindow extends JDialog {
 
         mainPanel.add(container);
 
-        JButton startButton=new JButton("Start");
-        startButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent arg0) {
-		nuevo=true;
-		Game newGame=new Game();
-		newGame.setPlayers(getPlayers());
-		newGame.setGameMode((Mode)modeJComboBox.getSelectedItem());
-		ctrl.setGame(newGame);
-		setVisible(false);
-		father.initGame();
-	    }
-        });
+        JButton startButton = new JButton("Start");
+        startButton.addActionListener(
+            new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    nuevo = true;
+                    Game newGame = new Game();
+                    newGame.setPlayers(getPlayers());
+                    newGame.setGameMode((Mode) modeJComboBox.getSelectedItem());
+                    ctrl.setGame(newGame);
+                    setVisible(false);
+                    father.initGame();
+                }
+            }
+        );
         container.add(startButton, BorderLayout.SOUTH);
     }
 
@@ -235,20 +237,20 @@ public class NewGameWindow extends JDialog {
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
-        switch(numPlayers) {
-        case 2:
-            setSize(600,275);
-            break;
-        case 3:
-            setSize(600,315);
-            break;
-        case 4:
-            setSize(600,355);
-            break;
-        case 6:
-            this.setSize(600, 450);
+        switch (numPlayers) {
+            case 2:
+                setSize(600, 275);
+                break;
+            case 3:
+                setSize(600, 315);
+                break;
+            case 4:
+                setSize(600, 355);
+                break;
+            case 6:
+                this.setSize(600, 450);
         }
-        
+
         this.validate();
         this.repaint();
     }
@@ -288,12 +290,12 @@ public class NewGameWindow extends JDialog {
 
         return players;
     }
-    
+
     public boolean open() {
-	nuevo=false;
-	setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
-	pack();
-	setVisible(true);
-	return nuevo;
+        nuevo = false;
+        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
+        pack();
+        setVisible(true);
+        return nuevo;
     }
 }

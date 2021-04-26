@@ -54,9 +54,9 @@ public class Game implements Serializable {
     public Mode getGameMode() {
         return gameMode;
     }
-    
+
     public Player getWinner() {
-	return winner;
+        return winner;
     }
 
     /*Setters*/
@@ -83,9 +83,9 @@ public class Game implements Serializable {
     public void setGameMode(Mode modo) {
         gameMode = modo;
     }
-    
+
     public void setWinner(Player player) {
-	winner = player;
+        winner = player;
     }
 
     public void addObserver(GameObserver observer) {
@@ -131,7 +131,7 @@ public class Game implements Serializable {
      * Lleva a cabo instruccionees basicas para empezar una partida
      */
     public void start() {
-	this.stopped=false;
+        this.stopped = false;
         this.startTurn();
         for (GameObserver i : this.observers) i.onGameStart(this);
     }
@@ -172,10 +172,10 @@ public class Game implements Serializable {
      * Avanzar en turno
      */
     public void advance() {
-	//TODO evitar que se atasque
-        do{
+        //TODO evitar que se atasque
+        do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
-        }while(this.getCurrentPlayer().hasSurrender());
+        } while (this.getCurrentPlayer().hasSurrender());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
@@ -237,7 +237,7 @@ public class Game implements Serializable {
             selectedPiece.move(to, getGameMode());
             Player currentPlayer = getCurrentPlayer();
             if (currentPlayer.isAWinner()) {
-        	winner = currentPlayer;
+                winner = currentPlayer;
             }
         } catch (InvalidMoveException e) {
             throw new ExecuteException(

@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,21 +16,19 @@ import logic.Game;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 public class OptionsPanel extends JPanel implements GameObserver {
-    
     private Controller ctrl;
     private boolean onGame = true;
     private Game game;
     private SwingWorker<Integer, Integer> hora;
-    
+
     //Componentes
     private JLabel labelTime;
     private JLabel gameMode;
     private JLabel turn;
 
-
     public OptionsPanel(Controller ctrl) {
         initGUI();
-        this.ctrl=ctrl;
+        this.ctrl = ctrl;
         ctrl.addObserver(this);
         hora =
             new SwingWorker<Integer, Integer>() {
@@ -101,14 +98,17 @@ public class OptionsPanel extends JPanel implements GameObserver {
         surrenderButton.setBorderPainted(true);
         surrenderButton.setFocusPainted(false);
         surrenderButton.setContentAreaFilled(false);
-        surrenderButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent arg0) {
-		ctrl.surrender();
-	    }     
-        });
+        surrenderButton.addActionListener(
+            new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    ctrl.surrender();
+                }
+            }
+        );
         this.add(surrenderButton);
-        
+
         JButton helpButton = new JButton("Ayuda");
         helpButton.setPreferredSize(new Dimension(250, 100));
         helpButton.setFont(new Font("Impact", 0, 20));
@@ -116,12 +116,15 @@ public class OptionsPanel extends JPanel implements GameObserver {
         helpButton.setBorderPainted(true);
         helpButton.setFocusPainted(false);
         helpButton.setContentAreaFilled(false);
-        helpButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent arg0) {
-		//TODO
-	    }     
-        });
+        helpButton.addActionListener(
+            new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    //TODO
+                }
+            }
+        );
         this.add(helpButton);
     }
 
@@ -131,15 +134,15 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
     public void onRegister(Game game) {
         this.game = game;
-        this.turn.setText("Turno del jugador "+(game.getCurrentPlayerIndex()+1));
+        this.turn.setText("Turno del jugador " + (game.getCurrentPlayerIndex() + 1));
         this.gameMode.setText(game.getGameMode().toString());
     }
 
     public void onGameStart(Game game) {
         hora.execute();
     }
-    
+
     public void onEndTurn(Game game) {
-	this.turn.setText("Turno del jugador "+(game.getCurrentPlayerIndex()+1));
+        this.turn.setText("Turno del jugador " + (game.getCurrentPlayerIndex() + 1));
     }
 }

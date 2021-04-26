@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 
 public class WelcomeWindow extends JPanel {
     MainWindow father;
-    
+
     private JButton newButton;
     private JButton loadButton;
 
@@ -116,14 +116,14 @@ public class WelcomeWindow extends JPanel {
         this.add(panel, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
     }
-    
+
     public void disableButtons() {
-	newButton.setEnabled(false);
-	loadButton.setEnabled(false);
+        newButton.setEnabled(false);
+        loadButton.setEnabled(false);
     }
-    
+
     public void enableButtons() {
-	newButton.setEnabled(true);
-	loadButton.setEnabled(true);
+        newButton.setEnabled(true);
+        loadButton.setEnabled(true);
     }
 }
