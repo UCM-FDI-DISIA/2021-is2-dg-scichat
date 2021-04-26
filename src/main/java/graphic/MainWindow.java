@@ -40,7 +40,8 @@ public class MainWindow extends JFrame implements GameObserver {
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
         this.ctrl = ctrl;
-        ctrl.addObserver(this); //Necesitamos incluirlo como observador para que pueda darse cuenta de que la partida ha terminado
+        ctrl.addObserver(this); // Necesitamos incluirlo como observador para que pueda darse cuenta de que la
+        // partida ha terminado
         initGUI();
     }
 
@@ -90,7 +91,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initSelectFile() {
-        //TODO crear pantalla selectFileScreen
+        // TODO crear pantalla selectFileScreen
         System.out.println("Ahora se abriria el panel de seleccionar partida");
     }
 

@@ -29,7 +29,7 @@ public class Game implements Serializable {
 
     public Game() {}
 
-    /*Getters*/
+    /* Getters */
 
     public Board getBoard() {
         return board;
@@ -58,8 +58,6 @@ public class Game implements Serializable {
     public Player getWinner() {
         return winner;
     }
-
-    /*Setters*/
 
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
@@ -93,7 +91,7 @@ public class Game implements Serializable {
         observers.add(observer);
     }
 
-    /*Métodos*/
+    /* Métodos */
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
@@ -250,7 +248,7 @@ public class Game implements Serializable {
         }
     }
 
-    //Para Debug
+    // Para Debug
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
