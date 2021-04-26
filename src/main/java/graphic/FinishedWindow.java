@@ -25,10 +25,6 @@ public class FinishedWindow extends JFrame {
     Player winner;
     Controller controller;
 
-    public FinishedWindow() {
-        initGUI();
-    }
-
     public FinishedWindow(MainWindow father, Player winner, Controller control) {
         this.father = father;
         this.winner = winner;
@@ -163,14 +159,4 @@ public class FinishedWindow extends JFrame {
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(
-            new Runnable() {
-
-                public void run() {
-                    new FinishedWindow();
-                }
-            }
-        );
-    }
 }
