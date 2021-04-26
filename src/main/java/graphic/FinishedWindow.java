@@ -158,5 +158,4 @@ public class FinishedWindow extends JFrame {
         this.add(gamePanel, BorderLayout.CENTER);
         this.setVisible(true);
     }
-
 }
