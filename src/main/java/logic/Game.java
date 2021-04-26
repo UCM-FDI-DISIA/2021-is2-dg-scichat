@@ -24,6 +24,7 @@ public class Game implements Serializable {
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex = 0;
     private Mode gameMode;
+    private Player winner = null;
     private ArrayList<GameObserver> observers = new ArrayList<>();
 
     public Game() {}
@@ -53,6 +54,10 @@ public class Game implements Serializable {
     public Mode getGameMode() {
         return gameMode;
     }
+    
+    public Player getWinner() {
+	return winner;
+    }
 
     /*Setters*/
 
@@ -77,6 +82,10 @@ public class Game implements Serializable {
 
     public void setGameMode(Mode modo) {
         gameMode = modo;
+    }
+    
+    public void setWinner(Player player) {
+	winner = player;
     }
 
     public void addObserver(GameObserver observer) {
@@ -203,6 +212,7 @@ public class Game implements Serializable {
         stopped = false;
         players = new ArrayList<>();
         observers = new ArrayList<>();
+        winner = null;
     }
 
     public void softReset() {
@@ -224,6 +234,10 @@ public class Game implements Serializable {
         /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
             selectedPiece.move(to, getGameMode());
+            Player currentPlayer = getCurrentPlayer();
+            if (currentPlayer.isAWinner()) {
+        	winner = currentPlayer;
+            }
         } catch (InvalidMoveException e) {
             throw new ExecuteException(
                 String.format(
