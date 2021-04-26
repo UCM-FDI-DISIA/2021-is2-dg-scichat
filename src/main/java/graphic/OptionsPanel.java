@@ -66,7 +66,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
         this.add(gameMode);
 
         // Etiqueta de ejemplo del turno
-        JLabel turn = new JLabel("Turno del jugador 2");
+        JLabel turn = new JLabel("Turno del jugador 1");
         turn.setHorizontalAlignment(SwingConstants.CENTER);
         turn.setFont(new Font("Impact", 0, 20));
         this.add(turn);

@@ -80,7 +80,7 @@ public class Controller {
     public void initGame() {
         game.start();
     }
-        
+
     public void showError(ExecuteException ex) {
         showError(ex, "Prueba de nuevo");
     }
