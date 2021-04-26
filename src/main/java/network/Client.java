@@ -42,17 +42,7 @@ public class Client extends WebSocketClient {
             /// Cierra la conexión al salir del programa
             Runtime
                 .getRuntime()
-                .addShutdownHook(
-                    new Thread(
-                        new Runnable() {
-
-                            public void run() {
-                                ws.close();
-                            }
-                        },
-                        "Shutdown-thread"
-                    )
-                );
+                .addShutdownHook(new Thread(() -> ws.close(), "Shutdown-thread"));
         } catch (Exception e) {
             e.printStackTrace();
         }
