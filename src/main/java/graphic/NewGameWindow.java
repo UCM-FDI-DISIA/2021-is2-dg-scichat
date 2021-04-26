@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import logic.Board;
 import logic.gameObjects.Player;
+import utils.Mode;
 import utils.PieceColor;
 
 public class NewGameWindow extends JFrame {
@@ -47,15 +48,18 @@ public class NewGameWindow extends JFrame {
         titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
         mainPanel.setBorder(titled);
 
-        this.container = new JPanel(new BorderLayout(2, 5));
+        this.container = new JPanel(new BorderLayout(2, 10));
+        container.add(this.playersConfigPanel, BorderLayout.CENTER);
+
+        /// Preparar el contenido de panel de configuracion
         preparePlayersConfigPanel();
         refreshPlayerConfiguration();
-        container.add(this.playersConfigPanel, BorderLayout.CENTER);
 
         mainPanel.add(container);
     }
 
     void preparePlayersConfigPanel() {
+        /// Crear la configuracion de numero de jugadores
         JPanel numPlayerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
         numPlayerSection.setBackground(Color.WHITE);
 
@@ -75,6 +79,18 @@ public class NewGameWindow extends JFrame {
         numPlayerSection.add(new JLabel("Número de jugadores: "));
         numPlayerSection.add(numPlayerComboBox);
         container.add(numPlayerSection, BorderLayout.NORTH);
+
+        /// Crear la configuracion del modo del juego
+        JPanel modeSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        modeSection.setBackground(Color.WHITE);
+        DefaultComboBoxModel<Mode> modeComboBoxModel = new DefaultComboBoxModel<>();
+        modeComboBoxModel.addElement(Mode.Fast);
+        modeComboBoxModel.addElement(Mode.Traditional);
+
+        JComboBox<Mode> modeJComboBox = new JComboBox<>(modeComboBoxModel);
+        modeSection.add(new JLabel("Modo del juego: "));
+        modeSection.add(modeJComboBox);
+        container.add(modeSection, BorderLayout.SOUTH);
     }
 
     void setAvailableSides() {
