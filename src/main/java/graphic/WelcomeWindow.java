@@ -83,9 +83,7 @@ public class WelcomeWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    disableButtons();
                     father.initGameOptions();
-                    enableButtons();
                 }
             }
         );
@@ -104,9 +102,7 @@ public class WelcomeWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    disableButtons();
                     father.initSelectFile();
-                    enableButtons();
                 }
             }
         );
@@ -115,15 +111,5 @@ public class WelcomeWindow extends JPanel {
         panel.add(panel2, BorderLayout.CENTER);
         this.add(panel, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
-    }
-
-    public void disableButtons() {
-        newButton.setEnabled(false);
-        loadButton.setEnabled(false);
-    }
-
-    public void enableButtons() {
-        newButton.setEnabled(true);
-        loadButton.setEnabled(true);
     }
 }

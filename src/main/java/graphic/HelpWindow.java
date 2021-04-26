@@ -6,10 +6,9 @@ import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class HelpWindow extends JFrame {
+public class HelpWindow extends JDialog {
 
     HelpWindow() {
-        super("Ayuda del juego");
         JPanel mainPanel = new JPanel();
 
         /// Configurar como panel principal de la ventana
@@ -46,12 +45,9 @@ public class HelpWindow extends JFrame {
         mainPanel.setBackground(Color.WHITE);
 
         /// Configurar tamaño de la ventana
-        this.setSize(new Dimension(800, 700));
+        this.setSize(new Dimension(800, 750));
         this.setResizable(false);
+        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         this.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new HelpWindow();
     }
 }

@@ -121,7 +121,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    //TODO
+                    new HelpWindow();
                 }
             }
         );
