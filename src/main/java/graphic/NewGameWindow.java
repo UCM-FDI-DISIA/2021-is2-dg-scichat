@@ -21,7 +21,8 @@ public class NewGameWindow extends JFrame {
     private final ArrayList<Integer> botStrategy = new ArrayList<>();
     private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
 
-    private JPanel playersConfigPanel;
+    private JPanel playersConfigPanel = new JPanel();
+    private JPanel container;
 
     NewGameWindow() {
         super("Nueva Partida");
@@ -46,10 +47,12 @@ public class NewGameWindow extends JFrame {
         titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
         mainPanel.setBorder(titled);
 
-        this.playersConfigPanel = new JPanel(new GridLayout(6, 1));
+        this.container = new JPanel(new BorderLayout(2, 5));
         preparePlayersConfigPanel();
         refreshPlayerConfiguration();
-        mainPanel.add(this.playersConfigPanel);
+        container.add(this.playersConfigPanel, BorderLayout.CENTER);
+
+        mainPanel.add(container);
     }
 
     void preparePlayersConfigPanel() {
@@ -71,7 +74,7 @@ public class NewGameWindow extends JFrame {
 
         numPlayerSection.add(new JLabel("Número de jugadores: "));
         numPlayerSection.add(numPlayerComboBox);
-        this.getContentPane().add(numPlayerSection);
+        container.add(numPlayerSection, BorderLayout.NORTH);
     }
 
     void setAvailableSides() {
