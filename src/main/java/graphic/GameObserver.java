@@ -13,4 +13,5 @@ public interface GameObserver {
     default void onSurrendered(Game game) {}
     default void onReset(Game game) {} //No se si al final vamos a hacer funcionalidad de terminar y volver a empezar
     default void onGameEnded(Game game) {}
+    default void onGameStart(Game game) {}
 }
