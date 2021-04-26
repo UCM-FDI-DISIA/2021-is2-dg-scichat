@@ -163,6 +163,7 @@ public class Game implements Serializable {
      * Avanzar en turno
      */
     public void advance() {
+	//TODO evitar que se atasque
         do{
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         }while(this.getCurrentPlayer().hasSurrender());

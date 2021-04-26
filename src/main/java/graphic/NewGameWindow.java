@@ -11,36 +11,46 @@ import java.util.Queue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import control.Controller;
 import logic.Board;
+import logic.Game;
 import logic.gameObjects.Player;
 import utils.Mode;
 import utils.PieceColor;
 
-public class NewGameWindow extends JFrame {
+public class NewGameWindow extends JDialog {
     private int numPlayers = 2;
     private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
     private final ArrayList<Integer> botStrategy = new ArrayList<>();
     private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
-
+    private Controller ctrl;
+    private MainWindow father;
+    private boolean nuevo;
+    
     private JPanel playersConfigPanel = new JPanel();
     private JPanel container;
+    private JComboBox<Mode> modeJComboBox;
 
-    NewGameWindow() {
-        super("Nueva Partida");
+    NewGameWindow(Controller ctrl, MainWindow father) {
+        this.ctrl=ctrl;
+        this.father=father;
+        this.numPlayers=2;
         this.initGUI();
         /// Tamaño mínimo de 800x800
-        this.setMinimumSize(new Dimension(800, 800));
+        this.setMinimumSize(new Dimension(600, 275));
         this.setVisible(true);
     }
 
     private void initGUI() {
-        JPanel mainPanel = new JPanel();
+	this.setResizable(false);
+	JPanel mainPanel=new JPanel();
+	this.setContentPane(mainPanel);
         /// Añadir espacios en el panel
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        mainPanel.setBackground(Color.white);
+        setBackground(Color.white);
         /// Configurar como panel principal de la ventana
-        this.setContentPane(mainPanel);
         mainPanel.setLayout(new GridBagLayout());
 
         TitledBorder titled = new TitledBorder("Nueva Partida");
@@ -57,7 +67,20 @@ public class NewGameWindow extends JFrame {
 
         mainPanel.add(container);
 
-        container.add(new JButton("Start"), BorderLayout.SOUTH);
+        JButton startButton=new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		nuevo=true;
+		Game newGame=new Game();
+		newGame.setPlayers(getPlayers());
+		newGame.setGameMode((Mode)modeJComboBox.getSelectedItem());
+		ctrl.setGame(newGame);
+		setVisible(false);
+		father.initGame();
+	    }
+        });
+        container.add(startButton, BorderLayout.SOUTH);
     }
 
     void preparePlayersConfigPanel() {
@@ -91,7 +114,7 @@ public class NewGameWindow extends JFrame {
         modeComboBoxModel.addElement(Mode.Fast);
         modeComboBoxModel.addElement(Mode.Traditional);
 
-        JComboBox<Mode> modeJComboBox = new JComboBox<>(modeComboBoxModel);
+        modeJComboBox = new JComboBox<>(modeComboBoxModel);
         modeSection.add(new JLabel("Modo del juego: "));
         modeSection.add(modeJComboBox);
         wrapper.add(modeSection);
@@ -212,6 +235,20 @@ public class NewGameWindow extends JFrame {
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
+        switch(numPlayers) {
+        case 2:
+            setSize(600,275);
+            break;
+        case 3:
+            setSize(600,315);
+            break;
+        case 4:
+            setSize(600,355);
+            break;
+        case 6:
+            this.setSize(600, 450);
+        }
+        
         this.validate();
         this.repaint();
     }
@@ -251,8 +288,12 @@ public class NewGameWindow extends JFrame {
 
         return players;
     }
-
-    public static void main(String[] args) {
-        new NewGameWindow();
+    
+    public boolean open() {
+	nuevo=false;
+	setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
+	pack();
+	setVisible(true);
+	return nuevo;
     }
 }

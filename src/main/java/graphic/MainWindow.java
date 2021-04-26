@@ -7,10 +7,15 @@ import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
@@ -31,7 +36,7 @@ public class MainWindow extends JFrame implements GameObserver {
     private JPanel startScreen = null;
     private JPanel gameScreen = null;
     private JPanel winnerScreen = null;
-    private JPanel gameOptionsScreen = null;
+    private NewGameWindow gameOptionsScreen = null;
     private JPanel selectFileScreen = null;
 
     public MainWindow(Controller ctrl) {
@@ -81,25 +86,9 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initGameOptions() {
-        //TODO crear pantalla gameOptionsScreen
-        System.out.println("Ahora se abriria el panel de opciones de partida");
-        //Creacion de game hasta implementacion de gameOptions
-        Game g = new Game();
-        try {
-            g.addNewPlayer(PieceColor.BLUE, Side.Down);
-            g.addNewPlayer(PieceColor.RED, Side.Up);
-
-            g.addNewPlayer(PieceColor.GREEN, Side.DownLeft);
-            g.addNewPlayer(PieceColor.MAGENTA, Side.UpRight);
-
-            g.addNewPlayer(PieceColor.ORANGE, Side.DownRight);
-            g.addNewPlayer(PieceColor.YELLOW, Side.UpLeft);
-            g.setGameMode(Mode.Traditional);
-        } catch (OccupiedCellException e) {
-            e.printStackTrace();
-        }
-        ctrl.setGame(g);
-        initGame();
+	if(this.gameOptionsScreen==null)
+	    this.gameOptionsScreen=new NewGameWindow(ctrl,this);
+        this.gameOptionsScreen.open();
     }
 
     public void initSelectFile() {

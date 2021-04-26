@@ -46,7 +46,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
                                     "HH:mm:ss"
                                 )
                             );
-                            Thread.sleep(1000 - calcTime + System.currentTimeMillis());
+                            Thread.sleep(500 - calcTime + System.currentTimeMillis());
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -108,6 +108,21 @@ public class OptionsPanel extends JPanel implements GameObserver {
 	    }     
         });
         this.add(surrenderButton);
+        
+        JButton helpButton = new JButton("Ayuda");
+        helpButton.setPreferredSize(new Dimension(250, 100));
+        helpButton.setFont(new Font("Impact", 0, 20));
+        helpButton.setFocusable(false);
+        helpButton.setBorderPainted(true);
+        helpButton.setFocusPainted(false);
+        helpButton.setContentAreaFilled(false);
+        helpButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		//TODO
+	    }     
+        });
+        this.add(helpButton);
     }
 
     public void onGameEnded(Game game) {

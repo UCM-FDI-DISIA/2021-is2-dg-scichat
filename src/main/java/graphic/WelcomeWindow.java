@@ -16,6 +16,9 @@ import javax.swing.SwingConstants;
 
 public class WelcomeWindow extends JPanel {
     MainWindow father;
+    
+    private JButton newButton;
+    private JButton loadButton;
 
     public WelcomeWindow(MainWindow father) {
         this.father = father;
@@ -68,7 +71,7 @@ public class WelcomeWindow extends JPanel {
         panel2.setPreferredSize(new Dimension(300, 500));
 
         // boton de nueva partida y toda su configuracion
-        JButton newButton = new JButton("Nueva Partida");
+        newButton = new JButton("Nueva Partida");
         newButton.setPreferredSize(new Dimension(200, 50));
         newButton.setForeground(new Color(86, 81, 177));
         newButton.setFont(new Font("Impact", 0, 16));
@@ -80,14 +83,16 @@ public class WelcomeWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
+                    disableButtons();
                     father.initGameOptions();
+                    enableButtons();
                 }
             }
         );
         panel2.add(newButton, BorderLayout.WEST);
 
         // boton de cargar partida y toda su configuracion
-        JButton loadButton = new JButton("Cargar Partida");
+        loadButton = new JButton("Cargar Partida");
         loadButton.setPreferredSize(new Dimension(200, 50));
         loadButton.setForeground(new Color(86, 81, 177));
         loadButton.setFont(new Font("Impact", 0, 16));
@@ -99,7 +104,9 @@ public class WelcomeWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
+                    disableButtons();
                     father.initSelectFile();
+                    enableButtons();
                 }
             }
         );
@@ -108,5 +115,15 @@ public class WelcomeWindow extends JPanel {
         panel.add(panel2, BorderLayout.CENTER);
         this.add(panel, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
+    }
+    
+    public void disableButtons() {
+	newButton.setEnabled(false);
+	loadButton.setEnabled(false);
+    }
+    
+    public void enableButtons() {
+	newButton.setEnabled(true);
+	loadButton.setEnabled(true);
     }
 }
