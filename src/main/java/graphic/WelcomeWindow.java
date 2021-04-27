@@ -32,7 +32,7 @@ public class WelcomeWindow extends JPanel {
         this.setLayout(new BorderLayout());
 
         // esta es la imagen del tablero
-        ImageIcon icon = new ImageIcon("tablero.png");
+        ImageIcon icon = new ImageIcon("resources/tablero.png");
 
         // aqui van las movidas del titulo
         JLabel title = new JLabel("DAMAS CHINAS");
