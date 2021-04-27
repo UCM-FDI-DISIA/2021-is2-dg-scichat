@@ -119,10 +119,6 @@ public class MainWindow extends JFrame implements GameObserver {
         //Que ocurre cuando no se puede cargar el juego
     }
     
-    
-    public void loadGame(File file) {
-	
-    }
 
     public void onGameEnded(Game game) {
         //TODO

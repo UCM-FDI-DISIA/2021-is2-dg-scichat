@@ -4,6 +4,8 @@ import control.options.Option;
 import control.options.Option.ExecuteException;
 import control.options.OptionGenerator;
 import graphic.GameObserver;
+
+import java.io.File;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logic.Cell;
@@ -91,6 +93,10 @@ public class Controller {
         showError(ex, "Prueba de nuevo");
     }
 
+    private void loadGame(File file) {
+	game.loadGame;
+    }
+    
     public void showError(ExecuteException ex, String optTxt) {
         String[] opt = { optTxt };
         JOptionPane.showOptionDialog(
