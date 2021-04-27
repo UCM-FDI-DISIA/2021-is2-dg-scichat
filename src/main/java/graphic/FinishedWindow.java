@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import logic.gameObjects.Player;
 
-public class FinishedWindow extends JFrame {
+public class FinishedWindow extends JPanel {
     /**
      *
      */
@@ -32,9 +32,7 @@ public class FinishedWindow extends JFrame {
     }
 
     public void initGUI() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(450, 190, 1014, 597);
-        this.setResizable(true);
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
 
@@ -93,7 +91,7 @@ public class FinishedWindow extends JFrame {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent action) {
-                    father.initGameOptions();
+                    father.initStart();
                 }
             }
         );

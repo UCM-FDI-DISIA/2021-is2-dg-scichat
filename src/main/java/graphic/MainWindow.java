@@ -56,7 +56,7 @@ public class MainWindow extends JFrame implements GameObserver {
         this.setVisible(true);
     }
 
-    private void initStart() {
+    public void initStart() {
         //No queremos que el juego anterior influya en el nuevo
         if (gameScreen != null) {
             ctrl.reset();
@@ -86,6 +86,10 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initWinner(Player winner) {
         //TODO crear pantalla winnerScreen
+	winnerScreen=new FinishedWindow(this, winner, ctrl);
+	this.setContentPane(winnerScreen);
+        this.pack();
+        this.setSize(width, height);
         System.out.println("Ha ganado el jugador " + winner.getId());
     }
 
@@ -109,13 +113,14 @@ public class MainWindow extends JFrame implements GameObserver {
         
         File file = chooser.getSelectedFile();
         
-        try {
+        //TODO
+       /* try {
             ctrl.loadGame(file);
         }
         catch(LoadGameException ex) {
             System.out.println(ex.getMessage());
             
-        }
+        }*/
         //Que ocurre cuando no se puede cargar el juego
     }
     
