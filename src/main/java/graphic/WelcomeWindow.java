@@ -1,10 +1,6 @@
 package graphic;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -27,9 +23,12 @@ public class WelcomeWindow extends JPanel {
 
     public void initGUI() {
         // aqui van las movidas de la propia ventana
-        this.setSize(900, 700);
         this.setBackground(Color.WHITE);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridBagLayout());
+
+        JPanel container = new JPanel(new BorderLayout());
+        container.setBackground(Color.WHITE);
+        this.add(container);
 
         // esta es la imagen del tablero
         ImageIcon icon = new ImageIcon("resources/tablero.png");
@@ -38,7 +37,7 @@ public class WelcomeWindow extends JPanel {
         JLabel title = new JLabel("DAMAS CHINAS");
         title.setForeground(new Color(86, 81, 177));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setFont(new Font("Impact", 3, 70));
+        title.setFont(new Font("Impact", Font.BOLD, 70));
 
         //este es el panel principal, situado debajo del titulo
         JPanel panel = new JPanel();
@@ -56,7 +55,6 @@ public class WelcomeWindow extends JPanel {
         topPanel.setBackground(Color.WHITE);
 
         // en este subpanel, que va arriba, es donde va la imagen
-        topPanel.setPreferredSize(new Dimension(420, 468));
         JLabel label = new JLabel();
         label.setIcon(icon);
         topPanel.add(label);
@@ -68,7 +66,6 @@ public class WelcomeWindow extends JPanel {
         // este panel es que ira al centro del panel principal y que contiene los botones
         JPanel panel2 = new JPanel();
         panel2.setBackground(Color.WHITE);
-        panel2.setPreferredSize(new Dimension(300, 500));
 
         // boton de nueva partida y toda su configuracion
         newButton = new JButton("Nueva Partida");
@@ -109,7 +106,7 @@ public class WelcomeWindow extends JPanel {
         panel2.add(loadButton, BorderLayout.EAST);
         // aqui lo añadimos todo a la ventana
         panel.add(panel2, BorderLayout.CENTER);
-        this.add(panel, BorderLayout.CENTER);
-        this.add(title, BorderLayout.NORTH);
+        container.add(panel, BorderLayout.CENTER);
+        container.add(title, BorderLayout.NORTH);
     }
 }
