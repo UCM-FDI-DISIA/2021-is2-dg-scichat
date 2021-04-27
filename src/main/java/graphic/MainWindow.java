@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
@@ -86,8 +85,8 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initWinner(Player winner) {
         //TODO crear pantalla winnerScreen
-	winnerScreen=new FinishedWindow(this, winner, ctrl);
-	this.setContentPane(winnerScreen);
+        winnerScreen = new FinishedWindow(this, winner, ctrl);
+        this.setContentPane(winnerScreen);
         this.pack();
         this.setSize(width, height);
         System.out.println("Ha ganado el jugador " + winner.getId());
@@ -102,19 +101,18 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initSelectFile() {
         // TODO crear pantalla selectFileScreen
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-        	"dat", "json");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("dat", "json");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println("You choose to opent this file: " +
-        	    chooser.getSelectedFile().getName());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            System.out.println(
+                "You choose to opent this file: " + chooser.getSelectedFile().getName()
+            );
         }
-        
+
         File file = chooser.getSelectedFile();
-        
         //TODO
-       /* try {
+        /* try {
             ctrl.loadGame(file);
         }
         catch(LoadGameException ex) {
@@ -123,7 +121,6 @@ public class MainWindow extends JFrame implements GameObserver {
         }*/
         //Que ocurre cuando no se puede cargar el juego
     }
-    
 
     public void onGameEnded(Game game) {
         //TODO

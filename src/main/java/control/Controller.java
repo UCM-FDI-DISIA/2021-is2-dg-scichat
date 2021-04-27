@@ -4,7 +4,6 @@ import control.options.Option;
 import control.options.Option.ExecuteException;
 import control.options.OptionGenerator;
 import graphic.GameObserver;
-
 import java.io.File;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -94,9 +93,9 @@ public class Controller {
     }
 
     private void loadGame(File file) {
-	game.loadGame;
+        //game.loadGame;
     }
-    
+
     public void showError(ExecuteException ex, String optTxt) {
         String[] opt = { optTxt };
         JOptionPane.showOptionDialog(
