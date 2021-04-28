@@ -5,8 +5,15 @@ import control.options.Option.ExecuteException;
 import control.options.OptionGenerator;
 import graphic.GameObserver;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import logic.Cell;
 import logic.Game;
 
@@ -92,8 +99,13 @@ public class Controller {
         showError(ex, "Prueba de nuevo");
     }
 
-    private void loadGame(File file) {
-        //game.loadGame;
+    public void loadGame(File file) {
+	try {
+	JSONObject jGame = new JSONObject(
+		new JSONTokener(new FileInputStream(file)));
+	game.setGame(jGame);
+	}
+	catch(Exception ex) {} //Cambiar luego
     }
 
     public void showError(ExecuteException ex, String optTxt) {

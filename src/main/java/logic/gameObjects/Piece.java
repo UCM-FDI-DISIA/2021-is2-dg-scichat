@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import logic.Board;
 import logic.Cell;
 import utils.Mode;
@@ -32,6 +36,7 @@ public class Piece implements Serializable {
         this.position = pos;
         this.position.putPiece(this);
     }
+    
 
     /* Getters */
 

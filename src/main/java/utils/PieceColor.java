@@ -27,6 +27,24 @@ public enum PieceColor {
     public Color getColor() {
         return color;
     }
+    
+    public static PieceColor getPieceColor(int color) {
+	switch(color) {
+	case(0):
+	    return PieceColor.GREEN;
+	case(1):
+	    return PieceColor.YELLOW;
+	case(2):
+	    return PieceColor.ORANGE;
+	case(3):
+	    return PieceColor.RED;
+	case(4):
+	    return PieceColor.MAGENTA;
+	case(5):
+	    return PieceColor.BLUE;
+	}
+	return null;
+    }
 
     public String getBoardString() {
         return boardString;

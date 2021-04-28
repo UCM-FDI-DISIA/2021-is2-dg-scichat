@@ -77,6 +77,7 @@ public class Board implements Serializable, Iterable<Cell> {
         }
     }
 
+    
     public enum Side implements Serializable {
         Down(0, new HashSet<Cell>()), // 0
         DownLeft(1, new HashSet<Cell>()), // 1
@@ -95,6 +96,11 @@ public class Board implements Serializable, Iterable<Cell> {
         }
 
         /* Getters */
+        
+        public static getSide(int side) {
+            
+        }
+        
         public Side getOpposite() {
             switch (this) {
                 case Down:
@@ -115,6 +121,7 @@ public class Board implements Serializable, Iterable<Cell> {
         }
 
         /* MÃ©todos */
+        
 
         public int getValue() {
             return value;

@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -51,12 +50,12 @@ public class FinishedWindow extends JPanel {
 
         JPanel gamePanel = new JPanel();
         JLabel gameOver = new JLabel("GAME OVER");
-        gameOver.setFont(new Font("Impact", 3, 52));
+        gameOver.setFont(new Font("Impact", 2, 52));
         gamePanel.add(gameOver, BorderLayout.CENTER);
         gamePanel.setPreferredSize(new Dimension(350, 400));
         gamePanel.setBackground(Color.WHITE);
 
-        title.setFont(new Font("Tahoma", 3, 32));
+        title.setFont(new Font("Tahoma", 2, 32));
         title.setForeground(new Color(86, 81, 177));
         title.setBounds(481, 286, 281, 68);
 

@@ -3,12 +3,15 @@ package graphic;
 import control.Controller;
 import exceptions.LoadGameException;
 import exceptions.OccupiedCellException;
+import jdk.internal.org.jline.reader.Parser;
+
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,6 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.json.JSONObject;
+
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
@@ -101,7 +107,7 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initSelectFile() {
         // TODO crear pantalla selectFileScreen
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("dat", "json");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("json");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -111,14 +117,16 @@ public class MainWindow extends JFrame implements GameObserver {
         }
 
         File file = chooser.getSelectedFile();
-        //TODO
-        /* try {
+       
+        
+        
+        try {
             ctrl.loadGame(file);
         }
-        catch(LoadGameException ex) {
+        catch(Exception ex) {
             System.out.println(ex.getMessage());
             
-        }*/
+        }
         //Que ocurre cuando no se puede cargar el juego
     }
 

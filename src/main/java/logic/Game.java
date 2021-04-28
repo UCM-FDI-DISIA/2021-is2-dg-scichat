@@ -10,6 +10,9 @@ import java.util.HashSet;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 import org.apache.commons.lang.time.DurationFormatUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import utils.Mode;
 import utils.PieceColor;
 
@@ -28,6 +31,25 @@ public class Game implements Serializable {
     private ArrayList<GameObserver> observers = new ArrayList<>();
 
     public Game() {}
+    
+    public Game(JSONObject jGame) {
+	this.stopped = jGame.getBoolean("stopped");
+	this.currentPlayerIndex = jGame.getInt("currentPlayerIndex");
+	boolean tradicional = jGame.getBoolean("gameMode");
+	if(tradicional) {
+	    this.gameMode = Mode.Traditional;
+	}
+	else {
+	    this.gameMode = Mode.Fast;
+	}
+	JSONArray jPlayers = jGame.getJSONArray("players");
+	for(int i = 0; i < jPlayers.length(); ++i) {
+	    JSONObject jPlayer = jPlayers.getJSONObject(i);
+	    Player auxPlayer = new Player(jPlayer);
+	    this.players.add(auxPlayer);
+	}
+    }    
+    
 
     /* Getters */
 
@@ -90,6 +112,7 @@ public class Game implements Serializable {
         observer.onRegister(this);
         observers.add(observer);
     }
+    
 
     /* Métodos */
 
