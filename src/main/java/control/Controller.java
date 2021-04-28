@@ -101,9 +101,9 @@ public class Controller {
 
     public void loadGame(File file) {
 	try {
-	JSONObject jGame = new JSONObject(
-		new JSONTokener(new FileInputStream(file)));
-	game.setGame(jGame);
+        	JSONObject jGame = new JSONObject(
+        		new JSONTokener(new FileInputStream(file)));
+        	this.game = new Game(jGame);
 	}
 	catch(Exception ex) {} //Cambiar luego
     }

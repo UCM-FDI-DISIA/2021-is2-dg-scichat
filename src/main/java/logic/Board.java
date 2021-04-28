@@ -97,8 +97,22 @@ public class Board implements Serializable, Iterable<Cell> {
 
         /* Getters */
         
-        public static getSide(int side) {
-            
+        public static Side getSide(int side) {
+            switch(side) {
+            case(0):
+        	return Side.Down;
+            case(1):
+        	return Side.DownLeft;
+            case(2):
+        	return Side.UpLeft;
+            case(3):
+        	return Side.Up;
+            case(4):
+        	return Side.UpRight;
+            case(5):
+        	return Side.DownRight;
+            }
+            return null;
         }
         
         public Side getOpposite() {

@@ -45,7 +45,7 @@ public class Game implements Serializable {
 	JSONArray jPlayers = jGame.getJSONArray("players");
 	for(int i = 0; i < jPlayers.length(); ++i) {
 	    JSONObject jPlayer = jPlayers.getJSONObject(i);
-	    Player auxPlayer = new Player(jPlayer);
+	    Player auxPlayer = new Player(jPlayer, this.board);
 	    this.players.add(auxPlayer);
 	}
     }    

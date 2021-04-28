@@ -1,5 +1,6 @@
 package logic.gameObjects;
 
+import exceptions.CellsNotLinedUpException;
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
@@ -75,8 +76,13 @@ public class Player implements Serializable {
 	for(int i = 0; i < jPieces.length(); ++i) {
 	    JSONObject jPiece = jPieces.getJSONObject(i);
 	    Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
-	    Piece auxPiece = new Piece(auxCell, this.color);
+	    Piece auxPiece = null;
+	    try{
+		auxPiece = new Piece(auxCell, this.color);
+	    }
+	    catch(OccupiedCellException ex) {}
 	    this.pieces.add(auxPiece);
+	    
 	}
     }
     /**
