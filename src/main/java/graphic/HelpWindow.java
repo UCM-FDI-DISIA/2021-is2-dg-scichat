@@ -2,7 +2,6 @@ package graphic;
 
 import java.awt.*;
 import java.io.*;
-import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 

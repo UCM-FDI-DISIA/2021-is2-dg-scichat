@@ -12,7 +12,6 @@ import java.util.Queue;
 import java.util.Set;
 import logic.Board;
 import logic.Cell;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;

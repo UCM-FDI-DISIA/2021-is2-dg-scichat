@@ -16,11 +16,6 @@ import javax.swing.JOptionPane;
 import logic.Cell;
 import logic.Game;
 import logic.gameObjects.Player;
-import logic.gameObjects.Player;
-import org.json.JSONObject;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.json.JSONTokener;
 
 public class Controller {
     private Game game;
