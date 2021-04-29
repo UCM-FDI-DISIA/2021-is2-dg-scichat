@@ -14,21 +14,28 @@ import javax.swing.JPanel;
 
 import control.Controller;
 
-public class SaveGameWindow extends JFrame {
+public class LoadGameWindow extends JFrame{
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     Controller controller;
-    String firstMsg = "Opcion de guardado 1";
+    String firstMsg = "Opcion de cargado 1";
     File firstFile;
-    String secondMsg = "Opción de guardado 2";
+    String secondMsg = "Opción de cargado 2";
     File secondFile;
-    String thirdMsg = "Opción de guardado 3";
+    String thirdMsg = "Opción de cargado 3";
     File thirdFile;
     
     
-    public SaveGameWindow(Controller control) {
+    public LoadGameWindow() {
+	this.controller = new Controller();
+	firstFile = new File("firstGame.json");
+	secondFile = new File("secondGame.json");
+	thirdFile = new File("thirdGame.json");
+	initGUI();
+    }
+    public LoadGameWindow(Controller control) {
 	this.controller = control;
 	firstFile = new File("firstGame.json");
 	secondFile = new File("secondGame.json");
@@ -53,7 +60,7 @@ public class SaveGameWindow extends JFrame {
         opt1.setContentAreaFilled(false);
         opt1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-        	controller.saveGame(firstFile);
+        	controller.loadGame(firstFile);
             }
         });
         firstPanel.add(opt1, BorderLayout.CENTER);
@@ -72,7 +79,7 @@ public class SaveGameWindow extends JFrame {
         opt2.setContentAreaFilled(false);
         opt2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-        	controller.saveGame(secondFile);
+        	controller.loadGame(secondFile);
             }
         });
         secondPanel.add(opt2, BorderLayout.CENTER);
@@ -90,7 +97,7 @@ public class SaveGameWindow extends JFrame {
         opt3.setContentAreaFilled(false);
         opt3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-        	controller.saveGame(thirdFile);
+        	controller.loadGame(thirdFile);
             }
         });
         thirdPanel.add(opt3, BorderLayout.CENTER);

@@ -61,7 +61,7 @@ public class Player implements Serializable {
     
     public Player(JSONObject jPlayer, Board board) {
 	this.color = PieceColor.getPieceColor(jPlayer.getInt("color"));//Crear metodo de color
-	this.playerSide = Side.getSide(jPlayer.getInt("side"));//Crear metodo de Side
+	this.playerSide = Side.getSide(jPlayer.getInt("playerSide"));//Crear metodo de Side
 	this.surrender = jPlayer.getBoolean("surrender");
 	this.id = jPlayer.getInt("id");
 	this.time = jPlayer.getLong("time");
@@ -231,20 +231,20 @@ public class Player implements Serializable {
     
     public JSONObject toJSON() {
 	JSONObject jPlayer = new JSONObject();
-	jPlayer.append("color", this.color.getJSONValue());
-	jPlayer.append("playerSide", this.playerSide.getJSONValue());
-	jPlayer.append("surrender", this.surrender);
-	jPlayer.append("id", this.id);
-	jPlayer.append("time", this.time);
-	jPlayer.append("playing", this.playing);
-	jPlayer.append("timeATurnStart", this.timeAtTurnStart);
+	jPlayer.put("color", this.color.getJSONValue());
+	jPlayer.put("playerSide", this.playerSide.getJSONValue());
+	jPlayer.put("surrender", this.surrender);
+	jPlayer.put("id", this.id);
+	jPlayer.put("time", this.time);
+	jPlayer.put("playing", this.playing);
+	jPlayer.put("timeATurnStart", this.timeAtTurnStart);
 	
 	JSONArray jPieces = new JSONArray();
 	
 	for(Piece piece : pieces) {
 	    jPieces.put(piece.toJSON());
 	}
-	jPlayer.append("pieces", jPieces);
+	jPlayer.put("pieces", jPieces);
 	
 	return jPlayer;
     }

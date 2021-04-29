@@ -24,6 +24,10 @@ public class Controller {
     private Game game;
     private Scanner scanner;
 
+    public Controller() {
+	this.game = new Game();
+    }
+    
     public Controller(Game game, Scanner scanner) {
         this.game = game;
         this.scanner = scanner;
@@ -103,7 +107,7 @@ public class Controller {
     }
 
     public void loadGame(File file) {
-	game.loadGame(file);
+	this.game = game.loadGame(file);
     }
     
     public void saveGame(File file) {

@@ -273,16 +273,16 @@ public class Game implements Serializable {
     
     public JSONObject toJSON() {
 	JSONObject jRes = new JSONObject();
-	jRes.append("stopped", this.stopped);
-	jRes.append("currentPlayerIndex", this.currentPlayerIndex);
-	jRes.append("gameMode", this.gameMode == Mode.Traditional);
+	jRes.put("stopped", this.stopped);
+	jRes.put("currentPlayerIndex", this.currentPlayerIndex);
+	jRes.put("gameMode", this.gameMode == Mode.Traditional);
 	
 	JSONArray jPlayers = new JSONArray();
 	for(int i = 0; i < players.size(); ++i) {
 	    jPlayers.put(this.players.get(i).toJSON());
 	}	
 	
-	jRes.append("players", jPlayers);
+	jRes.put("players", jPlayers);
 	
 	return jRes;	
     }

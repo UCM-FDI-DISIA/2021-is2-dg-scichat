@@ -74,8 +74,8 @@ public class Cell implements Serializable {
     
     public JSONObject toJSON() {
 	JSONObject jCell= new JSONObject();
-	jCell.append("row", this.row);
-	jCell.append("col", this.col);
+	jCell.put("row", this.row);
+	jCell.put("col", this.col);
 	
 	return jCell;
     }
