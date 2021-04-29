@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class SaveGameWindow extends JPanel {
+public class SaveGameWindow extends JFrame {
     /**
      *
      */
@@ -53,6 +53,7 @@ public class SaveGameWindow extends JPanel {
 
                 public void actionPerformed(ActionEvent arg0) {
                     controller.saveGame(firstFile);
+                    setVisible(false);
                 }
             }
         );
@@ -74,6 +75,7 @@ public class SaveGameWindow extends JPanel {
 
                 public void actionPerformed(ActionEvent arg0) {
                     controller.saveGame(secondFile);
+                    setVisible(false);
                 }
             }
         );
@@ -95,6 +97,7 @@ public class SaveGameWindow extends JPanel {
 
                 public void actionPerformed(ActionEvent arg0) {
                     controller.saveGame(thirdFile);
+                    setVisible(false);
                 }
             }
         );

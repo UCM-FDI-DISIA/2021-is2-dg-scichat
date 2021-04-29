@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import logic.Cell;
 
 public class CellLabel extends JLabel {

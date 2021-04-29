@@ -1,7 +1,5 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
-import graphic.WelcomeWindow;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Queue;
 import javax.swing.SwingUtilities;

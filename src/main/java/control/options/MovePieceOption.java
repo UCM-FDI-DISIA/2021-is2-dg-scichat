@@ -1,11 +1,9 @@
 package control.options;
 
-import exceptions.InvalidMoveException;
 import java.util.Scanner;
 import logic.Cell;
 import logic.Game;
 import logic.gameObjects.Piece;
-import logic.gameObjects.Player;
 
 public class MovePieceOption extends Option {
 

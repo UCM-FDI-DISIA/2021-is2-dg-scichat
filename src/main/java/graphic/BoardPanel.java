@@ -1,7 +1,6 @@
 package graphic;
 
 import control.Controller;
-import exceptions.OccupiedCellException;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -9,12 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
 import logic.Board;
-import logic.Board.Side;
 import logic.Cell;
 import logic.Game;
 import logic.gameObjects.Piece;
-import utils.PieceColor;
-import utils.Tools;
 
 public class BoardPanel extends JPanel implements GameObserver {
     private static final long serialVersionUID = -3501731254500743354L;

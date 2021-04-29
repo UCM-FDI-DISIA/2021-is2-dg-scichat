@@ -1,31 +1,11 @@
 package graphic;
 
 import control.Controller;
-import exceptions.OccupiedCellException;
 import java.awt.BorderLayout;
-import java.awt.GraphicsConfiguration;
-import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileReader;
-import java.lang.reflect.InvocationTargetException;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import logic.Board;
-import logic.Board.Side;
 import logic.Game;
-import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
-import org.json.JSONObject;
-import utils.Mode;
-import utils.PieceColor;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver {
@@ -95,9 +75,16 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initGameOptions() {
-        if (this.gameOptionsScreen == null) this.gameOptionsScreen =
-            new NewGameWindow(ctrl, this);
+        if (this.gameOptionsScreen == null) {
+            this.gameOptionsScreen = new NewGameWindow(this);
+        }
         this.gameOptionsScreen.open();
+
+        Game newGame = new Game();
+        newGame.setPlayers(gameOptionsScreen.getPlayers());
+        newGame.setGameMode(gameOptionsScreen.getGameMode());
+        ctrl.setGame(newGame);
+        initGame();
     }
 
     public void initSelectFile() {
