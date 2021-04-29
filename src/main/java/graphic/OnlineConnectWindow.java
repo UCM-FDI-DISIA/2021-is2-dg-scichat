@@ -3,11 +3,16 @@ package graphic;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+import logic.gameObjects.Player;
 import network.SocketClient;
 import network.SocketObserver;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import utils.Mode;
 
 public class OnlineConnectWindow extends JFrame implements SocketObserver {
     SocketClient sc;
@@ -46,7 +51,8 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         );
         serverSection.setLayout(new BoxLayout(serverSection, BoxLayout.X_AXIS));
 
-        JTextField serverURLField = new JTextField(10);
+        JTextField serverURLField = new JTextField("ws://localhost:8080", 10);
+
         serverSection.add(serverURLField);
 
         connectButton = new JButton("Conectar");
@@ -92,6 +98,31 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         actionsSection.add(newOnlineRoomButton);
         actionsSection.add(joinOnlineRoomButton);
+
+        newOnlineRoomButton.addActionListener(
+            e -> {
+                NewGameWindow newGameWindow = new NewGameWindow(this);
+                newGameWindow.open();
+
+                Mode gameMode = newGameWindow.getGameMode();
+                ArrayList<Player> players = newGameWindow.getPlayers();
+
+                JSONObject gameConfig = new JSONObject();
+                gameConfig.put("mode", gameMode.ordinal());
+
+                JSONArray playersConfigArray = new JSONArray();
+                for (Player p : players) {
+                    JSONObject playerConfig = new JSONObject();
+                    playerConfig.put("color", p.getColor().ordinal());
+                    playerConfig.put("side", p.getSide().ordinal());
+                    playersConfigArray.put(playerConfig);
+                }
+
+                gameConfig.put("players", playersConfigArray);
+
+                sc.send(gameConfig.toString());
+            }
+        );
 
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
