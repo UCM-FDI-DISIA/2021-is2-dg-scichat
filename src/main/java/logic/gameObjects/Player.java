@@ -5,13 +5,11 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
 import java.util.HashSet;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -48,41 +46,49 @@ public class Player implements Serializable {
         createPieces();
     }
 
-    public Player(PieceColor color, Side playerSide, int id, long time, boolean playing, HashSet<Piece> pieces, long timeAtTurnStart, boolean surrender) {
-	this.color = color;
-	this.pieces = pieces;
-	this.playerSide = playerSide;
-	this.surrender = surrender;
-	this.id = id;
-	this.time = time;
-	this.playing = playing;
-	this.timeAtTurnStart = timeAtTurnStart;
+    public Player(
+        PieceColor color,
+        Side playerSide,
+        int id,
+        long time,
+        boolean playing,
+        HashSet<Piece> pieces,
+        long timeAtTurnStart,
+        boolean surrender
+    ) {
+        this.color = color;
+        this.pieces = pieces;
+        this.playerSide = playerSide;
+        this.surrender = surrender;
+        this.id = id;
+        this.time = time;
+        this.playing = playing;
+        this.timeAtTurnStart = timeAtTurnStart;
     }
-    
+
     public Player(JSONObject jPlayer, Board board) {
-	this.color = PieceColor.getPieceColor(jPlayer.getInt("color"));//Crear metodo de color
-	this.playerSide = Side.getSide(jPlayer.getInt("playerSide"));//Crear metodo de Side
-	this.surrender = jPlayer.getBoolean("surrender");
-	this.id = jPlayer.getInt("id");
-	this.time = jPlayer.getLong("time");
-	this.playing = jPlayer.getBoolean("playing");
-	this.timeAtTurnStart = jPlayer.getLong("timeATurnStart");
-	
-	//Ahora creamos las piezas correspondientes
-	JSONArray jPieces = jPlayer.getJSONArray("pieces");
-	
-	for(int i = 0; i < jPieces.length(); ++i) {
-	    JSONObject jPiece = jPieces.getJSONObject(i);
-	    Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
-	    Piece auxPiece = null;
-	    try{
-		auxPiece = new Piece(auxCell, this.color);
-	    }
-	    catch(OccupiedCellException ex) {}
-	    this.pieces.add(auxPiece);
-	    
-	}
+        this.color = PieceColor.getPieceColor(jPlayer.getInt("color")); //Crear metodo de color
+        this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
+        this.surrender = jPlayer.getBoolean("surrender");
+        this.id = jPlayer.getInt("id");
+        this.time = jPlayer.getLong("time");
+        this.playing = jPlayer.getBoolean("playing");
+        this.timeAtTurnStart = jPlayer.getLong("timeATurnStart");
+
+        //Ahora creamos las piezas correspondientes
+        JSONArray jPieces = jPlayer.getJSONArray("pieces");
+
+        for (int i = 0; i < jPieces.length(); ++i) {
+            JSONObject jPiece = jPieces.getJSONObject(i);
+            Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
+            Piece auxPiece = null;
+            try {
+                auxPiece = new Piece(auxCell, this.color);
+            } catch (OccupiedCellException ex) {}
+            this.pieces.add(auxPiece);
+        }
     }
+
     /**
      * Genera las fichas de Player, solo se llama una vez al principio de la partida
      *
@@ -228,24 +234,24 @@ public class Player implements Serializable {
     public Boolean hasPiece(Piece piece) {
         return this.pieces.contains(piece);
     }
-    
+
     public JSONObject toJSON() {
-	JSONObject jPlayer = new JSONObject();
-	jPlayer.put("color", this.color.getJSONValue());
-	jPlayer.put("playerSide", this.playerSide.getJSONValue());
-	jPlayer.put("surrender", this.surrender);
-	jPlayer.put("id", this.id);
-	jPlayer.put("time", this.time);
-	jPlayer.put("playing", this.playing);
-	jPlayer.put("timeATurnStart", this.timeAtTurnStart);
-	
-	JSONArray jPieces = new JSONArray();
-	
-	for(Piece piece : pieces) {
-	    jPieces.put(piece.toJSON());
-	}
-	jPlayer.put("pieces", jPieces);
-	
-	return jPlayer;
+        JSONObject jPlayer = new JSONObject();
+        jPlayer.put("color", this.color.getJSONValue());
+        jPlayer.put("playerSide", this.playerSide.getJSONValue());
+        jPlayer.put("surrender", this.surrender);
+        jPlayer.put("id", this.id);
+        jPlayer.put("time", this.time);
+        jPlayer.put("playing", this.playing);
+        jPlayer.put("timeATurnStart", this.timeAtTurnStart);
+
+        JSONArray jPieces = new JSONArray();
+
+        for (Piece piece : pieces) {
+            jPieces.put(piece.toJSON());
+        }
+        jPlayer.put("pieces", jPieces);
+
+        return jPlayer;
     }
 }

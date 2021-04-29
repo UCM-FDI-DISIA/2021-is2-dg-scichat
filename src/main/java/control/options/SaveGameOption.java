@@ -17,7 +17,7 @@ public class SaveGameOption extends Option {
         String fileName = scanner.next();
 
         File file = new File(fileName);
-        
+
         game.saveGame(file);
 
         return true;

@@ -13,21 +13,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import logic.Cell;
 import logic.Game;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 public class Controller {
     private Game game;
     private Scanner scanner;
 
     public Controller() {
-	this.game = new Game();
+        this.game = new Game();
     }
-    
+
     public Controller(Game game, Scanner scanner) {
         this.game = game;
         this.scanner = scanner;
@@ -107,11 +105,11 @@ public class Controller {
     }
 
     public void loadGame(File file) {
-	this.game = game.loadGame(file);
+        this.game = game.loadGame(file);
     }
-    
+
     public void saveGame(File file) {
-	game.saveGame(file);
+        game.saveGame(file);
     }
 
     public void showError(ExecuteException ex, String optTxt) {

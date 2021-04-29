@@ -2,8 +2,6 @@ package graphic;
 
 import control.Controller;
 import exceptions.OccupiedCellException;
-import jdk.internal.org.jline.reader.Parser;
-
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
@@ -20,14 +18,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.json.JSONObject;
-
+import jdk.internal.org.jline.reader.Parser;
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -44,6 +41,7 @@ public class MainWindow extends JFrame implements GameObserver {
     private JPanel gameScreen = null;
     private JPanel winnerScreen = null;
     private NewGameWindow gameOptionsScreen = null;
+    private LoadGameWindow loadGameScreen = null;
     private JPanel selectFileScreen = null;
 
     public MainWindow(Controller ctrl) {
@@ -104,20 +102,9 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initSelectFile() {
-        // TODO crear pantalla selectFileScreen
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("json");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println(
-                "You choose to open this file: " + chooser.getSelectedFile().getName()
-            );
-        }
-
-        File file = chooser.getSelectedFile();
-       
-        ctrl.loadGame(file);
+        if (this.loadGameScreen == null) this.loadGameScreen =
+            new LoadGameWindow(ctrl, this);
+        this.loadGameScreen.open();
     }
 
     public void onGameEnded(Game game) {

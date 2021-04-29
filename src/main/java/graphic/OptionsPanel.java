@@ -8,7 +8,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -90,11 +89,14 @@ public class OptionsPanel extends JPanel implements GameObserver {
         saveButton.setBorderPainted(true);
         saveButton.setFocusPainted(false);
         saveButton.setContentAreaFilled(false);
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-        	new SaveGameWindow(ctrl);
+        saveButton.addActionListener(
+            new ActionListener() {
+
+                public void actionPerformed(ActionEvent arg0) {
+                    new SaveGameWindow(ctrl);
+                }
             }
-        });
+        );
         this.add(saveButton);
 
         // Botón para rendirse durante una partida

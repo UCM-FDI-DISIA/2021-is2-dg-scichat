@@ -102,7 +102,7 @@ public class WelcomeWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    new LoadGameWindow();
+                    father.initSelectFile();
                 }
             }
         );
