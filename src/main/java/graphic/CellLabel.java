@@ -180,9 +180,9 @@ public class CellLabel extends JLabel {
 
         }
     }
-    
+
     @Override
     public String toString() {
-	return String.format("Label at %s", this.position.toString());
+        return String.format("Label at %s", this.position.toString());
     }
 }

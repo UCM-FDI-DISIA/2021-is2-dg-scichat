@@ -58,27 +58,24 @@ public class Controller {
         if (refreshDisplay) printGame();
         System.out.println("[GAME OVER]");
     }
-    
+
     private int cnt = 0;
 
     public void handleClick(Cell position) {
-	if(game.hasSelectedPiece()) {
-	    if(game.isSelectedPieceIn(position)) {
-		game.deselectPiece();
-	    }
-	    else {
-		try {
-		    game.movePiece(position);
-		    game.advance();
-		}
-		catch(ExecuteException ex) {
-		    showError(ex);
-		}
-	    }
-	}
-	else {
-	    game.setSelectedPiece(position);
-	}
+        if (game.hasSelectedPiece()) {
+            if (game.isSelectedPieceIn(position)) {
+                game.deselectPiece();
+            } else {
+                try {
+                    game.movePiece(position);
+                    game.advance();
+                } catch (ExecuteException ex) {
+                    showError(ex);
+                }
+            }
+        } else {
+            game.setSelectedPiece(position);
+        }
     }
 
     public void surrender() {

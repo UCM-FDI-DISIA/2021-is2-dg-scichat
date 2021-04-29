@@ -199,30 +199,29 @@ public class Game implements Serializable {
         }
         return out;
     }
-    
+
     public boolean isSelectedPieceIn(Cell position) {
         return this.getCurrentPlayer().getSelectedPiece().getPosition() == position;
-        
     }
-    
+
     public void deselectPiece() {
-	Piece selected = this.getCurrentPlayer().getSelectedPiece();
-	this.getCurrentPlayer().deselectPiece();
-	sendOnSelectedPiece(selected);
+        Piece selected = this.getCurrentPlayer().getSelectedPiece();
+        this.getCurrentPlayer().deselectPiece();
+        sendOnSelectedPiece(selected);
     }
 
     public boolean hasSelectedPiece() {
         return this.getCurrentPlayer().hasSelectedPiece();
     }
-    
+
     public void sendOnSelectedPiece(Piece piece) {
-	for (GameObserver i : observers) {
+        for (GameObserver i : observers) {
             i.onSelectedPiece(piece);
         }
     }
-    
+
     public void sendOnMovedPiece(Cell from, Cell to) {
-	for (GameObserver i : observers) {
+        for (GameObserver i : observers) {
             i.onMovedPiece(from, to);
         }
     }
@@ -256,7 +255,7 @@ public class Game implements Serializable {
             Cell from = selectedPiece.getPosition();
             selectedPiece.move(to, getGameMode());
             sendOnMovedPiece(from, to);
-            
+
             Player currentPlayer = getCurrentPlayer();
             if (currentPlayer.isAWinner()) {
                 winner = currentPlayer;

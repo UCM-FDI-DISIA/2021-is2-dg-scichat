@@ -147,13 +147,14 @@ public class BoardPanel extends JPanel implements GameObserver {
 
     @Override
     public void onEndTurn(Game game) {
-	// Clear all selected
-	for (Map.Entry<Cell, CellLabel> pair : this.cellLabels.entrySet()) {
+        // Clear all selected
+        for (Map.Entry<Cell, CellLabel> pair : this.cellLabels.entrySet()) {
             pair.getValue().setSelected(false);
         }
-	// Default back to previously selected piece
-	CellLabel cl = this.cellLabels.get(game.getCurrentPlayer().getSelectedPiece().getPosition());
-	cl.setSelected(true);
+        // Default back to previously selected piece
+        CellLabel cl =
+            this.cellLabels.get(game.getCurrentPlayer().getSelectedPiece().getPosition());
+        cl.setSelected(true);
     }
 
     @Override
@@ -164,7 +165,6 @@ public class BoardPanel extends JPanel implements GameObserver {
 
     @Override
     public void onGameEnded(Game game) {}
-    
     /*
     public static void main(String[] args) {
         Game g = new Game();
