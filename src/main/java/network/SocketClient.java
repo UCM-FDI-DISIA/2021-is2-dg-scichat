@@ -6,10 +6,10 @@ import java.util.List;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-public class Client extends WebSocketClient {
+public class SocketClient extends WebSocketClient {
     private List<SocketObserver> observers = new ArrayList<>();
 
-    public Client(URI serverUri) {
+    public SocketClient(URI serverUri) {
         super(serverUri);
     }
 
@@ -43,7 +43,7 @@ public class Client extends WebSocketClient {
 
     public static void main(String[] args) {
         try {
-            Client ws = new Client(new URI("ws://localhost:8080"));
+            SocketClient ws = new SocketClient(new URI("ws://localhost:8080"));
             ws.connect();
 
             /// Cierra la conexión al salir del programa
