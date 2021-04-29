@@ -1,37 +1,44 @@
 package network;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class Client extends WebSocketClient {
+    private List<SocketObserver> observers = new ArrayList<>();
 
     public Client(URI serverUri) {
         super(serverUri);
     }
 
+    public void addObserver(SocketObserver o) {
+        this.observers.add(o);
+    }
+
+    public void removeObserver(SocketObserver o) {
+        this.observers.remove(o);
+    }
+
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
-        System.out.println("Connected to server");
+        for (SocketObserver o : this.observers) o.onOpen();
     }
 
     @Override
     public void onMessage(String s) {
-        System.out.println("Received message: ");
-        JSONObject json = new JSONObject(new JSONTokener(s));
-        System.out.println(json);
+        for (SocketObserver o : this.observers) o.onMessage(s);
     }
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        System.out.println("Disconnected");
+        for (SocketObserver o : this.observers) o.onClose();
     }
 
     @Override
     public void onError(Exception e) {
-        System.out.println(e);
+        for (SocketObserver o : this.observers) o.onError(e);
     }
 
     public static void main(String[] args) {
