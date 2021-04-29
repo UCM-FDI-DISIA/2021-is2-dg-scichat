@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.internal.org.jline.reader.Parser;
 import logic.Board;
 import logic.Board.Side;
 import logic.Game;
