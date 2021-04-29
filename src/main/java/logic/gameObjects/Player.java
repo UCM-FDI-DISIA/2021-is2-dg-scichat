@@ -1,10 +1,8 @@
 package logic.gameObjects;
 
-import exceptions.CellsNotLinedUpException;
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -229,5 +227,25 @@ public class Player implements Serializable {
 
     public Boolean hasPiece(Piece piece) {
         return this.pieces.contains(piece);
+    }
+    
+    public JSONObject toJSON() {
+	JSONObject jPlayer = new JSONObject();
+	jPlayer.append("color", this.color.getJSONValue());
+	jPlayer.append("playerSide", this.playerSide.getJSONValue());
+	jPlayer.append("surrender", this.surrender);
+	jPlayer.append("id", this.id);
+	jPlayer.append("time", this.time);
+	jPlayer.append("playing", this.playing);
+	jPlayer.append("timeATurnStart", this.timeAtTurnStart);
+	
+	JSONArray jPieces = new JSONArray();
+	
+	for(Piece piece : pieces) {
+	    jPieces.put(piece.toJSON());
+	}
+	jPlayer.append("pieces", jPieces);
+	
+	return jPlayer;
     }
 }

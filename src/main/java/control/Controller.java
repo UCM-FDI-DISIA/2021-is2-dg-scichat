@@ -107,6 +107,10 @@ public class Controller {
 	}
 	catch(Exception ex) {} //Cambiar luego
     }
+    
+    public void saveGame() {
+	JSONObject jGame = game.toJSON();
+    }
 
     public void showError(ExecuteException ex, String optTxt) {
         String[] opt = { optTxt };

@@ -115,6 +115,10 @@ public class Board implements Serializable, Iterable<Cell> {
             return null;
         }
         
+        public int getJSONValue() {
+            return this.value;
+        }
+        
         public Side getOpposite() {
             switch (this) {
                 case Down:

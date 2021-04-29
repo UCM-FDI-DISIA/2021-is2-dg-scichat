@@ -28,6 +28,24 @@ public enum PieceColor {
         return color;
     }
     
+    public int getJSONValue() {
+	switch(this.name) {
+	case("Verde"):
+	    return 0;
+	case("Amarillo"):
+	    return 1;
+	case("Naranja"):
+	    return 2;
+	case("Rojo"):
+	    return 3;
+	case("Magenta"):
+	    return 4;
+	case("Blue"):
+	    return 5;
+	}
+	return -1;
+    }
+    
     public static PieceColor getPieceColor(int color) {
 	switch(color) {
 	case(0):

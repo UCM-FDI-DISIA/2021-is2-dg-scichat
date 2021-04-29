@@ -236,6 +236,22 @@ public class Game implements Serializable {
         observers = new ArrayList<>();
         winner = null;
     }
+    
+    public JSONObject toJSON() {
+	JSONObject jRes = new JSONObject();
+	jRes.append("stopped", this.stopped);
+	jRes.append("currentPlayerIndex", this.currentPlayerIndex);
+	jRes.append("gameMode", this.gameMode == Mode.Traditional);
+	
+	JSONArray jPlayers = new JSONArray();
+	for(int i = 0; i < players.size(); ++i) {
+	    jPlayers.put(players.get(i).toJSON());
+	}	
+	
+	jRes.append("players", jPlayers);
+	
+	return jRes;	
+    }
 
     public void softReset() {
         //TODO preparar la partida para volver a empezar

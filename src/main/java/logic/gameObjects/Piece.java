@@ -164,6 +164,10 @@ public class Piece implements Serializable {
         // piezas
         tryToMoveTo(targetPosition);
     }
+    
+    public JSONObject toJSON() {
+	return this.position.toJSON();
+    }
 
     /**
      * Desplazar la pieza, según el modo de juego
