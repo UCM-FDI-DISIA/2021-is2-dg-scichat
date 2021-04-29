@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import logic.Game;
 import logic.gameObjects.Player;
 
-
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver {
     private Controller ctrl;
