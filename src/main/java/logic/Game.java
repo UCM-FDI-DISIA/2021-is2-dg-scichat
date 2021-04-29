@@ -84,11 +84,18 @@ public class Game implements Serializable {
         return winner;
     }
 
-    public void setStopped(boolean stopped) {
+    public void setStopped(boolean stopped, Player winner) {
         this.stopped = stopped;
+        if (winner != null) {
+            setWinner(winner);
+        }
         for (GameObserver i : observers) {
             i.onGameEnded(this);
         }
+    }
+
+    public void setStopped(boolean stopped) {
+        setStopped(stopped, null);
     }
 
     public void setBoard(Board board) {
@@ -243,15 +250,35 @@ public class Game implements Serializable {
     public boolean setSelectedPiece(Cell position) {
         boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
         if (out) {
-            for (GameObserver i : observers) {
-                i.onSelectedPiece(this.getCurrentPlayer().getSelectedPiece());
-            }
+            sendOnSelectedPiece(this.getCurrentPlayer().getSelectedPiece());
         }
         return out;
     }
 
+    public boolean isSelectedPieceIn(Cell position) {
+        return this.getCurrentPlayer().getSelectedPiece().getPosition() == position;
+    }
+
+    public void deselectPiece() {
+        Piece selected = this.getCurrentPlayer().getSelectedPiece();
+        this.getCurrentPlayer().deselectPiece();
+        sendOnSelectedPiece(selected);
+    }
+
     public boolean hasSelectedPiece() {
         return this.getCurrentPlayer().hasSelectedPiece();
+    }
+
+    public void sendOnSelectedPiece(Piece piece) {
+        for (GameObserver i : observers) {
+            i.onSelectedPiece(piece);
+        }
+    }
+
+    public void sendOnMovedPiece(Cell from, Cell to) {
+        for (GameObserver i : observers) {
+            i.onMovedPiece(from, to);
+        }
     }
 
     public void reset() {
@@ -296,7 +323,10 @@ public class Game implements Serializable {
         /// Intentar mover a la nueva celda
         /// Lanzaría una excepción si es movimiento inválido o celda ocupada
         try {
+            Cell from = selectedPiece.getPosition();
             selectedPiece.move(to, getGameMode());
+            sendOnMovedPiece(from, to);
+
             Player currentPlayer = getCurrentPlayer();
             if (currentPlayer.isAWinner()) {
                 winner = currentPlayer;

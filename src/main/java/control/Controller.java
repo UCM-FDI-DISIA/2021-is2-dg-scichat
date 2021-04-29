@@ -15,6 +15,7 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logic.Cell;
 import logic.Game;
+import logic.gameObjects.Player;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -71,14 +72,33 @@ public class Controller {
         System.out.println("[GAME OVER]");
     }
 
-    public void handleClick(Cell position) {
-        // TODO Auto-generated method stub
+    private int cnt = 0;
 
+    public void handleClick(Cell position) {
+        if (game.hasSelectedPiece()) {
+            if (game.isSelectedPieceIn(position)) {
+                game.deselectPiece();
+            } else {
+                try {
+                    game.movePiece(position);
+                    if (game.getCurrentPlayer().isAWinner()) game.setStopped(
+                        true,
+                        game.getCurrentPlayer()
+                    );
+                    nextTurn();
+                } catch (ExecuteException ex) {
+                    showError(ex);
+                }
+            }
+        } else {
+            game.setSelectedPiece(position);
+        }
     }
 
     public void surrender() {
         game.currentPlayerSurrender();
-        if (game.wonBySurrender() != null) game.setStopped(true);
+        Player winner = game.wonBySurrender();
+        if (winner != null) game.setStopped(true, winner);
         nextTurn();
     }
 
