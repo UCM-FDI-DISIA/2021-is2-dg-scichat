@@ -1,7 +1,6 @@
 package graphic;
 
 import control.Controller;
-import exceptions.OccupiedCellException;
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
