@@ -7,6 +7,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 public class SocketClient extends WebSocketClient {
+    private boolean connected = false;
     private List<SocketObserver> observers = new ArrayList<>();
 
     public SocketClient(URI serverUri) {
@@ -21,8 +22,13 @@ public class SocketClient extends WebSocketClient {
         this.observers.remove(o);
     }
 
+    public boolean isConnected() {
+        return this.connected;
+    }
+
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
+        this.connected = true;
         for (SocketObserver o : this.observers) o.onOpen();
     }
 
@@ -33,6 +39,7 @@ public class SocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
+        this.connected = false;
         for (SocketObserver o : this.observers) o.onClose();
     }
 
