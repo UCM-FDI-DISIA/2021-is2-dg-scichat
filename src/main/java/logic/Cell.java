@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import logic.gameObjects.Piece;
+import org.json.JSONObject;
 
 public class Cell implements Serializable {
     /**
@@ -67,6 +68,14 @@ public class Cell implements Serializable {
         }
 
         this.piece = piece;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject jCell = new JSONObject();
+        jCell.put("row", this.row);
+        jCell.put("col", this.col);
+
+        return jCell;
     }
 
     /**

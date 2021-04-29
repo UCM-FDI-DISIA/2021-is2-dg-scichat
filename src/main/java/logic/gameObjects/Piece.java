@@ -12,6 +12,8 @@ import java.util.Queue;
 import java.util.Set;
 import logic.Board;
 import logic.Cell;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -158,6 +160,10 @@ public class Piece implements Serializable {
         } // Si agotamos todos los candidatos, es que no se puede hacer un saltando otras
         // piezas
         tryToMoveTo(targetPosition);
+    }
+
+    public JSONObject toJSON() {
+        return this.position.toJSON();
     }
 
     /**

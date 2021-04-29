@@ -1,7 +1,6 @@
 package graphic;
 
 import control.Controller;
-import exceptions.LoadGameException;
 import exceptions.OccupiedCellException;
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
@@ -9,6 +8,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,6 +23,7 @@ import logic.Board.Side;
 import logic.Game;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -39,6 +40,7 @@ public class MainWindow extends JFrame implements GameObserver {
     private JPanel gameScreen = null;
     private JPanel winnerScreen = null;
     private NewGameWindow gameOptionsScreen = null;
+    private LoadGameWindow loadGameScreen = null;
     private JPanel selectFileScreen = null;
 
     public MainWindow(Controller ctrl) {
@@ -99,27 +101,9 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initSelectFile() {
-        // TODO crear pantalla selectFileScreen
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("dat", "json");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println(
-                "You choose to opent this file: " + chooser.getSelectedFile().getName()
-            );
-        }
-
-        File file = chooser.getSelectedFile();
-        //TODO
-        /* try {
-            ctrl.loadGame(file);
-        }
-        catch(LoadGameException ex) {
-            System.out.println(ex.getMessage());
-            
-        }*/
-        //Que ocurre cuando no se puede cargar el juego
+        if (this.loadGameScreen == null) this.loadGameScreen =
+            new LoadGameWindow(ctrl, this);
+        this.loadGameScreen.open();
     }
 
     public void onGameEnded(Game game) {
