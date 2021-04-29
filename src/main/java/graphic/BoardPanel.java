@@ -129,22 +129,32 @@ public class BoardPanel extends JPanel implements GameObserver {
     public void onSelectedPiece(Piece piece) {
         CellLabel cellLabel = this.cellLabels.get(piece.getPosition());
         cellLabel.setSelected(!cellLabel.getSelected());
+        cellLabel.repaint();
     }
 
     @Override
-    public void onMovedPiece(Cell from, Piece piece) {
+    public void onMovedPiece(Cell from, Cell to) {
         CellLabel fromLabel, toLabel;
 
         fromLabel = this.cellLabels.get(from);
         fromLabel.setSelected(false);
         fromLabel.setColor();
 
-        toLabel = this.cellLabels.get(piece.getPosition());
-        toLabel.setColor(piece.getColor().getColor());
+        toLabel = this.cellLabels.get(to);
+        toLabel.setSelected(true);
+        toLabel.setColor(to.getPiece().getColor().getColor());
     }
 
     @Override
-    public void onEndTurn(Game game) {}
+    public void onEndTurn(Game game) {
+	// Clear all selected
+	for (Map.Entry<Cell, CellLabel> pair : this.cellLabels.entrySet()) {
+            pair.getValue().setSelected(false);
+        }
+	// Default back to previously selected piece
+	CellLabel cl = this.cellLabels.get(game.getCurrentPlayer().getSelectedPiece().getPosition());
+	cl.setSelected(true);
+    }
 
     @Override
     public void onSurrendered(Game game) {}
@@ -154,7 +164,8 @@ public class BoardPanel extends JPanel implements GameObserver {
 
     @Override
     public void onGameEnded(Game game) {}
-
+    
+    /*
     public static void main(String[] args) {
         Game g = new Game();
         try {
@@ -176,4 +187,5 @@ public class BoardPanel extends JPanel implements GameObserver {
         //        }
         Tools.showComp(new BoardPanel(null, 20, g.getBoard()));
     }
+    */
 }

@@ -172,7 +172,8 @@ public class Piece implements Serializable {
     public void move(Cell targetPosition, Mode playMode) throws InvalidMoveException {
         try {
             // Vemos que podemos llevar a cavo el movimiento
-            if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); else if (
+            if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); 
+            else if (
                 playMode == Mode.Fast
             ) tryToMoveFast(targetPosition);
 
