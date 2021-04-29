@@ -9,6 +9,7 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logic.Cell;
 import logic.Game;
+import logic.gameObjects.Player;
 
 public class Controller {
     private Game game;
@@ -68,7 +69,8 @@ public class Controller {
             } else {
                 try {
                     game.movePiece(position);
-                    game.advance();
+                    if(game.getCurrentPlayer().isAWinner())game.setStopped(true,game.getCurrentPlayer());
+                    nextTurn();
                 } catch (ExecuteException ex) {
                     showError(ex);
                 }
@@ -80,7 +82,8 @@ public class Controller {
 
     public void surrender() {
         game.currentPlayerSurrender();
-        if (game.wonBySurrender() != null) game.setStopped(true);
+        Player winner=game.wonBySurrender();
+        if (winner != null) game.setStopped(true,winner);
         nextTurn();
     }
 
