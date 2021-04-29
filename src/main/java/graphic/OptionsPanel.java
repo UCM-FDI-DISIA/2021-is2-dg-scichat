@@ -17,8 +17,6 @@ import javax.swing.SwingWorker;
 import logic.Game;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
-import com.sun.java_cup.internal.runtime.Scanner;
-
 public class OptionsPanel extends JPanel implements GameObserver {
     private Controller ctrl;
     private boolean onGame = true;
@@ -94,9 +92,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
         saveButton.setContentAreaFilled(false);
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-        	
-        	
-        	ctrl.saveGame(file);
+        	new SaveGameWindow(ctrl);
             }
         });
         this.add(saveButton);
