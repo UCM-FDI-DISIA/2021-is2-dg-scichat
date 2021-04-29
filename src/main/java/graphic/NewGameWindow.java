@@ -1,6 +1,5 @@
 package graphic;
 
-import control.Controller;
 import exceptions.OccupiedCellException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,9 +21,6 @@ public class NewGameWindow extends JDialog {
     private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
     private final ArrayList<Integer> botStrategy = new ArrayList<>();
     private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
-    private Controller ctrl;
-    private MainWindow father;
-    private boolean nuevo;
 
     private JPanel playersConfigPanel = new JPanel();
     private JPanel container;
@@ -282,11 +278,9 @@ public class NewGameWindow extends JDialog {
         return (Mode) modeJComboBox.getSelectedItem();
     }
 
-    public boolean open() {
-        nuevo = false;
+    public void open() {
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
         setVisible(true);
-        return nuevo;
     }
 }
