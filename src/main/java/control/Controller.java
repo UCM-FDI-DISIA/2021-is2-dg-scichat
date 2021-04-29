@@ -69,7 +69,10 @@ public class Controller {
             } else {
                 try {
                     game.movePiece(position);
-                    if(game.getCurrentPlayer().isAWinner())game.setStopped(true,game.getCurrentPlayer());
+                    if (game.getCurrentPlayer().isAWinner()) game.setStopped(
+                        true,
+                        game.getCurrentPlayer()
+                    );
                     nextTurn();
                 } catch (ExecuteException ex) {
                     showError(ex);
@@ -82,8 +85,8 @@ public class Controller {
 
     public void surrender() {
         game.currentPlayerSurrender();
-        Player winner=game.wonBySurrender();
-        if (winner != null) game.setStopped(true,winner);
+        Player winner = game.wonBySurrender();
+        if (winner != null) game.setStopped(true, winner);
         nextTurn();
     }
 

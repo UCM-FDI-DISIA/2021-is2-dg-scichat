@@ -61,16 +61,16 @@ public class Game implements Serializable {
 
     public void setStopped(boolean stopped, Player winner) {
         this.stopped = stopped;
-        if(winner!=null) {
+        if (winner != null) {
             setWinner(winner);
         }
         for (GameObserver i : observers) {
             i.onGameEnded(this);
         }
     }
-    
+
     public void setStopped(boolean stopped) {
-        setStopped(stopped,null);
+        setStopped(stopped, null);
     }
 
     public void setBoard(Board board) {
