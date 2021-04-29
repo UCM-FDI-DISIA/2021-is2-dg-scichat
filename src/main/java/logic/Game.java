@@ -4,6 +4,12 @@ import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
 import graphic.GameObserver;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,6 +18,7 @@ import logic.gameObjects.Player;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import utils.Mode;
 import utils.PieceColor;
@@ -115,6 +122,33 @@ public class Game implements Serializable {
     
 
     /* Métodos */
+    
+    public void saveGame(File file) {
+	JSONObject jGame = this.toJSON();
+	
+	try {
+	    FileWriter exit = new FileWriter(file);
+	    exit.append(jGame.toString());
+	    exit.close();
+	}
+	catch(FileNotFoundException ex) {
+	    System.out.println(ex.getMessage());
+	}
+	catch(IOException ex) {
+	    System.out.println(ex.getMessage());
+	}
+    }
+    
+    public Game loadGame(File file) {
+	JSONObject jGame = null;
+	try {
+    		jGame = new JSONObject(
+    			new JSONTokener(new FileInputStream(file)));
+	}
+	catch(Exception ex) {} //Cambiar luego
+	
+	return new Game(jGame);
+    }
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
@@ -245,7 +279,7 @@ public class Game implements Serializable {
 	
 	JSONArray jPlayers = new JSONArray();
 	for(int i = 0; i < players.size(); ++i) {
-	    jPlayers.put(players.get(i).toJSON());
+	    jPlayers.put(this.players.get(i).toJSON());
 	}	
 	
 	jRes.append("players", jPlayers);

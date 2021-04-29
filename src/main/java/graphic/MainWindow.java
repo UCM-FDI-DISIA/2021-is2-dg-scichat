@@ -1,7 +1,6 @@
 package graphic;
 
 import control.Controller;
-import exceptions.LoadGameException;
 import exceptions.OccupiedCellException;
 import jdk.internal.org.jline.reader.Parser;
 
@@ -112,22 +111,13 @@ public class MainWindow extends JFrame implements GameObserver {
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             System.out.println(
-                "You choose to opent this file: " + chooser.getSelectedFile().getName()
+                "You choose to open this file: " + chooser.getSelectedFile().getName()
             );
         }
 
         File file = chooser.getSelectedFile();
        
-        
-        
-        try {
-            ctrl.loadGame(file);
-        }
-        catch(Exception ex) {
-            System.out.println(ex.getMessage());
-            
-        }
-        //Que ocurre cuando no se puede cargar el juego
+        ctrl.loadGame(file);
     }
 
     public void onGameEnded(Game game) {

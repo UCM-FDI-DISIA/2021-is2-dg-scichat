@@ -7,7 +7,10 @@ import graphic.GameObserver;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -100,16 +103,11 @@ public class Controller {
     }
 
     public void loadGame(File file) {
-	try {
-        	JSONObject jGame = new JSONObject(
-        		new JSONTokener(new FileInputStream(file)));
-        	this.game = new Game(jGame);
-	}
-	catch(Exception ex) {} //Cambiar luego
+	game.loadGame(file);
     }
     
-    public void saveGame() {
-	JSONObject jGame = game.toJSON();
+    public void saveGame(File file) {
+	game.saveGame(file);
     }
 
     public void showError(ExecuteException ex, String optTxt) {
