@@ -13,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import logic.Board;
-import logic.Game;
 import logic.gameObjects.Player;
 import utils.Mode;
 import utils.PieceColor;
@@ -31,14 +30,12 @@ public class NewGameWindow extends JDialog {
     private JPanel container;
     private JComboBox<Mode> modeJComboBox;
 
-    NewGameWindow(Controller ctrl, MainWindow father) {
-        this.ctrl = ctrl;
-        this.father = father;
+    NewGameWindow(Frame parent) {
+        super(parent, "Nuevo Juego", true);
         this.numPlayers = 2;
         this.initGUI();
         /// Tamaño mínimo de 800x800
         this.setMinimumSize(new Dimension(600, 275));
-        this.setVisible(true);
     }
 
     private void initGUI() {
@@ -68,18 +65,8 @@ public class NewGameWindow extends JDialog {
 
         JButton startButton = new JButton("Start");
         startButton.addActionListener(
-            new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    nuevo = true;
-                    Game newGame = new Game();
-                    newGame.setPlayers(getPlayers());
-                    newGame.setGameMode((Mode) modeJComboBox.getSelectedItem());
-                    ctrl.setGame(newGame);
-                    setVisible(false);
-                    father.initGame();
-                }
+            e -> {
+                setVisible(false);
             }
         );
         container.add(startButton, BorderLayout.SOUTH);
@@ -289,6 +276,10 @@ public class NewGameWindow extends JDialog {
         }
 
         return players;
+    }
+
+    Mode getGameMode() {
+        return (Mode) modeJComboBox.getSelectedItem();
     }
 
     public boolean open() {

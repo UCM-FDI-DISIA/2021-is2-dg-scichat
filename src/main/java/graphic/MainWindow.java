@@ -95,9 +95,16 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initGameOptions() {
-        if (this.gameOptionsScreen == null) this.gameOptionsScreen =
-            new NewGameWindow(ctrl, this);
+        if (this.gameOptionsScreen == null) {
+            this.gameOptionsScreen = new NewGameWindow(this);
+        }
         this.gameOptionsScreen.open();
+
+        Game newGame = new Game();
+        newGame.setPlayers(gameOptionsScreen.getPlayers());
+        newGame.setGameMode(gameOptionsScreen.getGameMode());
+        ctrl.setGame(newGame);
+        initGame();
     }
 
     public void initSelectFile() {
