@@ -79,6 +79,8 @@ public class CellLabel extends JLabel {
         g2D.setPaint(bgColor);
         g2D.fillOval(0, 0, 2 * radius, 2 * radius);
 
+        // System.out.println(this.toString() + " is hovered, color " + this.bgColor.toString());
+        // if(selected) System.out.println(this.toString() + " is selected");
         g2D.setPaint((selected ? selectColor : borderColor));
         g2D.setStroke(new BasicStroke(2));
         g2D.drawOval(0, 0, 2 * radius, 2 * radius);
@@ -90,10 +92,14 @@ public class CellLabel extends JLabel {
 
     public void setColor(Color color) {
         this.bgColor = color;
+        this.validate();
+        this.repaint();
     }
 
     public void setSelected(boolean b) {
         this.selected = b;
+        this.validate();
+        this.repaint();
     }
 
     public boolean getSelected() {
@@ -116,9 +122,9 @@ public class CellLabel extends JLabel {
         }
 
         @Override
-        public void mouseMoved(MouseEvent arg0) {
+        public void mouseMoved(MouseEvent e) {
             // TODO Auto-generated method stub
-            Point pointer = arg0.getPoint();
+            Point pointer = e.getPoint();
 
             //			System.out.println("(" + pointer.getX() + ", " + pointer.getY() + ")");
             if (inside(pointer)) {
@@ -135,7 +141,7 @@ public class CellLabel extends JLabel {
         public void mouseClicked(MouseEvent e) {
             Point pointer = e.getPoint();
             if (inside(pointer)) {
-                JOptionPane.showOptionDialog(
+                /*JOptionPane.showOptionDialog(
                     CellLabel.this,
                     "Se va a mandar la celda seleccinada a Controller\n" +
                     pointer.toString(),
@@ -145,7 +151,7 @@ public class CellLabel extends JLabel {
                     null,
                     null,
                     null
-                );
+                );*/
                 CellLabel.this.parent.handleClick(CellLabel.this.position);
             }
         }
@@ -166,7 +172,6 @@ public class CellLabel extends JLabel {
         @Override
         public void mousePressed(MouseEvent e) {
             // TODO Auto-generated method stub
-            CellLabel.this.parent.handleClick(CellLabel.this.position);
         }
 
         @Override
@@ -174,5 +179,10 @@ public class CellLabel extends JLabel {
             // TODO Auto-generated method stub
 
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Label at %s", this.position.toString());
     }
 }

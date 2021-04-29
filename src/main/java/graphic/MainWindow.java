@@ -109,6 +109,6 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void onGameEnded(Game game) {
         //TODO
-        initWinner(game.wonBySurrender());
+        initWinner(game.getWinner());
     }
 }
