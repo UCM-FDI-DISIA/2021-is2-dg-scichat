@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import logic.Board;
@@ -17,10 +18,10 @@ import utils.Mode;
 import utils.PieceColor;
 
 public class NewGameWindow extends JDialog {
-    private int numPlayers = 2;
+    private int numPlayers;
     private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
     private final ArrayList<Integer> botStrategy = new ArrayList<>();
-    private final Queue<Board.Side> availableSides = new LinkedList<Board.Side>();
+    private final Queue<Board.Side> availableSides = new LinkedList<>();
 
     private JPanel playersConfigPanel = new JPanel();
     private JPanel container;
@@ -45,13 +46,14 @@ public class NewGameWindow extends JDialog {
         /// Configurar como panel principal de la ventana
         mainPanel.setLayout(new GridBagLayout());
 
-        TitledBorder titled = new TitledBorder("Nueva Partida");
-        titled.setTitleFont(new Font("Comic sans MS", Font.BOLD, 20));
-        titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
-        mainPanel.setBorder(titled);
-
         this.container = new JPanel(new BorderLayout(2, 10));
         container.add(this.playersConfigPanel, BorderLayout.CENTER);
+
+        TitledBorder titled = new TitledBorder("Nueva Partida");
+        titled.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        container.setBorder(
+            new CompoundBorder(titled, BorderFactory.createEmptyBorder(10, 10, 10, 10))
+        );
 
         /// Preparar el contenido de panel de configuracion
         preparePlayersConfigPanel();
@@ -61,9 +63,7 @@ public class NewGameWindow extends JDialog {
 
         JButton startButton = new JButton("Start");
         startButton.addActionListener(
-            e -> {
-                setVisible(false);
-            }
+            e -> setVisible(false)
         );
         container.add(startButton, BorderLayout.SOUTH);
     }
