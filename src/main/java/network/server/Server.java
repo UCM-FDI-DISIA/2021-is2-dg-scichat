@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class Server extends WebSocketServer {
     private int port;
     private Map<String, Room> rooms = new HashMap<>();
-    private BiMap<UUID, WebSocket> clients = HashBiMap.create();
+    private BiMap<String, WebSocket> clients = HashBiMap.create();
 
     public Server(int port) {
         super(new InetSocketAddress(port));
@@ -32,7 +32,7 @@ public class Server extends WebSocketServer {
     public void onOpen(WebSocket connection, ClientHandshake handshake) {
         /// Cuando se conecta un nuevo cliente, asignarle un UUID, y añadirlo a la lista de clientes
         UUID clientID = UUID.randomUUID();
-        this.clients.put(clientID, connection);
+        this.clients.put(clientID.toString(), connection);
         System.out.printf("Cliente conectado. UUID: %s \n", clientID);
 
         /// Enviar este ID al cliente
@@ -47,9 +47,14 @@ public class Server extends WebSocketServer {
     @Override
     public void onClose(WebSocket connection, int code, String reason, boolean remote) {
         /// Cuando se desconecta, eliminar de la lista de clientes
-        /// TODO: También actualizar el estado de la habitación donde se encuentre
-        UUID clientID = this.clients.inverse().get(connection);
+        String clientID = this.clients.inverse().get(connection);
         this.clients.remove(clientID);
+
+        for (Map.Entry<String, Room> entry : this.rooms.entrySet()) {
+            /// Buscar la habitación donde estaba ese jugador, y eliminarlo
+            Room room = entry.getValue();
+            room.removePlayer(clientID);
+        }
 
         System.out.printf("Cliente desconectado. UUID: %s \n", clientID);
     }

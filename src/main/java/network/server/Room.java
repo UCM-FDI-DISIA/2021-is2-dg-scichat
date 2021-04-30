@@ -1,16 +1,18 @@
 package network.server;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import network.server.PlayerConfig;
 import network.server.RoomConfig;
+import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class Room {
     private RoomConfig roomConfig;
     private Map<String, PlayerConfig> players = new TreeMap<>();
-    private int connectedPlayers = 0;
+    private Map<String, WebSocket> playerConnections = new HashMap<>();
 
     public Room(RoomConfig config) {
         this.roomConfig = config;
@@ -18,24 +20,34 @@ public class Room {
 
     public boolean isFull() {
         /// Esta lleno cuando hay tantos jugadores conectados como configurados
-        return this.connectedPlayers == this.roomConfig.getNumPlayers();
+        return this.getConnectedPlayers() == this.roomConfig.getNumPlayers();
     }
 
-    public PlayerConfig addPlayer(String uuid) {
+    public PlayerConfig addPlayer(String uuid, WebSocket connection) {
         PlayerConfig playerConfig = roomConfig.getPlayerConfigs().poll();
-        ++this.connectedPlayers;
+        this.players.put(uuid, playerConfig);
+        this.playerConnections.put(uuid, connection);
+
+        /// Cuando se produce un cambio en jugador, enviar este cambio a todos los clientes de la habitación
+        broadCastRoomInfo();
 
         return playerConfig;
     }
 
     public void removePlayer(String uuid) {
+        if (!this.players.containsKey(uuid)) return;
+
         PlayerConfig playerConfig = this.players.get(uuid);
         this.roomConfig.getPlayerConfigs().add(playerConfig);
-        --this.connectedPlayers;
+
+        this.players.remove(uuid);
+        this.playerConnections.remove(uuid);
+
+        broadCastRoomInfo();
     }
 
     public int getConnectedPlayers() {
-        return connectedPlayers;
+        return this.playerConnections.size();
     }
 
     public static String generateRoomID() {
@@ -51,7 +63,7 @@ public class Room {
 
     public JSONObject toJSONObject() {
         JSONObject data = this.roomConfig.toJSONObject();
-        data.put("connectedPlayers", this.connectedPlayers);
+        data.put("connectedPlayers", this.getConnectedPlayers());
         JSONObject players = new JSONObject();
 
         for (Map.Entry<String, PlayerConfig> entry : this.players.entrySet()) {
@@ -60,5 +72,17 @@ public class Room {
 
         data.put("players", players);
         return data;
+    }
+
+    public void broadCastRoomInfo() {
+        JSONObject res = new JSONObject();
+        res.put("type", "ROOM_INFO");
+
+        JSONObject resData = this.toJSONObject();
+        res.put("data", resData);
+
+        for (Map.Entry<String, WebSocket> entry : this.playerConnections.entrySet()) {
+            entry.getValue().send(res.toString());
+        }
     }
 }

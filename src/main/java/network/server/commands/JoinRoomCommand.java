@@ -27,16 +27,6 @@ public class JoinRoomCommand extends Command {
             throw new Exception("Room ID " + roomID + " is full.");
         }
 
-        room.addPlayer(clientID);
-
-        /// Una vez añadido el jugador, devolver el estado actual de la habitación
-        JSONObject res = new JSONObject();
-        res.put("type", "ROOM_INFO");
-
-        JSONObject resData = room.toJSONObject();
-        resData.put("roomID", roomID);
-        res.put("data", resData);
-
-        connection.send(res.toString());
+        room.addPlayer(clientID, connection);
     }
 }
