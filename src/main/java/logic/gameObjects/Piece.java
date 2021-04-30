@@ -136,17 +136,19 @@ public class Piece implements Serializable {
      * @throws InvalidOperationException Salta cuando el Movimiento que queremos
      *                                   llevar a cabo no es posible
      */
-    public void tryToMoveFast(Cell targetPosition) throws InvalidMoveException{
-	tryToMoveFast(targetPosition, false);
+    public void tryToMoveFast(Cell targetPosition) throws InvalidMoveException {
+        tryToMoveFast(targetPosition, false);
     }
+
     /**
      * Comprueba si se puede llevar a cabo un determinado movimiento en juego rapido
-     * 
+     *
      * @param targetPosition	Celda a la que queremos mover la ficha
      * @param jumpIsLimited
      * @throws InvalidMoveException Salta cuando el movimiento que queremos llevar a cabo no es posible
      */
-    public void tryToMoveFast(Cell targetPosition, boolean jumpIsLimited) throws InvalidMoveException {
+    public void tryToMoveFast(Cell targetPosition, boolean jumpIsLimited)
+        throws InvalidMoveException {
         // TODO todo
         if (targetPosition.equals(this.position)) { // La estamos ocupando!
             throw new InvalidMoveException();
@@ -169,8 +171,8 @@ public class Piece implements Serializable {
         } // Si agotamos todos los candidatos, es que no se puede hacer un saltando otras
         // piezas
         // tryToMoveTo(targetPosition);
-        
-        if(!this.getPosition().getNeighbours().contains(targetPosition)) {
+
+        if (!this.getPosition().getNeighbours().contains(targetPosition)) {
             throw new InvalidMoveException();
         }
     }
@@ -190,11 +192,11 @@ public class Piece implements Serializable {
      */
     public void move(Cell targetPosition, Mode playMode) throws InvalidMoveException {
         try {
-            // Vemos que podemos llevar a cavo el movimiento
+            // Vemos que podemos llevar a cabo el movimiento
             // if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); else if (
             //     playMode == Mode.Fast
             // ) tryToMoveFast(targetPosition);
-            
+
             tryToMoveFast(targetPosition, playMode == Mode.Traditional);
             this.position.removePiece(); // Actualizamos las posiciones(celdas)
             this.position = targetPosition;

@@ -444,8 +444,7 @@ public class Cell implements Serializable {
                 }
 
                 if (c == candidate) { // E implícitamente, candidate.isEmpty()
-                    if(!jumpIsLimited || dist < 1) 
-                	rv.add(candidate);
+                    if (!jumpIsLimited || dist <= 1) rv.add(candidate);
                     break;
                 }
             }
