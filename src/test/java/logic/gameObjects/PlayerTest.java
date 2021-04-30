@@ -7,7 +7,6 @@ import logic.Board;
 import logic.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.Mode;
 import utils.PieceColor;
 
 public class PlayerTest {

@@ -53,6 +53,7 @@ public class Piece implements Serializable {
      * @throws OutOfBoundsException      Salta cuando la posicion a moverse no es
      *                                   posible
      */
+    @Deprecated
     public void tryToMoveTo(Cell targetPosition) throws InvalidMoveException {
         if (targetPosition.equals(this.position) || !targetPosition.isEmpty()) { // Comprobamos que la posición que queremos alcanzar no es la de
             // partida
@@ -96,6 +97,7 @@ public class Piece implements Serializable {
      * @param checkedCells    Tablero con las Celdas que ya hemos mirado
      * @return Devuelve si se puede llevar a cabo el movimiento
      */
+    @Deprecated
     private boolean recursiveTryToMoveTo(
         Cell targetPosition,
         boolean[][] checkedCells,
@@ -133,10 +135,20 @@ public class Piece implements Serializable {
      * @param targetPosition Celda a la que queremos mover la ficha
      * @throws InvalidOperationException Salta cuando el Movimiento que queremos
      *                                   llevar a cabo no es posible
-     * @throws OutOfBoundsException      Salta cuando la posicion a moverse no es
-     *                                   posible
      */
     public void tryToMoveFast(Cell targetPosition) throws InvalidMoveException {
+        tryToMoveFast(targetPosition, false);
+    }
+
+    /**
+     * Comprueba si se puede llevar a cabo un determinado movimiento en juego rapido
+     *
+     * @param targetPosition	Celda a la que queremos mover la ficha
+     * @param jumpIsLimited
+     * @throws InvalidMoveException Salta cuando el movimiento que queremos llevar a cabo no es posible
+     */
+    public void tryToMoveFast(Cell targetPosition, boolean jumpIsLimited)
+        throws InvalidMoveException {
         // TODO todo
         if (targetPosition.equals(this.position)) { // La estamos ocupando!
             throw new InvalidMoveException();
@@ -152,13 +164,17 @@ public class Piece implements Serializable {
             if (current == targetPosition) return;
 
             visited.add(current);
-            List<Cell> candidates = Cell.getLargeJumpPositions(current);
+            List<Cell> candidates = Cell.getLargeJumpPositions(current, jumpIsLimited);
             for (Cell candidate : candidates) if (
                 !visited.contains(candidate)
             ) childrenQueue.add(candidate);
         } // Si agotamos todos los candidatos, es que no se puede hacer un saltando otras
         // piezas
-        tryToMoveTo(targetPosition);
+        // tryToMoveTo(targetPosition);
+
+        if (!this.getPosition().getNeighbours().contains(targetPosition)) {
+            throw new InvalidMoveException();
+        }
     }
 
     public JSONObject toJSON() {
@@ -176,11 +192,12 @@ public class Piece implements Serializable {
      */
     public void move(Cell targetPosition, Mode playMode) throws InvalidMoveException {
         try {
-            // Vemos que podemos llevar a cavo el movimiento
-            if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); else if (
-                playMode == Mode.Fast
-            ) tryToMoveFast(targetPosition);
+            // Vemos que podemos llevar a cabo el movimiento
+            // if (playMode == Mode.Traditional) tryToMoveTo(targetPosition); else if (
+            //     playMode == Mode.Fast
+            // ) tryToMoveFast(targetPosition);
 
+            tryToMoveFast(targetPosition, playMode == Mode.Traditional);
             this.position.removePiece(); // Actualizamos las posiciones(celdas)
             this.position = targetPosition;
             this.position.putPiece(this);

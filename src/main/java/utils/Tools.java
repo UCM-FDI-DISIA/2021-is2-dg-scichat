@@ -1,12 +1,9 @@
 package utils;
 
-import control.Controller;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import logic.Game;
 
 public class Tools {
 
