@@ -130,6 +130,19 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
             }
         );
 
+        joinOnlineRoomButton.addActionListener(
+            e -> {
+                String roomID = JOptionPane.showInputDialog(
+                    "Introduce código de la habitación: "
+                );
+                if (roomID.isEmpty()) return;
+
+                this.sc.removeObserver(this);
+                this.dispose();
+                new OnlineWaitingWindow(this.sc, roomID);
+            }
+        );
+
         container.add(clientIDLabel, BorderLayout.SOUTH);
 
         this.setMinimumSize(new Dimension(400, 400));
