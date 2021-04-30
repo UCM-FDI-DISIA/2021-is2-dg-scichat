@@ -3,6 +3,7 @@ package network.client;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
@@ -15,6 +16,7 @@ public class SocketClient extends WebSocketClient {
 
     public SocketClient(URI serverUri) {
         super(serverUri);
+        BasicConfigurator.configure();
     }
 
     public void addObserver(SocketObserver o) {
