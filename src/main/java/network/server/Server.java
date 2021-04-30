@@ -1,4 +1,4 @@
-package network;
+package network.server;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;

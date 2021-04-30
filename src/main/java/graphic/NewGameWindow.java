@@ -62,9 +62,7 @@ public class NewGameWindow extends JDialog {
         mainPanel.add(container);
 
         JButton startButton = new JButton("Start");
-        startButton.addActionListener(
-            e -> setVisible(false)
-        );
+        startButton.addActionListener(e -> setVisible(false));
         container.add(startButton, BorderLayout.SOUTH);
     }
 

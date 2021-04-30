@@ -1,4 +1,4 @@
-package network;
+package network.server;
 
 import logic.Board;
 import org.json.JSONObject;
@@ -9,12 +9,12 @@ public class PlayerConfig {
     private Board.Side side;
     private String name;
 
-    PlayerConfig(PieceColor _color, Board.Side _side) {
+    public PlayerConfig(PieceColor _color, Board.Side _side) {
         this.color = _color;
         this.side = _side;
     }
 
-    PlayerConfig(JSONObject data) {
+    public PlayerConfig(JSONObject data) {
         int colorIndex = data.optInt("color", 0);
         int sideIndex = data.optInt("side", 0);
 

@@ -1,8 +1,10 @@
-package network;
+package network.server;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+import network.server.PlayerConfig;
+import network.server.RoomConfig;
 
 public class Room {
     private RoomConfig roomConfig;

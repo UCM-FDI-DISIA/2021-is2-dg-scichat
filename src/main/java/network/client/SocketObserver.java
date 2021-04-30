@@ -1,4 +1,4 @@
-package network;
+package network.client;
 
 public interface SocketObserver {
     void onOpen();

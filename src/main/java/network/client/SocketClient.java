@@ -1,4 +1,4 @@
-package network;
+package network.client;
 
 import java.net.URI;
 import java.util.ArrayList;

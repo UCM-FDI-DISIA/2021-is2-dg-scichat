@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import logic.gameObjects.Player;
-import network.SocketClient;
-import network.SocketObserver;
+import network.client.SocketClient;
+import network.client.SocketObserver;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Mode;
@@ -51,7 +51,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         );
         serverSection.setLayout(new BoxLayout(serverSection, BoxLayout.X_AXIS));
 
-        JTextField serverURLField = new JTextField("ws://localhost:8080", 10);
+        JTextField serverURLField = new JTextField("ws://localhost:8080");
 
         serverSection.add(serverURLField);
 

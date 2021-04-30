@@ -1,8 +1,9 @@
-package network;
+package network.server;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import network.server.PlayerConfig;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Mode;
@@ -11,12 +12,12 @@ public class RoomConfig {
     private Mode mode;
     private LinkedList<PlayerConfig> playerConfigs;
 
-    RoomConfig(Mode _mode, List<PlayerConfig> _playerConfigs) {
+    public RoomConfig(Mode _mode, List<PlayerConfig> _playerConfigs) {
         this.mode = _mode;
         this.playerConfigs = new LinkedList<>(_playerConfigs);
     }
 
-    RoomConfig(JSONObject data) {
+    public RoomConfig(JSONObject data) {
         int modeIndex = data.optInt("mode", 0);
         this.mode = Mode.values()[modeIndex];
 
