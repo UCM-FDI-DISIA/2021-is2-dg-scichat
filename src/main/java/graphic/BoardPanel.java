@@ -148,9 +148,13 @@ public class BoardPanel extends JPanel implements GameObserver {
             pair.getValue().setSelected(false);
         }
         // Default back to previously selected piece
-        CellLabel cl =
-            this.cellLabels.get(game.getCurrentPlayer().getSelectedPiece().getPosition());
-        cl.setSelected(true);
+        if (game.getCurrentPlayer().hasSelectedPiece()) {
+            CellLabel cl =
+                this.cellLabels.get(
+                        game.getCurrentPlayer().getSelectedPiece().getPosition()
+                    );
+            cl.setSelected(true);
+        }
     }
 
     @Override
