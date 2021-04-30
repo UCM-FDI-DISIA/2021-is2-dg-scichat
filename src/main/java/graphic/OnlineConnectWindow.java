@@ -152,10 +152,19 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         System.out.println("Se ha recibido un mensaje del Socket:");
         System.out.println(s);
 
-        if (s.getString("type").equals("SET_CLIENT_ID")) {
-            this.clientIDLabel.setText(
-                    "ID del cliente: " + s.getJSONObject("data").getString("clientID")
-                );
+        String type = s.getString("type");
+        JSONObject data = s.getJSONObject("data");
+
+        if (type.equals("SET_CLIENT_ID")) {
+            this.clientIDLabel.setText("ID del cliente: " + data.getString("clientID"));
+        } else if (type.equals("ROOM_CREATED")) {
+            /// Una vez creada la habitación, pasar a la sala de espera
+            String roomID = data.getString("roomID");
+
+            /// Cierra ventana actual, y quitar el observador
+            this.sc.removeObserver(this);
+            this.dispose();
+            new OnlineWaitingWindow(this.sc, roomID);
         }
     }
 
