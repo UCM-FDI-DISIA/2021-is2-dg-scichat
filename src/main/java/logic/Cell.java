@@ -423,16 +423,17 @@ public class Cell implements Serializable {
         }
     }
 
-    public static List<Cell> getLargeJumpPositions(Cell curr) {
+    public static List<Cell> getLargeJumpPositions(Cell curr, boolean jumpIsLimited) {
         List<Cell> rv = new ArrayList<>(); // [r]eturn [v]alue
         for (Direction dir : Direction.values()) {
             Cell candidate = null;
+            int dist = 0;
             for (Cell c : curr.getTrail(dir)) {
                 if (c == curr) continue;
 
                 if (!c.isEmpty()) {
                     if (candidate == null) {
-                        int dist = 0;
+                        dist = 0;
                         try {
                             dist = curr.getDiagonalDistanceTo(c);
                         } catch (CellsNotLinedUpException clnue) {} // Deberíamos usar RTE?
@@ -443,7 +444,8 @@ public class Cell implements Serializable {
                 }
 
                 if (c == candidate) { // E implícitamente, candidate.isEmpty()
-                    rv.add(candidate);
+                    if(!jumpIsLimited || dist < 1) 
+                	rv.add(candidate);
                     break;
                 }
             }
