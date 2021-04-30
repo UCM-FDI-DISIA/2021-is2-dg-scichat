@@ -123,7 +123,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
                 sc.send(
                     new JSONObject()
-                        .put("type", "NEW_ROOM")
+                        .put("type", "CREATE_ROOM")
                         .put("data", gameConfig)
                         .toString()
                 );

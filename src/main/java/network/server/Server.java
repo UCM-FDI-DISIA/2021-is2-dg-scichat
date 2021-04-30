@@ -6,6 +6,8 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import network.server.commands.Command;
+import network.server.commands.CommandParser;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -20,6 +22,10 @@ public class Server extends WebSocketServer {
     public Server(int port) {
         super(new InetSocketAddress(port));
         this.port = port;
+    }
+
+    public Map<String, Room> getRooms() {
+        return rooms;
     }
 
     @Override
@@ -52,27 +58,10 @@ public class Server extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println(message);
         try {
-            JSONObject parsed = new JSONObject(message);
-            if (parsed.getString("type").equals("NEW_ROOM")) {
-                RoomConfig roomConfig = new RoomConfig(parsed.getJSONObject("data"));
-                String roomID = Room.generateRoomID();
-                Room room = new Room(roomConfig);
-
-                this.rooms.put(roomID, room);
-
-                JSONObject data = roomConfig.toJSONObject();
-                data.put("roomID", roomID);
-                conn.send(
-                    new JSONObject()
-                        .put("type", "ROOM_CREATED")
-                        .put("data", data)
-                        .toString()
-                );
-
-                System.out.println("Se ha creado una nueva habitación: ");
-                System.out.println(data);
-            }
-        } catch (JSONException e) {
+            JSONObject body = new JSONObject(message);
+            Command command = CommandParser.parse(body.getString("type"));
+            command.execute(body, this, conn);
+        } catch (JSONException | CommandParser.ParseException e) {
             conn.send(new JSONObject().put("type", "INVALID_MESSAGE").toString());
         }
     }

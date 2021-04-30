@@ -1,6 +1,7 @@
 package network.server.commands;
 
 import network.server.Server;
+import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public abstract class Command {
@@ -10,7 +11,7 @@ public abstract class Command {
         this.type = _type;
     }
 
-    public abstract void execute(JSONObject body, Server server);
+    public abstract void execute(JSONObject body, Server server, WebSocket connection);
 
     public Command parse(String _type) {
         if (this.type.equals(_type)) return this;
