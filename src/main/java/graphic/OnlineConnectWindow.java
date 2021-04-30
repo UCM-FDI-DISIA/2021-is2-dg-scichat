@@ -20,6 +20,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     JButton joinOnlineRoomButton;
     JButton connectButton;
     JPanel actionsSection = new JPanel();
+    JLabel clientIDLabel = new JLabel();
 
     public OnlineConnectWindow() {
         super("Juego Online");
@@ -87,11 +88,11 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
             }
         );
 
-        container.add(serverSection, BorderLayout.CENTER);
+        container.add(serverSection, BorderLayout.NORTH);
 
         actionsSection.setVisible(false);
         actionsSection.setLayout(new BoxLayout(actionsSection, BoxLayout.X_AXIS));
-        container.add(actionsSection, BorderLayout.SOUTH);
+        container.add(actionsSection, BorderLayout.CENTER);
 
         this.newOnlineRoomButton = new JButton("Nueva habitación");
         this.joinOnlineRoomButton = new JButton("Entrar a una habitación");
@@ -129,8 +130,10 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
             }
         );
 
-        this.setSize(new Dimension(400, 400));
-        this.setResizable(false);
+        container.add(clientIDLabel, BorderLayout.SOUTH);
+
+        this.setMinimumSize(new Dimension(400, 400));
+        this.pack();
     }
 
     public static void main(String[] args) {
@@ -145,9 +148,15 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     }
 
     @Override
-    public void onMessage(String s) {
+    public void onMessage(JSONObject s) {
         System.out.println("Se ha recibido un mensaje del Socket:");
         System.out.println(s);
+
+        if (s.getString("type").equals("SET_CLIENT_ID")) {
+            this.clientIDLabel.setText(
+                    "ID del cliente: " + s.getJSONObject("data").getString("clientID")
+                );
+        }
     }
 
     @Override
@@ -155,6 +164,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         System.out.println("Se ha cerrado la conexión Socket");
         actionsSection.setVisible(false);
 
+        this.clientIDLabel.setText("");
         connectButton.setText("Conectar");
     }
 

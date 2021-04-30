@@ -1,9 +1,11 @@
 package network.client;
 
+import org.json.JSONObject;
+
 public interface SocketObserver {
     void onOpen();
 
-    void onMessage(String s);
+    void onMessage(JSONObject s);
 
     void onClose();
 

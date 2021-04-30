@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SocketClient extends WebSocketClient {
     private boolean connected = false;
     private List<SocketObserver> observers = new ArrayList<>();
+    private String clientID;
 
     public SocketClient(URI serverUri) {
         super(serverUri);
@@ -26,6 +29,10 @@ public class SocketClient extends WebSocketClient {
         return this.connected;
     }
 
+    public String getClientID() {
+        return clientID;
+    }
+
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
         this.connected = true;
@@ -34,7 +41,19 @@ public class SocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        for (SocketObserver o : this.observers) o.onMessage(s);
+        /// Parsear el mensaje como JSONObject, y emitir a los observadores
+        try {
+            JSONObject res = new JSONObject(s);
+            if (res.getString("type").equals("SET_CLIENT_ID")) {
+                /// Configurar el ID del cliente
+                this.clientID = res.getJSONObject("data").getString("clientID");
+            }
+
+            for (SocketObserver o : this.observers) o.onMessage(res);
+        } catch (JSONException e) {
+            System.out.println("Error: " + s + " no es un JSON valido");
+            e.printStackTrace();
+        }
     }
 
     @Override
