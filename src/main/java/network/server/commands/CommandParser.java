@@ -1,7 +1,10 @@
 package network.server.commands;
 
 public class CommandParser {
-    private static final Command[] availableCommands = { new CreateRoomCommand() };
+    private static final Command[] availableCommands = {
+        new CreateRoomCommand(),
+        new JoinRoomCommand()
+    };
 
     public static class ParseException extends RuntimeException {
 

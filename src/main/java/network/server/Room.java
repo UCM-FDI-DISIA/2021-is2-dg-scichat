@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.TreeMap;
 import network.server.PlayerConfig;
 import network.server.RoomConfig;
+import org.json.JSONObject;
 
 public class Room {
     private RoomConfig roomConfig;
@@ -13,6 +14,11 @@ public class Room {
 
     public Room(RoomConfig config) {
         this.roomConfig = config;
+    }
+
+    public boolean isFull() {
+        /// Esta lleno cuando hay tantos jugadores conectados como configurados
+        return this.connectedPlayers == this.roomConfig.getNumPlayers();
     }
 
     public PlayerConfig addPlayer(String uuid) {
@@ -41,5 +47,18 @@ public class Room {
             salt.append(SALTCHARS.charAt(index));
         }
         return salt.toString();
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject data = this.roomConfig.toJSONObject();
+        data.put("connectedPlayers", this.connectedPlayers);
+        JSONObject players = new JSONObject();
+
+        for (Map.Entry<String, PlayerConfig> entry : this.players.entrySet()) {
+            players.put(entry.getKey(), entry.getValue().toJSONObject());
+        }
+
+        data.put("players", players);
+        return data;
     }
 }

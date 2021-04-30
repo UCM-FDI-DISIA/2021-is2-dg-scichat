@@ -61,8 +61,13 @@ public class Server extends WebSocketServer {
             JSONObject body = new JSONObject(message);
             Command command = CommandParser.parse(body.getString("type"));
             command.execute(body, this, conn);
-        } catch (JSONException | CommandParser.ParseException e) {
-            conn.send(new JSONObject().put("type", "INVALID_MESSAGE").toString());
+        } catch (Exception e) {
+            conn.send(
+                new JSONObject()
+                    .put("type", "ERROR")
+                    .put("message", e.getMessage())
+                    .toString()
+            );
         }
     }
 

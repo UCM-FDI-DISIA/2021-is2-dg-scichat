@@ -11,10 +11,12 @@ import utils.Mode;
 public class RoomConfig {
     private Mode mode;
     private LinkedList<PlayerConfig> playerConfigs;
+    private int numPlayers;
 
     public RoomConfig(Mode _mode, List<PlayerConfig> _playerConfigs) {
         this.mode = _mode;
         this.playerConfigs = new LinkedList<>(_playerConfigs);
+        this.numPlayers = _playerConfigs.size();
     }
 
     public RoomConfig(JSONObject data) {
@@ -27,6 +29,8 @@ public class RoomConfig {
         for (Object p : playerConfigArray) {
             playerConfigs.add(new PlayerConfig((JSONObject) p));
         }
+
+        this.numPlayers = this.playerConfigs.size();
     }
 
     public Queue<PlayerConfig> getPlayerConfigs() {
@@ -35,6 +39,10 @@ public class RoomConfig {
 
     public Mode getMode() {
         return mode;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
     }
 
     public JSONObject toJSONObject() {
