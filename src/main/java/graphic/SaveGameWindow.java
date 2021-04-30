@@ -9,14 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-public class SaveGameWindow extends JFrame {
-    /**
-     *
-     */
+public class SaveGameWindow extends JDialog {
     private static final long serialVersionUID = 1L;
+
     Controller controller;
     String firstMsg = "Opcion de guardado 1";
     File firstFile;
@@ -34,7 +32,7 @@ public class SaveGameWindow extends JFrame {
     }
 
     public void initGUI() {
-        this.setBounds(300, 100, 500, 300);
+        this.setPreferredSize(new Dimension(500, 300));
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
 
@@ -106,7 +104,11 @@ public class SaveGameWindow extends JFrame {
         this.add(firstPanel, BorderLayout.NORTH);
         this.add(secondPanel, BorderLayout.CENTER);
         this.add(thirdPanel, BorderLayout.SOUTH);
+    }
 
-        this.setVisible(true);
+    public void open() {
+        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
+        pack();
+        setVisible(true);
     }
 }

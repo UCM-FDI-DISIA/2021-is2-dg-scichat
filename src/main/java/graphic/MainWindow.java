@@ -9,6 +9,8 @@ import logic.gameObjects.Player;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver {
+    private static final long serialVersionUID = 1L;
+
     private Controller ctrl;
 
     //Datos de diseno
@@ -21,7 +23,6 @@ public class MainWindow extends JFrame implements GameObserver {
     private JPanel winnerScreen = null;
     private NewGameWindow gameOptionsScreen = null;
     private LoadGameWindow loadGameScreen = null;
-    private JPanel selectFileScreen = null;
 
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");

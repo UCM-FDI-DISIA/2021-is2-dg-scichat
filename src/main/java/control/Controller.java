@@ -5,12 +5,6 @@ import control.options.Option.ExecuteException;
 import control.options.OptionGenerator;
 import graphic.GameObserver;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logic.Cell;
@@ -70,8 +64,6 @@ public class Controller {
         System.out.println("[GAME OVER]");
     }
 
-    private int cnt = 0;
-
     public void handleClick(Cell position) {
         if (game.hasSelectedPiece()) {
             if (game.isSelectedPieceIn(position)) {
@@ -83,7 +75,7 @@ public class Controller {
                         true,
                         game.getCurrentPlayer()
                     );
-                    nextTurn();
+                    game.advance();
                 } catch (ExecuteException ex) {
                     showError(ex);
                 }
@@ -97,7 +89,7 @@ public class Controller {
         game.currentPlayerSurrender();
         Player winner = game.wonBySurrender();
         if (winner != null) game.setStopped(true, winner);
-        nextTurn();
+        game.advance();
     }
 
     public void reset() {
@@ -106,12 +98,6 @@ public class Controller {
 
     public void softReset() {
         game.softReset();
-    }
-
-    private void nextTurn() {
-        game.endTurn();
-        game.advance();
-        game.startTurn();
     }
 
     public void initGame() {

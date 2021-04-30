@@ -16,6 +16,8 @@ import logic.Game;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 public class OptionsPanel extends JPanel implements GameObserver {
+    private static final long serialVersionUID = 1L;
+
     private Controller ctrl;
     private boolean onGame = true;
     private Game game;
@@ -92,7 +94,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
-                    new SaveGameWindow(ctrl);
+                    new SaveGameWindow(ctrl).open();
                 }
             }
         );
