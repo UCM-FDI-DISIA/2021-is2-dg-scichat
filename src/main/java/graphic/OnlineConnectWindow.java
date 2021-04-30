@@ -120,7 +120,12 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
                 gameConfig.put("players", playersConfigArray);
 
-                sc.send(gameConfig.toString());
+                sc.send(
+                    new JSONObject()
+                        .put("type", "NEW_ROOM")
+                        .put("data", gameConfig)
+                        .toString()
+                );
             }
         );
 
