@@ -25,7 +25,6 @@ public class LoadGameWindow extends JDialog {
     File secondFile;
     String thirdMsg = "Opción de cargado 3";
     File thirdFile;
-    boolean nuevo;
 
     public LoadGameWindow(Controller control, MainWindow father) {
         this.controller = control;
@@ -115,15 +114,11 @@ public class LoadGameWindow extends JDialog {
         this.add(firstPanel, BorderLayout.NORTH);
         this.add(secondPanel, BorderLayout.CENTER);
         this.add(thirdPanel, BorderLayout.SOUTH);
-
-        this.setVisible(true);
     }
 
-    public boolean open() {
-        nuevo = false;
+    public void open() {
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
         setVisible(true);
-        return nuevo;
     }
 }

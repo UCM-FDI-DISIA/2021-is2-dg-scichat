@@ -15,11 +15,9 @@ import logic.gameObjects.Piece;
 public class BoardPanel extends JPanel implements GameObserver {
     private static final long serialVersionUID = -3501731254500743354L;
     private static final int default_radius = 20;
-    private static final double aspectRatio = 0.883; // w/h
 
     private Controller ctrl = null;
     private Map<Cell, CellLabel> cellLabels = new HashMap<>();
-    private Board board;
     private int radius;
 
     public BoardPanel(Controller ctrl) {
@@ -36,7 +34,6 @@ public class BoardPanel extends JPanel implements GameObserver {
      */
     public BoardPanel(Controller ctrl, int radius, Board board) {
         this.ctrl = ctrl;
-        this.board = board;
         this.radius = radius; // Lo guardamos para ver si crece o decrece un resize
 
         int label_height = 2 * radius;
@@ -165,27 +162,4 @@ public class BoardPanel extends JPanel implements GameObserver {
 
     @Override
     public void onGameEnded(Game game) {}
-    /*
-    public static void main(String[] args) {
-        Game g = new Game();
-        try {
-            g.addNewPlayer(PieceColor.BLUE, Side.Down);
-            g.addNewPlayer(PieceColor.RED, Side.Up);
-
-            g.addNewPlayer(PieceColor.GREEN, Side.DownLeft);
-            g.addNewPlayer(PieceColor.MAGENTA, Side.UpRight);
-
-            g.addNewPlayer(PieceColor.ORANGE, Side.DownRight);
-            g.addNewPlayer(PieceColor.YELLOW, Side.UpLeft);
-        } catch (OccupiedCellException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        //        for (Cell c : b) {
-        //            System.out.println(c);
-        //            assert (c != null);
-        //        }
-        Tools.showComp(new BoardPanel(null, 20, g.getBoard()));
-    }
-    */
 }

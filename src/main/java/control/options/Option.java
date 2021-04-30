@@ -10,6 +10,7 @@ public abstract class Option {
      * Excepción que se lanza cuando produce un error en ejecución
      */
     public static class ExecuteException extends Exception {
+        private static final long serialVersionUID = 1L;
 
         public ExecuteException(String message) {
             super("[ERROR]: " + message);

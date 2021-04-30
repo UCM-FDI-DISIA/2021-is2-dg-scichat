@@ -1,6 +1,7 @@
 package exceptions;
 
 public class NotSelectedPieceException extends Exception {
+    private static final long serialVersionUID = 1L;
 
     public NotSelectedPieceException() {
         super("No hay una pieza seleccionada.");

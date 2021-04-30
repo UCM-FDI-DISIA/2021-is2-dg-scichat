@@ -17,6 +17,8 @@ import utils.Mode;
 import utils.PieceColor;
 
 public class NewGameWindow extends JDialog {
+    private static final long serialVersionUID = 1L;
+
     private int numPlayers = 2;
     private final ArrayList<DefaultComboBoxModel<PieceColor>> colorComboBoxes = new ArrayList<>();
     private final ArrayList<Integer> botStrategy = new ArrayList<>();
