@@ -25,8 +25,8 @@ public class PlayerConfig {
     public JSONObject toJSONObject() {
         JSONObject data = new JSONObject();
 
-        data.put("color", this.color);
-        data.put("side", this.side);
+        data.put("color", this.color.ordinal());
+        data.put("side", this.side.ordinal());
 
         return data;
     }

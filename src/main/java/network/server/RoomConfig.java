@@ -39,7 +39,7 @@ public class RoomConfig {
 
     public JSONObject toJSONObject() {
         JSONObject data = new JSONObject();
-        data.put("mode", this.mode);
+        data.put("mode", this.mode.ordinal());
 
         for (PlayerConfig p : this.playerConfigs) {
             data.append("players", p.toJSONObject());
