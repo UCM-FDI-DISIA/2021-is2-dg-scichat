@@ -46,12 +46,18 @@ public class SocketClient extends WebSocketClient {
         /// Parsear el mensaje como JSONObject, y emitir a los observadores
         try {
             JSONObject res = new JSONObject(s);
-            if (res.getString("type").equals("SET_CLIENT_ID")) {
+            String type = res.getString("type");
+            if (type.equals("SET_CLIENT_ID")) {
                 /// Configurar el ID del cliente
                 this.clientID = res.getJSONObject("data").getString("clientID");
+                this.onClientIDChange(clientID);
+            } else if (type.equals("ERROR")) {
+                this.onError(
+                        new Exception(res.getJSONObject("data").getString("message"))
+                    );
+            } else {
+                for (SocketObserver o : this.observers) o.onMessage(res);
             }
-
-            for (SocketObserver o : this.observers) o.onMessage(res);
         } catch (JSONException e) {
             System.out.println("Error: " + s + " no es un JSON valido");
             e.printStackTrace();
@@ -67,6 +73,10 @@ public class SocketClient extends WebSocketClient {
     @Override
     public void onError(Exception e) {
         for (SocketObserver o : this.observers) o.onError(e);
+    }
+
+    public void onClientIDChange(String clientID) {
+        for (SocketObserver o : this.observers) o.onClientIDChange(clientID);
     }
 
     public static void main(String[] args) {

@@ -11,12 +11,16 @@ import javax.swing.border.TitledBorder;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
+import network.commands.Command;
+import network.commands.CommandParser;
+import network.commands.CreateRoomCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
-import org.json.JSONArray;
+import network.models.SocketMessage;
+import network.server.Server;
+import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 import utils.Mode;
-import utils.PieceColor;
 
 public class OnlineConnectWindow extends JFrame implements SocketObserver {
     SocketClient sc;
@@ -25,6 +29,34 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     JButton connectButton;
     JPanel actionsSection = new JPanel();
     JLabel clientIDLabel = new JLabel();
+
+    Command roomCreatedCommand = new Command("ROOM_CREATED") {
+
+        @Override
+        public SocketMessage execute(JSONObject _data, SocketClient connection) {
+            /// Una vez creada la habitación, pasar a la sala de espera
+            String roomID = _data.getString("roomID");
+
+            /// Cierra ventana actual, y quitar el observador
+            sc.removeObserver(OnlineConnectWindow.this);
+            dispose();
+            new OnlineWaitingWindow(sc, roomID);
+
+            return null;
+        }
+
+        @Override
+        public void execute(JSONObject data, Server server, WebSocket connection)
+            throws Exception {}
+    };
+
+    CommandParser commandParser = new CommandParser() {
+
+        @Override
+        public Command[] getCommands() {
+            return new Command[] { roomCreatedCommand };
+        }
+    };
 
     public OnlineConnectWindow() {
         super("Juego Online");
@@ -122,13 +154,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
                 }
 
                 RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
-
-                sc.send(
-                    new JSONObject()
-                        .put("type", "CREATE_ROOM")
-                        .put("data", roomConfig.toJSON())
-                        .toString()
-                );
+                new CreateRoomCommand().execute(roomConfig.toJSON(), sc);
             }
         );
 
@@ -163,6 +189,11 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     }
 
     @Override
+    public void onClientIDChange(String clientID) {
+        this.clientIDLabel.setText("ID del cliente: " + clientID);
+    }
+
+    @Override
     public void onMessage(JSONObject s) {
         System.out.println("Se ha recibido un mensaje del Socket:");
         System.out.println(s);
@@ -170,17 +201,8 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         String type = s.getString("type");
         JSONObject data = s.getJSONObject("data");
 
-        if (type.equals("SET_CLIENT_ID")) {
-            this.clientIDLabel.setText("ID del cliente: " + data.getString("clientID"));
-        } else if (type.equals("ROOM_CREATED")) {
-            /// Una vez creada la habitación, pasar a la sala de espera
-            String roomID = data.getString("roomID");
-
-            /// Cierra ventana actual, y quitar el observador
-            this.sc.removeObserver(this);
-            this.dispose();
-            new OnlineWaitingWindow(this.sc, roomID);
-        }
+        Command c = commandParser.parse(type);
+        c.execute(data, this.sc);
     }
 
     @Override

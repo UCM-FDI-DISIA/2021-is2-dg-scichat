@@ -80,7 +80,7 @@ public class Server extends WebSocketServer {
             conn.send(
                 new JSONObject()
                     .put("type", "ERROR")
-                    .put("message", e.getMessage())
+                    .put("data", new JSONObject().put("message", e.getMessage()))
                     .toString()
             );
         }

@@ -10,4 +10,6 @@ public interface SocketObserver {
     default void onClose() {}
 
     default void onError(Exception e) {}
+
+    default void onClientIDChange(String clientID) {}
 }

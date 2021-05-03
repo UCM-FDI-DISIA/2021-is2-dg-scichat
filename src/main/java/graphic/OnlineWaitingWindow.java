@@ -162,4 +162,14 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
             command.execute(s.getJSONObject("data"), this.connection);
         } catch (Exception e) {}
     }
+
+    @Override
+    public void onError(Exception e) {
+        JOptionPane.showMessageDialog(
+            this,
+            e.getMessage(),
+            "Error!",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
 }
