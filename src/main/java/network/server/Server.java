@@ -6,10 +6,7 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import network.commands.Command;
-import network.commands.CommandParser;
-import network.commands.CreateRoomCommand;
-import network.commands.JoinRoomCommand;
+import network.commands.*;
 import network.models.ServerRoom;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -25,7 +22,11 @@ public class Server extends WebSocketServer {
 
         @Override
         public Command[] getCommands() {
-            return new Command[] { new CreateRoomCommand(), new JoinRoomCommand() };
+            return new Command[] {
+                new CreateRoomCommand(),
+                new JoinRoomCommand(),
+                new StartGameCommand()
+            };
         }
     };
 

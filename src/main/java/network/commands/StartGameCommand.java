@@ -9,8 +9,12 @@ import org.json.JSONObject;
 public class StartGameCommand extends Command {
     private String roomID;
 
-    public StartGameCommand(String _roomID) {
+    public StartGameCommand() {
         super("START_GAME");
+    }
+
+    public StartGameCommand(String _roomID) {
+        this();
         this.roomID = _roomID;
     }
 

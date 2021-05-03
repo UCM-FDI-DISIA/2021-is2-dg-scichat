@@ -1,9 +1,16 @@
 package graphic;
 
+import control.Controller;
+import exceptions.OccupiedCellException;
+
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.*;
+
 import logic.Board;
+import logic.Game;
+import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
 import network.commands.*;
@@ -40,7 +47,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         @Override
         public Command[] getCommands() {
-            return new Command[] { roomInfoCommand, startGameCommand };
+            return new Command[]{roomInfoCommand, startGameCommand};
         }
     };
 
@@ -55,18 +62,45 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         this.initGUI();
 
         this.startGameCommand =
-            new StartGameCommand(roomID) {
+                new StartGameCommand(roomID) {
 
-                @Override
-                public SocketMessage execute(JSONObject _data, SocketClient connection) {
-                    return super.execute(_data, connection);
-                }
-            };
+                    @Override
+                    public SocketMessage execute(JSONObject _data, SocketClient connection) {
+                        connection.removeObserver(OnlineWaitingWindow.this);
+                        dispose();
+                        new OnlineGameWindow(createController(), connection);
+                        return super.execute(_data, connection);
+                    }
+                };
     }
 
     private void connectToRoom() {
         new JoinRoomCommand(this.roomID, this.connection.getClientID())
-        .send(this.connection);
+                .send(this.connection);
+    }
+
+    /// Crear el controlador con las configuraciones dadas
+    private Controller createController() {
+        Controller ctrl = new Controller();
+        Game game = new Game();
+        game.reset();
+        ctrl.setGame(game);
+
+        game.setGameMode(room.getRoomConfig().getMode());
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        for (Map.Entry<String, PlayerConfig> it : room.getPlayers().entrySet()) {
+            PlayerConfig config = it.getValue();
+            try {
+                players.add(new Player(config.color, config.side, it.getKey()));
+            } catch (OccupiedCellException e) {
+            }
+        }
+
+        game.setPlayers(players);
+
+        return ctrl;
     }
 
     private void initGUI() {
@@ -85,14 +119,20 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         JButton disconnectButton = new JButton("Desconectar");
         disconnectButton.addActionListener(
-            e -> {
-                this.connection.close();
-                this.dispose();
-            }
+                e -> {
+                    this.connection.close();
+                    this.dispose();
+                }
         );
 
         startGameButton = new JButton("Empezar el juego");
         startGameButton.setEnabled(false);
+        startGameButton.addActionListener(
+                e -> {
+                    startGameCommand.send(this.connection);
+                }
+        );
+
         actionsSection.add(startGameButton);
 
         actionsSection.add(disconnectButton);
@@ -122,7 +162,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         JPanel topSection = new JPanel(new GridLayout(3, 1));
         JLabel modeLabel = new JLabel("Modo del juego: " + mode);
         JLabel connectedPlayersLabel = new JLabel(
-            "Jugadores conectados: " + connectedPlayers
+                "Jugadores conectados: " + connectedPlayers
         );
         topSection.add(modeLabel);
         topSection.add(connectedPlayersLabel);
@@ -135,7 +175,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         progressBar.setValue(value);
         progressBar.setStringPainted(true);
         progressBar.setString(
-            String.format("%d / %d jugadores conectados", connectedPlayers, maxPlayers)
+                String.format("%d / %d jugadores conectados", connectedPlayers, maxPlayers)
         );
 
         JPanel centerSection = new JPanel(new GridLayout(connectedPlayers, 1));
@@ -170,16 +210,17 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         try {
             Command command = commandParser.parse(type);
             command.execute(s.getJSONObject("data"), this.connection);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     @Override
     public void onError(Exception e) {
         JOptionPane.showMessageDialog(
-            this,
-            e.getMessage(),
-            "Error!",
-            JOptionPane.ERROR_MESSAGE
+                this,
+                e.getMessage(),
+                "Error!",
+                JOptionPane.ERROR_MESSAGE
         );
     }
 }
