@@ -22,6 +22,8 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final JPanel roomInfoSection = new JPanel();
     private Room room;
 
+    private JButton startGameButton;
+
     Command roomInfoCommand = new RoomInfoCommand("ROOM_INFO") {
 
         @Override
@@ -88,7 +90,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
             }
         );
 
-        JButton startGameButton = new JButton("Empezar el juego");
+        startGameButton = new JButton("Empezar el juego");
         startGameButton.setEnabled(false);
         actionsSection.add(startGameButton);
 
@@ -158,6 +160,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         roomInfoSection.add(topSection, BorderLayout.NORTH);
         roomInfoSection.add(centerSection, BorderLayout.CENTER);
 
+        this.startGameButton.setEnabled(this.room.isFull());
         this.pack();
     }
 
