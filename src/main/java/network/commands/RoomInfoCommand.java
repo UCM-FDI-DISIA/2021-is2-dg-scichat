@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class RoomInfoCommand extends Command {
 
-    public RoomInfoCommand(String _type) {
+    public RoomInfoCommand() {
         super("ROOM_INFO");
     }
 

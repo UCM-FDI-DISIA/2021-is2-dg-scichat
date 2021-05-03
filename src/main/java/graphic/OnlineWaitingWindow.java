@@ -6,15 +6,12 @@ import javax.swing.*;
 import logic.Board;
 import network.client.SocketClient;
 import network.client.SocketObserver;
-import network.commands.Command;
-import network.commands.CommandParser;
-import network.commands.RoomInfoCommand;
+import network.commands.*;
 import network.models.PlayerConfig;
 import network.models.Room;
 import network.models.SocketMessage;
 import org.json.JSONObject;
 import utils.Mode;
-import utils.PieceColor;
 
 public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final SocketClient connection;
@@ -24,7 +21,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
     private JButton startGameButton;
 
-    Command roomInfoCommand = new RoomInfoCommand("ROOM_INFO") {
+    Command roomInfoCommand = new RoomInfoCommand() {
 
         @Override
         public SocketMessage execute(JSONObject data, SocketClient connection) {
@@ -36,11 +33,14 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
             return _room;
         }
     };
+
+    Command startGameCommand;
+
     private CommandParser commandParser = new CommandParser() {
 
         @Override
         public Command[] getCommands() {
-            return new Command[] { roomInfoCommand };
+            return new Command[] { roomInfoCommand, startGameCommand };
         }
     };
 
@@ -53,19 +53,20 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         this.connectToRoom();
         this.initGUI();
+
+        this.startGameCommand =
+            new StartGameCommand(roomID) {
+
+                @Override
+                public SocketMessage execute(JSONObject _data, SocketClient connection) {
+                    return super.execute(_data, connection);
+                }
+            };
     }
 
     private void connectToRoom() {
-        /// Mandar una petición al servidor para entrar en habitación
-        JSONObject req = new JSONObject();
-        req.put("type", "JOIN_ROOM");
-
-        JSONObject data = new JSONObject();
-        data.put("clientID", this.connection.getClientID());
-        data.put("roomID", this.roomID);
-
-        req.put("data", data);
-        connection.send(req.toString());
+        new JoinRoomCommand(this.roomID, this.connection.getClientID())
+        .send(this.connection);
     }
 
     private void initGUI() {

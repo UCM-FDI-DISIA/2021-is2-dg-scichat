@@ -17,8 +17,6 @@ import network.commands.CreateRoomCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import network.models.SocketMessage;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 import utils.Mode;
 
@@ -44,10 +42,6 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
             return null;
         }
-
-        @Override
-        public void execute(JSONObject data, Server server, WebSocket connection)
-            throws Exception {}
     };
 
     CommandParser commandParser = new CommandParser() {
@@ -154,7 +148,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
                 }
 
                 RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
-                new CreateRoomCommand().execute(roomConfig.toJSON(), sc);
+                new CreateRoomCommand(roomConfig).send(sc);
             }
         );
 

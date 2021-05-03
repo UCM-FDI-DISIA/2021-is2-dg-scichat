@@ -9,9 +9,31 @@ import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class JoinRoomCommand extends Command {
+    private String roomID;
+    private String clientID;
 
     public JoinRoomCommand() {
         super("JOIN_ROOM");
+    }
+
+    public JoinRoomCommand(String roomID, String clientID) {
+        this();
+        this.roomID = roomID;
+        this.clientID = clientID;
+    }
+
+    @Override
+    public void send(SocketClient connection) {
+        /// Mandar una petición al servidor para entrar en habitación
+        JSONObject req = new JSONObject();
+        req.put("type", this.type);
+
+        JSONObject data = new JSONObject();
+        data.put("clientID", this.clientID);
+        data.put("roomID", this.roomID);
+
+        req.put("data", data);
+        connection.send(req.toString());
     }
 
     @Override
