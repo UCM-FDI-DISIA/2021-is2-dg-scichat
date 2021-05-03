@@ -2,29 +2,42 @@ package network.server;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import network.commands.Command;
+import network.commands.CommandParser;
+import network.commands.CreateRoomCommand;
+import network.commands.JoinRoomCommand;
+import network.models.ServerRoom;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+import org.json.JSONObject;
+
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import network.server.commands.Command;
-import network.server.commands.CommandParser;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Server extends WebSocketServer {
     private int port;
-    private Map<String, Room> rooms = new HashMap<>();
+    private Map<String, ServerRoom> rooms = new HashMap<>();
     private BiMap<String, WebSocket> clients = HashBiMap.create();
+
+    private CommandParser commandParser = new CommandParser() {
+        @Override
+        public Command[] getCommands() {
+            return new Command[]{
+                    new CreateRoomCommand(),
+                    new JoinRoomCommand()
+            };
+        }
+    };
 
     public Server(int port) {
         super(new InetSocketAddress(port));
         this.port = port;
     }
 
-    public Map<String, Room> getRooms() {
+    public Map<String, ServerRoom> getRooms() {
         return rooms;
     }
 
@@ -37,10 +50,10 @@ public class Server extends WebSocketServer {
 
         /// Enviar este ID al cliente
         connection.send(
-            new JSONObject()
-                .put("type", "SET_CLIENT_ID")
-                .put("data", new JSONObject().put("clientID", clientID))
-                .toString()
+                new JSONObject()
+                        .put("type", "SET_CLIENT_ID")
+                        .put("data", new JSONObject().put("clientID", clientID))
+                        .toString()
         );
     }
 
@@ -50,10 +63,10 @@ public class Server extends WebSocketServer {
         String clientID = this.clients.inverse().get(connection);
         this.clients.remove(clientID);
 
-        for (Map.Entry<String, Room> entry : this.rooms.entrySet()) {
+        for (Map.Entry<String, ServerRoom> entry : this.rooms.entrySet()) {
             /// Buscar la habitación donde estaba ese jugador, y eliminarlo
-            Room room = entry.getValue();
-            room.removePlayer(clientID);
+            ServerRoom serverRoom = entry.getValue();
+            serverRoom.removePlayer(clientID);
         }
 
         System.out.printf("Cliente desconectado. UUID: %s \n", clientID);
@@ -64,26 +77,27 @@ public class Server extends WebSocketServer {
         System.out.println(message);
         try {
             JSONObject body = new JSONObject(message);
-            Command command = CommandParser.parse(body.getString("type"));
-            command.execute(body, this, conn);
+            Command command = commandParser.parse(body.getString("type"));
+            command.execute(body.getJSONObject("data"), this, conn);
         } catch (Exception e) {
             conn.send(
-                new JSONObject()
-                    .put("type", "ERROR")
-                    .put("message", e.getMessage())
-                    .toString()
+                    new JSONObject()
+                            .put("type", "ERROR")
+                            .put("message", e.getMessage())
+                            .toString()
             );
         }
     }
 
     @Override
-    public void onError(WebSocket conn, Exception ex) {}
+    public void onError(WebSocket conn, Exception ex) {
+    }
 
     @Override
     public void onStart() {
         System.out.printf(
-            "Se ha abierto la conexión de WebSocket en el puerto %s \n",
-            this.port
+                "Se ha abierto la conexión de WebSocket en el puerto %s \n",
+                this.port
         );
     }
 

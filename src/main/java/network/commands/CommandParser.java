@@ -1,10 +1,6 @@
-package network.server.commands;
+package network.commands;
 
-public class CommandParser {
-    private static final Command[] availableCommands = {
-        new CreateRoomCommand(),
-        new JoinRoomCommand()
-    };
+public abstract class CommandParser {
 
     public static class ParseException extends RuntimeException {
 
@@ -13,8 +9,10 @@ public class CommandParser {
         }
     }
 
-    public static Command parse(String _type) throws ParseException {
-        for (Command c : availableCommands) {
+    public abstract Command[] getCommands();
+
+    public Command parse(String _type) throws ParseException {
+        for (Command c : this.getCommands()) {
             if (c.parse(_type) != null) return c.parse(_type);
         }
 

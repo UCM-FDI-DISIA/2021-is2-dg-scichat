@@ -1,12 +1,12 @@
-package network.server;
+package network.models;
 
 import logic.Board;
 import org.json.JSONObject;
 import utils.PieceColor;
 
 public class PlayerConfig {
-    private PieceColor color;
-    private Board.Side side;
+    public final PieceColor color;
+    public final Board.Side side;
     private String name;
 
     public PlayerConfig(PieceColor _color, Board.Side _side) {

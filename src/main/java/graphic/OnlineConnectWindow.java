@@ -4,15 +4,19 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
+import network.models.PlayerConfig;
+import network.models.RoomConfig;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Mode;
+import utils.PieceColor;
 
 public class OnlineConnectWindow extends JFrame implements SocketObserver {
     SocketClient sc;
@@ -107,24 +111,19 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
                 Mode gameMode = newGameWindow.getGameMode();
                 ArrayList<Player> players = newGameWindow.getPlayers();
+                LinkedList<PlayerConfig> playerConfigList = new LinkedList<>();
 
-                JSONObject gameConfig = new JSONObject();
-                gameConfig.put("mode", gameMode.ordinal());
-
-                JSONArray playersConfigArray = new JSONArray();
                 for (Player p : players) {
-                    JSONObject playerConfig = new JSONObject();
-                    playerConfig.put("color", p.getColor().ordinal());
-                    playerConfig.put("side", p.getSide().ordinal());
-                    playersConfigArray.put(playerConfig);
+                    PlayerConfig playerConfig = new PlayerConfig(p.getColor(), p.getSide());
+                    playerConfigList.add(playerConfig);
                 }
 
-                gameConfig.put("players", playersConfigArray);
+                RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
 
                 sc.send(
                     new JSONObject()
                         .put("type", "CREATE_ROOM")
-                        .put("data", gameConfig)
+                        .put("data", roomConfig.toJSON())
                         .toString()
                 );
             }
@@ -145,7 +144,6 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         container.add(clientIDLabel, BorderLayout.SOUTH);
 
-        this.setMinimumSize(new Dimension(400, 400));
         this.pack();
     }
 
@@ -157,6 +155,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     public void onOpen() {
         System.out.println("Se ha abierto una conexión Socket");
         actionsSection.setVisible(true);
+        this.pack();
         connectButton.setText("Desconectar");
     }
 

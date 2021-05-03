@@ -1,16 +1,18 @@
 package graphic;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.Map;
 import javax.swing.*;
+
 import logic.Board;
-import logic.gameObjects.Piece;
 import network.client.SocketClient;
 import network.client.SocketObserver;
-import network.client.commands.Command;
-import network.client.commands.CommandParser;
-import org.json.JSONArray;
+import network.commands.Command;
+import network.commands.CommandParser;
+import network.commands.RoomInfoCommand;
+import network.models.PlayerConfig;
+import network.models.Room;
+import network.models.SocketMessage;
 import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
@@ -19,7 +21,27 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final SocketClient connection;
     private final String roomID;
     private final JPanel roomInfoSection = new JPanel();
-    private JSONObject roomInfo;
+    private Room room;
+
+    Command roomInfoCommand = new RoomInfoCommand("ROOM_INFO") {
+        @Override
+        public SocketMessage execute(JSONObject data, SocketClient connection) {
+            Room _room = (Room) super.execute(data, connection);
+            room = _room;
+
+            renderRoomInfo();
+
+            return _room;
+        }
+    };
+    private CommandParser commandParser = new CommandParser() {
+        @Override
+        public Command[] getCommands() {
+            return new Command[]{
+                    roomInfoCommand
+            };
+        }
+    };
 
     OnlineWaitingWindow(SocketClient _connection, String _roomID) {
         super("Habitación #" + _roomID);
@@ -67,10 +89,10 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         JButton disconnectButton = new JButton("Desconectar");
         disconnectButton.addActionListener(
-            e -> {
-                this.connection.close();
-                this.dispose();
-            }
+                e -> {
+                    this.connection.close();
+                    this.dispose();
+                }
         );
 
         JButton startGameButton = new JButton("Empezar el juego");
@@ -88,38 +110,37 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     }
 
     private void renderRoomInfo() {
-        if (this.roomInfo == null) return;
+        if (this.room == null) return;
 
         this.roomInfoSection.removeAll();
         this.roomInfoSection.setLayout(new BorderLayout(10, 10));
         this.roomInfoSection.setBackground(Color.WHITE);
 
-        int _modeIndex = this.roomInfo.getInt("mode");
-        int connectedPlayers = this.roomInfo.getInt("connectedPlayers");
-        JSONObject players = this.roomInfo.getJSONObject("players");
+        int connectedPlayers = this.room.getConnectedPlayers();
+        Map<String, PlayerConfig> players = this.room.getPlayers();
 
-        Mode mode = Mode.values()[_modeIndex];
+        Mode mode = this.room.getRoomConfig().getMode();
 
         JPanel topSection = new JPanel(new GridLayout(2, 1));
         JLabel modeLabel = new JLabel("Modo del juego: " + mode);
         JLabel connectedPlayersLabel = new JLabel(
-            "Jugadores conectados: " + connectedPlayers
+                "Jugadores conectados: " + connectedPlayers
         );
         topSection.add(modeLabel);
         topSection.add(connectedPlayersLabel);
 
         JPanel centerSection = new JPanel(new GridLayout(connectedPlayers, 1));
 
-        for (Iterator<String> it = players.keys(); it.hasNext();) {
-            String clientID = it.next();
+        for (Map.Entry<String, PlayerConfig> it : players.entrySet()) {
+            String clientID = it.getKey();
+            PlayerConfig playerConfig = it.getValue();
 
             JPanel playerSection = new JPanel(new FlowLayout());
 
-            JSONObject playerInfo = players.getJSONObject(clientID);
             JLabel clientIDLabel = new JLabel("ID: " + clientID);
 
-            PieceColor color = PieceColor.values()[playerInfo.getInt("color")];
-            Board.Side side = Board.Side.values()[playerInfo.getInt("side")];
+            PieceColor color = playerConfig.color;
+            Board.Side side = playerConfig.side;
 
             playerSection.add(clientIDLabel);
             playerSection.add(new JLabel(color.toString()));
@@ -134,31 +155,13 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         this.pack();
     }
 
-    Command RoomInfoCommand = new Command("ROOM_INFO") {
-
-        @Override
-        public void execute(JSONObject body, SocketClient connection) {
-            /// Si recibe una información de la habitación, actualizar el GUI
-            JSONObject data = body.getJSONObject("data");
-            roomInfo = data;
-            renderRoomInfo();
-        }
-    };
-
     @Override
     public void onMessage(JSONObject s) {
-        CommandParser commandParser = new CommandParser() {
-
-            @Override
-            public Command[] getCommands() {
-                return new Command[] { RoomInfoCommand };
-            }
-        };
-
         String type = s.getString("type");
         try {
             Command command = commandParser.parse(type);
-            command.execute(s, this.connection);
-        } catch (Exception e) {}
+            command.execute(s.getJSONObject("data"), this.connection);
+        } catch (Exception e) {
+        }
     }
 }
