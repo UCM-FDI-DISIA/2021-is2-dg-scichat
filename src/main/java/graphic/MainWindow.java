@@ -51,15 +51,13 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initGame() {
-        //TODO crear pantalla gameScreen
-        if (gameScreen == null) {
-            gameScreen = new JPanel(new BorderLayout());
-            gameScreen.add(new BoardPanel(ctrl), BorderLayout.LINE_START);
-            gameScreen.add(new OptionsPanel(ctrl), BorderLayout.LINE_END);
-            ctrl.addObserver(this);
-        } else {
+        if (gameScreen != null) {
             ctrl.softReset();
         }
+        gameScreen = new JPanel(new BorderLayout());
+        gameScreen.add(new BoardPanel(ctrl), BorderLayout.LINE_START);
+        gameScreen.add(new OptionsPanel(ctrl), BorderLayout.LINE_END);
+        ctrl.addObserver(this);
         this.setContentPane(gameScreen);
         this.pack();
         this.setSize(width, height);
@@ -67,7 +65,6 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initWinner(Player winner) {
-        //TODO crear pantalla winnerScreen
         winnerScreen = new FinishedWindow(this, winner, ctrl);
         this.setContentPane(winnerScreen);
         this.pack();
@@ -95,7 +92,6 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
-        //TODO
         initWinner(game.getWinner());
     }
 }
