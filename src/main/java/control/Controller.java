@@ -3,6 +3,7 @@ package control;
 import control.options.Option;
 import control.options.Option.ExecuteException;
 import control.options.OptionGenerator;
+import exceptions.InvalidMoveException;
 import graphic.GameObserver;
 import java.io.File;
 import java.util.Scanner;
@@ -128,5 +129,12 @@ public class Controller {
             opt,
             null
         );
+    }
+
+    public void movePiece(int x1, int y1, int x2, int y2) throws InvalidMoveException {
+        Cell from = this.game.getCell(x1, y1);
+        Cell to = this.game.getCell(x2, y2);
+
+        from.getPiece().move(to, this.game.getGameMode());
     }
 }
