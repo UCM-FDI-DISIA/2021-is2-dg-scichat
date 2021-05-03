@@ -285,6 +285,12 @@ public class Game implements Serializable {
         }
     }
 
+    public void sendOnOnlineMovedPiece(Cell from, Cell to) {
+        for (GameObserver i : observers) {
+            i.onOnlineMovedPiece(from, to);
+        }
+    }
+
     public void reset() {
         board = new Board();
         stopped = false;

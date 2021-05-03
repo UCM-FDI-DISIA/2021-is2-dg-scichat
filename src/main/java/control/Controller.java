@@ -131,10 +131,12 @@ public class Controller {
         );
     }
 
-    public void movePiece(int x1, int y1, int x2, int y2) throws InvalidMoveException {
+    public void onlineMovePiece(int x1, int y1, int x2, int y2)
+        throws InvalidMoveException {
         Cell from = this.game.getCell(x1, y1);
         Cell to = this.game.getCell(x2, y2);
 
         from.getPiece().move(to, this.game.getGameMode());
+        this.game.sendOnOnlineMovedPiece(from, to);
     }
 }

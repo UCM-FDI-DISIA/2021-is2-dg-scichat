@@ -139,6 +139,11 @@ public class BoardPanel extends JPanel implements GameObserver {
     }
 
     @Override
+    public void onOnlineMovedPiece(Cell from, Cell to) {
+        this.onMovedPiece(from, to);
+    }
+
+    @Override
     public void onEndTurn(Game game) {
         // Clear all selected
         for (Map.Entry<Cell, CellLabel> pair : this.cellLabels.entrySet()) {

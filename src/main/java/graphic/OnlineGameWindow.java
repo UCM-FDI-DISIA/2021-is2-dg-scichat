@@ -33,7 +33,7 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
             int y2 = toArray.getInt(1);
 
             try {
-                ctrl.movePiece(x1, y1, x2, y2);
+                ctrl.onlineMovePiece(x1, y1, x2, y2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
