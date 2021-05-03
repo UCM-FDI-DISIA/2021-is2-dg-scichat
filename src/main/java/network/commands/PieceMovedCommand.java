@@ -10,18 +10,16 @@ import org.json.JSONObject;
 public class PieceMovedCommand extends Command {
     private Cell from;
     private Cell to;
-    private String clientID;
     private String roomID;
 
     public PieceMovedCommand() {
         super("PIECE_MOVED");
     }
 
-    public PieceMovedCommand(Cell from, Cell piece, String clientID, String roomID) {
+    public PieceMovedCommand(Cell from, Cell piece, String roomID) {
         this();
         this.from = from;
         this.to = piece;
-        this.clientID = clientID;
         this.roomID = roomID;
     }
 
@@ -38,7 +36,7 @@ public class PieceMovedCommand extends Command {
         data.append("to", this.to.getRow());
         data.append("to", this.to.getCol());
 
-        data.put("clientID", this.clientID);
+        data.put("clientID", connection.getClientID());
         data.put("roomID", this.roomID);
 
         req.put("data", data);

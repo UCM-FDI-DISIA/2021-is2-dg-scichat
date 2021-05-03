@@ -87,7 +87,6 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
 
     @Override
     public void onMovedPiece(Cell from, Cell piece) {
-        new PieceMovedCommand(from, piece, this.roomID, this.sc.getClientID())
-        .send(this.sc);
+        new PieceMovedCommand(from, piece, this.roomID).send(this.sc);
     }
 }
