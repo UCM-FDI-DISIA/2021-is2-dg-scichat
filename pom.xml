@@ -30,6 +30,11 @@
             <version>0.8.6</version>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.1.1-jre</version>
+        </dependency>
+        <dependency>
             <groupId>com.hubspot.maven.plugins</groupId>
             <artifactId>prettier-maven-plugin</artifactId>
             <version>0.13</version>
@@ -43,6 +48,11 @@
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
     </dependencies>
 
