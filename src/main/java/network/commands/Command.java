@@ -17,7 +17,8 @@ public abstract class Command {
     public abstract SocketMessage execute(JSONObject _data, SocketClient connection);
 
     /// Ejecutar para servidor
-    public abstract void execute(JSONObject data, Server server, WebSocket connection) throws Exception;
+    public abstract void execute(JSONObject data, Server server, WebSocket connection)
+        throws Exception;
 
     public Command parse(String _type) {
         if (this.type.equals(_type)) return this;

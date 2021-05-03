@@ -16,10 +16,9 @@ public class CreateRoomCommand extends Command {
 
     @Override
     public SocketMessage execute(JSONObject _data, SocketClient connection) {
-        connection.send(new JSONObject()
-                .put("type", this.type)
-                .put("data", _data)
-                .toString());
+        connection.send(
+            new JSONObject().put("type", this.type).put("data", _data).toString()
+        );
 
         return null;
     }
@@ -36,7 +35,7 @@ public class CreateRoomCommand extends Command {
         data.put("roomID", roomID);
 
         connection.send(
-                new JSONObject().put("type", "ROOM_CREATED").put("data", data).toString()
+            new JSONObject().put("type", "ROOM_CREATED").put("data", data).toString()
         );
 
         System.out.println("Se ha creado una nueva habitación: ");

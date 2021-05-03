@@ -114,7 +114,10 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
                 LinkedList<PlayerConfig> playerConfigList = new LinkedList<>();
 
                 for (Player p : players) {
-                    PlayerConfig playerConfig = new PlayerConfig(p.getColor(), p.getSide());
+                    PlayerConfig playerConfig = new PlayerConfig(
+                        p.getColor(),
+                        p.getSide()
+                    );
                     playerConfigList.add(playerConfig);
                 }
 

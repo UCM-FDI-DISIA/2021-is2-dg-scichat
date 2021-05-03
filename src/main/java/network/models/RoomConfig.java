@@ -1,11 +1,10 @@
 package network.models;
 
+import java.util.LinkedList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Mode;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class RoomConfig implements SocketMessage {
     protected Mode mode;

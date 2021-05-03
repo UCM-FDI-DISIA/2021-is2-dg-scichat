@@ -1,13 +1,11 @@
 package network.models;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ServerRoom extends network.models.Room {
-
     private Map<String, WebSocket> playerConnections = new HashMap<>();
 
     public ServerRoom(RoomConfig config) {

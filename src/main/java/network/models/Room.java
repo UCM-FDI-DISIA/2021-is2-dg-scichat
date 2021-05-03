@@ -1,11 +1,10 @@
 package network.models;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Room implements SocketMessage {
     protected RoomConfig roomConfig;
@@ -26,7 +25,10 @@ public class Room implements SocketMessage {
         JSONArray playerIDs = data.getJSONObject("players").names();
         for (Object _ID : playerIDs) {
             String ID = (String) _ID;
-            this.players.put(ID, new PlayerConfig(data.getJSONObject("players").getJSONObject(ID)));
+            this.players.put(
+                    ID,
+                    new PlayerConfig(data.getJSONObject("players").getJSONObject(ID))
+                );
         }
     }
 

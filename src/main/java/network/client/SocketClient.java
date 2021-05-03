@@ -1,14 +1,13 @@
 package network.client;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SocketClient extends WebSocketClient {
     private boolean connected = false;
@@ -77,8 +76,8 @@ public class SocketClient extends WebSocketClient {
 
             /// Cierra la conexión al salir del programa
             Runtime
-                    .getRuntime()
-                    .addShutdownHook(new Thread(() -> ws.close(), "Shutdown-thread"));
+                .getRuntime()
+                .addShutdownHook(new Thread(() -> ws.close(), "Shutdown-thread"));
         } catch (Exception e) {
             e.printStackTrace();
         }

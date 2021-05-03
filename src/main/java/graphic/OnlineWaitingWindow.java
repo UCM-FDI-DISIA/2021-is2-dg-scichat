@@ -3,7 +3,6 @@ package graphic;
 import java.awt.*;
 import java.util.Map;
 import javax.swing.*;
-
 import logic.Board;
 import network.client.SocketClient;
 import network.client.SocketObserver;
@@ -24,6 +23,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private Room room;
 
     Command roomInfoCommand = new RoomInfoCommand("ROOM_INFO") {
+
         @Override
         public SocketMessage execute(JSONObject data, SocketClient connection) {
             Room _room = (Room) super.execute(data, connection);
@@ -35,11 +35,10 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         }
     };
     private CommandParser commandParser = new CommandParser() {
+
         @Override
         public Command[] getCommands() {
-            return new Command[]{
-                    roomInfoCommand
-            };
+            return new Command[] { roomInfoCommand };
         }
     };
 
@@ -89,10 +88,10 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         JButton disconnectButton = new JButton("Desconectar");
         disconnectButton.addActionListener(
-                e -> {
-                    this.connection.close();
-                    this.dispose();
-                }
+            e -> {
+                this.connection.close();
+                this.dispose();
+            }
         );
 
         JButton startGameButton = new JButton("Empezar el juego");
@@ -124,7 +123,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         JPanel topSection = new JPanel(new GridLayout(2, 1));
         JLabel modeLabel = new JLabel("Modo del juego: " + mode);
         JLabel connectedPlayersLabel = new JLabel(
-                "Jugadores conectados: " + connectedPlayers
+            "Jugadores conectados: " + connectedPlayers
         );
         topSection.add(modeLabel);
         topSection.add(connectedPlayersLabel);
@@ -161,7 +160,6 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         try {
             Command command = commandParser.parse(type);
             command.execute(s.getJSONObject("data"), this.connection);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 }

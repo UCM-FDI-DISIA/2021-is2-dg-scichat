@@ -20,7 +20,8 @@ public class RoomInfoCommand extends Command {
     }
 
     @Override
-    public void execute(JSONObject data, Server server, WebSocket connection) throws Exception {
+    public void execute(JSONObject data, Server server, WebSocket connection)
+        throws Exception {
         /// El servidor de momento no recibe esta petition
     }
 }

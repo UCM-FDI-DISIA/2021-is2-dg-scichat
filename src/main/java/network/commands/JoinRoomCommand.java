@@ -24,7 +24,7 @@ public class JoinRoomCommand extends Command {
 
     @Override
     public void execute(JSONObject data, Server server, WebSocket connection)
-            throws Exception {
+        throws Exception {
         String roomID = data.getString("roomID");
         String clientID = data.getString("clientID");
 
