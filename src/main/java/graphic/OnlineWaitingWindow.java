@@ -67,24 +67,18 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     }
 
     private void initGUI() {
-        JPanel mainContent = new JPanel();
-        this.setContentPane(mainContent);
-
-        mainContent.setBackground(Color.WHITE);
-        mainContent.setLayout(new GridBagLayout());
-
         JPanel container = new JPanel(new BorderLayout(10, 20));
-        mainContent.add(container);
+        this.setContentPane(container);
+        container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel topSection = new JPanel();
         topSection.setLayout(new BoxLayout(topSection, BoxLayout.X_AXIS));
-        topSection.setBackground(Color.WHITE);
 
         JLabel roomIDLabel = new JLabel("Room ID: " + this.roomID);
         topSection.add(roomIDLabel);
 
         JPanel actionsSection = new JPanel();
-        actionsSection.setLayout(new BoxLayout(actionsSection, BoxLayout.X_AXIS));
+        actionsSection.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         JButton disconnectButton = new JButton("Desconectar");
         disconnectButton.addActionListener(
@@ -106,6 +100,8 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         this.pack();
         this.setVisible(true);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
 
     private void renderRoomInfo() {
@@ -113,20 +109,31 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         this.roomInfoSection.removeAll();
         this.roomInfoSection.setLayout(new BorderLayout(10, 10));
-        this.roomInfoSection.setBackground(Color.WHITE);
 
         int connectedPlayers = this.room.getConnectedPlayers();
+        int maxPlayers = this.room.getRoomConfig().getNumPlayers();
         Map<String, PlayerConfig> players = this.room.getPlayers();
 
         Mode mode = this.room.getRoomConfig().getMode();
 
-        JPanel topSection = new JPanel(new GridLayout(2, 1));
+        JPanel topSection = new JPanel(new GridLayout(3, 1));
         JLabel modeLabel = new JLabel("Modo del juego: " + mode);
         JLabel connectedPlayersLabel = new JLabel(
             "Jugadores conectados: " + connectedPlayers
         );
         topSection.add(modeLabel);
         topSection.add(connectedPlayersLabel);
+
+        JProgressBar progressBar = new JProgressBar();
+        topSection.add(progressBar);
+
+        progressBar.setVisible(true);
+        int value = connectedPlayers * 100 / maxPlayers;
+        progressBar.setValue(value);
+        progressBar.setStringPainted(true);
+        progressBar.setString(
+            String.format("%d / %d jugadores conectados", connectedPlayers, maxPlayers)
+        );
 
         JPanel centerSection = new JPanel(new GridLayout(connectedPlayers, 1));
 

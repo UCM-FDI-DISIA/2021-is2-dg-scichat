@@ -173,6 +173,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         container.add(clientIDLabel, BorderLayout.SOUTH);
 
+        this.setLocationRelativeTo(null);
         this.pack();
     }
 
