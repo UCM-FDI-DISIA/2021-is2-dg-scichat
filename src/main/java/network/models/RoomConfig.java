@@ -58,6 +58,7 @@ public class RoomConfig implements SocketMessage {
         JSONObject data = new JSONObject();
         data.put("mode", this.mode.ordinal());
         data.put("numPlayers", this.numPlayers);
+        data.put("playerConfigs", new JSONArray());
 
         for (PlayerConfig p : this.playerConfigs) {
             data.append("playerConfigs", p.toJSONObject());
