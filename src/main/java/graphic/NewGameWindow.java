@@ -262,7 +262,13 @@ public class NewGameWindow extends JDialog {
             int botStrategy = this.botStrategy.get(i);
 
             try {
-                players.add(new Player(color, this.availableSides.poll(), i + 1));
+                players.add(
+                    new Player(
+                        color,
+                        this.availableSides.poll(),
+                        new Integer(i + 1).toString()
+                    )
+                );
             } catch (OccupiedCellException e) {
                 /// Esto nunca va a pasar
                 e.printStackTrace();

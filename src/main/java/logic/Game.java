@@ -150,7 +150,9 @@ public class Game implements Serializable {
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
-        this.players.add(new Player(color, side, players.size() + 1));
+        this.players.add(
+                new Player(color, side, new Integer(players.size() + 1).toString())
+            );
     }
 
     /*Metodos de control de tiempo de juego*/

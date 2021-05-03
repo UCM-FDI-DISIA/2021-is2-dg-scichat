@@ -24,7 +24,7 @@ public class Player implements Serializable {
     private Side playerSide; // Lado del jugador
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
-    private int id; //Jugador numero id
+    private String id; // Jugador numero id
     private long time; //Tiempo que lleva jugando
     private boolean playing = false;
 
@@ -34,10 +34,10 @@ public class Player implements Serializable {
 
     //Constructor para debug exclusivamente
     public Player() throws OccupiedCellException {
-        this(PieceColor.BLUE, Side.Down, 0);
+        this(PieceColor.BLUE, Side.Down, "0");
     }
 
-    public Player(PieceColor color, Side start, int id) throws OccupiedCellException {
+    public Player(PieceColor color, Side start, String id) throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
@@ -49,7 +49,7 @@ public class Player implements Serializable {
     public Player(
         PieceColor color,
         Side playerSide,
-        int id,
+        String id,
         long time,
         boolean playing,
         HashSet<Piece> pieces,
@@ -70,7 +70,7 @@ public class Player implements Serializable {
         this.color = PieceColor.getPieceColor(jPlayer.getInt("color")); //Crear metodo de color
         this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
         this.surrender = jPlayer.getBoolean("surrender");
-        this.id = jPlayer.getInt("id");
+        this.id = jPlayer.getString("id");
         this.time = jPlayer.getLong("time");
         this.playing = jPlayer.getBoolean("playing");
         this.timeAtTurnStart = jPlayer.getLong("timeATurnStart");
@@ -92,8 +92,6 @@ public class Player implements Serializable {
     /**
      * Genera las fichas de Player, solo se llama una vez al principio de la partida
      *
-     * @param playMode Reglas de movimiento de las fichas
-     *
      * @throws OccupiedCellException si la zona en la que empieza esta ocupada
      */
     private void createPieces() throws OccupiedCellException {
@@ -113,7 +111,7 @@ public class Player implements Serializable {
         return playerSide;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
