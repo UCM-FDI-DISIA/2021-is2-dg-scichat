@@ -143,15 +143,14 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
             String clientID = it.getKey();
             PlayerConfig playerConfig = it.getValue();
 
-            JPanel playerSection = new JPanel(new FlowLayout());
+            JPanel playerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+            playerSection.add(new Circle(20, playerConfig.color.getColor()));
 
             JLabel clientIDLabel = new JLabel("ID: " + clientID);
-
-            PieceColor color = playerConfig.color;
             Board.Side side = playerConfig.side;
 
             playerSection.add(clientIDLabel);
-            playerSection.add(new JLabel(color.toString()));
             playerSection.add(new JLabel(side.toString()));
 
             centerSection.add(playerSection);
