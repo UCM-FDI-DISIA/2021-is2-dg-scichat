@@ -4,7 +4,10 @@ import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+
 import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
@@ -136,6 +139,21 @@ public class Player implements Serializable {
         if (piece == null || !pieces.contains(piece)) return false;
         this.selectedPiece = piece;
         return true;
+    }
+    
+    public void softReset() {
+	this.playing = false;
+	this.selectedPiece = null;
+	this.surrender = false;
+	
+	HashSet<Cell> playerInitCells = this.playerSide.getSideCells();
+	Iterator<Cell> iteratorCell = playerInitCells.iterator();
+	
+	System.out.println();
+	for(Piece piece : this.pieces) {
+		Cell n = iteratorCell.next();
+		piece.setCell(n);
+	}
     }
 
     /**

@@ -6,6 +6,7 @@ import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -36,6 +37,10 @@ public class Piece implements Serializable {
 
     /* Getters */
 
+    
+    public void setCell(Cell cell) {
+	this.position = cell;
+    }
     public PieceColor getColor() {
         return color;
     }
@@ -188,5 +193,9 @@ public class Piece implements Serializable {
             System.out.println(ioe.getMessage());
             throw new InvalidMoveException("The move is not possible.", ioe);
         }
+    }
+    
+    public String toString() {
+	return this.position.toString();
     }
 }
