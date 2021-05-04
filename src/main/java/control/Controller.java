@@ -135,6 +135,8 @@ public class Controller {
         Cell from = this.game.getCell(x1, y1);
         Cell to = this.game.getCell(x2, y2);
 
+        if (from.getPiece() == null) return;
+
         this.setCurrentPlayer(playerID);
         this.game.getCurrentPlayer().selectPiece(from.getPiece());
         this.game.movePiece(to);
@@ -143,7 +145,7 @@ public class Controller {
 
     public void setCurrentPlayer(String playerID) {
         while (!this.game.getCurrentPlayer().getId().equals(playerID)) {
-            this.game.endTurn();
+            this.game.advance();
         }
     }
 }
