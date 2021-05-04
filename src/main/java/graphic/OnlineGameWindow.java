@@ -5,11 +5,13 @@ import java.awt.*;
 import java.util.HashSet;
 import javax.swing.*;
 import logic.Cell;
+import logic.Game;
 import network.client.SocketClient;
 import network.client.SocketObserver;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.PieceMovedCommand;
+import network.commands.SurrenderCommand;
 import network.models.Room;
 import org.json.JSONObject;
 
@@ -33,11 +35,20 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
         }
     };
 
+    private Command surrenderCommand = new SurrenderCommand() {
+
+        @Override
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
+            ctrl.surrender(getPlayerID());
+        }
+    };
+
     private CommandParser commandParser = new CommandParser() {
 
         @Override
         public Command[] getCommands() {
-            return new Command[] { pieceMovedCommand };
+            return new Command[] { pieceMovedCommand, surrenderCommand };
         }
     };
 
@@ -98,5 +109,24 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
             )
             .send(this.sc);
         }
+    }
+
+    @Override
+    public void onSurrendered(Game game) {
+        String playerID = game.getCurrentPlayer().getId();
+        if (this.localPlayers.contains(playerID)) {
+            new SurrenderCommand(playerID, roomID).send(this.sc);
+        }
+    }
+
+    @Override
+    public void onGameEnded(Game game) {
+        System.out.println("Ha ganado el jugador " + game.getWinner().getId());
+        JOptionPane.showMessageDialog(
+            this,
+            "Ha ganado el jugador " + game.getWinner().getId(),
+            "Fin",
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }

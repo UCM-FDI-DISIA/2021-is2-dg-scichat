@@ -148,4 +148,10 @@ public class Controller {
             this.game.advance();
         }
     }
+
+    public void surrender(String playerID) {
+        setCurrentPlayer(playerID);
+        if (game.getCurrentPlayer().hasSurrender()) return;
+        this.surrender();
+    }
 }

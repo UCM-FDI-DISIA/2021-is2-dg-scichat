@@ -1,7 +1,6 @@
 package graphic;
 
 import control.Controller;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

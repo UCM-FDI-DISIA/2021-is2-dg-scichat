@@ -26,7 +26,8 @@ public class Server extends WebSocketServer {
                 new CreateRoomCommand(),
                 new JoinRoomCommand(),
                 new StartGameCommand(),
-                new PieceMovedCommand()
+                new PieceMovedCommand(),
+                new SurrenderCommand()
             };
         }
     };
