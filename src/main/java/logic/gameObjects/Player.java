@@ -30,6 +30,8 @@ public class Player implements Serializable {
 
     private long timeAtTurnStart;
 
+    private String name;
+
     /*Constructores*/
 
     //Constructor para debug exclusivamente
@@ -113,6 +115,11 @@ public class Player implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        if (name == null) return id;
+        return name;
     }
 
     public HashSet<Piece> getPieces() {
