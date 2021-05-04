@@ -27,6 +27,8 @@ public class NewGameWindow extends JDialog {
     private JPanel container;
     private JComboBox<Mode> modeJComboBox;
 
+    private int status;
+
     NewGameWindow(Frame parent) {
         super(parent, "Nuevo Juego", true);
         this.numPlayers = 2;
@@ -62,7 +64,12 @@ public class NewGameWindow extends JDialog {
         mainPanel.add(container);
 
         JButton startButton = new JButton("Start");
-        startButton.addActionListener(e -> setVisible(false));
+        startButton.addActionListener(
+            e -> {
+                this.status = 1;
+                setVisible(false);
+            }
+        );
         container.add(startButton, BorderLayout.SOUTH);
     }
 
@@ -282,9 +289,12 @@ public class NewGameWindow extends JDialog {
         return (Mode) modeJComboBox.getSelectedItem();
     }
 
-    public void open() {
+    public int open() {
+        this.status = 0;
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
         setVisible(true);
+
+        return status;
     }
 }

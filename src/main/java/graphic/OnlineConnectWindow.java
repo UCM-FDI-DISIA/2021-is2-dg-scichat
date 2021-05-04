@@ -59,7 +59,11 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     }
 
     private void initGUI() {
-        this.getContentPane().setLayout(new GridBagLayout());
+        JPanel mainContent = new JPanel();
+        mainContent.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainContent.setLayout(new GridBagLayout());
+        this.setContentPane(mainContent);
+
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout(0, 10));
 
@@ -121,7 +125,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         container.add(serverSection, BorderLayout.NORTH);
 
         actionsSection.setVisible(false);
-        actionsSection.setLayout(new BoxLayout(actionsSection, BoxLayout.X_AXIS));
+        actionsSection.setLayout(new GridLayout(1, 2));
         container.add(actionsSection, BorderLayout.CENTER);
 
         this.newOnlineRoomButton = new JButton("Nueva habitación");
@@ -133,7 +137,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         newOnlineRoomButton.addActionListener(
             e -> {
                 NewGameWindow newGameWindow = new NewGameWindow(this);
-                newGameWindow.open();
+                if (newGameWindow.open() == 0) return;
 
                 Mode gameMode = newGameWindow.getGameMode();
                 ArrayList<Player> players = newGameWindow.getPlayers();
@@ -179,8 +183,8 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     public void onOpen() {
         System.out.println("Se ha abierto una conexión Socket");
         actionsSection.setVisible(true);
-        this.pack();
         connectButton.setText("Desconectar");
+        this.pack();
     }
 
     @Override
