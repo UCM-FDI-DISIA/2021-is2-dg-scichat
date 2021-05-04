@@ -22,6 +22,9 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     private final String roomID;
     private final HashSet<String> localPlayers = new HashSet<>();
 
+    private BoardPanel boardPanel;
+    private OptionsPanel optionsPanel;
+
     private Command pieceMovedCommand = new PieceMovedCommand() {
 
         @Override
@@ -55,21 +58,18 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room) {
         super(_sc.getClientID());
         this.sc = _sc;
-        this.sc.addObserver(this);
         this.ctrl = _ctrl;
-        this.ctrl.addObserver(this);
-
         this.roomID = _roomID;
         this.room = _room;
-
-        this.initGUI();
     }
 
     protected void initGUI() {
         try {
             JPanel gameScreen = new JPanel(new BorderLayout());
-            gameScreen.add(new BoardPanel(ctrl), BorderLayout.LINE_START);
-            gameScreen.add(new OptionsPanel(ctrl), BorderLayout.LINE_END);
+            boardPanel = new BoardPanel(ctrl);
+            optionsPanel = new OptionsPanel(ctrl);
+            gameScreen.add(boardPanel, BorderLayout.LINE_START);
+            gameScreen.add(optionsPanel, BorderLayout.LINE_END);
             this.setContentPane(gameScreen);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,6 +79,9 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     }
 
     public void display() {
+        this.initGUI();
+        this.sc.addObserver(this);
+        this.ctrl.addObserver(this);
         this.setVisible(true);
     }
 
@@ -128,5 +131,31 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
             "Fin",
             JOptionPane.INFORMATION_MESSAGE
         );
+    }
+
+    public boolean canMove(String playerID) {
+        return this.localPlayers.contains(playerID);
+    }
+
+    @Override
+    public void onRegister(Game game) {
+        String playerID = game.getCurrentPlayer().getId();
+        setBlocker(playerID);
+    }
+
+    @Override
+    public void onEndTurn(Game game) {
+        String playerID = game.getCurrentPlayer().getId();
+        setBlocker(playerID);
+    }
+
+    private void setBlocker(String playerID) {
+        if (this.canMove(playerID)) {
+            this.setEnabled(true);
+            setTitle("Tu turno");
+        } else {
+            this.setEnabled(false);
+            setTitle("Esperando al otro jugador...");
+        }
     }
 }
