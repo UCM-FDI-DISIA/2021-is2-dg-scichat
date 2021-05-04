@@ -1,5 +1,13 @@
 package graphic;
 
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
@@ -10,15 +18,6 @@ import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import org.json.JSONObject;
 import utils.Mode;
-
-import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class OnlineConnectWindow extends JFrame implements SocketObserver {
     SocketClient sc;
@@ -49,7 +48,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         @Override
         public Command[] getCommands() {
-            return new Command[]{roomCreatedCommand};
+            return new Command[] { roomCreatedCommand };
         }
     };
 
@@ -66,10 +65,10 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         TitledBorder titleBorder = new TitledBorder("Juego Online");
         container.setBorder(
-                new CompoundBorder(
-                        titleBorder,
-                        BorderFactory.createEmptyBorder(10, 10, 10, 10)
-                )
+            new CompoundBorder(
+                titleBorder,
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+            )
         );
 
         this.getContentPane().add(container);
@@ -79,7 +78,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
         JPanel serverSection = new JPanel();
         serverSection.setFont(
-                new Font(serverSection.getFont().getName(), Font.PLAIN, 20)
+            new Font(serverSection.getFont().getName(), Font.PLAIN, 20)
         );
         serverSection.setLayout(new BoxLayout(serverSection, BoxLayout.X_AXIS));
 
@@ -91,32 +90,32 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         serverSection.add(connectButton);
 
         connectButton.addActionListener(
-                e -> {
-                    if (sc != null && sc.isConnected()) {
-                        sc.close();
-                        return;
-                    }
-
-                    String value = serverURLField.getText();
-                    if (value.isEmpty()) return;
-
-                    try {
-                        URI serverURL = new URI(value);
-
-                        /// Intentar conectar
-                        this.sc = new SocketClient(serverURL);
-                        this.sc.addObserver(this);
-                        this.sc.connect();
-                    } catch (URISyntaxException uriSyntaxException) {
-                        uriSyntaxException.printStackTrace();
-                        JOptionPane.showMessageDialog(
-                                this,
-                                value + " no es una dirección correcta",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                    }
+            e -> {
+                if (sc != null && sc.isConnected()) {
+                    sc.close();
+                    return;
                 }
+
+                String value = serverURLField.getText();
+                if (value.isEmpty()) return;
+
+                try {
+                    URI serverURL = new URI(value);
+
+                    /// Intentar conectar
+                    this.sc = new SocketClient(serverURL);
+                    this.sc.addObserver(this);
+                    this.sc.connect();
+                } catch (URISyntaxException uriSyntaxException) {
+                    uriSyntaxException.printStackTrace();
+                    JOptionPane.showMessageDialog(
+                        this,
+                        value + " no es una dirección correcta",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
         );
 
         container.add(serverSection, BorderLayout.NORTH);
@@ -132,38 +131,38 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         actionsSection.add(joinOnlineRoomButton);
 
         newOnlineRoomButton.addActionListener(
-                e -> {
-                    NewGameWindow newGameWindow = new NewGameWindow(this);
-                    newGameWindow.open();
+            e -> {
+                NewGameWindow newGameWindow = new NewGameWindow(this);
+                newGameWindow.open();
 
-                    Mode gameMode = newGameWindow.getGameMode();
-                    ArrayList<Player> players = newGameWindow.getPlayers();
-                    LinkedList<PlayerConfig> playerConfigList = new LinkedList<>();
+                Mode gameMode = newGameWindow.getGameMode();
+                ArrayList<Player> players = newGameWindow.getPlayers();
+                LinkedList<PlayerConfig> playerConfigList = new LinkedList<>();
 
-                    for (Player p : players) {
-                        PlayerConfig playerConfig = new PlayerConfig(
-                                p.getColor(),
-                                p.getSide()
-                        );
-                        playerConfigList.add(playerConfig);
-                    }
-
-                    RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
-                    new CreateRoomCommand(roomConfig).send(sc);
+                for (Player p : players) {
+                    PlayerConfig playerConfig = new PlayerConfig(
+                        p.getColor(),
+                        p.getSide()
+                    );
+                    playerConfigList.add(playerConfig);
                 }
+
+                RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
+                new CreateRoomCommand(roomConfig).send(sc);
+            }
         );
 
         joinOnlineRoomButton.addActionListener(
-                e -> {
-                    String roomID = JOptionPane.showInputDialog(
-                            "Introduce código de la habitación: "
-                    );
-                    if (roomID.isEmpty()) return;
+            e -> {
+                String roomID = JOptionPane.showInputDialog(
+                    "Introduce código de la habitación: "
+                );
+                if (roomID.isEmpty()) return;
 
-                    this.sc.removeObserver(this);
-                    this.dispose();
-                    new OnlineWaitingWindow(this.sc, roomID);
-                }
+                this.sc.removeObserver(this);
+                this.dispose();
+                new OnlineWaitingWindow(this.sc, roomID);
+            }
         );
 
         container.add(clientIDLabel, BorderLayout.SOUTH);
