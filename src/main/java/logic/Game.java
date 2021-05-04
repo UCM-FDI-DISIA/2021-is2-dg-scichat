@@ -4,12 +4,7 @@ import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.OccupiedCellException;
 import graphic.GameObserver;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import logic.gameObjects.Piece;
@@ -175,8 +170,7 @@ public class Game implements Serializable {
     }
 
     /**
-     *
-     * @return	Tiempo en milisegundos que el jugador actual lleva jugando
+     * @return Tiempo en milisegundos que el jugador actual lleva jugando
      */
     public long getCurrentPlayerTime() {
         return this.getCurrentPlayer().timePlaying();
@@ -279,15 +273,9 @@ public class Game implements Serializable {
         }
     }
 
-    public void sendOnMovedPiece(Cell from, Cell to) {
+    public void sendOnMovedPiece(Cell from, Cell to, String playerID) {
         for (GameObserver i : observers) {
-            i.onMovedPiece(from, to);
-        }
-    }
-
-    public void sendOnOnlineMovedPiece(Cell from, Cell to) {
-        for (GameObserver i : observers) {
-            i.onOnlineMovedPiece(from, to);
+            i.onMovedPiece(from, to, playerID);
         }
     }
 
@@ -335,7 +323,7 @@ public class Game implements Serializable {
         try {
             Cell from = selectedPiece.getPosition();
             selectedPiece.move(to, getGameMode());
-            sendOnMovedPiece(from, to);
+            sendOnMovedPiece(from, to, getCurrentPlayer().getId());
 
             Player currentPlayer = getCurrentPlayer();
             if (currentPlayer.isAWinner()) {

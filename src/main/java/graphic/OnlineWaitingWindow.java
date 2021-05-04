@@ -63,7 +63,16 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
                 public void execute(JSONObject data, SocketClient connection) {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     dispose();
-                    new OnlineGameWindow(createController(), connection, roomID, room);
+
+                    /// Añadir el ID del jugador local
+                    OnlineGameWindow w = new OnlineGameWindow(
+                        createController(),
+                        connection,
+                        roomID,
+                        room
+                    );
+                    w.addLocalPlayer(connection.getClientID());
+                    w.display();
                 }
             };
     }

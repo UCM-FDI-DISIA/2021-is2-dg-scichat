@@ -14,18 +14,27 @@ public class PieceMovedCommand extends Command {
     public int y2;
 
     private String roomID;
+    public String playerID;
 
     public PieceMovedCommand() {
         super("PIECE_MOVED");
     }
 
-    public PieceMovedCommand(int x1, int y1, int x2, int y2, String roomID) {
+    public PieceMovedCommand(
+        int x1,
+        int y1,
+        int x2,
+        int y2,
+        String roomID,
+        String playerID
+    ) {
         this();
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
         this.roomID = roomID;
+        this.playerID = playerID;
     }
 
     @Override
@@ -37,6 +46,8 @@ public class PieceMovedCommand extends Command {
         this.y1 = fromArray.getInt(1);
         this.x2 = toArray.getInt(0);
         this.y2 = toArray.getInt(1);
+
+        this.playerID = data.getString("playerID");
     }
 
     @Override
@@ -52,7 +63,7 @@ public class PieceMovedCommand extends Command {
         data.append("to", x2);
         data.append("to", y2);
 
-        data.put("clientID", connection.getClientID());
+        data.put("playerID", this.playerID);
         data.put("roomID", this.roomID);
 
         req.put("data", data);

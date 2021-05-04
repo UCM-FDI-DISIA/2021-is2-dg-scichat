@@ -126,7 +126,7 @@ public class BoardPanel extends JPanel implements GameObserver {
     }
 
     @Override
-    public void onMovedPiece(Cell from, Cell to) {
+    public void onMovedPiece(Cell from, Cell to, String playerID) {
         CellLabel fromLabel, toLabel;
 
         fromLabel = this.cellLabels.get(from);
@@ -136,11 +136,6 @@ public class BoardPanel extends JPanel implements GameObserver {
         toLabel = this.cellLabels.get(to);
         toLabel.setSelected(true);
         toLabel.setColor(to.getPiece().getColor().getColor());
-    }
-
-    @Override
-    public void onOnlineMovedPiece(Cell from, Cell to) {
-        this.onMovedPiece(from, to);
     }
 
     @Override

@@ -2,6 +2,7 @@ package graphic;
 
 import control.Controller;
 import java.awt.*;
+import java.util.HashSet;
 import javax.swing.*;
 import logic.Cell;
 import network.client.SocketClient;
@@ -10,8 +11,6 @@ import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.PieceMovedCommand;
 import network.models.Room;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class OnlineGameWindow extends JFrame implements SocketObserver, GameObserver {
@@ -19,15 +18,15 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     private final SocketClient sc;
     private final Room room;
     private final String roomID;
+    private final HashSet<String> localPlayers = new HashSet<>();
 
     private Command pieceMovedCommand = new PieceMovedCommand() {
 
         @Override
-        public void execute(JSONObject data, Server server, WebSocket connection)
-            throws Exception {
-            super.execute(data, server, connection);
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
             try {
-                ctrl.onlineMovePiece(x1, y1, x2, y2);
+                ctrl.onlineMovePiece(x1, y1, x2, y2, playerID);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -43,6 +42,7 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     };
 
     OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room) {
+        super(_sc.getClientID());
         this.sc = _sc;
         this.sc.addObserver(this);
         this.ctrl = _ctrl;
@@ -65,7 +65,14 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
         }
 
         this.pack();
+    }
+
+    public void display() {
         this.setVisible(true);
+    }
+
+    public void addLocalPlayer(String ID) {
+        this.localPlayers.add(ID);
     }
 
     @Override
@@ -78,14 +85,18 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     }
 
     @Override
-    public void onMovedPiece(Cell from, Cell to) {
-        new PieceMovedCommand(
-            from.getRow(),
-            from.getCol(),
-            to.getRow(),
-            to.getCol(),
-            this.roomID
-        )
-        .send(this.sc);
+    public void onMovedPiece(Cell from, Cell to, String playerID) {
+        /// Es un movimiento hecho por un jugador local
+        if (localPlayers.contains(playerID)) {
+            new PieceMovedCommand(
+                from.getRow(),
+                from.getCol(),
+                to.getRow(),
+                to.getCol(),
+                this.roomID,
+                playerID
+            )
+            .send(this.sc);
+        }
     }
 }
