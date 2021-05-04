@@ -3,24 +3,30 @@ package network.commands;
 import network.client.SocketClient;
 import network.models.RoomConfig;
 import network.models.ServerRoom;
-import network.models.SocketMessage;
 import network.server.Server;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class CreateRoomCommand extends Command {
+    RoomConfig config;
 
     public CreateRoomCommand() {
         super("CREATE_ROOM");
     }
 
-    @Override
-    public SocketMessage execute(JSONObject _data, SocketClient connection) {
-        connection.send(
-            new JSONObject().put("type", this.type).put("data", _data).toString()
-        );
+    public CreateRoomCommand(RoomConfig _config) {
+        this();
+        this.config = _config;
+    }
 
-        return null;
+    @Override
+    public void send(SocketClient connection) {
+        connection.send(
+            new JSONObject()
+                .put("type", this.type)
+                .put("data", config.toJSON())
+                .toString()
+        );
     }
 
     @Override

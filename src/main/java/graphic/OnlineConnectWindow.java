@@ -16,9 +16,6 @@ import network.commands.CommandParser;
 import network.commands.CreateRoomCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
-import network.models.SocketMessage;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 import utils.Mode;
 
@@ -31,23 +28,20 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     JLabel clientIDLabel = new JLabel();
 
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
+        private String roomID;
 
         @Override
-        public SocketMessage execute(JSONObject _data, SocketClient connection) {
-            /// Una vez creada la habitación, pasar a la sala de espera
-            String roomID = _data.getString("roomID");
-
-            /// Cierra ventana actual, y quitar el observador
-            sc.removeObserver(OnlineConnectWindow.this);
-            dispose();
-            new OnlineWaitingWindow(sc, roomID);
-
-            return null;
+        public void parse(JSONObject data) {
+            this.roomID = data.getString("roomID");
         }
 
         @Override
-        public void execute(JSONObject data, Server server, WebSocket connection)
-            throws Exception {}
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
+            sc.removeObserver(OnlineConnectWindow.this);
+            dispose();
+            new OnlineWaitingWindow(sc, roomID);
+        }
     };
 
     CommandParser commandParser = new CommandParser() {
@@ -65,7 +59,11 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     }
 
     private void initGUI() {
-        this.getContentPane().setLayout(new GridBagLayout());
+        JPanel mainContent = new JPanel();
+        mainContent.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainContent.setLayout(new GridBagLayout());
+        this.setContentPane(mainContent);
+
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout(0, 10));
 
@@ -127,7 +125,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         container.add(serverSection, BorderLayout.NORTH);
 
         actionsSection.setVisible(false);
-        actionsSection.setLayout(new BoxLayout(actionsSection, BoxLayout.X_AXIS));
+        actionsSection.setLayout(new GridLayout(1, 2));
         container.add(actionsSection, BorderLayout.CENTER);
 
         this.newOnlineRoomButton = new JButton("Nueva habitación");
@@ -139,7 +137,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         newOnlineRoomButton.addActionListener(
             e -> {
                 NewGameWindow newGameWindow = new NewGameWindow(this);
-                newGameWindow.open();
+                if (newGameWindow.open() == 0) return;
 
                 Mode gameMode = newGameWindow.getGameMode();
                 ArrayList<Player> players = newGameWindow.getPlayers();
@@ -154,7 +152,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
                 }
 
                 RoomConfig roomConfig = new RoomConfig(gameMode, playerConfigList);
-                new CreateRoomCommand().execute(roomConfig.toJSON(), sc);
+                new CreateRoomCommand(roomConfig).send(sc);
             }
         );
 
@@ -185,8 +183,8 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     public void onOpen() {
         System.out.println("Se ha abierto una conexión Socket");
         actionsSection.setVisible(true);
-        this.pack();
         connectButton.setText("Desconectar");
+        this.pack();
     }
 
     @Override

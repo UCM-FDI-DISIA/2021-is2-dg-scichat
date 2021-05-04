@@ -1,10 +1,7 @@
 package graphic;
 
 import control.Controller;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -27,6 +24,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
     private JLabel labelTime;
     private JLabel gameMode;
     private JLabel turn;
+    private Circle playerColor;
 
     public OptionsPanel(Controller ctrl) {
         initGUI();
@@ -77,10 +75,16 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
         // Etiqueta de ejemplo del turno
 
+        JPanel turnPanel = new JPanel(new FlowLayout());
+        turnPanel.setBackground(null);
         turn = new JLabel("Turno del jugador 1");
         turn.setHorizontalAlignment(SwingConstants.CENTER);
         turn.setFont(new Font("Impact", 0, 20));
-        this.add(turn);
+
+        playerColor = new Circle(20, Color.WHITE);
+        turnPanel.add(turn);
+        turnPanel.add(playerColor);
+        this.add(turnPanel);
 
         // Botón para guardar la partida
         JButton saveButton = new JButton("Guardar partida");
@@ -144,8 +148,9 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
     public void onRegister(Game game) {
         this.game = game;
-        this.turn.setText("Turno del jugador " + (game.getCurrentPlayerIndex() + 1));
         this.gameMode.setText(game.getGameMode().toString());
+        this.turn.setText("Turno del jugador " + game.getCurrentPlayer().getName());
+        this.playerColor.setColor(game.getCurrentPlayer().getColor().getColor());
     }
 
     public void onGameStart(Game game) {
@@ -153,6 +158,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
     }
 
     public void onEndTurn(Game game) {
-        this.turn.setText("Turno del jugador " + (game.getCurrentPlayerIndex() + 1));
+        this.turn.setText("Turno del jugador " + game.getCurrentPlayer().getName());
+        this.playerColor.setColor(game.getCurrentPlayer().getColor().getColor());
     }
 }
