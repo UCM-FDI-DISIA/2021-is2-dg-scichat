@@ -3,7 +3,6 @@ package network.commands;
 import network.client.SocketClient;
 import network.models.Room;
 import network.models.ServerRoom;
-import network.models.SocketMessage;
 import network.server.Server;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
@@ -11,6 +10,7 @@ import org.json.JSONObject;
 public class JoinRoomCommand extends Command {
     private String roomID;
     private String clientID;
+    private Room room;
 
     public JoinRoomCommand() {
         super("JOIN_ROOM");
@@ -37,11 +37,9 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public SocketMessage execute(JSONObject _data, SocketClient connection) {
+    public void parse(JSONObject data) {
         /// Cuando el cliente recibe este commando, tiene que parsear a un Room
-        Room room = new Room(_data);
-
-        return room;
+        this.room = new Room(data);
     }
 
     @Override

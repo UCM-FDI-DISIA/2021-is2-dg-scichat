@@ -1,7 +1,6 @@
 package network.commands;
 
 import network.client.SocketClient;
-import network.models.SocketMessage;
 import network.server.Server;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
@@ -16,9 +15,12 @@ public abstract class Command {
     /// Para enviar este commando al servidor
     public void send(SocketClient connection) {}
 
-    /// Para cuando el cliente recibe el mensaje
-    public SocketMessage execute(JSONObject _data, SocketClient connection) {
-        return null;
+    /// Para cuando el cliente recibe el mensaje, parsear el componente
+    public void parse(JSONObject data) {}
+
+    /// Para ejecutar en el cliente
+    public void execute(JSONObject data, SocketClient connection) {
+        this.parse(data);
     }
 
     /// Ejecutar para servidor

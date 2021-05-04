@@ -10,8 +10,8 @@ import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.PieceMovedCommand;
 import network.models.Room;
-import network.models.SocketMessage;
-import org.json.JSONArray;
+import network.server.Server;
+import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class OnlineGameWindow extends JFrame implements SocketObserver, GameObserver {
@@ -23,22 +23,14 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     private Command pieceMovedCommand = new PieceMovedCommand() {
 
         @Override
-        public SocketMessage execute(JSONObject _data, SocketClient connection) {
-            JSONArray fromArray = _data.getJSONArray("from");
-            JSONArray toArray = _data.getJSONArray("to");
-
-            int x1 = fromArray.getInt(0);
-            int y1 = fromArray.getInt(1);
-            int x2 = toArray.getInt(0);
-            int y2 = toArray.getInt(1);
-
+        public void execute(JSONObject data, Server server, WebSocket connection)
+            throws Exception {
+            super.execute(data, server, connection);
             try {
                 ctrl.onlineMovePiece(x1, y1, x2, y2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            return null;
         }
     };
 
@@ -86,7 +78,14 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     }
 
     @Override
-    public void onMovedPiece(Cell from, Cell piece) {
-        new PieceMovedCommand(from, piece, this.roomID).send(this.sc);
+    public void onMovedPiece(Cell from, Cell to) {
+        new PieceMovedCommand(
+            from.getRow(),
+            from.getCol(),
+            to.getRow(),
+            to.getCol(),
+            this.roomID
+        )
+        .send(this.sc);
     }
 }

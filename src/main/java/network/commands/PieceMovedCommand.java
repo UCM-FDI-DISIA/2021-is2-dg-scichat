@@ -1,26 +1,42 @@
 package network.commands;
 
-import logic.Cell;
 import network.client.SocketClient;
 import network.models.ServerRoom;
 import network.server.Server;
 import org.java_websocket.WebSocket;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PieceMovedCommand extends Command {
-    private Cell from;
-    private Cell to;
+    public int x1;
+    public int y1;
+    public int x2;
+    public int y2;
+
     private String roomID;
 
     public PieceMovedCommand() {
         super("PIECE_MOVED");
     }
 
-    public PieceMovedCommand(Cell from, Cell piece, String roomID) {
+    public PieceMovedCommand(int x1, int y1, int x2, int y2, String roomID) {
         this();
-        this.from = from;
-        this.to = piece;
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
         this.roomID = roomID;
+    }
+
+    @Override
+    public void parse(JSONObject data) {
+        JSONArray fromArray = data.getJSONArray("from");
+        JSONArray toArray = data.getJSONArray("to");
+
+        this.x1 = fromArray.getInt(0);
+        this.y1 = fromArray.getInt(1);
+        this.x2 = toArray.getInt(0);
+        this.y2 = toArray.getInt(1);
     }
 
     @Override
@@ -30,11 +46,11 @@ public class PieceMovedCommand extends Command {
 
         JSONObject data = new JSONObject();
 
-        data.append("from", this.from.getRow());
-        data.append("from", this.from.getCol());
+        data.append("from", x1);
+        data.append("from", y1);
 
-        data.append("to", this.to.getRow());
-        data.append("to", this.to.getCol());
+        data.append("to", x2);
+        data.append("to", y2);
 
         data.put("clientID", connection.getClientID());
         data.put("roomID", this.roomID);

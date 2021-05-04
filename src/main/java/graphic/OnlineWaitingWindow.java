@@ -29,13 +29,10 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     Command roomInfoCommand = new RoomInfoCommand() {
 
         @Override
-        public SocketMessage execute(JSONObject data, SocketClient connection) {
-            Room _room = (Room) super.execute(data, connection);
-            room = _room;
-
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
+            OnlineWaitingWindow.this.room = this.getRoom();
             renderRoomInfo();
-
-            return _room;
         }
     };
 
@@ -63,11 +60,10 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
             new StartGameCommand(roomID) {
 
                 @Override
-                public SocketMessage execute(JSONObject _data, SocketClient connection) {
+                public void execute(JSONObject data, SocketClient connection) {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     dispose();
                     new OnlineGameWindow(createController(), connection, roomID, room);
-                    return super.execute(_data, connection);
                 }
             };
     }
