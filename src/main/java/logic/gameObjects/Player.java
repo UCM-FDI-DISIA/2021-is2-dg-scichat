@@ -1,13 +1,11 @@
 package logic.gameObjects;
 
-import java.util.Set;
-
-import org.json.JSONObject;
-
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
+import java.util.Set;
 import logic.Board.Side;
 import logic.Cell;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 

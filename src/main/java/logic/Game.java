@@ -8,10 +8,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
-import logic.gameObjects.HumanPlayer;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

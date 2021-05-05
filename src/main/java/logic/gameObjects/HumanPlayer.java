@@ -41,7 +41,8 @@ public class HumanPlayer implements Serializable, Player {
         this(PieceColor.BLUE, Side.Down, "0");
     }
 
-    public HumanPlayer(PieceColor color, Side start, String id) throws OccupiedCellException {
+    public HumanPlayer(PieceColor color, Side start, String id)
+        throws OccupiedCellException {
         this.color = color;
         this.playerSide = start;
         this.surrender = false;
