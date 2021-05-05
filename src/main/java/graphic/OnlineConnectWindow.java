@@ -19,15 +19,13 @@ import network.models.RoomConfig;
 import org.json.JSONObject;
 import utils.Mode;
 
-public class OnlineConnectWindow extends JDialog implements SocketObserver {
+public class OnlineConnectWindow extends JFrame implements SocketObserver {
     SocketClient sc;
     JButton newOnlineRoomButton;
     JButton joinOnlineRoomButton;
     JButton connectButton;
     JPanel actionsSection = new JPanel();
     JLabel clientIDLabel = new JLabel();
-
-    private MainWindow parent = null;
 
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
         private String roomID;
@@ -42,7 +40,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             dispose();
-            new OnlineWaitingWindow(parent, sc, roomID);
+            new OnlineWaitingWindow(OnlineConnectWindow.this, sc, roomID);
         }
     };
 
@@ -54,12 +52,9 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         }
     };
 
-    public OnlineConnectWindow(MainWindow parent) {
-        super(parent, "Juego Online");
-        this.parent = parent;
+    public OnlineConnectWindow() {
+        super("Juego Online");
         initGUI();
-        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
-        pack();
         setVisible(true);
     }
 
@@ -141,7 +136,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
 
         newOnlineRoomButton.addActionListener(
             e -> {
-                NewGameWindow newGameWindow = new NewGameWindow(parent);
+                NewGameWindow newGameWindow = new NewGameWindow(this);
                 if (newGameWindow.open() == 0) return;
 
                 Mode gameMode = newGameWindow.getGameMode();
@@ -172,7 +167,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
 
                 this.sc.removeObserver(this);
                 this.dispose();
-                new OnlineWaitingWindow(parent, this.sc, roomID);
+                new OnlineWaitingWindow(this, this.sc, roomID);
             }
         );
 
@@ -180,6 +175,10 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
 
         this.setLocationRelativeTo(null);
         this.pack();
+    }
+
+    public static void main(String[] args) {
+        new OnlineConnectWindow();
     }
 
     @Override

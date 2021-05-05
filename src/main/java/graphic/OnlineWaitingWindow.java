@@ -19,7 +19,7 @@ import network.models.Room;
 import org.json.JSONObject;
 import utils.Mode;
 
-public class OnlineWaitingWindow extends JDialog implements SocketObserver {
+public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final SocketClient connection;
     private final String roomID;
     private final JPanel roomInfoSection = new JPanel();
@@ -47,8 +47,8 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         }
     };
 
-    OnlineWaitingWindow(MainWindow parent, SocketClient _connection, String _roomID) {
-        super(parent, "Habitación #" + _roomID);
+    OnlineWaitingWindow(JFrame parent, SocketClient _connection, String _roomID) {
+        super("Habitación #" + _roomID);
         this.setLocation(parent.getX(), parent.getY());
         this.connection = _connection;
         this.roomID = _roomID;
@@ -68,14 +68,14 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
 
                     /// Añadir el ID del jugador local
                     OnlineGameWindow w = new OnlineGameWindow(
-                        parent,
+                        OnlineWaitingWindow.this,
                         createController(),
                         connection,
                         roomID,
                         room
                     );
                     w.addLocalPlayer(connection.getClientID());
-                    parent.initOnlineGame(w);
+                    w.display();
                 }
             };
     }
