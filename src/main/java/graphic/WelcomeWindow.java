@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class WelcomeWindow extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     MainWindow father;
 
     private JButton newButton;

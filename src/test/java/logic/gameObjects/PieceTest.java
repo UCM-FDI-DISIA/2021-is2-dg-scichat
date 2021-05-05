@@ -102,7 +102,7 @@ class PieceTest {
         // adyacente
         /// Aquí lanza una excepción de null pointer, porque no existe ninguna pieza en esa celda
         Assertions.assertThrows(
-            NullPointerException.class,
+            InvalidMoveException.class,
             () -> {
                 piece.move(piece2.getPosition().getLowerLeft(2), Mode.Traditional);
             }

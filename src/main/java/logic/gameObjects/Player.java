@@ -149,7 +149,6 @@ public class Player implements Serializable {
 	HashSet<Cell> playerInitCells = this.playerSide.getSideCells();
 	Iterator<Cell> iteratorCell = playerInitCells.iterator();
 	
-	System.out.println();
 	for(Piece piece : this.pieces) {
 		Cell n = iteratorCell.next();
 		piece.setCell(n);

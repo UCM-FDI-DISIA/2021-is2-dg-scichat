@@ -11,6 +11,7 @@ import utils.PieceColor;
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
+    @Deprecated
     private static class SetupWizard {
         private static final String asciiLogo =
             "       __                                   __    _                 \n" +

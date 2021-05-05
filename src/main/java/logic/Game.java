@@ -226,12 +226,14 @@ public class Game implements Serializable {
      */
     public void advance() {
         //TODO evitar que se atasque
+        this.endTurn();
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         } while (this.getCurrentPlayer().hasSurrender());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
+        this.startTurn();
     }
 
     /**

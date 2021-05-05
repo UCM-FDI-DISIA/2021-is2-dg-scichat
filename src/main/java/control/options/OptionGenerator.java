@@ -12,6 +12,7 @@ public class OptionGenerator {
     };
 
     public static class ParseException extends Exception {
+        private static final long serialVersionUID = 1L;
 
         public ParseException(String message) {
             super("[ERROR]: " + message);
