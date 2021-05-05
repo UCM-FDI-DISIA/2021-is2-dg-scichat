@@ -150,7 +150,7 @@ public class Piece implements Serializable {
     public void tryToMoveFast(Cell targetPosition, boolean jumpIsLimited)
         throws InvalidMoveException {
         // TODO todo
-        if (targetPosition.equals(this.position)) { // La estamos ocupando!
+        if (targetPosition.equals(this.position) || !targetPosition.isEmpty()) { /// La posición destino esta ocupada
             throw new InvalidMoveException();
         }
 
