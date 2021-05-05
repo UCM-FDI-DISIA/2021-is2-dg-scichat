@@ -85,7 +85,7 @@ public class FinishedWindow extends JPanel {
         newGameButton.setFocusable(true);
         newGameButton.setBorderPainted(true);
         newGameButton.setFocusPainted(true);
-        newGameButton.setContentAreaFilled(true);
+        newGameButton.setContentAreaFilled(false);
         newGameButton.addActionListener(
             new ActionListener() {
 
@@ -108,7 +108,7 @@ public class FinishedWindow extends JPanel {
         exitButton.setFocusable(true);
         exitButton.setBorderPainted(true);
         exitButton.setFocusPainted(true);
-        exitButton.setContentAreaFilled(true);
+        exitButton.setContentAreaFilled(false);
         exitButton.addActionListener(
             new ActionListener() {
 
@@ -132,7 +132,7 @@ public class FinishedWindow extends JPanel {
         revengeButton.setFocusable(true);
         revengeButton.setBorderPainted(true);
         revengeButton.setFocusPainted(true);
-        revengeButton.setContentAreaFilled(true);
+        revengeButton.setContentAreaFilled(false);
         revengeButton.addActionListener(
             new ActionListener() {
 

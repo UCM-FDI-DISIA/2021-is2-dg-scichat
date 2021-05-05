@@ -303,6 +303,9 @@ public class Game implements Serializable {
         return jRes;
     }
 
+    /**
+     * Nos permite resetear el juego para dejarlo en el estado inicial de la partida.
+     */
     public void softReset() {
         this.board = new Board();
         this.stopped = false;
