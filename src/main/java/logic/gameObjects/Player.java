@@ -145,6 +145,10 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     * Nos permite resetear el player para dejarlo en el estado inicial que nos lo encontramos
+     * al iniciar la partida.
+     */
     public void softReset() {
         this.playing = false;
         this.selectedPiece = null;
