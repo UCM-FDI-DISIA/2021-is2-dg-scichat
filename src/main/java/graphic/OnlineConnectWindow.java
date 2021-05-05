@@ -40,7 +40,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             dispose();
-            new OnlineWaitingWindow(sc, roomID);
+            new OnlineWaitingWindow(OnlineConnectWindow.this, sc, roomID);
         }
     };
 
@@ -165,7 +165,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
                 this.sc.removeObserver(this);
                 this.dispose();
-                new OnlineWaitingWindow(this.sc, roomID);
+                new OnlineWaitingWindow(this, this.sc, roomID);
             }
         );
 

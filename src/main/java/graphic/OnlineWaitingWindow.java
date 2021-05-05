@@ -14,7 +14,6 @@ import network.client.SocketObserver;
 import network.commands.*;
 import network.models.PlayerConfig;
 import network.models.Room;
-import network.models.SocketMessage;
 import org.json.JSONObject;
 import utils.Mode;
 
@@ -46,8 +45,9 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         }
     };
 
-    OnlineWaitingWindow(SocketClient _connection, String _roomID) {
+    OnlineWaitingWindow(JFrame parent, SocketClient _connection, String _roomID) {
         super("Habitación #" + _roomID);
+        this.setLocation(parent.getX(), parent.getY());
         this.connection = _connection;
         this.roomID = _roomID;
 
@@ -66,6 +66,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
                     /// Añadir el ID del jugador local
                     OnlineGameWindow w = new OnlineGameWindow(
+                        OnlineWaitingWindow.this,
                         createController(),
                         connection,
                         roomID,
@@ -146,7 +147,6 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         this.pack();
         this.setVisible(true);
         this.setResizable(false);
-        this.setLocationRelativeTo(null);
     }
 
     private void renderRoomInfo() {

@@ -55,8 +55,15 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
         }
     };
 
-    OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room) {
+    OnlineGameWindow(
+        JFrame parent,
+        Controller _ctrl,
+        SocketClient _sc,
+        String _roomID,
+        Room _room
+    ) {
         super(_sc.getClientID());
+        this.setLocation(parent.getX(), parent.getY());
         this.sc = _sc;
         this.ctrl = _ctrl;
         this.roomID = _roomID;

@@ -150,8 +150,8 @@ public class Controller {
     }
 
     public void surrender(String playerID) {
-        setCurrentPlayer(playerID);
-        if (game.getCurrentPlayer().hasSurrender()) return;
+        if (!game.getCurrentPlayer().getId().equals(playerID)) return;
+
         this.surrender();
     }
 }
