@@ -23,6 +23,7 @@ public class MainWindow extends JFrame implements GameObserver {
     private JPanel winnerScreen = null;
     private NewGameWindow gameOptionsScreen = null;
     private LoadGameWindow loadGameScreen = null;
+    private LocalServerSelectionScreen localOnlineScreen = null;
 
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
@@ -36,6 +37,23 @@ public class MainWindow extends JFrame implements GameObserver {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initStart();
         this.setVisible(true);
+    }
+
+    public void initLocalServer() {
+        if (this.localOnlineScreen == null) localOnlineScreen =
+            new LocalServerSelectionScreen(this);
+        localOnlineScreen.open();
+    }
+
+    public void initOnline() {
+        new OnlineConnectWindow(this);
+    }
+
+    //TODO Provisional
+    public void initOnlineGame(JPanel panel) {
+        this.setContentPane(panel);
+        this.pack();
+        this.setSize(width, height);
     }
 
     public void initStart() {
@@ -76,13 +94,13 @@ public class MainWindow extends JFrame implements GameObserver {
         if (this.gameOptionsScreen == null) {
             this.gameOptionsScreen = new NewGameWindow(this);
         }
-        this.gameOptionsScreen.open();
-
-        Game newGame = new Game();
-        newGame.setPlayers(gameOptionsScreen.getPlayers());
-        newGame.setGameMode(gameOptionsScreen.getGameMode());
-        ctrl.setGame(newGame);
-        initGame();
+        if (this.gameOptionsScreen.open() == 1) {
+            Game newGame = new Game();
+            newGame.setPlayers(gameOptionsScreen.getPlayers());
+            newGame.setGameMode(gameOptionsScreen.getGameMode());
+            ctrl.setGame(newGame);
+            initGame();
+        }
     }
 
     public void initSelectFile() {
