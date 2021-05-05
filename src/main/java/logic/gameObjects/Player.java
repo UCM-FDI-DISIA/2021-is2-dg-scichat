@@ -150,14 +150,20 @@ public class Player implements Serializable {
 	this.playing = false;
 	this.selectedPiece = null;
 	this.surrender = false;
+	this.time = 0;
 	
-	HashSet<Cell> playerInitCells = this.playerSide.getSideCells();
-	Iterator<Cell> iteratorCell = playerInitCells.iterator();
+	this.pieces = new HashSet<Piece>();
+	try {
+	    this.createPieces();
+	}
+	catch(OccupiedCellException ex) {
+	    System.out.println(ex.getMessage());
+	}
 	
-	for(Piece piece : this.pieces) {
+	/*for(Piece piece : this.pieces) {
 		Cell n = iteratorCell.next();
 		piece.setCell(n);
-	}
+	}*/
     }
 
     /**

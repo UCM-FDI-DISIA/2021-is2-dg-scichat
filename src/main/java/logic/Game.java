@@ -308,9 +308,12 @@ public class Game implements Serializable {
         this.stopped = false;
         this.currentPlayerIndex = 0;
         this.winner = null;
+        
         for(Player player : players) {
             player.softReset();
         }
+        
+        this.observers = new ArrayList<GameObserver>();
     }
 
     public void movePiece(Cell to) throws ExecuteException {
