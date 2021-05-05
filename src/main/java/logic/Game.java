@@ -304,7 +304,16 @@ public class Game implements Serializable {
     }
 
     public void softReset() {
-        //TODO preparar la partida para volver a empezar
+        this.board = new Board();
+        this.stopped = false;
+        this.currentPlayerIndex = 0;
+        this.winner = null;
+
+        for (Player player : players) {
+            player.softReset();
+        }
+
+        this.observers = new ArrayList<GameObserver>();
     }
 
     public void movePiece(Cell to) throws ExecuteException {
