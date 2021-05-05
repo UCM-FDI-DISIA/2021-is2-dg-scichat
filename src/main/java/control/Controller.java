@@ -6,7 +6,7 @@ import control.options.OptionGenerator;
 import graphic.GameObserver;
 import java.io.File;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import logic.Cell;
 import logic.Game;
 import logic.gameObjects.Player;
@@ -128,5 +128,30 @@ public class Controller {
             opt,
             null
         );
+    }
+
+    public void onlineMovePiece(int x1, int y1, int x2, int y2, String playerID)
+        throws ExecuteException {
+        Cell from = this.game.getCell(x1, y1);
+        Cell to = this.game.getCell(x2, y2);
+
+        if (from.getPiece() == null) return;
+
+        this.setCurrentPlayer(playerID);
+        this.game.getCurrentPlayer().selectPiece(from.getPiece());
+        this.game.movePiece(to);
+        this.game.advance();
+    }
+
+    public void setCurrentPlayer(String playerID) {
+        while (!this.game.getCurrentPlayer().getId().equals(playerID)) {
+            this.game.advance();
+        }
+    }
+
+    public void surrender(String playerID) {
+        setCurrentPlayer(playerID);
+        if (game.getCurrentPlayer().hasSurrender()) return;
+        this.surrender();
     }
 }

@@ -1,20 +1,22 @@
 package graphic;
 
+import control.Controller;
+import exceptions.OccupiedCellException;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.*;
 import logic.Board;
+import logic.Game;
+import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
-import network.commands.Command;
-import network.commands.CommandParser;
-import network.commands.RoomInfoCommand;
+import network.commands.*;
 import network.models.PlayerConfig;
 import network.models.Room;
 import network.models.SocketMessage;
 import org.json.JSONObject;
 import utils.Mode;
-import utils.PieceColor;
 
 public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final SocketClient connection;
@@ -24,23 +26,23 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
     private JButton startGameButton;
 
-    Command roomInfoCommand = new RoomInfoCommand("ROOM_INFO") {
+    Command roomInfoCommand = new RoomInfoCommand() {
 
         @Override
-        public SocketMessage execute(JSONObject data, SocketClient connection) {
-            Room _room = (Room) super.execute(data, connection);
-            room = _room;
-
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
+            OnlineWaitingWindow.this.room = this.getRoom();
             renderRoomInfo();
-
-            return _room;
         }
     };
+
+    Command startGameCommand;
+
     private CommandParser commandParser = new CommandParser() {
 
         @Override
         public Command[] getCommands() {
-            return new Command[] { roomInfoCommand };
+            return new Command[] { roomInfoCommand, startGameCommand };
         }
     };
 
@@ -53,19 +55,54 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         this.connectToRoom();
         this.initGUI();
+
+        this.startGameCommand =
+            new StartGameCommand(roomID) {
+
+                @Override
+                public void execute(JSONObject data, SocketClient connection) {
+                    connection.removeObserver(OnlineWaitingWindow.this);
+                    dispose();
+
+                    /// Añadir el ID del jugador local
+                    OnlineGameWindow w = new OnlineGameWindow(
+                        createController(),
+                        connection,
+                        roomID,
+                        room
+                    );
+                    w.addLocalPlayer(connection.getClientID());
+                    w.display();
+                }
+            };
     }
 
     private void connectToRoom() {
-        /// Mandar una petición al servidor para entrar en habitación
-        JSONObject req = new JSONObject();
-        req.put("type", "JOIN_ROOM");
+        new JoinRoomCommand(this.roomID, this.connection.getClientID())
+        .send(this.connection);
+    }
 
-        JSONObject data = new JSONObject();
-        data.put("clientID", this.connection.getClientID());
-        data.put("roomID", this.roomID);
+    /// Crear el controlador con las configuraciones dadas
+    private Controller createController() {
+        Controller ctrl = new Controller();
+        Game game = new Game();
+        game.reset();
+        ctrl.setGame(game);
 
-        req.put("data", data);
-        connection.send(req.toString());
+        game.setGameMode(room.getRoomConfig().getMode());
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        for (Map.Entry<String, PlayerConfig> it : room.getPlayers().entrySet()) {
+            PlayerConfig config = it.getValue();
+            try {
+                players.add(new Player(config.color, config.side, it.getKey()));
+            } catch (OccupiedCellException e) {}
+        }
+
+        game.setPlayers(players);
+
+        return ctrl;
     }
 
     private void initGUI() {
@@ -92,6 +129,12 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
 
         startGameButton = new JButton("Empezar el juego");
         startGameButton.setEnabled(false);
+        startGameButton.addActionListener(
+            e -> {
+                startGameCommand.send(this.connection);
+            }
+        );
+
         actionsSection.add(startGameButton);
 
         actionsSection.add(disconnectButton);

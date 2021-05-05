@@ -126,7 +126,7 @@ public class BoardPanel extends JPanel implements GameObserver {
     }
 
     @Override
-    public void onMovedPiece(Cell from, Cell to) {
+    public void onMovedPiece(Cell from, Cell to, String playerID) {
         CellLabel fromLabel, toLabel;
 
         fromLabel = this.cellLabels.get(from);

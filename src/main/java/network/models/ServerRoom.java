@@ -45,8 +45,12 @@ public class ServerRoom extends network.models.Room {
         JSONObject resData = this.toJSON();
         res.put("data", resData);
 
+        broadCast(res.toString());
+    }
+
+    public void broadCast(String body) {
         for (Map.Entry<String, WebSocket> entry : this.playerConnections.entrySet()) {
-            entry.getValue().send(res.toString());
+            entry.getValue().send(body);
         }
     }
 }

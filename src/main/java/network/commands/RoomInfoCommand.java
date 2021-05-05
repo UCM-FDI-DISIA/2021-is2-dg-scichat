@@ -1,22 +1,25 @@
 package network.commands;
 
-import network.client.SocketClient;
 import network.models.Room;
-import network.models.SocketMessage;
 import network.server.Server;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class RoomInfoCommand extends Command {
+    private Room room;
 
-    public RoomInfoCommand(String _type) {
+    public RoomInfoCommand() {
         super("ROOM_INFO");
     }
 
     @Override
-    public SocketMessage execute(JSONObject data, SocketClient connection) {
+    public void parse(JSONObject data) {
         /// Si recibe una información de la habitación, actualizar el GUI
-        return new Room(data);
+        this.room = new Room(data);
+    }
+
+    public Room getRoom() {
+        return room;
     }
 
     @Override
