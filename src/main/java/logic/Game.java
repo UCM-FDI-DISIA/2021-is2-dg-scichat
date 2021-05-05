@@ -304,15 +304,15 @@ public class Game implements Serializable {
     }
 
     public void softReset() {
-        this.board  = new Board();
+        this.board = new Board();
         this.stopped = false;
         this.currentPlayerIndex = 0;
         this.winner = null;
-        
-        for(Player player : players) {
+
+        for (Player player : players) {
             player.softReset();
         }
-        
+
         this.observers = new ArrayList<GameObserver>();
     }
 

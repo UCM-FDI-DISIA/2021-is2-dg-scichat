@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
@@ -145,25 +144,19 @@ public class Player implements Serializable {
         this.selectedPiece = piece;
         return true;
     }
-    
+
     public void softReset() {
-	this.playing = false;
-	this.selectedPiece = null;
-	this.surrender = false;
-	this.time = 0;
-	
-	this.pieces = new HashSet<Piece>();
-	try {
-	    this.createPieces();
-	}
-	catch(OccupiedCellException ex) {
-	    System.out.println(ex.getMessage());
-	}
-	
-	/*for(Piece piece : this.pieces) {
-		Cell n = iteratorCell.next();
-		piece.setCell(n);
-	}*/
+        this.playing = false;
+        this.selectedPiece = null;
+        this.surrender = false;
+        this.time = 0;
+
+        this.pieces = new HashSet<Piece>();
+        try {
+            this.createPieces();
+        } catch (OccupiedCellException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**

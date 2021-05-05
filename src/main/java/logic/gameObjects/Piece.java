@@ -37,10 +37,10 @@ public class Piece implements Serializable {
 
     /* Getters */
 
-    
     public void setCell(Cell cell) {
-	this.position = cell;
+        this.position = cell;
     }
+
     public PieceColor getColor() {
         return color;
     }
@@ -211,8 +211,8 @@ public class Piece implements Serializable {
             throw new InvalidMoveException("The move is not possible.", ioe);
         }
     }
-    
+
     public String toString() {
-	return this.position.toString();
+        return this.position.toString();
     }
 }
