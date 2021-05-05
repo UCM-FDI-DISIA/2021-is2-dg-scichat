@@ -163,6 +163,8 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
                 );
                 if (roomID.isEmpty()) return;
 
+                roomID = roomID.toUpperCase();
+
                 this.sc.removeObserver(this);
                 this.dispose();
                 new OnlineWaitingWindow(this, this.sc, roomID);
