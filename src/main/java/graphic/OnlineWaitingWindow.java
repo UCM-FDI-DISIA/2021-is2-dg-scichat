@@ -3,6 +3,8 @@ package graphic;
 import control.Controller;
 import exceptions.OccupiedCellException;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.*;
@@ -111,11 +113,19 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         this.setContentPane(container);
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JPanel topSection = new JPanel();
-        topSection.setLayout(new BoxLayout(topSection, BoxLayout.X_AXIS));
+        JPanel topSection = new JPanel(new BorderLayout());
 
         JLabel roomIDLabel = new JLabel("Room ID: " + this.roomID);
-        topSection.add(roomIDLabel);
+        JButton copyRoomIDButton = new JButton("Copiar");
+        copyRoomIDButton.addActionListener(
+            e -> {
+                StringSelection stringSelection = new StringSelection(this.roomID);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+            }
+        );
+        topSection.add(roomIDLabel, BorderLayout.WEST);
+        topSection.add(copyRoomIDButton, BorderLayout.EAST);
 
         JPanel actionsSection = new JPanel();
         actionsSection.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
