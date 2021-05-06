@@ -27,18 +27,4 @@ public class StartGameCommand extends Command {
         req.put("data", new JSONObject().put("roomID", this.roomID));
         connection.send(req.toString());
     }
-
-    @Override
-    public void execute(JSONObject data, Server server, WebSocket connection)
-        throws Exception {
-        /// Cuando empieza el juego, hay que avisar a todos los clientes
-        String roomID = data.getString("roomID");
-        ServerRoom room = server.getRooms().get(roomID);
-
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-        req.put("data", data);
-
-        room.broadCast(req.toString());
-    }
 }
