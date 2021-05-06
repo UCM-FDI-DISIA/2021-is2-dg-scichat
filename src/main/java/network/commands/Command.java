@@ -1,6 +1,7 @@
 package network.commands;
 
 import network.client.SocketClient;
+import network.models.ServerRoom;
 import network.server.Server;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
@@ -25,7 +26,28 @@ public abstract class Command {
 
     /// Ejecutar para servidor
     public void execute(JSONObject data, Server server, WebSocket connection)
-        throws Exception {}
+        throws Exception {
+        /// Por defecto, reenvía la información a todos los jugadores de la habitación
+        this.broadCast(data, server, connection);
+    }
+
+    public final void broadCast(JSONObject data, Server server, WebSocket connection)
+        throws Exception {
+        if (!data.has("roomID")) return;
+        String roomID = data.getString("roomID");
+
+        if (!server.getRooms().containsKey(roomID)) {
+            throw new Exception("Room ID " + roomID + " does not exist.");
+        }
+
+        ServerRoom room = server.getRooms().get(roomID);
+
+        JSONObject req = new JSONObject();
+        req.put("type", this.type);
+        req.put("data", data);
+
+        room.broadCast(req.toString());
+    }
 
     public Command parse(String _type) {
         if (this.type.equals(_type)) return this;
