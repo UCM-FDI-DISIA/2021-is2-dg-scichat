@@ -37,7 +37,5 @@ public class Bot {
         }
     }
 
-    private void play() {
-        strategy.move();
-    }
+    private void play() {}
 }

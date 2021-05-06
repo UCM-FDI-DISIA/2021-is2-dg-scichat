@@ -3,9 +3,7 @@ package logic;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
-
 import utils.PieceColor;
 
 public class Board implements Serializable, Iterable<Cell> {
@@ -116,7 +114,7 @@ public class Board implements Serializable, Iterable<Cell> {
             }
             return null;
         }
-        
+
         public Cell getCornerCell(int side) {
             switch (side) {
                 case (0):
