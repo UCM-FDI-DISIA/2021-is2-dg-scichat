@@ -34,13 +34,10 @@ public abstract class Command {
     public final void broadCast(JSONObject data, Server server, WebSocket connection)
         throws Exception {
         if (!data.has("roomID")) return;
+
         String roomID = data.getString("roomID");
 
-        if (!server.getRooms().containsKey(roomID)) {
-            throw new Exception("Room ID " + roomID + " does not exist.");
-        }
-
-        ServerRoom room = server.getRooms().get(roomID);
+        ServerRoom room = server.getRoom(roomID);
 
         JSONObject req = new JSONObject();
         req.put("type", this.type);
