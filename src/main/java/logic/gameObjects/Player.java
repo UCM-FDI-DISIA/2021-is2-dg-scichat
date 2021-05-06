@@ -120,6 +120,10 @@ public class Player implements Serializable {
         return selectedPiece;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * Pone piece como pieza seleccionada por el jugador con la que realizara varias
      * de sus acciones
