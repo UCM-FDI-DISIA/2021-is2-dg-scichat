@@ -3,6 +3,9 @@ package logic;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
+
 import utils.PieceColor;
 
 public class Board implements Serializable, Iterable<Cell> {
@@ -35,7 +38,7 @@ public class Board implements Serializable, Iterable<Cell> {
     };
 
     /// Matriz de celdas
-    private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
+    private static final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
 
     public Board() {
         Side.Down.clear();
@@ -110,6 +113,24 @@ public class Board implements Serializable, Iterable<Cell> {
                     return Side.UpRight;
                 case (5):
                     return Side.DownRight;
+            }
+            return null;
+        }
+        
+        public Cell getCornerCell(int side) {
+            switch (side) {
+                case (0):
+                    return cells[16][6];
+                case (1):
+                    return cells[12][12];
+                case (2):
+                    return cells[4][12];
+                case (3):
+                    return cells[0][6];
+                case (4):
+                    return cells[4][0];
+                case (5):
+                    return cells[12][0];
             }
             return null;
         }
