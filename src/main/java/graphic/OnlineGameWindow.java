@@ -15,7 +15,7 @@ import network.commands.SurrenderCommand;
 import network.models.Room;
 import org.json.JSONObject;
 
-public class OnlineGameWindow extends JFrame implements SocketObserver, GameObserver {
+public class OnlineGameWindow extends JPanel implements SocketObserver, GameObserver {
     private final Controller ctrl;
     private final SocketClient sc;
     private final Room room;
@@ -62,34 +62,26 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
         String _roomID,
         Room _room
     ) {
-        super(_sc.getClientID());
+        super();
         this.setLocation(parent.getX(), parent.getY());
         this.sc = _sc;
         this.ctrl = _ctrl;
         this.roomID = _roomID;
         this.room = _room;
+        this.initGUI();
+        this.sc.addObserver(this);
+        this.ctrl.addObserver(this);
     }
 
     protected void initGUI() {
         try {
-            JPanel gameScreen = new JPanel(new BorderLayout());
             boardPanel = new BoardPanel(ctrl);
             optionsPanel = new OptionsPanel(ctrl);
-            gameScreen.add(boardPanel, BorderLayout.LINE_START);
-            gameScreen.add(optionsPanel, BorderLayout.LINE_END);
-            this.setContentPane(gameScreen);
+            add(boardPanel, BorderLayout.LINE_START);
+            add(optionsPanel, BorderLayout.LINE_END);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        this.pack();
-    }
-
-    public void display() {
-        this.initGUI();
-        this.sc.addObserver(this);
-        this.ctrl.addObserver(this);
-        this.setVisible(true);
     }
 
     public void addLocalPlayer(String ID) {
@@ -157,12 +149,12 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
     }
 
     private void setBlocker(String playerID) {
-        if (this.canMove(playerID)) {
+        /*if (this.canMove(playerID)) {
             this.setEnabled(true);
             setTitle("Tu turno");
         } else {
             this.setEnabled(false);
             setTitle("Esperando al otro jugador...");
-        }
+        }*/
     }
 }
