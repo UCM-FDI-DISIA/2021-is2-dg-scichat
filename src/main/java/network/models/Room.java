@@ -40,6 +40,14 @@ public class Room implements SocketMessage {
         return players;
     }
 
+    public PlayerConfig getPlayer(String playerID) throws Exception {
+        if (!this.players.containsKey(playerID)) {
+            throw new Exception("Player ID " + playerID + " does not exist.");
+        }
+
+        return this.players.get(playerID);
+    }
+
     public int getConnectedPlayers() {
         return connectedPlayers;
     }

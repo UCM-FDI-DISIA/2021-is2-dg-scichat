@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import network.commands.*;
 import network.models.ServerRoom;
+import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -39,6 +40,14 @@ public class Server extends WebSocketServer {
 
     public Map<String, ServerRoom> getRooms() {
         return rooms;
+    }
+
+    public final ServerRoom getRoom(String roomID) throws Exception {
+        if (!this.rooms.containsKey(roomID)) {
+            throw new Exception("Room ID " + roomID + " does not exist.");
+        }
+
+        return this.rooms.get(roomID);
     }
 
     @Override
@@ -101,6 +110,7 @@ public class Server extends WebSocketServer {
     }
 
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         Server server = new Server(8080);
         server.start();
     }

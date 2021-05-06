@@ -11,15 +11,17 @@ public class JoinRoomCommand extends Command {
     private String roomID;
     private String clientID;
     private Room room;
+    private String name;
 
     public JoinRoomCommand() {
         super("JOIN_ROOM");
     }
 
-    public JoinRoomCommand(String roomID, String clientID) {
+    public JoinRoomCommand(String roomID, String clientID, String name) {
         this();
         this.roomID = roomID;
         this.clientID = clientID;
+        this.name = name;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class JoinRoomCommand extends Command {
         JSONObject data = new JSONObject();
         data.put("clientID", this.clientID);
         data.put("roomID", this.roomID);
+        data.put("name", this.name);
 
         req.put("data", data);
         connection.send(req.toString());
@@ -47,16 +50,14 @@ public class JoinRoomCommand extends Command {
         throws Exception {
         String roomID = data.getString("roomID");
         String clientID = data.getString("clientID");
+        String name = data.getString("name");
 
-        if (!server.getRooms().containsKey(roomID)) {
-            throw new Exception("Room ID " + roomID + " does not exist.");
-        }
+        ServerRoom serverRoom = server.getRoom(roomID);
 
-        ServerRoom serverRoom = server.getRooms().get(roomID);
         if (serverRoom.isFull()) {
             throw new Exception("Room ID " + roomID + " is full.");
         }
 
-        serverRoom.addPlayer(clientID, connection);
+        serverRoom.addPlayer(clientID, name, connection);
     }
 }

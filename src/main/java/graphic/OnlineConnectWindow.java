@@ -14,6 +14,7 @@ import network.client.SocketObserver;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.CreateRoomCommand;
+import network.commands.SetPlayerNameCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import org.json.JSONObject;
@@ -26,6 +27,10 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     JButton connectButton;
     JPanel actionsSection = new JPanel();
     JLabel clientIDLabel = new JLabel();
+    JPanel clientConfigSection;
+
+    String name;
+    JLabel playerNameLabel = new JLabel();
 
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
         private String roomID;
@@ -40,7 +45,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             dispose();
-            new OnlineWaitingWindow(OnlineConnectWindow.this, sc, roomID);
+            new OnlineWaitingWindow(OnlineConnectWindow.this, sc, roomID, name);
         }
     };
 
@@ -71,7 +76,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         container.setBorder(
             new CompoundBorder(
                 titleBorder,
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
             )
         );
 
@@ -167,14 +172,45 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
 
                 this.sc.removeObserver(this);
                 this.dispose();
-                new OnlineWaitingWindow(this, this.sc, roomID);
+                new OnlineWaitingWindow(this, this.sc, roomID, name);
             }
         );
 
-        container.add(clientIDLabel, BorderLayout.SOUTH);
+        clientConfigSection = new JPanel(new GridLayout(2, 1));
+        clientConfigSection.setAlignmentX(Component.LEFT_ALIGNMENT);
+        clientConfigSection.setBackground(Color.WHITE);
+        clientConfigSection.setVisible(false);
+        container.add(clientConfigSection, BorderLayout.SOUTH);
+
+        clientConfigSection.add(clientIDLabel);
+
+        JPanel nameConfigSection = new JPanel(new BorderLayout(30, 10));
+        nameConfigSection.setBackground(Color.WHITE);
+        clientConfigSection.add(nameConfigSection);
+
+        playerNameLabel = new JLabel("Nombre: " + this.name);
+        nameConfigSection.add(playerNameLabel, BorderLayout.WEST);
+
+        JButton changeNameButton = new JButton("Cambiar");
+        nameConfigSection.add(changeNameButton, BorderLayout.EAST);
+
+        changeNameButton.addActionListener(
+            e -> {
+                String newName = JOptionPane.showInputDialog(this, "Nombre: ", this.name);
+                if (newName == null || newName.isEmpty()) return;
+
+                changeName(newName);
+            }
+        );
 
         this.setLocationRelativeTo(null);
+        this.setMinimumSize(new Dimension(600, 300));
         this.pack();
+    }
+
+    private void changeName(String _name) {
+        this.name = _name;
+        this.playerNameLabel.setText("Nombre: " + this.name);
     }
 
     public static void main(String[] args) {
@@ -185,6 +221,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     public void onOpen() {
         System.out.println("Se ha abierto una conexión Socket");
         actionsSection.setVisible(true);
+        clientConfigSection.setVisible(true);
         connectButton.setText("Desconectar");
         this.pack();
     }
@@ -192,6 +229,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     @Override
     public void onClientIDChange(String clientID) {
         this.clientIDLabel.setText("ID del cliente: " + clientID);
+        if (this.name == null) changeName(clientID);
     }
 
     @Override
@@ -210,6 +248,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
     public void onClose() {
         System.out.println("Se ha cerrado la conexión Socket");
         actionsSection.setVisible(false);
+        clientConfigSection.setVisible(false);
 
         this.clientIDLabel.setText("");
         connectButton.setText("Conectar");
