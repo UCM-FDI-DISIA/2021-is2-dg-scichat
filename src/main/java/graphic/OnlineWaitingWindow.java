@@ -107,7 +107,11 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         for (Map.Entry<String, PlayerConfig> it : room.getPlayers().entrySet()) {
             PlayerConfig config = it.getValue();
             try {
-                Player newPlayer = new HumanPlayer(config.color, config.side, it.getKey());
+                Player newPlayer = new HumanPlayer(
+                    config.color,
+                    config.side,
+                    it.getKey()
+                );
                 newPlayer.setName(config.getName());
                 players.add(newPlayer);
             } catch (OccupiedCellException e) {}
