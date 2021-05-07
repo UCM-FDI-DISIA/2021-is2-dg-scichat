@@ -25,6 +25,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     private final String roomID;
     private final JPanel roomInfoSection = new JPanel();
     private Room room;
+    private String name;
 
     private JButton startGameButton;
 
@@ -48,11 +49,17 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         }
     };
 
-    OnlineWaitingWindow(JFrame parent, SocketClient _connection, String _roomID) {
+    OnlineWaitingWindow(
+        JFrame parent,
+        SocketClient _connection,
+        String _roomID,
+        String _name
+    ) {
         super("Habitación #" + _roomID);
         this.setLocation(parent.getX(), parent.getY());
         this.connection = _connection;
         this.roomID = _roomID;
+        this.name = _name;
 
         this.connection.addObserver(this);
 
@@ -82,7 +89,7 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
     }
 
     private void connectToRoom() {
-        new JoinRoomCommand(this.roomID, this.connection.getClientID())
+        new JoinRoomCommand(this.roomID, this.connection.getClientID(), name)
         .send(this.connection);
     }
 
@@ -100,7 +107,9 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         for (Map.Entry<String, PlayerConfig> it : room.getPlayers().entrySet()) {
             PlayerConfig config = it.getValue();
             try {
-                players.add(new HumanPlayer(config.color, config.side, it.getKey()));
+                Player newPlayer = new HumanPlayer(config.color, config.side, it.getKey());
+                newPlayer.setName(config.getName());
+                players.add(newPlayer);
             } catch (OccupiedCellException e) {}
         }
 
@@ -194,17 +203,16 @@ public class OnlineWaitingWindow extends JFrame implements SocketObserver {
         JPanel centerSection = new JPanel(new GridLayout(connectedPlayers, 1));
 
         for (Map.Entry<String, PlayerConfig> it : players.entrySet()) {
-            String clientID = it.getKey();
             PlayerConfig playerConfig = it.getValue();
 
             JPanel playerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
             playerSection.add(new Circle(20, playerConfig.color.getColor()));
 
-            JLabel clientIDLabel = new JLabel("ID: " + clientID);
+            JLabel playerNameLabel = new JLabel(playerConfig.getName());
             Board.Side side = playerConfig.side;
 
-            playerSection.add(clientIDLabel);
+            playerSection.add(playerNameLabel);
             playerSection.add(new JLabel(side.toString()));
 
             centerSection.add(playerSection);

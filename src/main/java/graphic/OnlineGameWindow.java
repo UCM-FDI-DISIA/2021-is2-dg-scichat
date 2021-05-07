@@ -131,10 +131,10 @@ public class OnlineGameWindow extends JFrame implements SocketObserver, GameObse
 
     @Override
     public void onGameEnded(Game game) {
-        System.out.println("Ha ganado el jugador " + game.getWinner().getId());
+        System.out.println("Ha ganado el jugador " + game.getWinner().getName());
         JOptionPane.showMessageDialog(
             this,
-            "Ha ganado el jugador " + game.getWinner().getId(),
+            "Ha ganado el jugador " + game.getWinner().getName(),
             "Fin",
             JOptionPane.INFORMATION_MESSAGE
         );

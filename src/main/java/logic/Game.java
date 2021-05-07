@@ -30,6 +30,8 @@ public class Game implements Serializable {
     private int currentPlayerIndex = 0;
     private Mode gameMode;
     private Player winner = null;
+    private long timePlaying = 0;
+    private long timeAtTurnStart = 0;
     private ArrayList<GameObserver> observers = new ArrayList<>();
 
     public Game() {}
@@ -43,6 +45,7 @@ public class Game implements Serializable {
         } else {
             this.gameMode = Mode.Fast;
         }
+        this.timePlaying = jGame.getLong("time");
         JSONArray jPlayers = jGame.getJSONArray("players");
         for (int i = 0; i < jPlayers.length(); ++i) {
             JSONObject jPlayer = jPlayers.getJSONObject(i);
@@ -158,24 +161,28 @@ public class Game implements Serializable {
      * Empieza el temporizador del jugador actual
      */
     public void startTurn() {
-        getCurrentPlayer().startTurn();
+        this.timeAtTurnStart = System.currentTimeMillis();
     }
 
     /**
      * Termina el temporizador del jugador actual
      */
     public void endTurn() {
-        getCurrentPlayer().endTurn();
+        this.timePlaying += -this.timeAtTurnStart + System.currentTimeMillis();
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
     }
 
+    public long getTimePlaying() {
+        return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
+    }
+
     /**
      * @return Tiempo en milisegundos que el jugador actual lleva jugando
      */
-    public long getCurrentPlayerTime() {
-        return this.getCurrentPlayer().timePlaying();
+    public long getCurrentTime() {
+        return this.getTimePlaying();
     }
 
     /**
@@ -287,6 +294,7 @@ public class Game implements Serializable {
         players = new ArrayList<>();
         observers = new ArrayList<>();
         winner = null;
+        this.timePlaying = 0;
     }
 
     public JSONObject toJSON() {
@@ -294,6 +302,7 @@ public class Game implements Serializable {
         jRes.put("stopped", this.stopped);
         jRes.put("currentPlayerIndex", this.currentPlayerIndex);
         jRes.put("gameMode", this.gameMode == Mode.Traditional);
+        jRes.put("time", this.getCurrentTime());
 
         JSONArray jPlayers = new JSONArray();
         for (int i = 0; i < players.size(); ++i) {
@@ -313,6 +322,7 @@ public class Game implements Serializable {
         this.stopped = false;
         this.currentPlayerIndex = 0;
         this.winner = null;
+        this.timePlaying = 0;
 
         for (Player player : players) {
             player.softReset();
@@ -343,6 +353,7 @@ public class Game implements Serializable {
             if (currentPlayer.isAWinner()) {
                 winner = currentPlayer;
             }
+            currentPlayer.deselectPiece();
         } catch (InvalidMoveException e) {
             throw new ExecuteException(
                 String.format(
@@ -381,10 +392,7 @@ public class Game implements Serializable {
         );
         result.append(
             "Tiempo de juego " +
-            DurationFormatUtils.formatDuration(
-                this.getCurrentPlayer().timePlaying(),
-                "HH:mm:ss.S"
-            ) +
+            DurationFormatUtils.formatDuration(this.getTimePlaying(), "HH:mm:ss.S") +
             "\n"
         );
         return result.toString();

@@ -12,9 +12,10 @@ public class ServerRoom extends network.models.Room {
         super(config);
     }
 
-    public PlayerConfig addPlayer(String uuid, WebSocket connection) {
+    public PlayerConfig addPlayer(String uuid, String name, WebSocket connection) {
         PlayerConfig playerConfig = roomConfig.getPlayerConfigs().get(0);
         roomConfig.getPlayerConfigs().remove(0);
+        playerConfig.setName(name);
         this.players.put(uuid, playerConfig);
         this.playerConnections.put(uuid, connection);
         ++connectedPlayers;

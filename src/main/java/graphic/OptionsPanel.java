@@ -39,7 +39,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
                             long calcTime = System.currentTimeMillis();
                             labelTime.setText(
                                 DurationFormatUtils.formatDuration(
-                                    game.getCurrentPlayerTime(),
+                                    game.getCurrentTime(),
                                     "HH:mm:ss"
                                 )
                             );
