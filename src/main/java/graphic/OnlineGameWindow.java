@@ -13,6 +13,7 @@ import network.commands.CommandParser;
 import network.commands.PieceMovedCommand;
 import network.commands.SurrenderCommand;
 import network.models.Room;
+
 import org.json.JSONObject;
 
 public class OnlineGameWindow extends JPanel implements SocketObserver, GameObserver {
@@ -21,6 +22,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     private final Room room;
     private final String roomID;
     private final HashSet<String> localPlayers = new HashSet<>();
+    private MainWindow parent; 
 
     private BoardPanel boardPanel;
     private OptionsPanel optionsPanel;
@@ -56,7 +58,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     };
 
     OnlineGameWindow(
-        JFrame parent,
+        MainWindow parent,
         Controller _ctrl,
         SocketClient _sc,
         String _roomID,
@@ -68,6 +70,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         this.ctrl = _ctrl;
         this.roomID = _roomID;
         this.room = _room;
+        this.parent=parent;
         this.initGUI();
         this.sc.addObserver(this);
         this.ctrl.addObserver(this);
@@ -123,13 +126,15 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     @Override
     public void onGameEnded(Game game) {
-        System.out.println("Ha ganado el jugador " + game.getWinner().getName());
+	setVisible(false);
+	parent.initWinner(game.getWinner());
+        /*System.out.println("Ha ganado el jugador " + game.getWinner().getName());
         JOptionPane.showMessageDialog(
             this,
             "Ha ganado el jugador " + game.getWinner().getName(),
             "Fin",
             JOptionPane.INFORMATION_MESSAGE
-        );
+        );*/
     }
 
     public boolean canMove(String playerID) {

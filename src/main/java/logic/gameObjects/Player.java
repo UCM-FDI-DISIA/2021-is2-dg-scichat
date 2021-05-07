@@ -28,7 +28,7 @@ public class Player implements Serializable {
     private boolean surrender; //Jugador se ha rendido
     private String id; // Jugador numero id
 
-    private String name;
+    private String name=null;
 
     /*Constructores*/
 
@@ -42,6 +42,7 @@ public class Player implements Serializable {
         this.playerSide = start;
         this.surrender = false;
         this.id = id;
+        this.name=null;
         createPieces();
     }
 
@@ -59,6 +60,7 @@ public class Player implements Serializable {
         this.playerSide = playerSide;
         this.surrender = surrender;
         this.id = id;
+        this.name=null;
     }
 
     public Player(JSONObject jPlayer, Board board) {
@@ -66,6 +68,7 @@ public class Player implements Serializable {
         this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
         this.surrender = jPlayer.getBoolean("surrender");
         this.id = jPlayer.getString("id");
+        this.name=null;
 
         //Ahora creamos las piezas correspondientes
         JSONArray jPieces = jPlayer.getJSONArray("pieces");

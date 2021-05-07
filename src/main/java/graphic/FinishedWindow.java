@@ -45,7 +45,7 @@ public class FinishedWindow extends JPanel {
         if (winner == null) {
             title = new JLabel("No ha ganado nadie");
         } else {
-            title = new JLabel("Ha ganado el jugador " + winner.getId());
+            title = new JLabel("Ha ganado el jugador " + winner.getName());
         }
 
         JPanel gamePanel = new JPanel();
