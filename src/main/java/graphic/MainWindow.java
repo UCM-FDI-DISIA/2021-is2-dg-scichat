@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import logic.Game;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.models.Room;

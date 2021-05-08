@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import utils.PieceColor;
 
 public class PlayerTest {
-    Player test;
+    HumanPlayer test;
     Board board;
 
     @BeforeEach
@@ -18,7 +18,7 @@ public class PlayerTest {
         try {
             board = new Board();
 
-            test = new Player(PieceColor.BLUE, Board.Side.Down, "0");
+            test = new HumanPlayer(PieceColor.BLUE, Board.Side.Down, "0");
         } catch (OccupiedCellException e) {
             fail("Player start Cell previously occupied");
         }
