@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import logic.Game;
 import logic.gameObjects.Player;
+import network.client.SocketClient;
+import network.models.Room;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver {
@@ -24,12 +26,18 @@ public class MainWindow extends JFrame implements GameObserver {
     private NewGameWindow gameOptionsScreen = null;
     private LoadGameWindow loadGameScreen = null;
     private LocalServerSelectionScreen localOnlineScreen = null;
+    private OnlineConnectWindow onlineConnectScreen = null;
+    private OnlineWaitingWindow onlineWaitingScreen = null;
+    private OnlineGameWindow onlineGameScreen = null;
+
+    //Datos online
+    private String roomID = null;
+    private SocketClient connection = null;
+    private String playerName = null;
 
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
         this.ctrl = ctrl;
-        ctrl.addObserver(this); // Necesitamos incluirlo como observador para que pueda darse cuenta de que la
-        // partida ha terminado
         initGUI();
     }
 
@@ -45,13 +53,22 @@ public class MainWindow extends JFrame implements GameObserver {
         localOnlineScreen.open();
     }
 
-    public void initOnline() {
-        new OnlineConnectWindow(this);
+    public void initOnlineConnect() {
+        onlineConnectScreen = new OnlineConnectWindow(this);
+        roomID = onlineConnectScreen.getRoomID();
+        connection = onlineConnectScreen.getConnection();
+        playerName = onlineConnectScreen.getName();
     }
 
-    //TODO Provisional
-    public void initOnlineGame(JPanel panel) {
-        this.setContentPane(panel);
+    public void initOnlineWaiting() {
+        onlineWaitingScreen =
+            new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
+    }
+
+    public void initOnlineGame(Room room) {
+        onlineGameScreen = new OnlineGameWindow(this, ctrl, connection, roomID, room);
+        onlineGameScreen.addLocalPlayer(connection.getClientID());
+        this.setContentPane(onlineGameScreen);
         this.pack();
         this.setSize(width, height);
     }

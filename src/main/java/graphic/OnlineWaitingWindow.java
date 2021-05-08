@@ -25,6 +25,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
     private final JPanel roomInfoSection = new JPanel();
     private Room room;
     private String name;
+    private Controller ctrl;
 
     private JButton startGameButton;
 
@@ -48,18 +49,19 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         }
     };
 
-
     OnlineWaitingWindow(
-	MainWindow parent,
+        MainWindow _parent,
         SocketClient _connection,
         String _roomID,
-        String _name
+        String _name,
+        Controller _ctrl
     ) {
-        super(parent, "Habitación #" + _roomID);
-        this.setLocation(parent.getX(), parent.getY());
+        super(_parent, "Habitación #" + _roomID);
+        this.setLocation(_parent.getX(), _parent.getY());
         this.connection = _connection;
         this.roomID = _roomID;
         this.name = _name;
+        this.ctrl = _ctrl;
 
         this.connection.addObserver(this);
 
@@ -73,17 +75,8 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
                 public void execute(JSONObject data, SocketClient connection) {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     dispose();
-
-                    /// Añadir el ID del jugador local
-                    OnlineGameWindow w = new OnlineGameWindow(
-                        parent,
-                        createController(),
-                        connection,
-                        roomID,
-                        room
-                    );
-                    w.addLocalPlayer(connection.getClientID());
-                    parent.initOnlineGame(w);
+                    createGame();
+                    _parent.initOnlineGame(room);
                 }
             };
     }
@@ -93,11 +86,10 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         .send(this.connection);
     }
 
+    //TODO
     /// Crear el controlador con las configuraciones dadas
-    private Controller createController() {
-        Controller ctrl = new Controller();
+    private void createGame() {
         Game game = new Game();
-        game.reset();
         ctrl.setGame(game);
 
         game.setGameMode(room.getRoomConfig().getMode());
@@ -114,8 +106,6 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         }
 
         game.setPlayers(players);
-
-        return ctrl;
     }
 
     private void initGUI() {

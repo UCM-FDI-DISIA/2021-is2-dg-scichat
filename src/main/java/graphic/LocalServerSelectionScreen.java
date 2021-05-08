@@ -55,7 +55,7 @@ public class LocalServerSelectionScreen extends JDialog {
         online.addActionListener(
             e -> {
                 setVisible(false);
-                parent.initOnline();
+                parent.initOnlineConnect();
             }
         );
         container.add(online, BorderLayout.WEST);

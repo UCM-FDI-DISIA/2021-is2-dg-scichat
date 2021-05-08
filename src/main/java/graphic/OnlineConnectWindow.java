@@ -30,16 +30,16 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     JPanel clientConfigSection;
 
     String name;
+    private String roomID;
     JLabel playerNameLabel = new JLabel();
 
     private MainWindow parent = null;
 
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
-        private String roomID;
 
         @Override
         public void parse(JSONObject data) {
-            this.roomID = data.getString("roomID");
+            roomID = data.getString("roomID");
         }
 
         @Override
@@ -47,7 +47,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             dispose();
-            new OnlineWaitingWindow(parent, sc, roomID, name);
+            parent.initOnlineWaiting();
         }
     };
 
@@ -58,6 +58,18 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
             return new Command[] { roomCreatedCommand };
         }
     };
+
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SocketClient getConnection() {
+        return sc;
+    }
 
     public OnlineConnectWindow(MainWindow parent) {
         super(parent, "Juego Online");
@@ -168,9 +180,8 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
 
         joinOnlineRoomButton.addActionListener(
             e -> {
-                String roomID = JOptionPane.showInputDialog(
-                    "Introduce código de la habitación: "
-                );
+                roomID =
+                    JOptionPane.showInputDialog("Introduce código de la habitación: ");
                 if (roomID.isEmpty()) return;
 
                 roomID = roomID.toUpperCase();
@@ -178,8 +189,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 this.sc.removeObserver(this);
                 this.dispose();
 
-                new OnlineWaitingWindow(parent, this.sc, roomID, name);
-
+                parent.initOnlineWaiting();
             }
         );
 
@@ -214,7 +224,6 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         this.setMinimumSize(new Dimension(600, 300));
         this.pack();
     }
-
 
     private void changeName(String _name) {
         this.name = _name;
