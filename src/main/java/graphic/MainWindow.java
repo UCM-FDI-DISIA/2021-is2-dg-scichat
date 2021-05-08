@@ -14,6 +14,7 @@ public class MainWindow extends JFrame implements GameObserver {
     private static final long serialVersionUID = 1L;
 
     private Controller ctrl;
+    private SocketClient connection = null;
 
     //Datos de diseno
     public static int width = 930;
@@ -30,17 +31,13 @@ public class MainWindow extends JFrame implements GameObserver {
     private OnlineWaitingWindow onlineWaitingScreen = null;
     private OnlineGameWindow onlineGameScreen = null;
 
-    //Datos online
-    private String roomID = null;
-    private SocketClient connection = null;
-    private String playerName = null;
-
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
         this.ctrl = ctrl;
         initGUI();
     }
 
+    //Metodos para inicializar pantallas y ventanas
     private void initGUI() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initStart();
@@ -55,18 +52,26 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initOnlineConnect() {
         onlineConnectScreen = new OnlineConnectWindow(this);
-        roomID = onlineConnectScreen.getRoomID();
-        connection = onlineConnectScreen.getConnection();
-        playerName = onlineConnectScreen.getName();
+        if (!onlineConnectScreen.open()) {
+            closeConnection();
+        }
     }
 
     public void initOnlineWaiting() {
+        String roomID = onlineConnectScreen.getRoomID();
+        connection = onlineConnectScreen.getConnection();
+        String playerName = onlineConnectScreen.getName();
         onlineWaitingScreen =
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
+        if (!onlineWaitingScreen.open()) {
+            closeConnection();
+        }
     }
 
     public void initOnlineGame(Room room) {
-        onlineGameScreen = new OnlineGameWindow(this, ctrl, connection, roomID, room);
+        String roomID = onlineConnectScreen.getRoomID();
+        connection = onlineConnectScreen.getConnection();
+        onlineGameScreen = new OnlineGameWindow(ctrl, connection, roomID, room);
         onlineGameScreen.addLocalPlayer(connection.getClientID());
         this.setContentPane(onlineGameScreen);
         this.pack();
@@ -79,6 +84,13 @@ public class MainWindow extends JFrame implements GameObserver {
             ctrl.reset();
             gameScreen = null;
         }
+        if (onlineGameScreen != null) {
+            ctrl.reset();
+            closeConnection();
+            onlineConnectScreen = null;
+            onlineWaitingScreen = null;
+            onlineGameScreen = null;
+        }
         if (startScreen == null) startScreen = new WelcomeWindow(this);
         this.setContentPane(startScreen);
         this.pack();
@@ -86,9 +98,6 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void initGame() {
-        if (gameScreen != null) {
-            ctrl.softReset();
-        }
         gameScreen = new JPanel(new BorderLayout());
         gameScreen.add(new BoardPanel(ctrl), BorderLayout.LINE_START);
         gameScreen.add(new OptionsPanel(ctrl), BorderLayout.LINE_END);
@@ -124,6 +133,23 @@ public class MainWindow extends JFrame implements GameObserver {
         if (this.loadGameScreen == null) this.loadGameScreen =
             new LoadGameWindow(ctrl, this);
         this.loadGameScreen.open();
+    }
+
+    //Otros metodos
+    public void closeConnection() {
+        if (connection != null) {
+            connection.close();
+            connection = null;
+        }
+    }
+
+    public void initRematch() {
+        if (connection != null) {
+            initOnlineWaiting();
+        } else {
+            ctrl.softReset();
+            initGame();
+        }
     }
 
     public void onGameEnded(Game game) {

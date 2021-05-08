@@ -26,6 +26,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
     private Room room;
     private String name;
     private Controller ctrl;
+    private boolean status;
 
     private JButton startGameButton;
 
@@ -76,6 +77,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     dispose();
                     createGame();
+                    status = true;
                     _parent.initOnlineGame(room);
                 }
             };
@@ -86,7 +88,6 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         .send(this.connection);
     }
 
-    //TODO
     /// Crear el controlador con las configuraciones dadas
     private void createGame() {
         Game game = new Game();
@@ -154,8 +155,6 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         container.add(roomInfoSection, BorderLayout.CENTER);
         container.add(actionsSection, BorderLayout.PAGE_END);
 
-        this.pack();
-        this.setVisible(true);
         this.setResizable(false);
     }
 
@@ -232,5 +231,12 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
             "Error!",
             JOptionPane.ERROR_MESSAGE
         );
+    }
+
+    public boolean open() {
+        status = false;
+        this.pack();
+        this.setVisible(true);
+        return status;
     }
 }

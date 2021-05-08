@@ -21,7 +21,6 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     private final Room room;
     private final String roomID;
     private final HashSet<String> localPlayers = new HashSet<>();
-    private MainWindow parent;
 
     private BoardPanel boardPanel;
     private OptionsPanel optionsPanel;
@@ -56,20 +55,12 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         }
     };
 
-    OnlineGameWindow(
-        MainWindow parent,
-        Controller _ctrl,
-        SocketClient _sc,
-        String _roomID,
-        Room _room
-    ) {
+    OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room) {
         super();
-        this.setLocation(parent.getX(), parent.getY());
         this.sc = _sc;
         this.ctrl = _ctrl;
         this.roomID = _roomID;
         this.room = _room;
-        this.parent = parent;
         this.initGUI();
         this.sc.addObserver(this);
         this.ctrl.addObserver(this);
@@ -123,9 +114,9 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         }
     }
 
-    @Override
+    /*@Override
     public void onGameEnded(Game game) {
-        setVisible(false);
+        
         parent.initWinner(game.getWinner());
         /*System.out.println("Ha ganado el jugador " + game.getWinner().getName());
         JOptionPane.showMessageDialog(
@@ -133,8 +124,8 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
             "Ha ganado el jugador " + game.getWinner().getName(),
             "Fin",
             JOptionPane.INFORMATION_MESSAGE
-        );*/
-    }
+        );
+    }*/
 
     public boolean canMove(String playerID) {
         return this.localPlayers.contains(playerID);
@@ -152,6 +143,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         setBlocker(playerID);
     }
 
+    @Deprecated
     private void setBlocker(String playerID) {
         /*if (this.canMove(playerID)) {
             this.setEnabled(true);

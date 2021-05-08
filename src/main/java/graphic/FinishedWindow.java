@@ -137,7 +137,7 @@ public class FinishedWindow extends JPanel {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent action) {
-                    father.initGame();
+                    father.initRematch();
                 }
             }
         );

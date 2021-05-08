@@ -34,6 +34,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     JLabel playerNameLabel = new JLabel();
 
     private MainWindow parent = null;
+    private boolean status;
 
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
 
@@ -47,6 +48,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             dispose();
+            status = true;
             parent.initOnlineWaiting();
         }
     };
@@ -75,9 +77,6 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         super(parent, "Juego Online");
         this.parent = parent;
         initGUI();
-        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
-        pack();
-        setVisible(true);
     }
 
     private void initGUI() {
@@ -189,6 +188,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 this.sc.removeObserver(this);
                 this.dispose();
 
+                status = true;
                 parent.initOnlineWaiting();
             }
         );
@@ -271,5 +271,13 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     public void onError(Exception e) {
         System.out.println("Se ha producido una excepción en Socket");
         e.printStackTrace();
+    }
+
+    public boolean open() {
+        status = false;
+        setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
+        pack();
+        setVisible(true);
+        return status;
     }
 }

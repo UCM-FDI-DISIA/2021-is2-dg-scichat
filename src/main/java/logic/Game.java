@@ -248,6 +248,7 @@ public class Game implements Serializable {
         return this.players.get(this.currentPlayerIndex);
     }
 
+    //TODO quitar
     public HashSet<Piece> getCurrentPlayerPieces() {
         return this.getCurrentPlayer().getPieces();
     }
