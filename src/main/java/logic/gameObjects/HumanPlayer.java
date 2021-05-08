@@ -281,7 +281,6 @@ public class HumanPlayer implements Serializable, Player {
         return jPlayer;
     }
 
-    
     @Override
     public void setName(String name) {
         this.name = name;
