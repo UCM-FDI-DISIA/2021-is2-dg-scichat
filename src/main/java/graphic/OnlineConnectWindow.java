@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;

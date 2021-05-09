@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.*;
 import logic.Board;
 import logic.Game;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
@@ -100,7 +101,11 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         for (Map.Entry<String, PlayerConfig> it : room.getPlayers().entrySet()) {
             PlayerConfig config = it.getValue();
             try {
-                Player newPlayer = new Player(config.color, config.side, it.getKey());
+                Player newPlayer = new HumanPlayer(
+                    config.color,
+                    config.side,
+                    it.getKey()
+                );
                 newPlayer.setName(config.getName());
                 players.add(newPlayer);
             } catch (OccupiedCellException e) {}

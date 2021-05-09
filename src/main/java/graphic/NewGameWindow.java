@@ -13,6 +13,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import logic.Board;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import utils.Mode;
 import utils.PieceColor;
@@ -270,7 +271,7 @@ public class NewGameWindow extends JDialog {
 
             try {
                 players.add(
-                    new Player(
+                    new HumanPlayer(
                         color,
                         this.availableSides.poll(),
                         new Integer(i + 1).toString()

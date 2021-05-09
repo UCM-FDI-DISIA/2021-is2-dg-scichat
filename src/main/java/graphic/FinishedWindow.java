@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 
 public class FinishedWindow extends JPanel {

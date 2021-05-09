@@ -7,6 +7,8 @@ import graphic.GameObserver;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
+import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -47,7 +49,7 @@ public class Game implements Serializable {
         JSONArray jPlayers = jGame.getJSONArray("players");
         for (int i = 0; i < jPlayers.length(); ++i) {
             JSONObject jPlayer = jPlayers.getJSONObject(i);
-            Player auxPlayer = new Player(jPlayer, this.board);
+            Player auxPlayer = new HumanPlayer(jPlayer, this.board);
             this.players.add(auxPlayer);
         }
     }
@@ -149,7 +151,7 @@ public class Game implements Serializable {
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
         this.players.add(
-                new Player(color, side, new Integer(players.size() + 1).toString())
+                new HumanPlayer(color, side, new Integer(players.size() + 1).toString())
             );
     }
 
@@ -217,7 +219,7 @@ public class Game implements Serializable {
     public Player wonBySurrender() {
         Player out = null;
         for (Player i : players) {
-            if (!i.hasSurrender()) {
+            if (!i.hasSurrendered()) {
                 if (out != null) return null; else out = i;
             }
         }
@@ -232,7 +234,7 @@ public class Game implements Serializable {
         this.endTurn();
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
-        } while (this.getCurrentPlayer().hasSurrender());
+        } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
@@ -248,8 +250,7 @@ public class Game implements Serializable {
         return this.players.get(this.currentPlayerIndex);
     }
 
-    //TODO quitar
-    public HashSet<Piece> getCurrentPlayerPieces() {
+    public Set<Piece> getCurrentPlayerPieces() {
         return this.getCurrentPlayer().getPieces();
     }
 
