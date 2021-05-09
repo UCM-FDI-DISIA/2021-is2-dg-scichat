@@ -74,7 +74,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     }
 
     public OnlineConnectWindow(MainWindow parent) {
-        super(parent, "Juego Online");
+        super(parent, "Juego Online", true);
         this.parent = parent;
         initGUI();
     }

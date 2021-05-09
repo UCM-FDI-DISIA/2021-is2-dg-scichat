@@ -64,7 +64,7 @@ public class MainWindow extends JFrame implements GameObserver {
         onlineWaitingScreen =
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
         if (!onlineWaitingScreen.open()) {
-            closeConnection();
+            //TODO closeConnection();
         }
     }
 
