@@ -82,7 +82,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     createGame();
                     status = true;
-                    dispose();
+                    setVisible(false);
                 }
             };
     }

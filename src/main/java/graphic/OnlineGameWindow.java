@@ -137,7 +137,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     @Override
     public void onEndTurn(Game game) {
 	String playerID = game.getCurrentPlayer().getId();
-        setBlocker(playerID);
+        if(!game.isFinished())setBlocker(playerID);
     }
 
     private void setBlocker(String playerID) {

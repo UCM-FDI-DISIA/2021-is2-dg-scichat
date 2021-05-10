@@ -2,7 +2,11 @@ package graphic;
 
 import control.Controller;
 import java.awt.BorderLayout;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import logic.Game;
 import logic.gameObjects.HumanPlayer;
@@ -57,13 +61,13 @@ public class MainWindow extends JFrame implements GameObserver {
             closeConnection();
         }
         else {
+            connection = onlineConnectScreen.getConnection();
             initOnlineWaiting();
         }
     }
 
     public void initOnlineWaiting() {
         String roomID = onlineConnectScreen.getRoomID();
-        connection = onlineConnectScreen.getConnection();
         String playerName = onlineConnectScreen.getName();
         onlineWaitingScreen =
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
@@ -77,7 +81,6 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initOnlineGame(Room room) {
         String roomID = onlineConnectScreen.getRoomID();
-        connection = onlineConnectScreen.getConnection();
         onlineGameScreen = new OnlineGameWindow(ctrl, connection, roomID, room, this);
         onlineGameScreen.addLocalPlayer(connection.getClientID());
         onlineGameScreen.start();
@@ -154,7 +157,18 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initRematch() {
         if (connection != null) {
-            connection.close();
+            try {
+		connection = new SocketClient(new URI(onlineConnectScreen.getURL()));
+	    } catch (URISyntaxException e) {
+		JOptionPane.showMessageDialog(
+                    this,
+                    "Error al reestablecer conexion con el servidor",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+		initStart();
+	    }
+            connection.connect();
             initOnlineWaiting();
         } else {
             ctrl.softReset();
@@ -163,6 +177,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
+	if(connection!=null)connection.close();
         initWinner(game.getWinner());
     }
 }

@@ -29,6 +29,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     JPanel actionsSection = new JPanel();
     JLabel clientIDLabel = new JLabel();
     JPanel clientConfigSection;
+    JTextField serverURLField;
 
     String name;
     private String roomID;
@@ -72,6 +73,10 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     public SocketClient getConnection() {
         return sc;
     }
+    
+    public String getURL() {
+	return this.serverURLField.getText();
+    }
 
     public OnlineConnectWindow(MainWindow parent) {
         super(parent, "Juego Online", true);
@@ -107,7 +112,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         );
         serverSection.setLayout(new BoxLayout(serverSection, BoxLayout.X_AXIS));
 
-        JTextField serverURLField = new JTextField("ws://localhost:8080");
+        serverURLField = new JTextField("ws://localhost:8080");
 
         serverSection.add(serverURLField);
 
