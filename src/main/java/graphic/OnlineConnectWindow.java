@@ -73,9 +73,9 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     public SocketClient getConnection() {
         return sc;
     }
-    
+
     public String getURL() {
-	return this.serverURLField.getText();
+        return this.serverURLField.getText();
     }
 
     public OnlineConnectWindow(MainWindow parent) {

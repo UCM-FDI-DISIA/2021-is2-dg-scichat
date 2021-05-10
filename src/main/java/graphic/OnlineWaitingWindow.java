@@ -50,9 +50,9 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
             return new Command[] { roomInfoCommand, startGameCommand };
         }
     };
-    
+
     public Room getRoom() {
-	return this.room;
+        return this.room;
     }
 
     OnlineWaitingWindow(

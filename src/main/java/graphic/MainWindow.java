@@ -4,7 +4,6 @@ import control.Controller;
 import java.awt.BorderLayout;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -59,8 +58,7 @@ public class MainWindow extends JFrame implements GameObserver {
         onlineConnectScreen = new OnlineConnectWindow(this);
         if (!onlineConnectScreen.open()) {
             closeConnection();
-        }
-        else {
+        } else {
             connection = onlineConnectScreen.getConnection();
             initOnlineWaiting();
         }
@@ -73,8 +71,7 @@ public class MainWindow extends JFrame implements GameObserver {
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
         if (!onlineWaitingScreen.open()) {
             closeConnection();
-        }
-        else {
+        } else {
             initOnlineGame(onlineWaitingScreen.getRoom());
         }
     }
@@ -158,16 +155,16 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initRematch() {
         if (connection != null) {
             try {
-		connection = new SocketClient(new URI(onlineConnectScreen.getURL()));
-	    } catch (URISyntaxException e) {
-		JOptionPane.showMessageDialog(
+                connection = new SocketClient(new URI(onlineConnectScreen.getURL()));
+            } catch (URISyntaxException e) {
+                JOptionPane.showMessageDialog(
                     this,
                     "Error al reestablecer conexion con el servidor",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
                 );
-		initStart();
-	    }
+                initStart();
+            }
             connection.connect();
             initOnlineWaiting();
         } else {
@@ -177,7 +174,7 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
-	if(connection!=null)connection.close();
+        if (connection != null) connection.close();
         initWinner(game.getWinner());
     }
 }

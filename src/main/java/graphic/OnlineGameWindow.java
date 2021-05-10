@@ -56,17 +56,23 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         }
     };
 
-    OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room, MainWindow parent) {
+    OnlineGameWindow(
+        Controller _ctrl,
+        SocketClient _sc,
+        String _roomID,
+        Room _room,
+        MainWindow parent
+    ) {
         super();
         this.sc = _sc;
         this.ctrl = _ctrl;
         this.roomID = _roomID;
         this.room = _room;
-        this.parent=parent;
+        this.parent = parent;
     }
-    
+
     public void start() {
-	this.initGUI();
+        this.initGUI();
         this.sc.addObserver(this);
         this.ctrl.addObserver(this);
     }
@@ -121,7 +127,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     @Override
     public void onGameEnded(Game game) {
-	this.parent.setEnabled(true);
+        this.parent.setEnabled(true);
     }
 
     public boolean canMove(String playerID) {
@@ -136,8 +142,8 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     @Override
     public void onEndTurn(Game game) {
-	String playerID = game.getCurrentPlayer().getId();
-        if(!game.isFinished())setBlocker(playerID);
+        String playerID = game.getCurrentPlayer().getId();
+        if (!game.isFinished()) setBlocker(playerID);
     }
 
     private void setBlocker(String playerID) {
