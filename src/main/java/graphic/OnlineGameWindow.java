@@ -24,6 +24,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     private BoardPanel boardPanel;
     private OptionsPanel optionsPanel;
+    private MainWindow parent;
 
     private Command pieceMovedCommand = new PieceMovedCommand() {
 
@@ -55,13 +56,17 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         }
     };
 
-    OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room) {
+    OnlineGameWindow(Controller _ctrl, SocketClient _sc, String _roomID, Room _room, MainWindow parent) {
         super();
         this.sc = _sc;
         this.ctrl = _ctrl;
         this.roomID = _roomID;
         this.room = _room;
-        this.initGUI();
+        this.parent=parent;
+    }
+    
+    public void start() {
+	this.initGUI();
         this.sc.addObserver(this);
         this.ctrl.addObserver(this);
     }
@@ -114,18 +119,10 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         }
     }
 
-    /*@Override
+    @Override
     public void onGameEnded(Game game) {
-        
-        parent.initWinner(game.getWinner());
-        /*System.out.println("Ha ganado el jugador " + game.getWinner().getName());
-        JOptionPane.showMessageDialog(
-            this,
-            "Ha ganado el jugador " + game.getWinner().getName(),
-            "Fin",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-    }*/
+	this.parent.setEnabled(true);
+    }
 
     public boolean canMove(String playerID) {
         return this.localPlayers.contains(playerID);
@@ -139,18 +136,15 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     @Override
     public void onEndTurn(Game game) {
-        String playerID = game.getCurrentPlayer().getId();
+	String playerID = game.getCurrentPlayer().getId();
         setBlocker(playerID);
     }
 
-    @Deprecated
     private void setBlocker(String playerID) {
-        /*if (this.canMove(playerID)) {
-            this.setEnabled(true);
-            setTitle("Tu turno");
+        if (this.canMove(playerID)) {
+            this.parent.setEnabled(true);
         } else {
-            this.setEnabled(false);
-            setTitle("Esperando al otro jugador...");
-        }*/
+            this.parent.setEnabled(false);
+        }
     }
 }

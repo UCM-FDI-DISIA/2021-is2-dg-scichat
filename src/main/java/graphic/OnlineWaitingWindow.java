@@ -50,6 +50,10 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
             return new Command[] { roomInfoCommand, startGameCommand };
         }
     };
+    
+    public Room getRoom() {
+	return this.room;
+    }
 
     OnlineWaitingWindow(
         MainWindow _parent,
@@ -58,7 +62,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         String _name,
         Controller _ctrl
     ) {
-        super(_parent, "Habitación #" + _roomID);
+        super(_parent, "Habitación #" + _roomID, true);
         this.setLocation(_parent.getX(), _parent.getY());
         this.connection = _connection;
         this.roomID = _roomID;
@@ -76,10 +80,9 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
                 @Override
                 public void execute(JSONObject data, SocketClient connection) {
                     connection.removeObserver(OnlineWaitingWindow.this);
-                    dispose();
                     createGame();
                     status = true;
-                    _parent.initOnlineGame(room);
+                    dispose();
                 }
             };
     }

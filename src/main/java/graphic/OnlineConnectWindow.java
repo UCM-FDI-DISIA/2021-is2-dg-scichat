@@ -48,9 +48,8 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         public void execute(JSONObject data, SocketClient connection) {
             super.execute(data, connection);
             sc.removeObserver(OnlineConnectWindow.this);
-            dispose();
             status = true;
-            parent.initOnlineWaiting();
+            dispose();
         }
     };
 
@@ -156,6 +155,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         actionsSection.add(newOnlineRoomButton);
         actionsSection.add(joinOnlineRoomButton);
 
+        //TODO
         newOnlineRoomButton.addActionListener(
             e -> {
                 NewGameWindow newGameWindow = new NewGameWindow(parent);
@@ -187,10 +187,9 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 roomID = roomID.toUpperCase();
 
                 this.sc.removeObserver(this);
-                this.dispose();
 
                 status = true;
-                parent.initOnlineWaiting();
+                dispose();
             }
         );
 

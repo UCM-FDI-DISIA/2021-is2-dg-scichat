@@ -56,6 +56,9 @@ public class MainWindow extends JFrame implements GameObserver {
         if (!onlineConnectScreen.open()) {
             closeConnection();
         }
+        else {
+            initOnlineWaiting();
+        }
     }
 
     public void initOnlineWaiting() {
@@ -65,15 +68,20 @@ public class MainWindow extends JFrame implements GameObserver {
         onlineWaitingScreen =
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
         if (!onlineWaitingScreen.open()) {
-            //TODO closeConnection();
+            closeConnection();
+        }
+        else {
+            initOnlineGame(onlineWaitingScreen.getRoom());
         }
     }
 
     public void initOnlineGame(Room room) {
         String roomID = onlineConnectScreen.getRoomID();
         connection = onlineConnectScreen.getConnection();
-        onlineGameScreen = new OnlineGameWindow(ctrl, connection, roomID, room);
+        onlineGameScreen = new OnlineGameWindow(ctrl, connection, roomID, room, this);
         onlineGameScreen.addLocalPlayer(connection.getClientID());
+        onlineGameScreen.start();
+        ctrl.addObserver(this);
         this.setContentPane(onlineGameScreen);
         this.pack();
         this.setSize(width, height);
@@ -146,6 +154,7 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initRematch() {
         if (connection != null) {
+            connection.close();
             initOnlineWaiting();
         } else {
             ctrl.softReset();
