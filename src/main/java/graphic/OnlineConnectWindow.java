@@ -37,7 +37,7 @@ public class OnlineConnectWindow extends JFrame implements SocketObserver {
         private String roomID;
 
         @Override
-        public void parse(JSONObject data) {
+        public void parseRequest(JSONObject data) {
             this.roomID = data.getString("roomID");
         }
 

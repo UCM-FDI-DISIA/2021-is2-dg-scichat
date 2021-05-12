@@ -13,7 +13,7 @@ public class RoomInfoCommand extends Command {
     }
 
     @Override
-    public void parse(JSONObject data) {
+    public void parseRequest(JSONObject data) {
         /// Si recibe una información de la habitación, actualizar el GUI
         this.room = new Room(data);
     }

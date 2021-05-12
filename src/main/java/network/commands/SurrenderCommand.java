@@ -35,7 +35,7 @@ public class SurrenderCommand extends Command {
     }
 
     @Override
-    public void parse(JSONObject data) {
+    public void parseRequest(JSONObject data) {
         this.playerID = data.getString("playerID");
     }
 
