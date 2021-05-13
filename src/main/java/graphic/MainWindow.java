@@ -154,18 +154,6 @@ public class MainWindow extends JFrame implements GameObserver {
 
     public void initRematch() {
         if (connection != null) {
-            try {
-                connection = new SocketClient(new URI(onlineConnectScreen.getURL()));
-                connection.connect();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Error al reestablecer conexion con el servidor",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
-                initStart();
-            }
             initOnlineWaiting();
         } else {
             ctrl.softReset();
@@ -174,7 +162,6 @@ public class MainWindow extends JFrame implements GameObserver {
     }
 
     public void onGameEnded(Game game) {
-        if (connection != null) connection.close();
         initWinner(game.getWinner());
     }
 }

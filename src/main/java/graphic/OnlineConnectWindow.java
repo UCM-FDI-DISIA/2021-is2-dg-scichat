@@ -169,12 +169,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 Mode gameMode = newGameWindow.getGameMode();
                 ArrayList<Player> players = newGameWindow.getPlayers();
                 LinkedList<PlayerConfig> playerConfigList = new LinkedList<>();
-                JOptionPane.showMessageDialog(
-                    this,
-                    Integer.toString(players.size()),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
+
                 for (Player p : players) {
                     PlayerConfig playerConfig = new PlayerConfig(
                         p.getColor(),
