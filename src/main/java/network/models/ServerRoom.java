@@ -12,7 +12,19 @@ public class ServerRoom extends network.models.Room {
         super(config);
     }
 
-    public PlayerConfig addPlayer(String uuid, String name, WebSocket connection) {
+    public PlayerConfig addPlayer(String uuid, String name, WebSocket connection)
+        throws Exception {
+        if (!this.players.containsKey(uuid) && this.isFull()) {
+            /// Si el jugador no estaba en la sala, y no hay hueco, lanzar excepción
+            throw new Exception("Room is full.");
+        }
+
+        if (this.players.containsKey(uuid)) {
+            /// Si estaba ya el jugador, solo hay que mandar la información de la sala otra vez
+            broadCastRoomInfo();
+            return this.players.get(uuid);
+        }
+
         PlayerConfig playerConfig = roomConfig.getPlayerConfigs().get(0);
         roomConfig.getPlayerConfigs().remove(0);
         playerConfig.setName(name);

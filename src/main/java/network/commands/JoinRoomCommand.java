@@ -54,10 +54,6 @@ public class JoinRoomCommand extends Command {
 
         ServerRoom serverRoom = server.getRoom(roomID);
 
-        if (serverRoom.isFull()) {
-            throw new Exception("Room ID " + roomID + " is full.");
-        }
-
         serverRoom.addPlayer(clientID, name, connection);
     }
 }
