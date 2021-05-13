@@ -40,7 +40,7 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void parse(JSONObject data) {
+    public void parseRequest(JSONObject data) {
         /// Cuando el cliente recibe este commando, tiene que parsear a un Room
         this.room = new Room(data);
     }
@@ -53,10 +53,6 @@ public class JoinRoomCommand extends Command {
         String name = data.getString("name");
 
         ServerRoom serverRoom = server.getRoom(roomID);
-
-        if (serverRoom.isFull()) {
-            throw new Exception("Room ID " + roomID + " is full.");
-        }
 
         serverRoom.addPlayer(clientID, name, connection);
     }

@@ -23,7 +23,7 @@ public class SetPlayerNameCommand extends Command {
     }
 
     @Override
-    public void parse(JSONObject data) {
+    public void parseRequest(JSONObject data) {
         this.name = data.getString("name");
         this.playerID = data.getString("playerID");
         this.roomID = data.getString("roomID");
@@ -40,7 +40,7 @@ public class SetPlayerNameCommand extends Command {
     @Override
     public void execute(JSONObject data, Server server, WebSocket connection)
         throws Exception {
-        this.parse(data);
+        this.parseRequest(data);
 
         ServerRoom room = server.getRoom(roomID);
         PlayerConfig player = room.getPlayer(playerID);

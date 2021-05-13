@@ -17,11 +17,11 @@ public abstract class Command {
     public void send(SocketClient connection) {}
 
     /// Para cuando el cliente recibe el mensaje, parsear el componente
-    public void parse(JSONObject data) {}
+    public void parseRequest(JSONObject data) {}
 
     /// Para ejecutar en el cliente
     public void execute(JSONObject data, SocketClient connection) {
-        this.parse(data);
+        this.parseRequest(data);
     }
 
     /// Ejecutar para servidor
@@ -46,7 +46,7 @@ public abstract class Command {
         room.broadCast(req.toString());
     }
 
-    public Command parse(String _type) {
+    public final Command parseCommand(String _type) {
         if (this.type.equals(_type)) return this;
         return null;
     }

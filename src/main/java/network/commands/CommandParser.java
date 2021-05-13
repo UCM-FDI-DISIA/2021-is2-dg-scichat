@@ -13,7 +13,7 @@ public abstract class CommandParser {
 
     public Command parse(String _type) throws ParseException {
         for (Command c : this.getCommands()) {
-            if (c.parse(_type) != null) return c.parse(_type);
+            if (c.parseCommand(_type) != null) return c.parseCommand(_type);
         }
 
         throw new ParseException(_type);

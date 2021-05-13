@@ -41,7 +41,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
 
         @Override
-        public void parse(JSONObject data) {
+        public void parseRequest(JSONObject data) {
             roomID = data.getString("roomID");
         }
 
