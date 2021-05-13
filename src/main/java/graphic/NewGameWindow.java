@@ -262,7 +262,12 @@ public class NewGameWindow extends JDialog {
 
         /// Crear una lista de players con las opciones
         ArrayList<Player> players = new ArrayList<>();
-
+        JOptionPane.showMessageDialog(
+            this,
+            "Numero de jugadores: " + Integer.toString(numPlayers),
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
         for (int i = 0; i < this.numPlayers; ++i) {
             PieceColor color = (PieceColor) this.colorComboBoxes.get(i).getSelectedItem();
 

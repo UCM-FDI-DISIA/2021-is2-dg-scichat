@@ -156,7 +156,8 @@ public class MainWindow extends JFrame implements GameObserver {
         if (connection != null) {
             try {
                 connection = new SocketClient(new URI(onlineConnectScreen.getURL()));
-            } catch (URISyntaxException e) {
+                connection.connect();
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                     this,
                     "Error al reestablecer conexion con el servidor",
@@ -165,7 +166,6 @@ public class MainWindow extends JFrame implements GameObserver {
                 );
                 initStart();
             }
-            connection.connect();
             initOnlineWaiting();
         } else {
             ctrl.softReset();
