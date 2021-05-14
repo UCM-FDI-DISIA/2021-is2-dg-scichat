@@ -9,12 +9,32 @@ import logic.gameObjects.Player;
 public class Normal implements Strategy {
 
     @Override
-    public void decideMove(Player player) {
-        Cell corner;
-        int min = Integer.MAX_VALUE;
-        corner = player.getSide().getCornerCell(player.getSide().getValue());
+    public Cell move(Player player, boolean jumpIsLimited) {
+        double minDistance = 17;
+        Cell result = null;
+        // Calculas la esquina contraria
+        Cell corner = player.getSide().getOppositeCornerCell(player.getSide().getValue());
+        // Recorres las piezas calculando su movimiento más cercano a la esquina
         for (Piece piece : player.getPieces()) {
-            if (piece.isMovable()) {}
+            if (piece.isMovable()) {
+                Cell currentClosestMovement = piece
+                    .getPosition()
+                    .getClosestMovementTo(corner, jumpIsLimited);
+                double distanceToCorner = currentClosestMovement.getDistanceBetween(
+                    corner
+                );
+                // Si la distancia entre el movimiento de la pieza actual y la esquina es menor
+                // que la distancia del movimiento más cercano a la esquina
+                // guardas el destino, actualizas la distancia minima y seleccionas la pieza
+                // cuyo movimiento es el más cercano
+                if (distanceToCorner < minDistance) {
+                    result = currentClosestMovement;
+                    minDistance = distanceToCorner;
+                    player.selectPiece(piece);
+                }
+            }
         }
+
+        return result;
     }
 }
