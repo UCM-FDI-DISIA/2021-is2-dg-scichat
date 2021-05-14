@@ -142,7 +142,7 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initSelectFile() {
         if (this.loadGameScreen == null) this.loadGameScreen =
             new LoadGameWindow(ctrl, this);
-        if(this.loadGameScreen.open()) {
+        if (this.loadGameScreen.open()) {
             initGame();
         }
     }

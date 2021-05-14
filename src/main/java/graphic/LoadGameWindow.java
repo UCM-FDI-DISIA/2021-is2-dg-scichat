@@ -26,11 +26,11 @@ public class LoadGameWindow extends JDialog {
     private File secondFile;
     private String thirdMsg = "Opción de cargado 3";
     private File thirdFile;
-    
+
     private boolean status;
 
     public LoadGameWindow(Controller control, JFrame father) {
-	super(father, "Cargar partida", true);
+        super(father, "Cargar partida", true);
         this.controller = control;
         this.father = father;
         firstFile = new File("firstGame.json");
@@ -58,7 +58,7 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
-                    status=true;
+                    status = true;
                     controller.loadGame(firstFile);
                     setVisible(false);
                 }
@@ -81,7 +81,7 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
-                    status=true;
+                    status = true;
                     controller.loadGame(secondFile);
                     setVisible(false);
                 }
@@ -104,7 +104,7 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
-                    status=true;
+                    status = true;
                     controller.loadGame(thirdFile);
                     controller.initGame();
                     setVisible(false);
@@ -119,7 +119,7 @@ public class LoadGameWindow extends JDialog {
     }
 
     public boolean open() {
-	status=false;
+        status = false;
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
         setVisible(true);
