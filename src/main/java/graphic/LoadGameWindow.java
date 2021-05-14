@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class LoadGameWindow extends JDialog {
@@ -17,16 +18,19 @@ public class LoadGameWindow extends JDialog {
      *
      */
     private static final long serialVersionUID = 1L;
-    Controller controller;
-    MainWindow father;
-    String firstMsg = "Opcion de cargado 1";
-    File firstFile;
-    String secondMsg = "Opción de cargado 2";
-    File secondFile;
-    String thirdMsg = "Opción de cargado 3";
-    File thirdFile;
+    private Controller controller;
+    private JFrame father;
+    private String firstMsg = "Opcion de cargado 1";
+    private File firstFile;
+    private String secondMsg = "Opción de cargado 2";
+    private File secondFile;
+    private String thirdMsg = "Opción de cargado 3";
+    private File thirdFile;
+    
+    private boolean status;
 
-    public LoadGameWindow(Controller control, MainWindow father) {
+    public LoadGameWindow(Controller control, JFrame father) {
+	super(father, "Cargar partida", true);
         this.controller = control;
         this.father = father;
         firstFile = new File("firstGame.json");
@@ -54,9 +58,8 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
+                    status=true;
                     controller.loadGame(firstFile);
-                    controller.initGame();
-                    father.initGame();
                     setVisible(false);
                 }
             }
@@ -78,9 +81,8 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
+                    status=true;
                     controller.loadGame(secondFile);
-                    controller.initGame();
-                    father.initGame();
                     setVisible(false);
                 }
             }
@@ -102,9 +104,9 @@ public class LoadGameWindow extends JDialog {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent arg0) {
+                    status=true;
                     controller.loadGame(thirdFile);
                     controller.initGame();
-                    father.initGame();
                     setVisible(false);
                 }
             }
@@ -116,9 +118,11 @@ public class LoadGameWindow extends JDialog {
         this.add(thirdPanel, BorderLayout.SOUTH);
     }
 
-    public void open() {
+    public boolean open() {
+	status=false;
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
         setVisible(true);
+        return status;
     }
 }
