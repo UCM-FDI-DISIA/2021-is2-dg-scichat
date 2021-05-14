@@ -85,6 +85,7 @@ public class MainWindow extends JFrame implements GameObserver {
         this.setContentPane(onlineGameScreen);
         this.pack();
         this.setSize(width, height);
+        ctrl.initGame();
     }
 
     public void initStart() {

@@ -41,7 +41,6 @@ public class Controller {
         boolean refreshDisplay = true;
 
         while (!game.isFinished()) {
-            game.startTurn();
             if (refreshDisplay) printGame();
             refreshDisplay = false;
 
@@ -54,7 +53,6 @@ public class Controller {
                     option.title
                 );
                 refreshDisplay = option.execute(game, scanner);
-                game.endTurn();
                 if (refreshDisplay) game.advance();
             } catch (Exception ex) {
                 System.out.format(ex.getMessage() + "%n%n");

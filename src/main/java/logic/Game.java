@@ -157,23 +157,6 @@ public class Game implements Serializable {
 
     /*Metodos de control de tiempo de juego*/
 
-    /**
-     * Empieza el temporizador del jugador actual
-     */
-    public void startTurn() {
-        this.timeAtTurnStart = System.currentTimeMillis();
-    }
-
-    /**
-     * Termina el temporizador del jugador actual
-     */
-    public void endTurn() {
-        this.timePlaying += -this.timeAtTurnStart + System.currentTimeMillis();
-        for (GameObserver i : observers) {
-            i.onEndTurn(this);
-        }
-    }
-
     public long getTimePlaying() {
         return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
     }
@@ -190,7 +173,7 @@ public class Game implements Serializable {
      */
     public void start() {
         this.stopped = false;
-        this.startTurn();
+        this.timeAtTurnStart = System.currentTimeMillis();
         for (GameObserver i : this.observers) i.onGameStart(this);
     }
 
@@ -231,14 +214,12 @@ public class Game implements Serializable {
      */
     public void advance() {
         //TODO evitar que se atasque
-        this.endTurn();
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
         }
-        this.startTurn();
     }
 
     /**
