@@ -240,7 +240,7 @@ public class HumanPlayer implements Serializable, Player {
 
     public JSONObject toJSON() {
         JSONObject jPlayer = new JSONObject();
-        jPlayer.put("color", this.color.getJSONValue());
+        jPlayer.put("color", this.color.toJSONArray());
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);

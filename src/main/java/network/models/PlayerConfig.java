@@ -1,6 +1,7 @@
 package network.models;
 
 import logic.Board;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.PieceColor;
 
@@ -20,10 +21,14 @@ public class PlayerConfig {
     }
 
     public PlayerConfig(JSONObject data) {
-        int colorIndex = data.optInt("color", 0);
+        JSONArray colorArray = data.getJSONArray("color");
+        int R = colorArray.getInt(0);
+        int G = colorArray.getInt(1);
+        int B = colorArray.getInt(2);
+
         int sideIndex = data.optInt("side", 0);
 
-        this.color = PieceColor.values()[colorIndex];
+        this.color = new PieceColor(R, G, B);
         this.side = Board.Side.values()[sideIndex];
         if (data.has("name")) this.name = data.getString("name");
     }
@@ -39,7 +44,7 @@ public class PlayerConfig {
     public JSONObject toJSONObject() {
         JSONObject data = new JSONObject();
 
-        data.put("color", this.color.ordinal());
+        data.put("color", this.color.toJSONArray());
         data.put("side", this.side.ordinal());
         data.put("name", this.name);
 

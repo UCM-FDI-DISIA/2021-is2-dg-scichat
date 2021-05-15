@@ -56,22 +56,25 @@ public class Game implements Serializable {
             HashSet<Piece> auxPieces = new HashSet<Piece>();
             JSONArray jPieces = jPlayer.getJSONArray("pieces");
 
+            JSONArray colorArray = jPlayer.getJSONArray("color");
+            int R = colorArray.getInt(0);
+            int G = colorArray.getInt(1);
+            int B = colorArray.getInt(2);
+
+            PieceColor color = new PieceColor(R, G, B);
+
             for (int j = 0; j < jPieces.length(); ++j) {
                 JSONObject jPiece = jPieces.getJSONObject(j);
                 Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
                 Piece auxPiece = null;
                 try {
-                    auxPiece =
-                        new Piece(
-                            auxCell,
-                            PieceColor.getPieceColor(jPlayer.getInt("color"))
-                        );
+                    auxPiece = new Piece(auxCell, color);
                 } catch (OccupiedCellException ex) {}
                 auxPieces.add(auxPiece);
             }
 
             Player auxPlayer = new HumanPlayer(
-                PieceColor.getPieceColor(jPlayer.getInt("color")),
+                color,
                 Side.getSide(jPlayer.getInt("playerSide")),
                 jPlayer.getString("id"),
                 jPlayer.getLong("time"),
@@ -393,7 +396,7 @@ public class Game implements Serializable {
                 String.format(
                     "   [%s]: %s - %s",
                     i + 1,
-                    this.players.get(i).getColor().getName(),
+                    this.players.get(i).getColor().toString(),
                     this.players.get(i).getSide()
                 )
             );

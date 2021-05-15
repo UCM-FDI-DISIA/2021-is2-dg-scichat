@@ -204,7 +204,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
 
             JPanel playerSection = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-            playerSection.add(new Circle(20, playerConfig.color.getColor()));
+            playerSection.add(new Circle(20, playerConfig.color));
 
             JLabel playerNameLabel = new JLabel(playerConfig.getName());
             Board.Side side = playerConfig.side;
