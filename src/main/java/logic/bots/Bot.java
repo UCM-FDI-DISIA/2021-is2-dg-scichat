@@ -5,14 +5,12 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import logic.Board.Side;
 import logic.Cell;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 

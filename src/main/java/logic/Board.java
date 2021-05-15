@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
 import utils.PieceColor;
 
@@ -122,46 +121,46 @@ public class Board implements Serializable, Iterable<Cell> {
             switch (side) {
                 case (0):
                     oppositeSideCells = Down.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getRow() == 0) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 0) {
+                            return cell;
+                        }
                     }
-                }
                 case (1):
                     oppositeSideCells = DownLeft.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getRow() == 4 && cell.getCol() == 12) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 4 && cell.getCol() == 12) {
+                            return cell;
+                        }
                     }
-                }
                 case (2):
                     oppositeSideCells = UpLeft.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getCol() == 12) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getCol() == 12) {
+                            return cell;
+                        }
                     }
-                }
                 case (3):
                     oppositeSideCells = Up.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getRow() == 16) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 16) {
+                            return cell;
+                        }
                     }
-                } 
                 case (4):
                     oppositeSideCells = UpRight.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getCol() == 0) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getCol() == 0) {
+                            return cell;
+                        }
                     }
-                } 
                 case (5):
                     oppositeSideCells = DownRight.getOpposingCells();
-                for (Cell cell : oppositeSideCells) {
-                    if (cell.getCol() == 0) {
-                	return cell;
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getCol() == 0) {
+                            return cell;
+                        }
                     }
-                }  
             }
             return null;
         }

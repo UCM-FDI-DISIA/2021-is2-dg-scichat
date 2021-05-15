@@ -30,4 +30,5 @@ public interface Player {
     JSONObject toJSON();
     String toString();
     void setName(String name);
+    long timePlaying();
 }
