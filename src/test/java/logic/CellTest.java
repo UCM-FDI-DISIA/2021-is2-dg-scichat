@@ -326,32 +326,30 @@ public class CellTest {
 
         Assertions.assertEquals("(8,6)", cell.toString());
     }
-    /*
+
     @Test
     void getOppositeCornerCell() {
-	for (int i = 0; i < 6; i++) {
-	    switch (i) {
-	    case 0:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 0);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 6);
-	    case 1:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 4);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 12);
-	    case 2:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 12);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 12);
-	    case 3:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 16);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 6);
-	    case 4:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 12);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 0);
-	    case 5:
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 4);
-		assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 0);
-	    }
-
-	}
+        for (int i = 0; i < 6; i++) {
+            switch (i) {
+                case 0:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 0);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 6);
+                case 1:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 4);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 12);
+                case 2:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 12);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 12);
+                case 3:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 16);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 6);
+                case 4:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 12);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 0);
+                case 5:
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getRow(), 4);
+                    assertEquals(Side.getSide(i).getOppositeCornerCell(i).getCol(), 0);
+            }
+        }
     }
-    */
 }

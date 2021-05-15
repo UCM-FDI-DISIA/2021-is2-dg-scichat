@@ -118,6 +118,8 @@ public class Board implements Serializable, Iterable<Cell> {
 
         public Cell getOppositeCornerCell(int side) {
             Set<Cell> oppositeSideCells = new HashSet<Cell>();
+            // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
+            // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
             switch (side) {
                 case (0):
                     oppositeSideCells = Down.getOpposingCells();
@@ -136,7 +138,7 @@ public class Board implements Serializable, Iterable<Cell> {
                 case (2):
                     oppositeSideCells = UpLeft.getOpposingCells();
                     for (Cell cell : oppositeSideCells) {
-                        if (cell.getCol() == 12) {
+                        if (cell.getRow() == 12 && cell.getCol() == 12) {
                             return cell;
                         }
                     }
@@ -150,14 +152,14 @@ public class Board implements Serializable, Iterable<Cell> {
                 case (4):
                     oppositeSideCells = UpRight.getOpposingCells();
                     for (Cell cell : oppositeSideCells) {
-                        if (cell.getCol() == 0) {
+                        if (cell.getRow() == 12 && cell.getCol() == 0) {
                             return cell;
                         }
                     }
                 case (5):
                     oppositeSideCells = DownRight.getOpposingCells();
                     for (Cell cell : oppositeSideCells) {
-                        if (cell.getCol() == 0) {
+                        if (cell.getRow() == 4 && cell.getCol() == 0) {
                             return cell;
                         }
                     }
