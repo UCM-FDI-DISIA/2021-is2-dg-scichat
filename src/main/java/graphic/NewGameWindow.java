@@ -247,14 +247,9 @@ public class NewGameWindow extends JDialog {
     }
 
     static DefaultComboBoxModel<PieceColor> DefaultAvailableColors() {
-        DefaultComboBoxModel<PieceColor> availableColors = new DefaultComboBoxModel<>();
-        availableColors.addElement(PieceColor.GREEN);
-        availableColors.addElement(PieceColor.YELLOW);
-        availableColors.addElement(PieceColor.ORANGE);
-        availableColors.addElement(PieceColor.RED);
-        availableColors.addElement(PieceColor.MAGENTA);
-        availableColors.addElement(PieceColor.BLUE);
-
+        DefaultComboBoxModel<PieceColor> availableColors = new DefaultComboBoxModel<>(
+            PieceColor.availableColors
+        );
         return availableColors;
     }
 

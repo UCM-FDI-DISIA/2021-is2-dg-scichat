@@ -33,19 +33,20 @@ public class PieceColor extends Color {
         "Magenta"
     );
 
-    public static final PieceColor[] availableColors = {
-        GREEN,
-        YELLOW,
-        ORANGE,
-        RED,
-        MAGENTA
-    };
-
     public static final PieceColor BLUE = new PieceColor(
         Color.BLUE.getRGB(),
         "BBB ",
         "Azul"
     );
+
+    public static final PieceColor[] availableColors = {
+        GREEN,
+        YELLOW,
+        ORANGE,
+        RED,
+        MAGENTA,
+        BLUE
+    };
 
     public PieceColor(int rgb, String _boardString, String _name) {
         super(rgb);
