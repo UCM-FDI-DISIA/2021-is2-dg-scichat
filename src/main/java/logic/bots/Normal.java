@@ -1,7 +1,6 @@
 package logic.bots;
 
-import java.util.List;
-import java.util.Set;
+import logic.Board;
 import logic.Cell;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
@@ -9,11 +8,11 @@ import logic.gameObjects.Player;
 public class Normal implements Strategy {
 
     @Override
-    public Cell move(Player player, boolean jumpIsLimited) {
+    public Cell move(Player player, boolean jumpIsLimited, Board board) {
         double minDistance = 17;
         Cell result = null;
         // Calculas la esquina contraria
-        Cell corner = player.getSide().getOppositeCornerCell();
+        Cell corner = board.getOppositeCornerCell(player.getSide().getValue());
         // Recorres las piezas calculando su movimiento más cercano a la esquina
         for (Piece piece : player.getPieces()) {
             if (piece.isMovable()) {

@@ -2,6 +2,8 @@ package logic.gameObjects;
 
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
+import exceptions.OccupiedCellException;
+import java.util.HashSet;
 import java.util.Set;
 import logic.Board.Side;
 import logic.Cell;

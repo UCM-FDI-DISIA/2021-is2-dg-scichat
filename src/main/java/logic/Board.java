@@ -116,7 +116,8 @@ public class Board implements Serializable, Iterable<Cell> {
             return null;
         }
 
-        public Cell getOppositeCornerCell() {
+        @Deprecated // ¿Esto sirve para algo? Lo pongo para sentirme un puto pro
+        /* public Cell getOppositeCornerCell() {
             Set<Cell> oppositeSideCells = new HashSet<Cell>();
             switch (this.ordinal()) {
                 // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
@@ -165,7 +166,7 @@ public class Board implements Serializable, Iterable<Cell> {
                     }
             }
             return null;
-        }
+        }*/
 
         public int getJSONValue() {
             return this.value;
@@ -222,6 +223,27 @@ public class Board implements Serializable, Iterable<Cell> {
         public void clear() {
             sideCells.clear();
         }
+    }
+
+    public Cell getOppositeCornerCell(int side) {
+        Set<Cell> oppositeSideCells = new HashSet<Cell>();
+        switch (side) {
+            // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
+            // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
+            case (0):
+                return getCell(0, 6);
+            case (1):
+                return getCell(4, 12);
+            case (2):
+                return getCell(12, 12);
+            case (3):
+                return getCell(16, 6);
+            case (4):
+                return getCell(12, 0);
+            case (5):
+                return getCell(4, 0);
+        }
+        return null;
     }
 
     public String toString() {

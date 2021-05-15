@@ -5,6 +5,7 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.util.HashSet;
 import java.util.Set;
+import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
 import logic.gameObjects.Piece;
@@ -25,6 +26,7 @@ public class Bot implements Player {
     private boolean playing = false;
     boolean jumpIsLimited;
     private String name;
+    private Board board;
 
     public Bot(
         Strategy strat,
@@ -32,7 +34,8 @@ public class Bot implements Player {
         Side start,
         String id,
         boolean jumpIsLimited,
-        String name
+        String name,
+        Board board
     )
         throws OccupiedCellException {
         this.strategy = strat;
@@ -42,6 +45,7 @@ public class Bot implements Player {
         createPieces();
         this.jumpIsLimited = jumpIsLimited;
         this.name = name;
+        this.board = board;
     }
 
     private void createPieces() throws OccupiedCellException {
@@ -52,13 +56,9 @@ public class Bot implements Player {
         }
     }
 
-    private void play() {
-        strategy.move(this, jumpIsLimited);
-    }
-
     public void move(Cell to, Mode mode)
         throws NotSelectedPieceException, InvalidMoveException {
-        to = strategy.move(this, mode == Mode.Traditional);
+        to = strategy.move(this, mode == Mode.Traditional, board);
         selectedPiece.move(to, mode);
     }
 

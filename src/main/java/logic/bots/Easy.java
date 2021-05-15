@@ -1,6 +1,7 @@
 package logic.bots;
 
 import java.util.List;
+import logic.Board;
 import logic.Cell;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
@@ -8,7 +9,7 @@ import logic.gameObjects.Player;
 public class Easy implements Strategy {
 
     @Override
-    public Cell move(Player player, boolean jumpIsLimited) {
+    public Cell move(Player player, boolean jumpIsLimited, Board board) {
         Cell result = null;
         // Se recorren las piezas del jugador
         for (Piece piece : player.getPieces()) {

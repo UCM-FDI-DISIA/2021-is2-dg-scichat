@@ -28,7 +28,6 @@ public class HumanPlayer implements Serializable, Player {
     private boolean surrender; //Jugador se ha rendido
     private String id; // Jugador numero id
     private boolean playing = false;
-
     private String name;
 
     /*Constructores*/
