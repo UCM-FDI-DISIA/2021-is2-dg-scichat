@@ -41,16 +41,16 @@ public class PieceColor extends Color {
         MAGENTA
     };
 
-    public static final PieceColor BLUE = new PieceColor(Color.BLUE.getRGB(), "BBB ");
+    public static final PieceColor BLUE = new PieceColor(
+        Color.BLUE.getRGB(),
+        "BBB ",
+        "Azul"
+    );
 
     public PieceColor(int rgb, String _boardString, String _name) {
         super(rgb);
         this.name = _name;
         this.boardString = _boardString;
-    }
-
-    public PieceColor(int rgb, String _boardString) {
-        this(rgb, _boardString, null);
     }
 
     public PieceColor(int rgb) {
@@ -59,18 +59,22 @@ public class PieceColor extends Color {
         for (PieceColor c : PieceColor.availableColors) {
             if (c.getRGB() == rgb) {
                 this.boardString = c.getBoardString();
+                this.name = c.getName();
             }
         }
     }
 
     public PieceColor(int r, int g, int b) {
-        super(new Color(r, g, b).getRGB());
+        this(new Color(r, g, b).getRGB());
     }
 
     @Override
     public String toString() {
-        if (this.name != null) return this.name;
-        return (new ColorUtils()).getColorNameFromColor(this);
+        return this.name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public JSONArray toJSONArray() {
