@@ -71,29 +71,6 @@ public class HumanPlayer implements Serializable, Player {
         this.timeAtTurnStart = timeAtTurnStart;
     }
 
-    public HumanPlayer(JSONObject jPlayer, Board board) {
-        this.color = PieceColor.getPieceColor(jPlayer.getInt("color")); //Crear metodo de color
-        this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
-        this.surrender = jPlayer.getBoolean("surrender");
-        this.id = jPlayer.getString("id");
-        this.time = jPlayer.getLong("time");
-        this.playing = jPlayer.getBoolean("playing");
-        this.timeAtTurnStart = jPlayer.getLong("timeATurnStart");
-
-        //Ahora creamos las piezas correspondientes
-        JSONArray jPieces = jPlayer.getJSONArray("pieces");
-
-        for (int i = 0; i < jPieces.length(); ++i) {
-            JSONObject jPiece = jPieces.getJSONObject(i);
-            Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
-            Piece auxPiece = null;
-            try {
-                auxPiece = new Piece(auxCell, this.color);
-            } catch (OccupiedCellException ex) {}
-            this.pieces.add(auxPiece);
-        }
-    }
-
     /**
      * Genera las fichas de Player, solo se llama una vez al principio de la partida
      *

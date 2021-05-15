@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import logic.Board.Side;
 import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
@@ -46,10 +47,40 @@ public class Game implements Serializable {
             this.gameMode = Mode.Fast;
         }
         this.timePlaying = jGame.getLong("time");
+
         JSONArray jPlayers = jGame.getJSONArray("players");
         for (int i = 0; i < jPlayers.length(); ++i) {
             JSONObject jPlayer = jPlayers.getJSONObject(i);
-            Player auxPlayer = new HumanPlayer(jPlayer, this.board);
+
+            //Inicializamos a cada uno de los jugadores
+            HashSet<Piece> auxPieces = new HashSet<Piece>();
+            JSONArray jPieces = jPlayer.getJSONArray("pieces");
+
+            for (int j = 0; j < jPieces.length(); ++j) {
+                JSONObject jPiece = jPieces.getJSONObject(j);
+                Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
+                Piece auxPiece = null;
+                try {
+                    auxPiece =
+                        new Piece(
+                            auxCell,
+                            PieceColor.getPieceColor(jPlayer.getInt("color"))
+                        );
+                } catch (OccupiedCellException ex) {}
+                auxPieces.add(auxPiece);
+            }
+
+            Player auxPlayer = new HumanPlayer(
+                PieceColor.getPieceColor(jPlayer.getInt("color")),
+                Side.getSide(jPlayer.getInt("playerSide")),
+                jPlayer.getString("id"),
+                jPlayer.getLong("time"),
+                jPlayer.getBoolean("playing"),
+                auxPieces,
+                jPlayer.getLong("timeATurnStart"),
+                jPlayer.getBoolean("surrender")
+            );
+
             this.players.add(auxPlayer);
         }
     }
