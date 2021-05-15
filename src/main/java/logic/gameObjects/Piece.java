@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
-public class Piece implements Serializable {
+public class Piece {
     /**
      *
      */

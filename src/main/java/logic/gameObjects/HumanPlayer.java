@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
-public class HumanPlayer implements Serializable, Player {
+public class HumanPlayer implements Player {
     /**
      *
      */

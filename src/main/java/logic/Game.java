@@ -19,7 +19,7 @@ import org.json.JSONTokener;
 import utils.Mode;
 import utils.PieceColor;
 
-public class Game implements Serializable {
+public class Game {
     /**
      *
      */
