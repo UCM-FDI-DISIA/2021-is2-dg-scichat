@@ -5,14 +5,12 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import logic.Board.Side;
 import logic.Cell;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
@@ -24,9 +22,7 @@ public class Bot implements Player {
     private Piece selectedPiece = null;
     private boolean surrender;
     private String id;
-    private long time;
     private boolean playing = false;
-    private long timeAtTurnStart;
     boolean jumpIsLimited;
     private String name;
 
@@ -43,7 +39,6 @@ public class Bot implements Player {
         this.color = color;
         this.playerSide = start;
         this.id = id;
-        this.time = 0;
         createPieces();
         this.jumpIsLimited = jumpIsLimited;
         this.name = name;
@@ -70,12 +65,6 @@ public class Bot implements Player {
     @Override
     public void deselectPiece() {
         this.selectedPiece = null;
-    }
-
-    @Override
-    public void endTurn() {
-        this.time += System.currentTimeMillis() - this.timeAtTurnStart;
-        playing = false;
     }
 
     @Override
@@ -146,7 +135,6 @@ public class Bot implements Player {
         this.playing = false;
         this.selectedPiece = null;
         this.surrender = false;
-        this.time = 0;
 
         this.pieces = new HashSet<Piece>();
         try {
@@ -157,21 +145,8 @@ public class Bot implements Player {
     }
 
     @Override
-    public void startTurn() {
-        this.timeAtTurnStart = System.currentTimeMillis();
-        playing = true;
-    }
-
-    @Override
     public void surrender() {
         this.surrender = true;
-    }
-
-    @Override
-    public long timePlaying() {
-        if (playing) return (
-            time + System.currentTimeMillis() - this.timeAtTurnStart
-        ); else return time;
     }
 
     @Override
@@ -181,9 +156,7 @@ public class Bot implements Player {
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);
-        jPlayer.put("time", this.time);
         jPlayer.put("playing", this.playing);
-        jPlayer.put("timeATurnStart", this.timeAtTurnStart);
 
         JSONArray jPieces = new JSONArray();
 

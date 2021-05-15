@@ -13,7 +13,7 @@ public class Normal implements Strategy {
         double minDistance = 17;
         Cell result = null;
         // Calculas la esquina contraria
-        Cell corner = player.getSide().getOppositeCornerCell(player.getSide().getValue());
+        Cell corner = player.getSide().getOppositeCornerCell();
         // Recorres las piezas calculando su movimiento más cercano a la esquina
         for (Piece piece : player.getPieces()) {
             if (piece.isMovable()) {

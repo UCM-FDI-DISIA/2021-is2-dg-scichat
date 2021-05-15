@@ -27,10 +27,7 @@ public class HumanPlayer implements Serializable, Player {
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
     private String id; // Jugador numero id
-    private long time; //Tiempo que lleva jugando
     private boolean playing = false;
-
-    private long timeAtTurnStart;
 
     private String name;
 
@@ -47,7 +44,6 @@ public class HumanPlayer implements Serializable, Player {
         this.playerSide = start;
         this.surrender = false;
         this.id = id;
-        this.time = 0;
         createPieces();
     }
 
@@ -55,10 +51,8 @@ public class HumanPlayer implements Serializable, Player {
         PieceColor color,
         Side playerSide,
         String id,
-        long time,
         boolean playing,
         HashSet<Piece> pieces,
-        long timeAtTurnStart,
         boolean surrender
     ) {
         this.color = color;
@@ -66,9 +60,7 @@ public class HumanPlayer implements Serializable, Player {
         this.playerSide = playerSide;
         this.surrender = surrender;
         this.id = id;
-        this.time = time;
         this.playing = playing;
-        this.timeAtTurnStart = timeAtTurnStart;
     }
 
     public HumanPlayer(JSONObject jPlayer, Board board) {
@@ -76,9 +68,7 @@ public class HumanPlayer implements Serializable, Player {
         this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
         this.surrender = jPlayer.getBoolean("surrender");
         this.id = jPlayer.getString("id");
-        this.time = jPlayer.getLong("time");
         this.playing = jPlayer.getBoolean("playing");
-        this.timeAtTurnStart = jPlayer.getLong("timeATurnStart");
 
         //Ahora creamos las piezas correspondientes
         JSONArray jPieces = jPlayer.getJSONArray("pieces");
@@ -154,7 +144,6 @@ public class HumanPlayer implements Serializable, Player {
         this.playing = false;
         this.selectedPiece = null;
         this.surrender = false;
-        this.time = 0;
 
         this.pieces = new HashSet<Piece>();
         try {
@@ -217,28 +206,6 @@ public class HumanPlayer implements Serializable, Player {
     }
 
     /**
-     * Funcion para medir el tiempo de juego
-     */
-    public void startTurn() {
-        this.timeAtTurnStart = System.currentTimeMillis();
-        playing = true;
-    }
-
-    /**
-     * Funcion para medir el tiempo de juego
-     */
-    public void endTurn() {
-        this.time += System.currentTimeMillis() - this.timeAtTurnStart;
-        playing = false;
-    }
-
-    public long timePlaying() {
-        if (playing) return (
-            time + System.currentTimeMillis() - this.timeAtTurnStart
-        ); else return time;
-    }
-
-    /**
      * Imprime el color y posición en el tablero del jugador
      */
     @Override
@@ -267,9 +234,7 @@ public class HumanPlayer implements Serializable, Player {
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);
-        jPlayer.put("time", this.time);
         jPlayer.put("playing", this.playing);
-        jPlayer.put("timeATurnStart", this.timeAtTurnStart);
 
         JSONArray jPieces = new JSONArray();
 
