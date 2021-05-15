@@ -179,6 +179,8 @@ public class Game implements Serializable {
 
     public Player currentPlayerSurrender() {
         this.getCurrentPlayer().surrender();
+        Player winner = wonBySurrender();
+        if (winner != null) setStopped(true, winner);
         for (GameObserver i : observers) {
             i.onSurrendered(this);
         }
