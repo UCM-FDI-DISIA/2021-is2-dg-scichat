@@ -12,7 +12,7 @@ import java.util.List;
 import logic.gameObjects.Piece;
 import org.json.JSONObject;
 
-public class Cell{
+public class Cell {
     /**
      *
      */
