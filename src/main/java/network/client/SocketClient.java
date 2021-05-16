@@ -1,8 +1,8 @@
 package network.client;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class SocketClient extends WebSocketClient {
     private boolean connected = false;
-    private List<SocketObserver> observers = new ArrayList<>();
+    private List<SocketObserver> observers = new CopyOnWriteArrayList<>();
     private String clientID;
 
     public SocketClient(URI serverUri) {

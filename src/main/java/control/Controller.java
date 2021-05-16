@@ -85,10 +85,10 @@ public class Controller {
     }
 
     public void surrender() {
-        game.currentPlayerSurrender();
-        Player winner = game.wonBySurrender();
-        if (winner != null) game.setStopped(true, winner);
-        game.advance();
+        if (!game.isFinished()) {
+            game.currentPlayerSurrender();
+            game.advance();
+        }
     }
 
     public void reset() {

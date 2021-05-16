@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import utils.Mode;
 import utils.PieceColor;
 
-public class HumanPlayer implements Serializable, Player {
+public class HumanPlayer implements Player {
     /**
      *
      */
@@ -60,27 +60,6 @@ public class HumanPlayer implements Serializable, Player {
         this.surrender = surrender;
         this.id = id;
         this.playing = playing;
-    }
-
-    public HumanPlayer(JSONObject jPlayer, Board board) {
-        this.color = PieceColor.getPieceColor(jPlayer.getInt("color")); //Crear metodo de color
-        this.playerSide = Side.getSide(jPlayer.getInt("playerSide")); //Crear metodo de Side
-        this.surrender = jPlayer.getBoolean("surrender");
-        this.id = jPlayer.getString("id");
-        this.playing = jPlayer.getBoolean("playing");
-
-        //Ahora creamos las piezas correspondientes
-        JSONArray jPieces = jPlayer.getJSONArray("pieces");
-
-        for (int i = 0; i < jPieces.length(); ++i) {
-            JSONObject jPiece = jPieces.getJSONObject(i);
-            Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
-            Piece auxPiece = null;
-            try {
-                auxPiece = new Piece(auxCell, this.color);
-            } catch (OccupiedCellException ex) {}
-            this.pieces.add(auxPiece);
-        }
     }
 
     /**

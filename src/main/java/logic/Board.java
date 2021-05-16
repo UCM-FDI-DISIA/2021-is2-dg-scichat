@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
 import utils.PieceColor;
 
-public class Board implements Serializable, Iterable<Cell> {
+public class Board implements Iterable<Cell> {
     /**
      *
      */
