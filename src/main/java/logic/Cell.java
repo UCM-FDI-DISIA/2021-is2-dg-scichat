@@ -16,7 +16,7 @@ import java.util.Set;
 import logic.gameObjects.Piece;
 import org.json.JSONObject;
 
-public class Cell{
+public class Cell {
     /**
      *
      */
