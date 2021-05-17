@@ -5,6 +5,7 @@ import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.util.HashSet;
 import java.util.Set;
+import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
 import org.json.JSONObject;
@@ -30,4 +31,6 @@ public interface Player {
     JSONObject toJSON();
     String toString();
     void setName(String name);
+
+    default void prepareBot(Board board, boolean jumpIsLimited) {}
 }

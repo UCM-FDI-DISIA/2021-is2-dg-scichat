@@ -28,24 +28,13 @@ public class Bot implements Player {
     private String name;
     private Board board;
 
-    public Bot(
-        Strategy strat,
-        PieceColor color,
-        Side start,
-        String id,
-        boolean jumpIsLimited,
-        String name,
-        Board board
-    )
+    public Bot(Strategy strat, PieceColor color, Side start, String id)
         throws OccupiedCellException {
         this.strategy = strat;
         this.color = color;
         this.playerSide = start;
         this.id = id;
         createPieces();
-        this.jumpIsLimited = jumpIsLimited;
-        this.name = name;
-        this.board = board;
     }
 
     private void createPieces() throws OccupiedCellException {
@@ -60,6 +49,11 @@ public class Bot implements Player {
         throws NotSelectedPieceException, InvalidMoveException {
         to = strategy.move(this, mode == Mode.Traditional, board);
         selectedPiece.move(to, mode);
+    }
+
+    public void prepareBot(Board board, boolean jumpIsLimited) {
+        this.board = board;
+        this.jumpIsLimited = jumpIsLimited;
     }
 
     @Override

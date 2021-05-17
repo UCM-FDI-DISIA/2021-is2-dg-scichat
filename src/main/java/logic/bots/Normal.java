@@ -15,10 +15,11 @@ public class Normal implements Strategy {
         Cell corner = board.getOppositeCornerCell(player.getSide().getValue());
         // Recorres las piezas calculando su movimiento más cercano a la esquina
         for (Piece piece : player.getPieces()) {
-            if (piece.isMovable()) {
-                Cell currentClosestMovement = piece
-                    .getPosition()
-                    .getClosestMovementTo(corner, jumpIsLimited);
+            Cell currentClosestMovement = piece
+                .getPosition()
+                .getClosestMovementTo(corner, jumpIsLimited);
+            // Si existe algun movimiento desde la pieza actual lo evaluas, si no pasas a la ficha siguiente
+            if (currentClosestMovement != null) {
                 double distanceToCorner = currentClosestMovement.getDistanceBetween(
                     corner
                 );

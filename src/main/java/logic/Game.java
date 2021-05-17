@@ -132,6 +132,9 @@ public class Game {
     }
 
     public void setPlayers(ArrayList<Player> players) {
+        for (Player player : players) {
+            player.prepareBot(board, gameMode == Mode.Traditional);
+        }
         this.players = players;
     }
 

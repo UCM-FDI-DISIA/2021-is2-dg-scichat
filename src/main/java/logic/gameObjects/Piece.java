@@ -214,20 +214,4 @@ public class Piece {
     public String toString() {
         return this.position.toString();
     }
-
-    public boolean isMovable() {
-        List<Cell> neighbours = this.position.getNeighbours();
-        for (Cell neighbour : neighbours) {
-            if (neighbour.isEmpty()) {
-                return true;
-            }
-            List<Cell> neighboursFromNeighbour = neighbour.getNeighbours();
-            for (Cell neighbourFromNeighbour : neighboursFromNeighbour) {
-                if (neighbourFromNeighbour.isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
