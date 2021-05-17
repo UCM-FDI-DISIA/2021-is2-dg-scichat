@@ -15,9 +15,7 @@ public class Bot {
     private Piece selectedPiece = null;
     private boolean surrender;
     private int id;
-    private long time;
     private boolean playing = false;
-    private long timeAtTurnStart;
 
     public Bot(Strategy strat, PieceColor color, Side start, int id)
         throws OccupiedCellException {
@@ -25,7 +23,6 @@ public class Bot {
         this.color = color;
         this.playerSide = start;
         this.id = id;
-        this.time = 0;
         createPieces();
     }
 

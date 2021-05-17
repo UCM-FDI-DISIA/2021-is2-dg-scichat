@@ -11,7 +11,6 @@ import utils.PieceColor;
 
 public interface Player {
     void deselectPiece();
-    void endTurn();
     PieceColor getColor();
     String getId();
     String getName();
@@ -25,7 +24,6 @@ public interface Player {
     void move(Cell to, Mode mode) throws NotSelectedPieceException, InvalidMoveException;
     boolean selectPiece(Piece p);
     void softReset();
-    void startTurn();
     void surrender();
     JSONObject toJSON();
     String toString();
