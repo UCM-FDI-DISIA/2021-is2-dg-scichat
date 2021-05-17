@@ -34,8 +34,7 @@ public class CellLabel extends JLabel {
         this.radius = radius;
 
         if (!this.position.isEmpty()) this.bgColor =
-            this.position.getPiece().getColor().getColor(); else this.bgColor =
-            default_bg_color;
+            this.position.getPiece().getColor(); else this.bgColor = default_bg_color;
         this.borderColor = Color.white;
 
         initGUI();

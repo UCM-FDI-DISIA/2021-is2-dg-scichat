@@ -135,7 +135,7 @@ public class BoardPanel extends JPanel implements GameObserver {
 
         toLabel = this.cellLabels.get(to);
         toLabel.setSelected(true);
-        toLabel.setColor(to.getPiece().getColor().getColor());
+        toLabel.setColor(to.getPiece().getColor());
     }
 
     @Override
