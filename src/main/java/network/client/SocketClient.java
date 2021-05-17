@@ -44,6 +44,7 @@ public class SocketClient extends WebSocketClient {
     @Override
     public void onMessage(String s) {
         /// Parsear el mensaje como JSONObject, y emitir a los observadores
+        System.out.println("Mensaje recibido: " + s);
         try {
             JSONObject res = new JSONObject(s);
             String type = res.getString("type");
@@ -66,12 +67,15 @@ public class SocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
+        System.out.println("Connection closed");
         this.connected = false;
         for (SocketObserver o : this.observers) o.onClose();
     }
 
     @Override
     public void onError(Exception e) {
+        System.out.println("Error: ");
+        e.printStackTrace();
         for (SocketObserver o : this.observers) o.onError(e);
     }
 
