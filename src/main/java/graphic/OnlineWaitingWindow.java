@@ -79,7 +79,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
 
                 @Override
                 public void execute(JSONObject data, SocketClient connection) {
-                    /// connection.removeObserver(OnlineWaitingWindow.this);
+                    connection.removeObserver(OnlineWaitingWindow.this);
                     createGame();
                     status = true;
                     setVisible(false);
