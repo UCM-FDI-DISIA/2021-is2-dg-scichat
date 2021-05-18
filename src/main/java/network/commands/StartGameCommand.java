@@ -13,18 +13,8 @@ public class StartGameCommand extends Command {
         super("START_GAME");
     }
 
-    public StartGameCommand(String _roomID) {
-        this();
-        this.roomID = _roomID;
-    }
-
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
-        /// Pasar como _data { roomID }
-        req.put("data", new JSONObject().put("roomID", this.roomID));
-        connection.send(req.toString());
+    public JSONObject getData() {
+        return new JSONObject().put("roomID", this.roomID);
     }
 }

@@ -1,6 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
 import network.models.Room;
 import network.models.ServerRoom;
 import network.server.Server;
@@ -25,18 +24,12 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        /// Mandar una petición al servidor para entrar en habitación
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
-        data.put("clientID", this.clientID);
         data.put("roomID", this.roomID);
         data.put("name", this.name);
 
-        req.put("data", data);
-        connection.send(req.toString());
+        return data;
     }
 
     @Override

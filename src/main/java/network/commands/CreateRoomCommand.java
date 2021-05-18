@@ -20,13 +20,8 @@ public class CreateRoomCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        connection.send(
-            new JSONObject()
-                .put("type", this.type)
-                .put("data", config.toJSON())
-                .toString()
-        );
+    public JSONObject getData() {
+        return config.toJSON();
     }
 
     @Override

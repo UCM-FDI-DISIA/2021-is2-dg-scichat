@@ -21,17 +21,13 @@ public class SurrenderCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
 
         data.put("roomID", this.roomID);
         data.put("playerID", this.playerID);
 
-        req.put("data", data);
-
-        connection.send(req.toString());
+        return data;
     }
 
     @Override

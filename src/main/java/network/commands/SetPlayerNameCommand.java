@@ -29,6 +29,16 @@ public class SetPlayerNameCommand extends Command {
         this.roomID = data.getString("roomID");
     }
 
+    @Override
+    public JSONObject getData() {
+        JSONObject data = new JSONObject();
+        data.put("roomID", this.roomID);
+        data.put("name", this.name);
+        data.put("playerID", this.playerID);
+
+        return data;
+    }
+
     public String getPlayerID() {
         return playerID;
     }

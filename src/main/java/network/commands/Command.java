@@ -14,7 +14,16 @@ public abstract class Command {
     }
 
     /// Para enviar este commando al servidor
-    public void send(SocketClient connection) {}
+    public void send(SocketClient connection) {
+        JSONObject req = new JSONObject();
+        req.put("type", this.type);
+        req.put("clientID", connection.getClientID());
+        req.put("data", this.getData());
+
+        connection.send(req.toString());
+    }
+
+    public abstract JSONObject getData();
 
     /// Para cuando el cliente recibe el mensaje, parsear el componente
     public void parseRequest(JSONObject data) {}
