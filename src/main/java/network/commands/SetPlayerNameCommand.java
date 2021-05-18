@@ -29,6 +29,16 @@ public class SetPlayerNameCommand extends Command {
         this.roomID = data.getString("roomID");
     }
 
+    @Override
+    public JSONObject getData() {
+        JSONObject data = new JSONObject();
+        data.put("roomID", this.roomID);
+        data.put("name", this.name);
+        data.put("playerID", this.playerID);
+
+        return data;
+    }
+
     public String getPlayerID() {
         return playerID;
     }
@@ -38,8 +48,10 @@ public class SetPlayerNameCommand extends Command {
     }
 
     @Override
-    public void execute(JSONObject data, Server server, WebSocket connection)
+    public void execute(JSONObject req, Server server, WebSocket connection)
         throws Exception {
+        JSONObject data = req.getJSONObject("data");
+
         this.parseRequest(data);
 
         ServerRoom room = server.getRoom(roomID);

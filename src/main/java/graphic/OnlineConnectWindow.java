@@ -258,8 +258,12 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         String type = s.getString("type");
         JSONObject data = s.getJSONObject("data");
 
-        Command c = commandParser.parse(type);
-        c.execute(data, this.sc);
+        try {
+            Command c = commandParser.parse(type);
+            c.execute(data, this.sc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
