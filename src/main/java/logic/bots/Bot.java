@@ -45,15 +45,20 @@ public class Bot implements Player {
         }
     }
 
+    public void prepareBot(Board board) {
+        this.board = board;
+    }
+
+    public boolean botPerforming(Cell to, Mode mode)
+        throws InvalidMoveException, NotSelectedPieceException {
+        move(to, mode);
+        return true;
+    }
+
     public void move(Cell to, Mode mode)
         throws NotSelectedPieceException, InvalidMoveException {
         to = strategy.move(this, mode == Mode.Traditional, board);
         selectedPiece.move(to, mode);
-    }
-
-    public void prepareBot(Board board, boolean jumpIsLimited) {
-        this.board = board;
-        this.jumpIsLimited = jumpIsLimited;
     }
 
     @Override

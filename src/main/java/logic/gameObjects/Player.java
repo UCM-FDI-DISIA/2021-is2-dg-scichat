@@ -33,4 +33,8 @@ public interface Player {
     void setName(String name);
 
     default void prepareBot(Board board, boolean jumpIsLimited) {}
+    default boolean botPerforming(Cell to, Mode mode)
+        throws InvalidMoveException, NotSelectedPieceException {
+        return false;
+    }
 }

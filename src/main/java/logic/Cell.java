@@ -46,6 +46,12 @@ public class Cell {
      * @param board
      * @throws OutOfBoundsException
      */
+
+    public Cell() {
+        this.row = 0;
+        this.col = 0;
+    }
+
     public Cell(int row, int col, Board board) {
         this.row = row;
         this.col = col;

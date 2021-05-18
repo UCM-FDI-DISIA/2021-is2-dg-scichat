@@ -2,6 +2,7 @@ package logic;
 
 import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
+import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import graphic.GameObserver;
 import java.io.*;
@@ -52,7 +53,7 @@ public class Game {
         for (int i = 0; i < jPlayers.length(); ++i) {
             JSONObject jPlayer = jPlayers.getJSONObject(i);
 
-            //Inicializamos a cada uno de los jugadores
+            // Inicializamos a cada uno de los jugadores
             HashSet<Piece> auxPieces = new HashSet<Piece>();
             JSONArray jPieces = jPlayer.getJSONArray("pieces");
 
@@ -175,7 +176,7 @@ public class Game {
         JSONObject jGame = null;
         try {
             jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
-        } catch (Exception ex) {} //Cambiar luego
+        } catch (Exception ex) {} // Cambiar luego
 
         return new Game(jGame);
     }
@@ -187,7 +188,7 @@ public class Game {
             );
     }
 
-    /*Metodos de control de tiempo de juego*/
+    /* Metodos de control de tiempo de juego */
 
     public long getTimePlaying() {
         return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
@@ -245,11 +246,22 @@ public class Game {
 
     /**
      * Avanzar en turno
+     *
+     * @throws NotSelectedPieceException
+     * @throws InvalidMoveException
      */
     public void advance() {
-        //TODO evitar que se atasque
+        // TODO evitar que se atasque
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+            // Es que el método move() de Player lanza excepcion
+            try {
+                // Si el turno es de un bot pasas el siguiente despues de realizar su movimiento en botPerforming()
+                if (this.getCurrentPlayer().botPerforming(new Cell(), gameMode)) {
+                    this.currentPlayerIndex =
+                        (this.currentPlayerIndex + 1) % this.players.size();
+                }
+            } catch (Exception e) {}
         } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
@@ -330,7 +342,8 @@ public class Game {
     }
 
     /**
-     * Nos permite resetear el juego para dejarlo en el estado inicial de la partida.
+     * Nos permite resetear el juego para dejarlo en el estado inicial de la
+     * partida.
      */
     public void softReset() {
         this.board = new Board();
