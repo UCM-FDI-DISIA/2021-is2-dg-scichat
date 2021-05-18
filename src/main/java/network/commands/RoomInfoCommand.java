@@ -1,8 +1,6 @@
 package network.commands;
 
 import network.models.Room;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class RoomInfoCommand extends Command {
@@ -26,11 +24,5 @@ public class RoomInfoCommand extends Command {
 
     public Room getRoom() {
         return room;
-    }
-
-    @Override
-    public void execute(JSONObject data, Server server, WebSocket connection)
-        throws Exception {
-        /// El servidor de momento no recibe esta petition
     }
 }

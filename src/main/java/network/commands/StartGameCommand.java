@@ -1,9 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
-import network.models.ServerRoom;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class StartGameCommand extends Command {
@@ -11,6 +7,11 @@ public class StartGameCommand extends Command {
 
     public StartGameCommand() {
         super("START_GAME");
+    }
+
+    public StartGameCommand(String _roomID) {
+        this();
+        this.roomID = _roomID;
     }
 
     @Override

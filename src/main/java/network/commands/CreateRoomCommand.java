@@ -1,6 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
 import network.models.RoomConfig;
 import network.models.ServerRoom;
 import network.server.Server;
@@ -25,7 +24,9 @@ public class CreateRoomCommand extends Command {
     }
 
     @Override
-    public void execute(JSONObject _data, Server server, WebSocket connection) {
+    public void execute(JSONObject req, Server server, WebSocket connection) {
+        JSONObject _data = req.getJSONObject("data");
+
         RoomConfig roomConfig = new RoomConfig(_data);
         String roomID = ServerRoom.generateRoomID();
 

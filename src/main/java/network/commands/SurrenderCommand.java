@@ -1,9 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
-import network.models.ServerRoom;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class SurrenderCommand extends Command {

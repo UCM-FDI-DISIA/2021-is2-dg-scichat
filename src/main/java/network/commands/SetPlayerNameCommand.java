@@ -48,8 +48,10 @@ public class SetPlayerNameCommand extends Command {
     }
 
     @Override
-    public void execute(JSONObject data, Server server, WebSocket connection)
+    public void execute(JSONObject req, Server server, WebSocket connection)
         throws Exception {
+        JSONObject data = req.getJSONObject("data");
+
         this.parseRequest(data);
 
         ServerRoom room = server.getRoom(roomID);
