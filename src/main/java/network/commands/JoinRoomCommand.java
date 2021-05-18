@@ -1,6 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
 import network.models.Room;
 import network.models.ServerRoom;
 import network.server.Server;
@@ -25,18 +24,12 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        /// Mandar una petición al servidor para entrar en habitación
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
-        data.put("clientID", this.clientID);
         data.put("roomID", this.roomID);
         data.put("name", this.name);
 
-        req.put("data", data);
-        connection.send(req.toString());
+        return data;
     }
 
     @Override
@@ -46,10 +39,12 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void execute(JSONObject data, Server server, WebSocket connection)
+    public void execute(JSONObject req, Server server, WebSocket connection)
         throws Exception {
+        JSONObject data = req.getJSONObject("data");
+        String clientID = req.getString("clientID");
+
         String roomID = data.getString("roomID");
-        String clientID = data.getString("clientID");
         String name = data.getString("name");
 
         ServerRoom serverRoom = server.getRoom(roomID);

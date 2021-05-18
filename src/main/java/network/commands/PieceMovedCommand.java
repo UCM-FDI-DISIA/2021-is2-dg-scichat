@@ -1,9 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
-import network.models.ServerRoom;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -51,10 +47,7 @@ public class PieceMovedCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
 
         data.append("from", x1);
@@ -66,8 +59,6 @@ public class PieceMovedCommand extends Command {
         data.put("playerID", this.playerID);
         data.put("roomID", this.roomID);
 
-        req.put("data", data);
-
-        connection.send(req.toString());
+        return data;
     }
 }
