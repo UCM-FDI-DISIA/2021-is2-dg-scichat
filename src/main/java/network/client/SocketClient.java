@@ -20,6 +20,7 @@ public class SocketClient extends WebSocketClient {
     }
 
     public void addObserver(SocketObserver o) {
+        if (this.observers.contains(o)) return;
         this.observers.add(o);
     }
 

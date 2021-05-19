@@ -16,15 +16,10 @@ public class RematchCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
         data.put("roomID", this.roomID);
 
-        req.put("data", data);
-
-        connection.send(req.toString());
+        return data;
     }
 }

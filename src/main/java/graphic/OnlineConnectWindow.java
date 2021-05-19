@@ -12,6 +12,7 @@ import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
+import network.client.SocketThread;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.CreateRoomCommand;
@@ -130,12 +131,11 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 if (value.isEmpty()) return;
 
                 try {
-                    URI serverURL = new URI(value);
+                    SocketThread socketThread = parent.createConnection(value);
+                    this.sc = socketThread.getConnection();
+                    socketThread.addObserver(this);
 
-                    /// Intentar conectar
-                    this.sc = new SocketClient(serverURL);
-                    this.sc.addObserver(this);
-                    this.sc.connect();
+                    socketThread.start();
                 } catch (URISyntaxException uriSyntaxException) {
                     uriSyntaxException.printStackTrace();
                     JOptionPane.showMessageDialog(

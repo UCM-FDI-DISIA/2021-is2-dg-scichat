@@ -1,18 +1,20 @@
 package graphic;
 
 import control.Controller;
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.swing.*;
 import logic.Game;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
+import network.client.SocketThread;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.RematchCommand;
 import network.models.Room;
 import org.json.JSONObject;
-
-import javax.swing.*;
-import java.awt.*;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
 public class MainWindow extends JFrame implements GameObserver, SocketObserver {
@@ -20,6 +22,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     private Controller ctrl;
     private SocketClient connection = null;
+    private SocketThread socketThread;
 
     //Datos de diseno
     public static int width = 930;
@@ -37,6 +40,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     private OnlineGameWindow onlineGameScreen = null;
 
     private Command rematchCommand = new RematchCommand() {
+
         @Override
         public void execute(JSONObject data, SocketClient connection) {
             super.execute(data, connection);
@@ -45,11 +49,10 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     };
 
     private CommandParser commandParser = new CommandParser() {
+
         @Override
         public Command[] getCommands() {
-            return new Command[]{
-                    rematchCommand
-            };
+            return new Command[] { rematchCommand };
         }
     };
 
@@ -68,7 +71,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     public void initLocalServer() {
         if (this.localOnlineScreen == null) localOnlineScreen =
-                new LocalServerSelectionScreen(this);
+            new LocalServerSelectionScreen(this);
         localOnlineScreen.open();
     }
 
@@ -77,8 +80,6 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
         if (!onlineConnectScreen.open()) {
             closeConnection();
         } else {
-            connection = onlineConnectScreen.getConnection();
-            connection.addObserver(this);
             initOnlineWaiting();
         }
     }
@@ -86,13 +87,20 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     public void initOnlineWaiting() {
         String roomID = onlineConnectScreen.getRoomID();
         String playerName = onlineConnectScreen.getName();
+
         onlineWaitingScreen =
-                new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
-        if (!onlineWaitingScreen.open()) {
-            closeConnection();
-        } else {
-            initOnlineGame(onlineWaitingScreen.getRoom());
-        }
+            new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
+
+        /// Por tema de concurrencia, evitar bloquear el hilo de Socket
+        SwingUtilities.invokeLater(
+            () -> {
+                if (!onlineWaitingScreen.open()) {
+                    closeConnection();
+                } else {
+                    initOnlineGame(onlineWaitingScreen.getRoom());
+                }
+            }
+        );
     }
 
     public void initOnlineGame(Room room) {
@@ -160,7 +168,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     public void initSelectFile() {
         if (this.loadGameScreen == null) this.loadGameScreen =
-                new LoadGameWindow(ctrl, this);
+            new LoadGameWindow(ctrl, this);
         if (this.loadGameScreen.open()) {
             initGame();
         }
@@ -177,19 +185,30 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     public void initRematch() {
         if (connection != null) {
-            new RematchCommand(onlineConnectScreen.getRoomID()).send(this.connection);
             initOnlineWaiting();
-
         } else {
             ctrl.softReset();
             initGame();
         }
     }
 
+    public SocketThread createConnection(String serverURL) throws URISyntaxException {
+        URI serverURI = new URI(serverURL);
+
+        this.socketThread = new SocketThread(serverURI);
+        this.socketThread.addObserver(this);
+        this.connection = this.socketThread.getConnection();
+
+        return this.socketThread;
+    }
+
+    public void initRematchOnline() {
+        new RematchCommand(onlineConnectScreen.getRoomID()).send(this.connection);
+    }
+
     public void onGameEnded(Game game) {
         initWinner(game.getWinner());
     }
-
 
     @Override
     public void onMessage(JSONObject s) {
@@ -200,8 +219,6 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
         try {
             Command c = commandParser.parse(type);
             c.execute(data, this.connection);
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
     }
 }
