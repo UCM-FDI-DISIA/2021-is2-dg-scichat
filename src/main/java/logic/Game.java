@@ -211,12 +211,48 @@ public class Game {
 
     public Player currentPlayerSurrender() {
         this.getCurrentPlayer().surrender();
+        onPlayerSurrender();
+        return this.wonBySurrender();
+    }
+
+    /**
+     * Que hacer cuando un jugador se rinde
+     */
+    protected void onPlayerSurrender() {
         Player winner = wonBySurrender();
         if (winner != null) setStopped(true, winner);
         for (GameObserver i : observers) {
             i.onSurrendered(this);
         }
+    }
+
+    /**
+     * Funcion que hace rendir al jugador con un ID dado
+     *
+     * @param id id del jugador
+     * @return el ganador de la partida, si es que haya
+     */
+    public Player playerSurrender(String id) {
+        Player player = getPlayerById(id);
+        if (player.hasSurrendered()) return this.wonBySurrender();
+
+        player.surrender();
+
+        onPlayerSurrender();
         return this.wonBySurrender();
+    }
+
+    protected Player getPlayerById(String id) {
+        Player player = null;
+
+        for (Player p : this.players) {
+            if (p.getId().equals(id)) {
+                player = p;
+                break;
+            }
+        }
+
+        return player;
     }
 
     /**

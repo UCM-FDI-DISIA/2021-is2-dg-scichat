@@ -119,6 +119,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     @Override
     public void onSurrendered(Game game) {
+        /// TODO: hacer que reciba el ID del jugador que se rinde, para evitar mandar dos veces el mensaje
         String playerID = game.getCurrentPlayer().getId();
         if (this.localPlayers.contains(playerID)) {
             new SurrenderCommand(playerID, roomID).send(this.sc);
@@ -148,9 +149,9 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
 
     private void setBlocker(String playerID) {
         if (this.canMove(playerID)) {
-            this.parent.setEnabled(true);
+            //this.parent.setEnabled(true);
         } else {
-            this.parent.setEnabled(false);
+            //this.parent.setEnabled(false);
         }
     }
 }
