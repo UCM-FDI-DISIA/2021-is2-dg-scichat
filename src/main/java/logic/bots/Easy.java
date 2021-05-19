@@ -20,6 +20,7 @@ public class Easy implements Strategy {
                 // Si se encuentra dicha casilla se guarda y se deja de buscar
                 if (neighbour.isEmpty()) {
                     result = neighbour;
+                    player.selectPiece(piece);
                     break;
                 }
             }

@@ -50,7 +50,7 @@ public class Bot implements Player {
         this.board = board;
     }
 
-    public boolean botPerforming(Cell to, Mode mode)
+    public boolean botPerforming( Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         move(strategy.move(this, mode == Mode.Traditional, board), mode);
         return true;
@@ -58,7 +58,7 @@ public class Bot implements Player {
 
     public void move(Cell to, Mode mode)
         throws NotSelectedPieceException, InvalidMoveException {
-        lastMovement = to;
+        lastMovement = selectedPiece.getPosition();
         selectedPiece.move(to, mode);
     }
 
