@@ -256,8 +256,14 @@ public class Game {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
             // Es que el método move() de Player lanza excepcion
             try {
-                // Si el turno es de un bot pasas el siguiente despues de realizar su movimiento en botPerforming()
-                if (this.getCurrentPlayer().botPerforming(new Cell(), gameMode)) {
+                // Si el turno es de un bot pasas el siguiente despues de realizar su movimiento
+                // en botPerforming()
+                while (this.getCurrentPlayer().botPerforming(new Cell(), gameMode)) {
+                    sendOnMovedPiece(
+                        getCurrentPlayer().getSelectedPiece().getPosition(),
+                        getCurrentPlayer().getLastMovement(),
+                        getCurrentPlayer().getId()
+                    );
                     this.currentPlayerIndex =
                         (this.currentPlayerIndex + 1) % this.players.size();
                 }

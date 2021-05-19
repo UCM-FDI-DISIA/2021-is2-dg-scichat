@@ -27,6 +27,7 @@ public class Bot implements Player {
     boolean jumpIsLimited;
     private String name;
     private Board board;
+    private Cell lastMovement = null; // Esto es para notificar a los observadores desde el Game
 
     public Bot(Strategy strat, PieceColor color, Side start, String id)
         throws OccupiedCellException {
@@ -51,14 +52,18 @@ public class Bot implements Player {
 
     public boolean botPerforming(Cell to, Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
-        move(to, mode);
+        move(strategy.move(this, mode == Mode.Traditional, board), mode);
         return true;
     }
 
     public void move(Cell to, Mode mode)
         throws NotSelectedPieceException, InvalidMoveException {
-        to = strategy.move(this, mode == Mode.Traditional, board);
+        lastMovement = to;
         selectedPiece.move(to, mode);
+    }
+
+    public Cell getLastMovement() {
+        return lastMovement;
     }
 
     @Override

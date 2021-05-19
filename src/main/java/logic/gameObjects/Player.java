@@ -37,4 +37,7 @@ public interface Player {
         throws InvalidMoveException, NotSelectedPieceException {
         return false;
     }
+    default Cell getLastMovement() {
+        return null;
+    }
 }
