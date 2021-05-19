@@ -1,22 +1,18 @@
 package graphic;
 
 import java.awt.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
-import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
-import network.client.SocketThread;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.CreateRoomCommand;
-import network.commands.SetPlayerNameCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import org.json.JSONObject;
@@ -131,11 +127,9 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
                 if (value.isEmpty()) return;
 
                 try {
-                    SocketThread socketThread = parent.createConnection(value);
-                    this.sc = socketThread.getConnection();
-                    socketThread.addObserver(this);
-
-                    socketThread.start();
+                    this.sc = parent.createConnection(value);
+                    this.sc.addObserver(this);
+                    this.sc.connect();
                 } catch (URISyntaxException uriSyntaxException) {
                     uriSyntaxException.printStackTrace();
                     JOptionPane.showMessageDialog(

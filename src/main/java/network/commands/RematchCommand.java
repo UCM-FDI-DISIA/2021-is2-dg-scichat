@@ -1,6 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
 import org.json.JSONObject;
 
 public class RematchCommand extends Command {

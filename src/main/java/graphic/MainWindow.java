@@ -9,7 +9,6 @@ import logic.Game;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
 import network.client.SocketObserver;
-import network.client.SocketThread;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.RematchCommand;
@@ -22,7 +21,6 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     private Controller ctrl;
     private SocketClient connection = null;
-    private SocketThread socketThread;
 
     //Datos de diseno
     public static int width = 930;
@@ -192,14 +190,13 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
         }
     }
 
-    public SocketThread createConnection(String serverURL) throws URISyntaxException {
+    public SocketClient createConnection(String serverURL) throws URISyntaxException {
         URI serverURI = new URI(serverURL);
 
-        this.socketThread = new SocketThread(serverURI);
-        this.socketThread.addObserver(this);
-        this.connection = this.socketThread.getConnection();
+        this.connection = new SocketClient(serverURI);
+        this.connection.addObserver(this);
 
-        return this.socketThread;
+        return this.connection;
     }
 
     public void initRematchOnline() {
