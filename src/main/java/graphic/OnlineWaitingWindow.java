@@ -69,11 +69,6 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         this.name = _name;
         this.ctrl = _ctrl;
 
-        this.connection.addObserver(this);
-
-        this.connectToRoom();
-        this.initGUI();
-
         this.startGameCommand =
             new StartGameCommand(roomID) {
 
@@ -83,6 +78,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
                     createGame();
                     status = true;
                     setVisible(false);
+                    _parent.initOnlineGame(getRoom());
                 }
             };
     }
@@ -243,6 +239,11 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
 
     public boolean open() {
         status = false;
+        this.connection.addObserver(this);
+
+        this.connectToRoom();
+        this.initGUI();
+
         this.pack();
         this.setVisible(true);
         return status;
