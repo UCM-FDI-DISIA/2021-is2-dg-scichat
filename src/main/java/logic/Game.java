@@ -25,6 +25,8 @@ public class Game {
      *
      */
     private static final long serialVersionUID = 1L;
+    
+    private static final long Botdelay=100;
 
     private Board board = new Board();
     private boolean stopped = false; /// Si el jugador ha parado el juego
@@ -208,6 +210,19 @@ public class Game {
         this.stopped = false;
         this.timeAtTurnStart = System.currentTimeMillis();
         for (GameObserver i : this.observers) i.onGameStart(this);
+        try{
+            if(this.moveBot()) {
+        	if (getCurrentPlayer().isAWinner()) setStopped(
+                    true,
+                    getCurrentPlayer()
+                );
+        	else
+        	    advance();
+            }
+        }catch (Exception e) {
+        	System.out.println("Crap, esto no va");
+        	System.out.println(e.getMessage());
+        }
     }
 
     public Player currentPlayerSurrender() {
@@ -251,37 +266,24 @@ public class Game {
      * @throws InvalidMoveException
      */
     public void advance() {
-        // TODO evitar que se atasque
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
-            // Es que el método move() de Player lanza excepcion
-            try {
-                // Si el turno es de un bot pasas el siguiente despues de realizar su movimiento
-                // en botPerforming()
-                while (this.getCurrentPlayer().botPerforming( gameMode)) {
-                    sendOnMovedPiece(
-                	getCurrentPlayer().getLastMovement(),
-                        getCurrentPlayer().getSelectedPiece().getPosition(),
-                        getCurrentPlayer().getId()
-                    );
-                    //TODO aqui he hecho una chapuza, hay que arreglarlo que hay algo muy parecido en game.move()
-                    //a lo mejor se puede generalizar, ya lo dejo pa luego
-                    //TODO por cierto, no funciona si el maquina es el jugador 1, pero lo dejo para luego que ya 
-                    //he hecho muchas chapuzas hoy de las que me arrepentire mañana
-                    if (getCurrentPlayer().isAWinner()) setStopped(
-                        true,
-                        getCurrentPlayer()
-                    );
-                    this.currentPlayerIndex =
-                        (this.currentPlayerIndex + 1) % this.players.size();
-                }
-            } catch (Exception e) {
-        	System.out.println("Crap, esto no va");
-        	System.out.println(e.getMessage());
-            }
         } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
+        }
+        try{ 
+            if(this.moveBot()) {
+        	if (getCurrentPlayer().isAWinner()) setStopped(
+                    true,
+                    getCurrentPlayer()
+                );
+        	else
+        	    advance();
+            }
+        }catch (Exception e) {
+        	System.out.println("Crap, esto no va");
+        	System.out.println(e.getMessage());
         }
     }
 
@@ -408,6 +410,36 @@ public class Game {
                 )
             );
         }
+    }
+    
+    /**
+     * Intenta mover una pieza como jugador maquina
+     * 
+     * @return false si no lo consigue, es humano, true si lo consigue, es jugador maquina
+     * @throws InvalidMoveException
+     * @throws NotSelectedPieceException
+     */
+    public boolean moveBot() throws InvalidMoveException, NotSelectedPieceException {
+	long timeAtStart=System.currentTimeMillis();
+	if(!this.getCurrentPlayer().botPerforming(gameMode))
+	    return false;
+        sendOnMovedPiece(
+    	getCurrentPlayer().getLastMovement(),
+            getCurrentPlayer().getSelectedPiece().getPosition(),
+            getCurrentPlayer().getId()
+        );
+        if (getCurrentPlayer().isAWinner()) setStopped(
+            true,
+            getCurrentPlayer()
+        );
+        if(System.currentTimeMillis()<timeAtStart+this.Botdelay)
+	    try {
+		Thread.sleep(this.Botdelay-System.currentTimeMillis()+timeAtStart);
+	    } catch (InterruptedException e) {
+		//redundancia
+		e.printStackTrace();
+	    }
+        return true;
     }
 
     // Para Debug
