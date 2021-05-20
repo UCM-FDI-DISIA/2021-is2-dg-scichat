@@ -50,7 +50,7 @@ public class Bot implements Player {
         this.board = board;
     }
 
-    public boolean botPerforming( Mode mode)
+    public boolean botPerforming(Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         move(strategy.move(this, mode == Mode.Traditional, board), mode);
         return true;

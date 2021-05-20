@@ -258,15 +258,15 @@ public class Game {
             try {
                 // Si el turno es de un bot pasas el siguiente despues de realizar su movimiento
                 // en botPerforming()
-                while (this.getCurrentPlayer().botPerforming( gameMode)) {
+                while (this.getCurrentPlayer().botPerforming(gameMode)) {
                     sendOnMovedPiece(
-                	getCurrentPlayer().getLastMovement(),
+                        getCurrentPlayer().getLastMovement(),
                         getCurrentPlayer().getSelectedPiece().getPosition(),
                         getCurrentPlayer().getId()
                     );
                     //TODO aqui he hecho una chapuza, hay que arreglarlo que hay algo muy parecido en game.move()
                     //a lo mejor se puede generalizar, ya lo dejo pa luego
-                    //TODO por cierto, no funciona si el maquina es el jugador 1, pero lo dejo para luego que ya 
+                    //TODO por cierto, no funciona si el maquina es el jugador 1, pero lo dejo para luego que ya
                     //he hecho muchas chapuzas hoy de las que me arrepentire mañana
                     if (getCurrentPlayer().isAWinner()) setStopped(
                         true,
@@ -276,8 +276,8 @@ public class Game {
                         (this.currentPlayerIndex + 1) % this.players.size();
                 }
             } catch (Exception e) {
-        	System.out.println("Crap, esto no va");
-        	System.out.println(e.getMessage());
+                System.out.println("Crap, esto no va");
+                System.out.println(e.getMessage());
             }
         } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
