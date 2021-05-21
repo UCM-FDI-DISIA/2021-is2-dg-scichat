@@ -155,7 +155,7 @@ public class BoardPanel extends JPanel implements GameObserver {
     }
 
     @Override
-    public void onSurrendered(Game game) {
+    public void onSurrendered(Game game, String playerID) {
         this.removeAll();
         this.setBoard(game.getBoard(), radius);
         this.repaint();
