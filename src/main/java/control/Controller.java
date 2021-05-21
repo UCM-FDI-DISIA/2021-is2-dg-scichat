@@ -149,8 +149,8 @@ public class Controller {
     }
 
     public void surrender(String playerID) {
-        if (!game.getCurrentPlayer().getId().equals(playerID)) return;
-
-        this.surrender();
+        if (!game.isFinished()) {
+            game.playerSurrender(playerID);
+        }
     }
 }

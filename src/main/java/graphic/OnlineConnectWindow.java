@@ -180,7 +180,10 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         joinOnlineRoomButton.addActionListener(
             e -> {
                 roomID =
-                    JOptionPane.showInputDialog("Introduce código de la habitación: ");
+                    JOptionPane.showInputDialog(
+                        this,
+                        "Introduce código de la habitación: "
+                    );
                 if (roomID.isEmpty()) return;
 
                 roomID = roomID.toUpperCase();
