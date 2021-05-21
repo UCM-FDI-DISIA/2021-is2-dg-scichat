@@ -239,6 +239,11 @@ public class Game {
 
         player.surrender();
 
+        if (this.getCurrentPlayer() == player) {
+            /// Se ha salido el jugador que tenia el turno actual
+            this.advance();
+        }
+
         onPlayerSurrender(id);
         return this.wonBySurrender();
     }
