@@ -26,7 +26,7 @@ public class Game {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final long Botdelay = 100;
+    private static final long Botdelay = 200;
 
     private Board board = new Board();
     private boolean stopped = false; /// Si el jugador ha parado el juego
@@ -210,17 +210,23 @@ public class Game {
         this.stopped = false;
         this.timeAtTurnStart = System.currentTimeMillis();
         for (GameObserver i : this.observers) i.onGameStart(this);
-        try {
-            if (this.moveBot()) {
-                if (getCurrentPlayer().isAWinner()) setStopped(
-                    true,
-                    getCurrentPlayer()
-                ); else advance();
+        new Thread() {
+
+            public void run() {
+                try {
+                    if (moveBot()) {
+                        if (getCurrentPlayer().isAWinner()) setStopped(
+                            true,
+                            getCurrentPlayer()
+                        ); else advance();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Crap, esto no va");
+                    System.out.println(e.getMessage());
+                }
             }
-        } catch (Exception e) {
-            System.out.println("Crap, esto no va");
-            System.out.println(e.getMessage());
         }
+        .start();
     }
 
     public Player currentPlayerSurrender() {
