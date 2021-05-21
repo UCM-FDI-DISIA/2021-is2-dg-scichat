@@ -61,6 +61,7 @@ public class Hard implements Strategy {
                 if (bestScore > score) {
                     bestScore = score;
                     result = curr;
+                    player.selectPiece(piece);
                 }
             }
 
@@ -82,6 +83,7 @@ public class Hard implements Strategy {
                 if (bestScore > score) {
                     bestScore = score;
                     result = curr;
+                    player.selectPiece(piece);
                 }
             }
         }
