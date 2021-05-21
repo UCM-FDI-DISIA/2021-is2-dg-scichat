@@ -33,8 +33,7 @@ public interface Player {
     void setName(String name);
 
     default void prepare(Board board) {}
-    default boolean botPerforming( Mode mode)
-
+    default boolean botPerforming(Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         return false;
     }

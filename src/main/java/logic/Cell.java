@@ -467,7 +467,7 @@ public class Cell {
         int col = other.getCol() - this.getCol();
         fila *= fila;
         col *= col;
-        return(fila + col);
+        return (fila + col);
     }
 
     public Cell getClosestMovementTo(Cell target, boolean jumpIsLimited) {
@@ -489,7 +489,7 @@ public class Cell {
             }
         }
 
-        //Anadimos la posición actual para inicializar la cola
+        //Anadimos la posiciï¿½n actual para inicializar la cola
         posibleMovesChecking.add(this);
         // Con este bucle rellenas la lista de todos los posibles movimientos para luego
         // elegir el mÃ¡s cercano a target
