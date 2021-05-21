@@ -212,14 +212,14 @@ public class Game {
     public Player currentPlayerSurrender() {
         String playerID = this.getCurrentPlayer().getId();
         this.getCurrentPlayer().surrender();
-        onPlayerSurrender();
+        onPlayerSurrender(playerID);
         return this.wonBySurrender();
     }
 
     /**
      * Que hacer cuando un jugador se rinde
      */
-    protected void onPlayerSurrender() {
+    protected void onPlayerSurrender(String playerID) {
         Player winner = wonBySurrender();
         if (winner != null) setStopped(true, winner);
         for (GameObserver i : observers) {
@@ -239,7 +239,7 @@ public class Game {
 
         player.surrender();
 
-        onPlayerSurrender();
+        onPlayerSurrender(id);
         return this.wonBySurrender();
     }
 
