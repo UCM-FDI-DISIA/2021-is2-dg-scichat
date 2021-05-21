@@ -210,6 +210,7 @@ public class Game {
     }
 
     public Player currentPlayerSurrender() {
+        String playerID = this.getCurrentPlayer().getId();
         this.getCurrentPlayer().surrender();
         onPlayerSurrender();
         return this.wonBySurrender();
@@ -222,7 +223,7 @@ public class Game {
         Player winner = wonBySurrender();
         if (winner != null) setStopped(true, winner);
         for (GameObserver i : observers) {
-            i.onSurrendered(this);
+            i.onSurrendered(this, playerID);
         }
     }
 

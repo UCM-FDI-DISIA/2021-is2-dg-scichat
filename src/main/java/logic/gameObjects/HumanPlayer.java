@@ -1,6 +1,7 @@
 package logic.gameObjects;
 
 import exceptions.InvalidMoveException;
+import exceptions.InvalidOperationException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
@@ -182,6 +183,16 @@ public class HumanPlayer implements Player {
 
     public void surrender() {
         this.surrender = true;
+
+        for (Piece p : this.pieces) {
+            try {
+                p.getPosition().removePiece();
+            } catch (InvalidOperationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.pieces.clear();
     }
 
     /**
