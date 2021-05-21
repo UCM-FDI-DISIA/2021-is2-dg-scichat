@@ -279,10 +279,7 @@ public class Game {
 	} catch (NotSelectedPieceException e) {
 	    System.out.println("Crap, esto no va");
 	    System.out.println(e.getMessage());
-	} catch (NullPointerException e) {
-	    System.out.println("Te comes el null");
-	}
-	
+	} 
     }
 
     /**

@@ -40,4 +40,6 @@ public interface Player {
     default Cell getLastMovement() {
         return null;
     }
+    
+    default void setLastMovement(Cell cell) {}
 }
