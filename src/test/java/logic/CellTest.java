@@ -329,22 +329,17 @@ public class CellTest {
 
     @Test
     void getOppositeCornerCell() {
-        assertEquals(board.getOppositeCornerCell(0).getRow(), 0);
-        assertEquals(board.getOppositeCornerCell(0).getCol(), 6);
+        assertEquals(board.getOppositeCornerCell(0), board.getCell(0, 6));
 
-        assertEquals(board.getOppositeCornerCell(1).getRow(), 4);
-        assertEquals(board.getOppositeCornerCell(1).getCol(), 12);
+        assertEquals(board.getOppositeCornerCell(1), board.getCell(4, 12));
 
-        assertEquals(board.getOppositeCornerCell(2).getRow(), 12);
-        assertEquals(board.getOppositeCornerCell(2).getCol(), 12);
+        assertEquals(board.getOppositeCornerCell(2), board.getCell(12, 12));
 
-        assertEquals(board.getOppositeCornerCell(3).getRow(), 16);
-        assertEquals(board.getOppositeCornerCell(3).getCol(), 6);
+        assertEquals(board.getOppositeCornerCell(3), board.getCell(16, 6));
 
-        assertEquals(board.getOppositeCornerCell(4).getRow(), 12);
-        assertEquals(board.getOppositeCornerCell(4).getCol(), 0);
+        assertEquals(board.getOppositeCornerCell(4), board.getCell(12, 0));
 
-        assertEquals(board.getOppositeCornerCell(5).getRow(), 4);
-        assertEquals(board.getOppositeCornerCell(5).getCol(), 0);
+        assertEquals(board.getOppositeCornerCell(5), board.getCell(4, 0));
+     
     }
 }

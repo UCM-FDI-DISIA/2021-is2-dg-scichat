@@ -58,12 +58,15 @@ public class Bot implements Player {
 
     public void move(Cell to, Mode mode)
         throws NotSelectedPieceException, InvalidMoveException {
-        lastMovement = selectedPiece.getPosition();
         selectedPiece.move(to, mode);
     }
 
     public Cell getLastMovement() {
         return lastMovement;
+    }
+    
+    public void setLastMovement(Cell cell) {
+	lastMovement = cell;
     }
 
     @Override

@@ -32,12 +32,14 @@ public interface Player {
     String toString();
     void setName(String name);
 
-    default void prepareBot(Board board, boolean jumpIsLimited) {}
-    default boolean botPerforming(Mode mode)
+    default void prepareBot(Board board) {}
+    default boolean botPerforming( Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         return false;
     }
     default Cell getLastMovement() {
         return null;
     }
+    
+    default void setLastMovement(Cell cell) {}
 }

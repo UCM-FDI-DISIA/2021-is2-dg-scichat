@@ -213,9 +213,9 @@ public class NewGameWindow extends JDialog {
             JComboBox<String> botStrategyComboBox = new JComboBox<>(
                 new String[] {
                     "Jugador Humano",
-                    "Estrategia 1",
-                    "Estrategia 2",
-                    "Estrategia 3"
+                    "Facil",
+                    "Normal",
+                    "Dificl"
                 }
             );
 
