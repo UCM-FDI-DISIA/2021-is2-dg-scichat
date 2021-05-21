@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import exceptions.InvalidOperationException;
 import exceptions.OccupiedCellException;
 import exceptions.OutOfBoundsException;
+import logic.Board.Side;
 import logic.gameObjects.Piece;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,8 @@ public class CellTest {
 
     @BeforeEach
     void init() {
-        /// Crear un tablero antes de cualquier test, porque las celdas están asociadas con la creación del tablero
+        /// Crear un tablero antes de cualquier test, porque las celdas están asociadas
+        /// con la creación del tablero
         board = new Board();
     }
 
@@ -105,7 +107,8 @@ public class CellTest {
         );
     }
 
-    /// Hay que discutir si lanza excepción en método getCell cuando se sale del tablero o no
+    /// Hay que discutir si lanza excepción en método getCell cuando se sale del
+    /// tablero o no
     @Test
     @Disabled
     void getNeighbors() {
@@ -280,7 +283,8 @@ public class CellTest {
 
             Assertions.assertDoesNotThrow(
                 () -> {
-                    other = other.getUpperRight().getLowerRight().getUpperRight(); // Me aseguro de sacarlo de la diagonal/horizontal
+                    other = other.getUpperRight().getLowerRight().getUpperRight(); // Me aseguro de sacarlo de la
+                    // diagonal/horizontal
                 }
             );
             Assertions.assertFalse(cell.isInSameDiagonalAs(other));
@@ -321,5 +325,20 @@ public class CellTest {
         );
 
         Assertions.assertEquals("(8,6)", cell.toString());
+    }
+
+    @Test
+    void getOppositeCornerCell() {
+        assertEquals(board.getOppositeCornerCell(0), board.getCell(0, 6));
+
+        assertEquals(board.getOppositeCornerCell(1), board.getCell(4, 12));
+
+        assertEquals(board.getOppositeCornerCell(2), board.getCell(12, 12));
+
+        assertEquals(board.getOppositeCornerCell(3), board.getCell(16, 6));
+
+        assertEquals(board.getOppositeCornerCell(4), board.getCell(12, 0));
+
+        assertEquals(board.getOppositeCornerCell(5), board.getCell(4, 0));
     }
 }

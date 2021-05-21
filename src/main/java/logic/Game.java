@@ -2,6 +2,7 @@ package logic;
 
 import control.options.Option.ExecuteException;
 import exceptions.InvalidMoveException;
+import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import graphic.GameObserver;
 import java.io.*;
@@ -24,6 +25,8 @@ public class Game {
      *
      */
     private static final long serialVersionUID = 1L;
+
+    private static final long Botdelay = 200;
 
     private Board board = new Board();
     private boolean stopped = false; /// Si el jugador ha parado el juego
@@ -52,7 +55,7 @@ public class Game {
         for (int i = 0; i < jPlayers.length(); ++i) {
             JSONObject jPlayer = jPlayers.getJSONObject(i);
 
-            //Inicializamos a cada uno de los jugadores
+            // Inicializamos a cada uno de los jugadores
             HashSet<Piece> auxPieces = new HashSet<Piece>();
             JSONArray jPieces = jPlayer.getJSONArray("pieces");
 
@@ -135,6 +138,9 @@ public class Game {
     }
 
     public void setPlayers(ArrayList<Player> players) {
+        for (Player player : players) {
+            player.prepare(board);
+        }
         this.players = players;
     }
 
@@ -175,7 +181,7 @@ public class Game {
         JSONObject jGame = null;
         try {
             jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
-        } catch (Exception ex) {} //Cambiar luego
+        } catch (Exception ex) {} // Cambiar luego
 
         return new Game(jGame);
     }
@@ -187,7 +193,7 @@ public class Game {
             );
     }
 
-    /*Metodos de control de tiempo de juego*/
+    /* Metodos de control de tiempo de juego */
 
     public long getTimePlaying() {
         return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
@@ -207,6 +213,23 @@ public class Game {
         this.stopped = false;
         this.timeAtTurnStart = System.currentTimeMillis();
         for (GameObserver i : this.observers) i.onGameStart(this);
+        new Thread() {
+
+            public void run() {
+                try {
+                    if (moveBot()) {
+                        if (getCurrentPlayer().isAWinner()) setStopped(
+                            true,
+                            getCurrentPlayer()
+                        ); else advance();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Crap, esto no va");
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        .start();
     }
 
     public Player currentPlayerSurrender() {
@@ -287,14 +310,30 @@ public class Game {
 
     /**
      * Avanzar en turno
+     *
+     * @throws NotSelectedPieceException
+     * @throws InvalidMoveException
      */
     public void advance() {
-        //TODO evitar que se atasque
         do {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         } while (this.getCurrentPlayer().hasSurrendered());
         for (GameObserver i : observers) {
             i.onEndTurn(this);
+        }
+        try {
+            if (this.moveBot()) {
+                if (getCurrentPlayer().isAWinner()) setStopped(
+                    true,
+                    getCurrentPlayer()
+                ); else advance();
+            }
+        } catch (InvalidMoveException e) {
+            System.out.println("Crap, esto no va");
+            System.out.println(e.getMessage());
+        } catch (NotSelectedPieceException e) {
+            System.out.println("Crap, esto no va");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -372,7 +411,8 @@ public class Game {
     }
 
     /**
-     * Nos permite resetear el juego para dejarlo en el estado inicial de la partida.
+     * Nos permite resetear el juego para dejarlo en el estado inicial de la
+     * partida.
      */
     public void softReset() {
         this.board = new Board();
@@ -420,6 +460,32 @@ public class Game {
                 )
             );
         }
+    }
+
+    /**
+     * Intenta mover una pieza como jugador maquina
+     *
+     * @return false si no lo consigue, es humano, true si lo consigue, es jugador
+     *         maquina
+     * @throws InvalidMoveException
+     * @throws NotSelectedPieceException
+     */
+    public boolean moveBot() throws InvalidMoveException, NotSelectedPieceException {
+        long timeAtStart = System.currentTimeMillis();
+        if (!this.getCurrentPlayer().botPerforming(gameMode)) return false;
+        sendOnMovedPiece(
+            getCurrentPlayer().getLastMovement(),
+            getCurrentPlayer().getSelectedPiece().getPosition(),
+            getCurrentPlayer().getId()
+        );
+        if (getCurrentPlayer().isAWinner()) setStopped(true, getCurrentPlayer());
+        if (System.currentTimeMillis() < timeAtStart + this.Botdelay) try {
+            Thread.sleep(this.Botdelay - System.currentTimeMillis() + timeAtStart);
+        } catch (InterruptedException e) {
+            // redundancia
+            e.printStackTrace();
+        }
+        return true;
     }
 
     // Para Debug

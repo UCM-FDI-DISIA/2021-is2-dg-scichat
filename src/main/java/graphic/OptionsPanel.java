@@ -67,7 +67,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
         labelTime.setFont(new Font("Impact", 0, 20));
         this.add(labelTime);
 
-        // Etiqueta de ejemplo del modo de juego
+        // Etiqueta del modo de juego
         gameMode = new JLabel("Modo de juego tradicional");
         gameMode.setHorizontalAlignment(SwingConstants.CENTER);
         gameMode.setFont(new Font("Impact", 0, 20));

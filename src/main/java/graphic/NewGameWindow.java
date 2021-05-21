@@ -13,6 +13,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import logic.Board;
+import logic.bots.Bot;
+import logic.bots.Easy;
+import logic.bots.Hard;
+import logic.bots.Normal;
 import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import utils.Mode;
@@ -68,7 +72,7 @@ public class NewGameWindow extends JDialog {
         startButton.addActionListener(
             e -> {
                 this.status = 1;
-                //Para limpiar los sides estaticos de la partida anterior
+                // Para limpiar los sides estaticos de la partida anterior
                 new Board();
                 setVisible(false);
             }
@@ -146,7 +150,8 @@ public class NewGameWindow extends JDialog {
         /// Tantas columnas como el numero de jugadores que haya
         this.playersConfigPanel.setLayout(new GridLayout(this.numPlayers, 1));
 
-        /// Vaciar la sección, lo renderizamos de nuevo con el numero de jugadores correcto
+        /// Vaciar la sección, lo renderizamos de nuevo con el numero de jugadores
+        /// correcto
         this.playersConfigPanel.removeAll();
 
         /// Para cada jugador, se necesita un combobox para seleccionar el color
@@ -207,12 +212,7 @@ public class NewGameWindow extends JDialog {
             playerConfigPanel.add(colorCombo);
 
             JComboBox<String> botStrategyComboBox = new JComboBox<>(
-                new String[] {
-                    "Jugador Humano",
-                    "Estrategia 1",
-                    "Estrategia 2",
-                    "Estrategia 3"
-                }
+                new String[] { "Jugador Humano", "Facil", "Normal", "Dificl" }
             );
 
             /// Por defecto, es jugador humano
@@ -266,13 +266,48 @@ public class NewGameWindow extends JDialog {
             int botStrategy = this.botStrategy.get(i);
 
             try {
-                players.add(
-                    new HumanPlayer(
-                        color,
-                        this.availableSides.poll(),
-                        new Integer(i + 1).toString()
-                    )
-                );
+                switch (botStrategy) {
+                    case 0:
+                        players.add(
+                            new HumanPlayer(
+                                color,
+                                this.availableSides.poll(),
+                                new Integer(i + 1).toString()
+                            )
+                        );
+                        break;
+                    case 1:
+                        players.add(
+                            new Bot(
+                                new Easy(),
+                                color,
+                                this.availableSides.poll(),
+                                new Integer(i + 1).toString()
+                            )
+                        );
+                        break;
+                    case 2:
+                        players.add(
+                            new Bot(
+                                new Normal(),
+                                color,
+                                this.availableSides.poll(),
+                                new Integer(i + 1).toString()
+                            )
+                        );
+
+                        break;
+                    case 3:
+                        players.add(
+                            new Bot(
+                                new Hard(),
+                                color,
+                                this.availableSides.poll(),
+                                new Integer(i + 1).toString()
+                            )
+                        );
+                        break;
+                }
             } catch (OccupiedCellException e) {
                 /// Esto nunca va a pasar
                 e.printStackTrace();

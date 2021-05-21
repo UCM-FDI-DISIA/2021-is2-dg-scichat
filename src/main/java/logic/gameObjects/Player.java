@@ -2,7 +2,10 @@ package logic.gameObjects;
 
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
+import exceptions.OccupiedCellException;
+import java.util.HashSet;
 import java.util.Set;
+import logic.Board;
 import logic.Board.Side;
 import logic.Cell;
 import org.json.JSONObject;
@@ -28,4 +31,15 @@ public interface Player {
     JSONObject toJSON();
     String toString();
     void setName(String name);
+
+    default void prepare(Board board) {}
+    default boolean botPerforming(Mode mode)
+        throws InvalidMoveException, NotSelectedPieceException {
+        return false;
+    }
+    default Cell getLastMovement() {
+        return null;
+    }
+
+    default void setLastMovement(Cell cell) {}
 }

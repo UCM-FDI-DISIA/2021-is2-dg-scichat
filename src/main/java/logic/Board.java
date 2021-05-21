@@ -3,6 +3,7 @@ package logic;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import utils.PieceColor;
 
 public class Board implements Iterable<Cell> {
@@ -35,7 +36,7 @@ public class Board implements Iterable<Cell> {
     };
 
     /// Matriz de celdas
-    private static final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
+    private final Cell[][] cells = new Cell[NUM_ROW][NUM_COL];
 
     public Board() {
         Side.Down.clear();
@@ -114,23 +115,57 @@ public class Board implements Iterable<Cell> {
             return null;
         }
 
-        public Cell getCornerCell(int side) {
-            switch (side) {
+        @Deprecated // ¿Esto sirve para algo? Lo pongo para sentirme un puto pro
+        /* public Cell getOppositeCornerCell() {
+            Set<Cell> oppositeSideCells = new HashSet<Cell>();
+            switch (this.ordinal()) {
+                // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
+                // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
                 case (0):
-                    return cells[16][6];
+                    oppositeSideCells = Down.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 0) {
+                            return cell;
+                        }
+                    }
                 case (1):
-                    return cells[12][12];
+                    oppositeSideCells = DownLeft.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 4 && cell.getCol() == 12) {
+                            return cell;
+                        }
+                    }
                 case (2):
-                    return cells[4][12];
+                    oppositeSideCells = UpLeft.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 12 && cell.getCol() == 12) {
+                            return cell;
+                        }
+                    }
                 case (3):
-                    return cells[0][6];
+                    oppositeSideCells = Up.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 16) {
+                            return cell;
+                        }
+                    }
                 case (4):
-                    return cells[4][0];
+                    oppositeSideCells = UpRight.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 12 && cell.getCol() == 0) {
+                            return cell;
+                        }
+                    }
                 case (5):
-                    return cells[12][0];
+                    oppositeSideCells = DownRight.getOpposingCells();
+                    for (Cell cell : oppositeSideCells) {
+                        if (cell.getRow() == 4 && cell.getCol() == 0) {
+                            return cell;
+                        }
+                    }
             }
             return null;
-        }
+        }*/
 
         public int getJSONValue() {
             return this.value;
@@ -187,6 +222,27 @@ public class Board implements Iterable<Cell> {
         public void clear() {
             sideCells.clear();
         }
+    }
+
+    public Cell getOppositeCornerCell(int side) {
+        Set<Cell> oppositeSideCells = new HashSet<Cell>();
+        switch (side) {
+            // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
+            // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
+            case (0):
+                return getCell(0, 6);
+            case (1):
+                return getCell(4, 12);
+            case (2):
+                return getCell(12, 12);
+            case (3):
+                return getCell(16, 6);
+            case (4):
+                return getCell(12, 0);
+            case (5):
+                return getCell(4, 0);
+        }
+        return null;
     }
 
     public String toString() {

@@ -7,8 +7,12 @@ import exceptions.OutOfBoundsException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import logic.gameObjects.Piece;
 import org.json.JSONObject;
 
@@ -42,6 +46,12 @@ public class Cell {
      * @param board
      * @throws OutOfBoundsException
      */
+
+    public Cell() {
+        this.row = 0;
+        this.col = 0;
+    }
+
     public Cell(int row, int col, Board board) {
         this.row = row;
         this.col = col;
@@ -450,5 +460,66 @@ public class Cell {
             }
         }
         return rv;
+    }
+
+    public double getDistanceBetween(Cell other) {
+        int fila = other.getRow() - this.getRow();
+        int col = other.getCol() - this.getCol();
+        fila *= fila;
+        col *= col;
+        return (fila + col);
+    }
+
+    public Cell getClosestMovementTo(Cell target, boolean jumpIsLimited) {
+        Cell result = null;
+        double minDistanceToTarget = Integer.MAX_VALUE;
+        //La cola son las posiciones que todavia posibles saltos desde ellas
+        Queue<Cell> posibleMovesChecking = new LinkedList<Cell>();
+        //Son las posiciones que ya hemos comporobado
+        Set<Cell> visited = new HashSet<Cell>();
+        //Son las celdas a las que nos podemos mover
+        List<Cell> finalMoves = new ArrayList<Cell>();
+
+        // Metes los vecinos adyacentes libres a los que se puede mover (el método
+        // getLargeJumpPositions() no tiene en cuenta los vecinos, solo te da los
+        // saltos)
+        for (Cell neighbour : this.getNeighbours()) {
+            if (neighbour.isEmpty()) {
+                finalMoves.add(neighbour);
+            }
+        }
+
+        //Anadimos la posici�n actual para inicializar la cola
+        posibleMovesChecking.add(this);
+        // Con este bucle rellenas la lista de todos los posibles movimientos para luego
+        // elegir el más cercano a target
+        while (!posibleMovesChecking.isEmpty()) {
+            Cell current = posibleMovesChecking.poll();
+            if (current.equals(target) && target.isEmpty()) {
+                return current;
+            }
+            finalMoves.add(current);
+            visited.add(current);
+            // En candidates se guardan los posibles saltos que se pueden hacer desde
+            // current sin encadenar saltos, i.e., máximo 6 saltos, uno para cada vecino
+            List<Cell> candidates = current.getLargeJumpPositions(current, jumpIsLimited);
+            // Tambien guardamos en candidates los vecinos vacios adyacentes
+            for (Cell candidate : candidates) {
+                if (!visited.contains(candidate)) {
+                    posibleMovesChecking.add(candidate);
+                }
+            }
+        }
+        // Si ningun movimiento te lleva a la casilla deseada o esta está ocupada
+        // recorres los posibles movimientos para escoger el más cercano
+        for (Cell destination : finalMoves) {
+            double distanceToTarget = destination.getDistanceBetween(target);
+
+            if (distanceToTarget < minDistanceToTarget && !destination.equals(this)) {
+                minDistanceToTarget = distanceToTarget;
+                result = destination;
+            }
+        }
+        return result;
     }
 }

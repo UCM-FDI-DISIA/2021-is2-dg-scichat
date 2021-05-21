@@ -140,6 +140,8 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
         this.setContentPane(gameScreen);
         this.pack();
         this.setSize(width, height);
+        this.revalidate();
+        this.repaint();
         ctrl.initGame();
     }
 
@@ -157,8 +159,8 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
         }
         if (this.gameOptionsScreen.open() == 1) {
             Game newGame = new Game();
-            newGame.setPlayers(gameOptionsScreen.getPlayers());
             newGame.setGameMode(gameOptionsScreen.getGameMode());
+            newGame.setPlayers(gameOptionsScreen.getPlayers());
             ctrl.setGame(newGame);
             initGame();
         }
