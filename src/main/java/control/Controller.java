@@ -86,8 +86,7 @@ public class Controller {
 
     public void surrender() {
         if (!game.isFinished()) {
-            game.currentPlayerSurrender();
-            game.advance();
+            if (game.currentPlayerSurrender() == null) game.advance();
         }
     }
 

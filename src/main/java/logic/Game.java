@@ -26,7 +26,7 @@ public class Game {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final long Botdelay = 100;
+    private static final long Botdelay = 200;
 
     private Board board = new Board();
     private boolean stopped = false; /// Si el jugador ha parado el juego
@@ -38,192 +38,205 @@ public class Game {
     private long timeAtTurnStart = 0;
     private ArrayList<GameObserver> observers = new ArrayList<>();
 
-    public Game() {
-    }
+    public Game() {}
 
     public Game(JSONObject jGame) {
-	this.stopped = jGame.getBoolean("stopped");
-	this.currentPlayerIndex = jGame.getInt("currentPlayerIndex");
-	boolean tradicional = jGame.getBoolean("gameMode");
-	if (tradicional) {
-	    this.gameMode = Mode.Traditional;
-	} else {
-	    this.gameMode = Mode.Fast;
-	}
-	this.timePlaying = jGame.getLong("time");
+        this.stopped = jGame.getBoolean("stopped");
+        this.currentPlayerIndex = jGame.getInt("currentPlayerIndex");
+        boolean tradicional = jGame.getBoolean("gameMode");
+        if (tradicional) {
+            this.gameMode = Mode.Traditional;
+        } else {
+            this.gameMode = Mode.Fast;
+        }
+        this.timePlaying = jGame.getLong("time");
 
-	JSONArray jPlayers = jGame.getJSONArray("players");
-	for (int i = 0; i < jPlayers.length(); ++i) {
-	    JSONObject jPlayer = jPlayers.getJSONObject(i);
+        JSONArray jPlayers = jGame.getJSONArray("players");
+        for (int i = 0; i < jPlayers.length(); ++i) {
+            JSONObject jPlayer = jPlayers.getJSONObject(i);
 
-	    // Inicializamos a cada uno de los jugadores
-	    HashSet<Piece> auxPieces = new HashSet<Piece>();
-	    JSONArray jPieces = jPlayer.getJSONArray("pieces");
+            // Inicializamos a cada uno de los jugadores
+            HashSet<Piece> auxPieces = new HashSet<Piece>();
+            JSONArray jPieces = jPlayer.getJSONArray("pieces");
 
-	    for (int j = 0; j < jPieces.length(); ++j) {
-		JSONObject jPiece = jPieces.getJSONObject(j);
-		Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
-		Piece auxPiece = null;
-		try {
-		    auxPiece = new Piece(auxCell, PieceColor.getPieceColor(jPlayer.getInt("color")));
-		} catch (OccupiedCellException ex) {
-		}
-		auxPieces.add(auxPiece);
-	    }
+            for (int j = 0; j < jPieces.length(); ++j) {
+                JSONObject jPiece = jPieces.getJSONObject(j);
+                Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
+                Piece auxPiece = null;
+                try {
+                    auxPiece =
+                        new Piece(
+                            auxCell,
+                            PieceColor.getPieceColor(jPlayer.getInt("color"))
+                        );
+                } catch (OccupiedCellException ex) {}
+                auxPieces.add(auxPiece);
+            }
 
-	    Player auxPlayer = new HumanPlayer(PieceColor.getPieceColor(jPlayer.getInt("color")),
-		    Side.getSide(jPlayer.getInt("playerSide")), jPlayer.getString("id"), jPlayer.getBoolean("playing"),
-		    auxPieces, jPlayer.getBoolean("surrender"));
+            Player auxPlayer = new HumanPlayer(
+                PieceColor.getPieceColor(jPlayer.getInt("color")),
+                Side.getSide(jPlayer.getInt("playerSide")),
+                jPlayer.getString("id"),
+                jPlayer.getBoolean("playing"),
+                auxPieces,
+                jPlayer.getBoolean("surrender")
+            );
 
-	    this.players.add(auxPlayer);
-	}
+            this.players.add(auxPlayer);
+        }
     }
 
     /* Getters */
 
     public Board getBoard() {
-	return board;
+        return board;
     }
 
     public Cell getCell(int row, int col) {
-	return this.board.getCell(row, col);
+        return this.board.getCell(row, col);
     }
 
     public boolean getStopped() {
-	return stopped;
+        return stopped;
     }
 
     public ArrayList<Player> getPlayers() {
-	return players;
+        return players;
     }
 
     public int getCurrentPlayerIndex() {
-	return currentPlayerIndex;
+        return currentPlayerIndex;
     }
 
     public Mode getGameMode() {
-	return gameMode;
+        return gameMode;
     }
 
     public Player getWinner() {
-	return winner;
+        return winner;
     }
 
     public void setStopped(boolean stopped, Player winner) {
-	this.stopped = stopped;
-	if (winner != null) {
-	    setWinner(winner);
-	}
-	for (GameObserver i : observers) {
-	    i.onGameEnded(this);
-	}
+        this.stopped = stopped;
+        if (winner != null) {
+            setWinner(winner);
+        }
+        for (GameObserver i : observers) {
+            i.onGameEnded(this);
+        }
     }
 
     public void setStopped(boolean stopped) {
-	setStopped(stopped, null);
+        setStopped(stopped, null);
     }
 
     public void setBoard(Board board) {
-	this.board = board;
+        this.board = board;
     }
 
     public void setPlayers(ArrayList<Player> players) {
-	for (Player player : players) {
-	    player.prepare(board);
-	}
-	this.players = players;
+        for (Player player : players) {
+            player.prepare(board);
+        }
+        this.players = players;
     }
 
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
-	this.currentPlayerIndex = currentPlayerIndex;
+        this.currentPlayerIndex = currentPlayerIndex;
     }
 
     public void setGameMode(Mode modo) {
-	gameMode = modo;
+        gameMode = modo;
     }
 
     public void setWinner(Player player) {
-	winner = player;
+        winner = player;
     }
 
     public void addObserver(GameObserver observer) {
-	observer.onRegister(this);
-	observers.add(observer);
+        observer.onRegister(this);
+        observers.add(observer);
     }
 
     /* Métodos */
 
     public void saveGame(File file) {
-	JSONObject jGame = this.toJSON();
+        JSONObject jGame = this.toJSON();
 
-	try {
-	    FileWriter exit = new FileWriter(file);
-	    exit.append(jGame.toString());
-	    exit.close();
-	} catch (FileNotFoundException ex) {
-	    System.out.println(ex.getMessage());
-	} catch (IOException ex) {
-	    System.out.println(ex.getMessage());
-	}
+        try {
+            FileWriter exit = new FileWriter(file);
+            exit.append(jGame.toString());
+            exit.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public Game loadGame(File file) {
-	JSONObject jGame = null;
-	try {
-	    jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
-	} catch (Exception ex) {
-	} // Cambiar luego
+        JSONObject jGame = null;
+        try {
+            jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
+        } catch (Exception ex) {} // Cambiar luego
 
-	return new Game(jGame);
+        return new Game(jGame);
     }
 
-    public void addNewPlayer(PieceColor color, Board.Side side) throws OccupiedCellException {
-	this.players.add(new HumanPlayer(color, side, new Integer(players.size() + 1).toString()));
+    public void addNewPlayer(PieceColor color, Board.Side side)
+        throws OccupiedCellException {
+        this.players.add(
+                new HumanPlayer(color, side, new Integer(players.size() + 1).toString())
+            );
     }
 
     /* Metodos de control de tiempo de juego */
 
     public long getTimePlaying() {
-	return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
+        return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
     }
 
     /**
      * @return Tiempo en milisegundos que el jugador actual lleva jugando
      */
     public long getCurrentTime() {
-	return this.getTimePlaying();
+        return this.getTimePlaying();
     }
 
     /**
      * Lleva a cabo instruccionees basicas para empezar una partida
      */
     public void start() {
-	this.stopped = false;
-	this.timeAtTurnStart = System.currentTimeMillis();
-	for (GameObserver i : this.observers)
-	    i.onGameStart(this);
-	try {
-	    if (this.moveBot()) {
-		if (getCurrentPlayer().isAWinner())
-		    setStopped(true, getCurrentPlayer());
-		else
-		    advance();
-	    }
-	} catch (Exception e) {
-	    System.out.println("Crap, esto no va");
-	    System.out.println(e.getMessage());
-	}
+        this.stopped = false;
+        this.timeAtTurnStart = System.currentTimeMillis();
+        for (GameObserver i : this.observers) i.onGameStart(this);
+        new Thread() {
+
+            public void run() {
+                try {
+                    if (moveBot()) {
+                        if (getCurrentPlayer().isAWinner()) setStopped(
+                            true,
+                            getCurrentPlayer()
+                        ); else advance();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Crap, esto no va");
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        .start();
     }
 
     public Player currentPlayerSurrender() {
-	this.getCurrentPlayer().surrender();
-	Player winner = wonBySurrender();
-	if (winner != null)
-	    setStopped(true, winner);
-	for (GameObserver i : observers) {
-	    i.onSurrendered(this);
-	}
-	return this.wonBySurrender();
+        this.getCurrentPlayer().surrender();
+        Player winner = wonBySurrender();
+        if (winner != null) setStopped(true, winner);
+        for (GameObserver i : observers) {
+            i.onSurrendered(this);
+        }
+        return this.wonBySurrender();
     }
 
     /**
@@ -232,7 +245,7 @@ public class Game {
      * @return si el juego sigue
      */
     public boolean isFinished() {
-	return this.stopped;
+        return this.stopped;
     }
 
     /**
@@ -241,16 +254,13 @@ public class Game {
      * @return null si no hay ganador por rendicion, si lo hay devuelve el ganador
      */
     public Player wonBySurrender() {
-	Player out = null;
-	for (Player i : players) {
-	    if (!i.hasSurrendered()) {
-		if (out != null)
-		    return null;
-		else
-		    out = i;
-	    }
-	}
-	return out;
+        Player out = null;
+        for (Player i : players) {
+            if (!i.hasSurrendered()) {
+                if (out != null) return null; else out = i;
+            }
+        }
+        return out;
     }
 
     /**
@@ -260,26 +270,26 @@ public class Game {
      * @throws InvalidMoveException
      */
     public void advance() {
-	do {
-	    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
-	} while (this.getCurrentPlayer().hasSurrendered());
-	for (GameObserver i : observers) {
-	    i.onEndTurn(this);
-	}
-	try {
-	    if (this.moveBot()) {
-		if (getCurrentPlayer().isAWinner())
-		    setStopped(true, getCurrentPlayer());
-		else
-		    advance();
-	    }
-	} catch (InvalidMoveException e) {
-	    System.out.println("Crap, esto no va");
-	    System.out.println(e.getMessage());
-	} catch (NotSelectedPieceException e) {
-	    System.out.println("Crap, esto no va");
-	    System.out.println(e.getMessage());
-	} 
+        do {
+            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
+        } while (this.getCurrentPlayer().hasSurrendered());
+        for (GameObserver i : observers) {
+            i.onEndTurn(this);
+        }
+        try {
+            if (this.moveBot()) {
+                if (getCurrentPlayer().isAWinner()) setStopped(
+                    true,
+                    getCurrentPlayer()
+                ); else advance();
+            }
+        } catch (InvalidMoveException e) {
+            System.out.println("Crap, esto no va");
+            System.out.println(e.getMessage());
+        } catch (NotSelectedPieceException e) {
+            System.out.println("Crap, esto no va");
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -288,71 +298,71 @@ public class Game {
      * @return referencia al jugador del turno actual
      */
     public Player getCurrentPlayer() {
-	return this.players.get(this.currentPlayerIndex);
+        return this.players.get(this.currentPlayerIndex);
     }
 
     public Set<Piece> getCurrentPlayerPieces() {
-	return this.getCurrentPlayer().getPieces();
+        return this.getCurrentPlayer().getPieces();
     }
 
     public boolean setSelectedPiece(Cell position) {
-	boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
-	if (out) {
-	    sendOnSelectedPiece(this.getCurrentPlayer().getSelectedPiece());
-	}
-	return out;
+        boolean out = this.getCurrentPlayer().selectPiece(position.getPiece());
+        if (out) {
+            sendOnSelectedPiece(this.getCurrentPlayer().getSelectedPiece());
+        }
+        return out;
     }
 
     public boolean isSelectedPieceIn(Cell position) {
-	return this.getCurrentPlayer().getSelectedPiece().getPosition() == position;
+        return this.getCurrentPlayer().getSelectedPiece().getPosition() == position;
     }
 
     public void deselectPiece() {
-	Piece selected = this.getCurrentPlayer().getSelectedPiece();
-	this.getCurrentPlayer().deselectPiece();
-	sendOnSelectedPiece(selected);
+        Piece selected = this.getCurrentPlayer().getSelectedPiece();
+        this.getCurrentPlayer().deselectPiece();
+        sendOnSelectedPiece(selected);
     }
 
     public boolean hasSelectedPiece() {
-	return this.getCurrentPlayer().hasSelectedPiece();
+        return this.getCurrentPlayer().hasSelectedPiece();
     }
 
     public void sendOnSelectedPiece(Piece piece) {
-	for (GameObserver i : observers) {
-	    i.onSelectedPiece(piece);
-	}
+        for (GameObserver i : observers) {
+            i.onSelectedPiece(piece);
+        }
     }
 
     public void sendOnMovedPiece(Cell from, Cell to, String playerID) {
-	for (GameObserver i : observers) {
-	    i.onMovedPiece(from, to, playerID);
-	}
+        for (GameObserver i : observers) {
+            i.onMovedPiece(from, to, playerID);
+        }
     }
 
     public void reset() {
-	board = new Board();
-	stopped = false;
-	players = new ArrayList<>();
-	observers = new ArrayList<>();
-	winner = null;
-	this.timePlaying = 0;
+        board = new Board();
+        stopped = false;
+        players = new ArrayList<>();
+        observers = new ArrayList<>();
+        winner = null;
+        this.timePlaying = 0;
     }
 
     public JSONObject toJSON() {
-	JSONObject jRes = new JSONObject();
-	jRes.put("stopped", this.stopped);
-	jRes.put("currentPlayerIndex", this.currentPlayerIndex);
-	jRes.put("gameMode", this.gameMode == Mode.Traditional);
-	jRes.put("time", this.getCurrentTime());
+        JSONObject jRes = new JSONObject();
+        jRes.put("stopped", this.stopped);
+        jRes.put("currentPlayerIndex", this.currentPlayerIndex);
+        jRes.put("gameMode", this.gameMode == Mode.Traditional);
+        jRes.put("time", this.getCurrentTime());
 
-	JSONArray jPlayers = new JSONArray();
-	for (int i = 0; i < players.size(); ++i) {
-	    jPlayers.put(this.players.get(i).toJSON());
-	}
+        JSONArray jPlayers = new JSONArray();
+        for (int i = 0; i < players.size(); ++i) {
+            jPlayers.put(this.players.get(i).toJSON());
+        }
 
-	jRes.put("players", jPlayers);
+        jRes.put("players", jPlayers);
 
-	return jRes;
+        return jRes;
     }
 
     /**
@@ -360,91 +370,109 @@ public class Game {
      * partida.
      */
     public void softReset() {
-	this.board = new Board();
-	this.stopped = false;
-	this.currentPlayerIndex = 0;
-	this.winner = null;
-	this.timePlaying = 0;
+        this.board = new Board();
+        this.stopped = false;
+        this.currentPlayerIndex = 0;
+        this.winner = null;
+        this.timePlaying = 0;
 
-	for (Player player : players) {
-	    player.softReset();
-	}
+        for (Player player : players) {
+            player.softReset();
+        }
 
-	this.observers = new ArrayList<GameObserver>();
+        this.observers = new ArrayList<GameObserver>();
     }
 
     public void movePiece(Cell to) throws ExecuteException {
-	Piece selectedPiece = getCurrentPlayer().getSelectedPiece();
-	if (selectedPiece == null) {
-	    throw new ExecuteException(String.format("No hay una pieza seleccionada"));
-	}
-	if (to == null) {
-	    throw new ExecuteException(String.format("No existe la celda a la que quieres mover la pieza \n"));
-	}
+        Piece selectedPiece = getCurrentPlayer().getSelectedPiece();
+        if (selectedPiece == null) {
+            throw new ExecuteException(String.format("No hay una pieza seleccionada"));
+        }
+        if (to == null) {
+            throw new ExecuteException(
+                String.format("No existe la celda a la que quieres mover la pieza \n")
+            );
+        }
 
-	/// Intentar mover a la nueva celda
-	/// Lanzaría una excepción si es movimiento inválido o celda ocupada
-	try {
-	    Cell from = selectedPiece.getPosition();
-	    selectedPiece.move(to, getGameMode());
-	    sendOnMovedPiece(from, to, getCurrentPlayer().getId());
+        /// Intentar mover a la nueva celda
+        /// Lanzaría una excepción si es movimiento inválido o celda ocupada
+        try {
+            Cell from = selectedPiece.getPosition();
+            selectedPiece.move(to, getGameMode());
+            sendOnMovedPiece(from, to, getCurrentPlayer().getId());
 
-	    Player currentPlayer = getCurrentPlayer();
-	    if (currentPlayer.isAWinner()) {
-		winner = currentPlayer;
-	    }
-	    currentPlayer.deselectPiece();
-	} catch (InvalidMoveException e) {
-	    throw new ExecuteException(
-		    String.format(" Movimiento inválido a posición (%d, %d) \n", to.getRow(), to.getCol()));
-	}
+            Player currentPlayer = getCurrentPlayer();
+            if (currentPlayer.isAWinner()) {
+                winner = currentPlayer;
+            }
+            currentPlayer.deselectPiece();
+        } catch (InvalidMoveException e) {
+            throw new ExecuteException(
+                String.format(
+                    " Movimiento inválido a posición (%d, %d) \n",
+                    to.getRow(),
+                    to.getCol()
+                )
+            );
+        }
     }
 
     /**
      * Intenta mover una pieza como jugador maquina
-     * 
+     *
      * @return false si no lo consigue, es humano, true si lo consigue, es jugador
      *         maquina
      * @throws InvalidMoveException
      * @throws NotSelectedPieceException
      */
     public boolean moveBot() throws InvalidMoveException, NotSelectedPieceException {
-	long timeAtStart = System.currentTimeMillis();
-	if (!this.getCurrentPlayer().botPerforming(gameMode))
-	    return false;
-	sendOnMovedPiece(getCurrentPlayer().getLastMovement(), getCurrentPlayer().getSelectedPiece().getPosition(),
-		getCurrentPlayer().getId());
-	if (getCurrentPlayer().isAWinner())
-	    setStopped(true, getCurrentPlayer());
-	if (System.currentTimeMillis() < timeAtStart + this.Botdelay)
-	    try {
-		Thread.sleep(this.Botdelay - System.currentTimeMillis() + timeAtStart);
-	    } catch (InterruptedException e) {
-		// redundancia
-		e.printStackTrace();
-	    }
-	return true;
+        long timeAtStart = System.currentTimeMillis();
+        if (!this.getCurrentPlayer().botPerforming(gameMode)) return false;
+        sendOnMovedPiece(
+            getCurrentPlayer().getLastMovement(),
+            getCurrentPlayer().getSelectedPiece().getPosition(),
+            getCurrentPlayer().getId()
+        );
+        if (getCurrentPlayer().isAWinner()) setStopped(true, getCurrentPlayer());
+        if (System.currentTimeMillis() < timeAtStart + this.Botdelay) try {
+            Thread.sleep(this.Botdelay - System.currentTimeMillis() + timeAtStart);
+        } catch (InterruptedException e) {
+            // redundancia
+            e.printStackTrace();
+        }
+        return true;
     }
 
     // Para Debug
     @Override
     public String toString() {
-	StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
-	result.append(this.board.toString());
+        result.append(this.board.toString());
 
-	result.append("List of players: \n\n");
+        result.append("List of players: \n\n");
 
-	for (int i = 0; i < this.players.size(); ++i) {
-	    result.append(String.format("   [%s]: %s - %s", i + 1, this.players.get(i).getColor().getName(),
-		    this.players.get(i).getSide()));
-	    result.append("\n");
-	}
+        for (int i = 0; i < this.players.size(); ++i) {
+            result.append(
+                String.format(
+                    "   [%s]: %s - %s",
+                    i + 1,
+                    this.players.get(i).getColor().getName(),
+                    this.players.get(i).getSide()
+                )
+            );
+            result.append("\n");
+        }
 
-	result.append("\n");
-	result.append(String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1));
-	result.append(
-		"Tiempo de juego " + DurationFormatUtils.formatDuration(this.getTimePlaying(), "HH:mm:ss.S") + "\n");
-	return result.toString();
+        result.append("\n");
+        result.append(
+            String.format("Turno del jugador: [%d] \n", this.currentPlayerIndex + 1)
+        );
+        result.append(
+            "Tiempo de juego " +
+            DurationFormatUtils.formatDuration(this.getTimePlaying(), "HH:mm:ss.S") +
+            "\n"
+        );
+        return result.toString();
     }
 }

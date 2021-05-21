@@ -470,7 +470,7 @@ public class Cell {
         return(fila + col);
     }
 
-    public Cell getClosestMovementTo(Cell target, boolean jumpIsLimited, HashSet<Cell> winnerCells) {
+    public Cell getClosestMovementTo(Cell target, boolean jumpIsLimited) {
         Cell result = null;
         double minDistanceToTarget = Integer.MAX_VALUE;
         //La cola son las posiciones que todavia posibles saltos desde ellas

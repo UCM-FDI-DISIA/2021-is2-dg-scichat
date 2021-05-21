@@ -15,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import logic.Board;
 import logic.bots.Bot;
 import logic.bots.Easy;
+import logic.bots.Hard;
 import logic.bots.Normal;
 import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
@@ -211,12 +212,7 @@ public class NewGameWindow extends JDialog {
             playerConfigPanel.add(colorCombo);
 
             JComboBox<String> botStrategyComboBox = new JComboBox<>(
-                new String[] {
-                    "Jugador Humano",
-                    "Facil",
-                    "Normal",
-                    "Dificl"
-                }
+                new String[] { "Jugador Humano", "Facil", "Normal", "Dificl" }
             );
 
             /// Por defecto, es jugador humano
@@ -307,7 +303,14 @@ public class NewGameWindow extends JDialog {
 
                         break;
                     case 3:
-                        // players.add(new Bot(new Hard(), color, this.availableSides.poll(), new Integer(i +1).toString()));
+                        players.add(
+                            new Bot(
+                                new Hard(),
+                                color,
+                                this.availableSides.poll(),
+                                new Integer(i + 1).toString()
+                            )
+                        );
                         break;
                 }
             } catch (OccupiedCellException e) {

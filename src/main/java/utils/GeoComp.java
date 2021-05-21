@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GeoComp {
 
-    class Point {
+    public static class Point {
         private double x = 0;
         private double y = 0;
 
@@ -146,7 +146,7 @@ public class GeoComp {
         );
     }
 
-    class Line {
+    public static class Line {
         private Point dir;
         private double offset;
 
@@ -217,7 +217,7 @@ public class GeoComp {
         }
     }
 
-    class Segment {
+    public static class Segment {
         Point a, b;
 
         public Segment(Point a, Point b) {
@@ -279,7 +279,7 @@ public class GeoComp {
         return Math.abs(b.minus(a).cross(c.minus(a)) / 2.0);
     }
 
-    class Poligono {
+    public static class Poligono {
         List<Point> data = null;
 
         public Poligono(Iterable<Point> it) {
