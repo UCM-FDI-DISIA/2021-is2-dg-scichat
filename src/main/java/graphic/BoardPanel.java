@@ -135,7 +135,7 @@ public class BoardPanel extends JPanel implements GameObserver {
 
         toLabel = this.cellLabels.get(to);
         toLabel.setSelected(true);
-        toLabel.setColor(to.getPiece().getColor().getColor());
+        toLabel.setColor(to.getPiece().getColor());
     }
 
     @Override
@@ -155,7 +155,11 @@ public class BoardPanel extends JPanel implements GameObserver {
     }
 
     @Override
-    public void onSurrendered(Game game) {}
+    public void onSurrendered(Game game, String playerID) {
+        this.removeAll();
+        this.setBoard(game.getBoard(), radius);
+        this.repaint();
+    }
 
     @Override
     public void onReset(Game game) {}

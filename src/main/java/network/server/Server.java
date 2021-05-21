@@ -28,7 +28,8 @@ public class Server extends WebSocketServer {
                 new JoinRoomCommand(),
                 new StartGameCommand(),
                 new PieceMovedCommand(),
-                new SurrenderCommand()
+                new SurrenderCommand(),
+                new RematchCommand()
             };
         }
     };
@@ -87,8 +88,9 @@ public class Server extends WebSocketServer {
         try {
             JSONObject body = new JSONObject(message);
             Command command = commandParser.parse(body.getString("type"));
-            command.execute(body.getJSONObject("data"), this, conn);
+            command.execute(body, this, conn);
         } catch (Exception e) {
+            e.printStackTrace();
             conn.send(
                 new JSONObject()
                     .put("type", "ERROR")
@@ -99,7 +101,9 @@ public class Server extends WebSocketServer {
     }
 
     @Override
-    public void onError(WebSocket conn, Exception ex) {}
+    public void onError(WebSocket conn, Exception ex) {
+        ex.printStackTrace();
+    }
 
     @Override
     public void onStart() {

@@ -1,20 +1,22 @@
 package graphic;
 
 import control.Controller;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 import logic.Game;
-import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 import network.client.SocketClient;
+import network.client.SocketObserver;
+import network.commands.Command;
+import network.commands.CommandParser;
+import network.commands.RematchCommand;
 import network.models.Room;
+import org.json.JSONObject;
 
 //Se encargara de la interfaz dejando toda la logica interna a interacciones con ctrl
-public class MainWindow extends JFrame implements GameObserver {
+public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     private static final long serialVersionUID = 1L;
 
     private Controller ctrl;
@@ -34,6 +36,23 @@ public class MainWindow extends JFrame implements GameObserver {
     private OnlineConnectWindow onlineConnectScreen = null;
     private OnlineWaitingWindow onlineWaitingScreen = null;
     private OnlineGameWindow onlineGameScreen = null;
+
+    private Command rematchCommand = new RematchCommand() {
+
+        @Override
+        public void execute(JSONObject data, SocketClient connection) {
+            super.execute(data, connection);
+            initOnlineWaiting();
+        }
+    };
+
+    private CommandParser commandParser = new CommandParser() {
+
+        @Override
+        public Command[] getCommands() {
+            return new Command[] { rematchCommand };
+        }
+    };
 
     public MainWindow(Controller ctrl) {
         super("Damas Chinas");
@@ -59,7 +78,6 @@ public class MainWindow extends JFrame implements GameObserver {
         if (!onlineConnectScreen.open()) {
             closeConnection();
         } else {
-            connection = onlineConnectScreen.getConnection();
             initOnlineWaiting();
         }
     }
@@ -67,13 +85,20 @@ public class MainWindow extends JFrame implements GameObserver {
     public void initOnlineWaiting() {
         String roomID = onlineConnectScreen.getRoomID();
         String playerName = onlineConnectScreen.getName();
+
         onlineWaitingScreen =
             new OnlineWaitingWindow(this, connection, roomID, playerName, ctrl);
-        if (!onlineWaitingScreen.open()) {
-            closeConnection();
-        } else {
-            initOnlineGame(onlineWaitingScreen.getRoom());
-        }
+
+        /// Por tema de concurrencia, evitar bloquear el hilo de Socket
+        SwingUtilities.invokeLater(
+            () -> {
+                if (!onlineWaitingScreen.open()) {
+                    closeConnection();
+                } else {
+                    initOnlineGame(onlineWaitingScreen.getRoom());
+                }
+            }
+        );
     }
 
     public void initOnlineGame(Room room) {
@@ -152,6 +177,7 @@ public class MainWindow extends JFrame implements GameObserver {
     //Otros metodos
     public void closeConnection() {
         if (connection != null) {
+            connection.removeObserver(this);
             connection.close();
             connection = null;
         }
@@ -166,7 +192,32 @@ public class MainWindow extends JFrame implements GameObserver {
         }
     }
 
+    public SocketClient createConnection(String serverURL) throws URISyntaxException {
+        URI serverURI = new URI(serverURL);
+
+        this.connection = new SocketClient(serverURI);
+        this.connection.addObserver(this);
+
+        return this.connection;
+    }
+
+    public void initRematchOnline() {
+        new RematchCommand(onlineConnectScreen.getRoomID()).send(this.connection);
+    }
+
     public void onGameEnded(Game game) {
         initWinner(game.getWinner());
+    }
+
+    @Override
+    public void onMessage(JSONObject s) {
+        System.out.println(s);
+        String type = s.getString("type");
+        JSONObject data = s.getJSONObject("data");
+
+        try {
+            Command c = commandParser.parse(type);
+            c.execute(data, this.connection);
+        } catch (Exception e) {}
     }
 }

@@ -10,7 +10,7 @@ public interface GameObserver {
     default void onSelectedPiece(Piece piece) {}
     default void onMovedPiece(Cell from, Cell piece, String playerID) {}
     default void onEndTurn(Game game) {}
-    default void onSurrendered(Game game) {}
+    default void onSurrendered(Game game, String playerID) {}
     default void onReset(Game game) {} //No se si al final vamos a hacer funcionalidad de terminar y volver a empezar
     default void onGameEnded(Game game) {}
     default void onGameStart(Game game) {}

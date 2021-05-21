@@ -1,9 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
-import network.models.ServerRoom;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class SurrenderCommand extends Command {
@@ -21,17 +17,13 @@ public class SurrenderCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
+    public JSONObject getData() {
         JSONObject data = new JSONObject();
 
         data.put("roomID", this.roomID);
         data.put("playerID", this.playerID);
 
-        req.put("data", data);
-
-        connection.send(req.toString());
+        return data;
     }
 
     @Override

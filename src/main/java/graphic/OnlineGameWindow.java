@@ -118,8 +118,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     }
 
     @Override
-    public void onSurrendered(Game game) {
-        String playerID = game.getCurrentPlayer().getId();
+    public void onSurrendered(Game game, String playerID) {
         if (this.localPlayers.contains(playerID)) {
             new SurrenderCommand(playerID, roomID).send(this.sc);
         }

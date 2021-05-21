@@ -1,6 +1,7 @@
 package logic.gameObjects;
 
 import exceptions.InvalidMoveException;
+import exceptions.InvalidOperationException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
 import java.io.Serializable;
@@ -181,6 +182,16 @@ public class HumanPlayer implements Player {
 
     public void surrender() {
         this.surrender = true;
+
+        for (Piece p : this.pieces) {
+            try {
+                p.getPosition().removePiece();
+            } catch (InvalidOperationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.pieces.clear();
     }
 
     /**
@@ -208,7 +219,7 @@ public class HumanPlayer implements Player {
 
     public JSONObject toJSON() {
         JSONObject jPlayer = new JSONObject();
-        jPlayer.put("color", this.color.getJSONValue());
+        jPlayer.put("color", this.color.toJSONArray());
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);

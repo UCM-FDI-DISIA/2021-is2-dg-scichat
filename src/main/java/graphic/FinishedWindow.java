@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 
 public class FinishedWindow extends JPanel {
@@ -88,11 +87,8 @@ public class FinishedWindow extends JPanel {
         newGameButton.setFocusPainted(true);
         newGameButton.setContentAreaFilled(false);
         newGameButton.addActionListener(
-            new ActionListener() {
-
-                public void actionPerformed(ActionEvent action) {
-                    father.initStart();
-                }
+            e -> {
+                father.initStart();
             }
         );
 
@@ -111,11 +107,8 @@ public class FinishedWindow extends JPanel {
         exitButton.setFocusPainted(true);
         exitButton.setContentAreaFilled(false);
         exitButton.addActionListener(
-            new ActionListener() {
-
-                public void actionPerformed(ActionEvent action) {
-                    System.exit(0);
-                }
+            e -> {
+                System.exit(0);
             }
         );
 
@@ -135,11 +128,8 @@ public class FinishedWindow extends JPanel {
         revengeButton.setFocusPainted(true);
         revengeButton.setContentAreaFilled(false);
         revengeButton.addActionListener(
-            new ActionListener() {
-
-                public void actionPerformed(ActionEvent action) {
-                    father.initRematch();
-                }
+            e -> {
+                father.initRematchOnline();
             }
         );
 

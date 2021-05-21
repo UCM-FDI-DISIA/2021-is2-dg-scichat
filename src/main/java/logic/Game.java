@@ -59,22 +59,25 @@ public class Game {
             HashSet<Piece> auxPieces = new HashSet<Piece>();
             JSONArray jPieces = jPlayer.getJSONArray("pieces");
 
+            JSONArray colorArray = jPlayer.getJSONArray("color");
+            int R = colorArray.getInt(0);
+            int G = colorArray.getInt(1);
+            int B = colorArray.getInt(2);
+
+            PieceColor color = new PieceColor(R, G, B);
+
             for (int j = 0; j < jPieces.length(); ++j) {
                 JSONObject jPiece = jPieces.getJSONObject(j);
                 Cell auxCell = board.getCell(jPiece.getInt("row"), jPiece.getInt("col"));
                 Piece auxPiece = null;
                 try {
-                    auxPiece =
-                        new Piece(
-                            auxCell,
-                            PieceColor.getPieceColor(jPlayer.getInt("color"))
-                        );
+                    auxPiece = new Piece(auxCell, color);
                 } catch (OccupiedCellException ex) {}
                 auxPieces.add(auxPiece);
             }
 
             Player auxPlayer = new HumanPlayer(
-                PieceColor.getPieceColor(jPlayer.getInt("color")),
+                color,
                 Side.getSide(jPlayer.getInt("playerSide")),
                 jPlayer.getString("id"),
                 jPlayer.getBoolean("playing"),
@@ -230,13 +233,55 @@ public class Game {
     }
 
     public Player currentPlayerSurrender() {
+        String playerID = this.getCurrentPlayer().getId();
         this.getCurrentPlayer().surrender();
+        onPlayerSurrender(playerID);
+        return this.wonBySurrender();
+    }
+
+    /**
+     * Que hacer cuando un jugador se rinde
+     */
+    protected void onPlayerSurrender(String playerID) {
         Player winner = wonBySurrender();
         if (winner != null) setStopped(true, winner);
         for (GameObserver i : observers) {
-            i.onSurrendered(this);
+            i.onSurrendered(this, playerID);
         }
+    }
+
+    /**
+     * Funcion que hace rendir al jugador con un ID dado
+     *
+     * @param id id del jugador
+     * @return el ganador de la partida, si es que haya
+     */
+    public Player playerSurrender(String id) {
+        Player player = getPlayerById(id);
+        if (player.hasSurrendered()) return this.wonBySurrender();
+
+        player.surrender();
+
+        if (this.getCurrentPlayer() == player) {
+            /// Se ha salido el jugador que tenia el turno actual
+            this.advance();
+        }
+
+        onPlayerSurrender(id);
         return this.wonBySurrender();
+    }
+
+    protected Player getPlayerById(String id) {
+        Player player = null;
+
+        for (Player p : this.players) {
+            if (p.getId().equals(id)) {
+                player = p;
+                break;
+            }
+        }
+
+        return player;
     }
 
     /**
@@ -457,7 +502,7 @@ public class Game {
                 String.format(
                     "   [%s]: %s - %s",
                     i + 1,
-                    this.players.get(i).getColor().getName(),
+                    this.players.get(i).getColor().toString(),
                     this.players.get(i).getSide()
                 )
             );

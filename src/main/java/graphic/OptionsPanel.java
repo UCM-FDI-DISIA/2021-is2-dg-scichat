@@ -150,7 +150,7 @@ public class OptionsPanel extends JPanel implements GameObserver {
         this.game = game;
         this.gameMode.setText(game.getGameMode().toString());
         this.turn.setText("Turno del jugador " + game.getCurrentPlayer().getName());
-        this.playerColor.setColor(game.getCurrentPlayer().getColor().getColor());
+        this.playerColor.setColor(game.getCurrentPlayer().getColor());
     }
 
     public void onGameStart(Game game) {
@@ -159,6 +159,6 @@ public class OptionsPanel extends JPanel implements GameObserver {
 
     public void onEndTurn(Game game) {
         this.turn.setText("Turno del jugador " + game.getCurrentPlayer().getName());
-        this.playerColor.setColor(game.getCurrentPlayer().getColor().getColor());
+        this.playerColor.setColor(game.getCurrentPlayer().getColor());
     }
 }

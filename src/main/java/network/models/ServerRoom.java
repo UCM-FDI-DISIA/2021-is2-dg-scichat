@@ -48,6 +48,13 @@ public class ServerRoom extends network.models.Room {
         this.playerConnections.remove(uuid);
         --connectedPlayers;
 
+        /// Mandar un mensaje de rendirse a todos los jugadores
+        /// No se tendría en cuenta este mensaje, salvo cuando estan en la mitad de partida
+        JSONObject req = new JSONObject();
+        req.put("type", "SURRENDER");
+        req.put("data", new JSONObject().put("playerID", uuid));
+        broadCast(req.toString(), null);
+
         broadCastRoomInfo();
     }
 
@@ -58,11 +65,16 @@ public class ServerRoom extends network.models.Room {
         JSONObject resData = this.toJSON();
         res.put("data", resData);
 
-        broadCast(res.toString());
+        broadCast(res.toString(), null);
     }
 
-    public void broadCast(String body) {
+    public void broadCast(String body, String _senderID) {
         for (Map.Entry<String, WebSocket> entry : this.playerConnections.entrySet()) {
+            String clientID = entry.getKey();
+
+            /// No mandar el mismo mensaje al emisor
+            if (clientID.equals(_senderID)) continue;
+
             entry.getValue().send(body);
         }
     }

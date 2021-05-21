@@ -188,7 +188,7 @@ public class Main {
                 System.out.format(
                     "     [%d]: %s \n",
                     i + 1,
-                    this.availableColors.get(i).getName()
+                    this.availableColors.get(i).toString()
                 );
             }
             System.out.println();
@@ -230,7 +230,7 @@ public class Main {
                 System.out.format(
                     "Se ha añadido correctamente el jugador [%d] - Color [%s] - Posición [%s] \n",
                     i + 1,
-                    color.getName(),
+                    color.toString(),
                     side
                 );
                 System.out.println();

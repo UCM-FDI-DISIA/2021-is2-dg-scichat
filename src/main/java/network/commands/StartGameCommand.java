@@ -1,9 +1,5 @@
 package network.commands;
 
-import network.client.SocketClient;
-import network.models.ServerRoom;
-import network.server.Server;
-import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 public class StartGameCommand extends Command {
@@ -19,12 +15,7 @@ public class StartGameCommand extends Command {
     }
 
     @Override
-    public void send(SocketClient connection) {
-        JSONObject req = new JSONObject();
-        req.put("type", this.type);
-
-        /// Pasar como _data { roomID }
-        req.put("data", new JSONObject().put("roomID", this.roomID));
-        connection.send(req.toString());
+    public JSONObject getData() {
+        return new JSONObject().put("roomID", this.roomID);
     }
 }
