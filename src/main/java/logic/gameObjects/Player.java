@@ -33,13 +33,13 @@ public interface Player {
     void setName(String name);
 
     default void prepareBot(Board board) {}
-    default boolean botPerforming( Mode mode)
+    default boolean botPerforming(Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         return false;
     }
     default Cell getLastMovement() {
         return null;
     }
-    
+
     default void setLastMovement(Cell cell) {}
 }

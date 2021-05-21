@@ -64,9 +64,9 @@ public class Bot implements Player {
     public Cell getLastMovement() {
         return lastMovement;
     }
-    
+
     public void setLastMovement(Cell cell) {
-	lastMovement = cell;
+        lastMovement = cell;
     }
 
     @Override

@@ -340,6 +340,5 @@ public class CellTest {
         assertEquals(board.getOppositeCornerCell(4), board.getCell(12, 0));
 
         assertEquals(board.getOppositeCornerCell(5), board.getCell(4, 0));
-     
     }
 }
