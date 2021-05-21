@@ -329,16 +329,16 @@ public class CellTest {
 
     @Test
     void getOppositeCornerCell() {
-        assertEquals(board.getOppositeCornerCell(0), board.getCell(0, 6));
+        assertEquals(board.getOppositeCornerCell(Side.Down), board.getCell(0, 6));
 
-        assertEquals(board.getOppositeCornerCell(1), board.getCell(4, 12));
+        assertEquals(board.getOppositeCornerCell(Side.DownLeft), board.getCell(4, 12));
 
-        assertEquals(board.getOppositeCornerCell(2), board.getCell(12, 12));
+        assertEquals(board.getOppositeCornerCell(Side.UpLeft), board.getCell(12, 12));
 
-        assertEquals(board.getOppositeCornerCell(3), board.getCell(16, 6));
+        assertEquals(board.getOppositeCornerCell(Side.Up), board.getCell(16, 6));
 
-        assertEquals(board.getOppositeCornerCell(4), board.getCell(12, 0));
+        assertEquals(board.getOppositeCornerCell(Side.UpRight), board.getCell(12, 0));
 
-        assertEquals(board.getOppositeCornerCell(5), board.getCell(4, 0));
+        assertEquals(board.getOppositeCornerCell(Side.DownRight), board.getCell(4, 0));
     }
 }

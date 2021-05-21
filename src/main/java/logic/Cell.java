@@ -465,9 +465,7 @@ public class Cell {
     public double getDistanceBetween(Cell other) {
         int fila = other.getRow() - this.getRow();
         int col = other.getCol() - this.getCol();
-        fila *= fila;
-        col *= col;
-        return (fila + col);
+        return Math.sqrt(fila*fila + col*col);
     }
 
     public Cell getClosestMovementTo(Cell target, boolean jumpIsLimited) {

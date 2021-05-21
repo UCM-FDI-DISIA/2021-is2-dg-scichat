@@ -14,7 +14,7 @@ public class Easy implements Strategy {
     public Cell move(Player player, boolean jumpIsLimited, Board board) {
         Cell result = null;
         double minDistance = Integer.MAX_VALUE;
-        Cell corner = board.getOppositeCornerCell(player.getSide().getValue());
+        Cell corner = board.getOppositeCornerCell(player.getSide());
         Set<Cell> visited = new HashSet<Cell>();
         // Se recorren las piezas del jugador
         for (Piece piece : player.getPieces()) {
