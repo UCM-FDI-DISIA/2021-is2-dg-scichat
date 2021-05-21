@@ -46,7 +46,7 @@ public class Bot implements Player {
         }
     }
 
-    public void prepareBot(Board board) {
+    public void prepare(Board board) {
         this.board = board;
     }
 

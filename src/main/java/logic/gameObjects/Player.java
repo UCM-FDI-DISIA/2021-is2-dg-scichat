@@ -32,7 +32,7 @@ public interface Player {
     String toString();
     void setName(String name);
 
-    default void prepareBot(Board board) {}
+    default void prepare(Board board) {}
     default boolean botPerforming( Mode mode)
         throws InvalidMoveException, NotSelectedPieceException {
         return false;

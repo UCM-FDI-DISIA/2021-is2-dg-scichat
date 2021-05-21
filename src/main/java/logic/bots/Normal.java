@@ -1,5 +1,7 @@
 package logic.bots;
 
+import java.util.HashSet;
+
 import logic.Board;
 import logic.Cell;
 import logic.gameObjects.Piece;
@@ -10,12 +12,14 @@ public class Normal implements Strategy {
     @Override
     public Cell move(Player player, boolean jumpIsLimited, Board board) {
 	double minDistance = Integer.MAX_VALUE;
+	HashSet<Cell> winnerCells = player.getSide().getOpposingCells();
 	Cell result = null;
 	// Calculas la esquina contraria
 	Cell corner = board.getOppositeCornerCell(player.getSide().getValue());
 	// Recorres las piezas calculando su movimiento más cercano a la esquina
 	for (Piece piece : player.getPieces()) {
-	    Cell currentClosestMovement = piece.getPosition().getClosestMovementTo(corner, jumpIsLimited);
+	    Cell currentClosestMovement = piece.getPosition().getClosestMovementTo(corner, jumpIsLimited, winnerCells);
+	    
 	    // Si existe algun movimiento desde la pieza actual lo evaluas, si no pasas a la
 	    // ficha siguiente
 	    if (currentClosestMovement != null) {
@@ -24,12 +28,12 @@ public class Normal implements Strategy {
 		// que la distancia del movimiento más cercano a la esquina
 		// guardas el destino, actualizas la distancia minima y seleccionas la pieza
 		// cuyo movimiento es el más cercano
-		if (distanceToCorner < minDistance) {
-		    result = currentClosestMovement;
-		    minDistance = distanceToCorner;
-		    player.selectPiece(piece);
-		    player.setLastMovement(piece.getPosition());
-		}
+			if (distanceToCorner < minDistance) {
+			    result = currentClosestMovement;
+			    minDistance = distanceToCorner;
+			    player.selectPiece(piece);
+			    player.setLastMovement(piece.getPosition());
+			}
 	    }
 	}
 

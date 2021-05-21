@@ -129,7 +129,7 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players) {
 	for (Player player : players) {
-	    player.prepareBot(board);
+	    player.prepare(board);
 	}
 	this.players = players;
     }
