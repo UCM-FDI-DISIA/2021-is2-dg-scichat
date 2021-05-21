@@ -1,12 +1,11 @@
 package utils;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import logic.Cell;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import logic.Cell;
 
 public class GeoComp {
 
@@ -18,6 +17,7 @@ public class GeoComp {
             this.x = x;
             this.y = y;
         }
+
         public Point(Cell c) {
             this.x = c.getCol();
             this.y = c.getRow();
@@ -121,8 +121,9 @@ public class GeoComp {
         double orient(Point a, Point b) {
             return b.minus(a).cross(this.minus(a));
         }
+
         double orient(Segment s) {
-            return s.getEnd().minus(s.getBeginning()) .cross (this.minus(s.getBeginning()));
+            return s.getEnd().minus(s.getBeginning()).cross(this.minus(s.getBeginning()));
         }
 
         double orientedAngle(Point b, Point c) {
@@ -290,13 +291,13 @@ public class GeoComp {
 
     public static class Poligono {
         List<Point> data = new ArrayList<>();
+
         void setData(List<Point> _data) {
             data = _data;
         }
 
         public Poligono(Iterable<Point> it) {
-            for (Point i : it) 
-        	if(i != null) data.add(i);
+            for (Point i : it) if (i != null) data.add(i);
         }
 
         public void add(Point p) {
@@ -305,16 +306,16 @@ public class GeoComp {
 
         public double area() {
             double area = 0;
-            for (int i = 0; i < (data.size() - 1); ++i) 
-        	area += data.get(i) .cross (data.get(i + 1));
+            for (int i = 0; i < (data.size() - 1); ++i) area +=
+                data.get(i).cross(data.get(i + 1));
             return Math.abs(area) / 2.0;
         }
 
         public Poligono convexHull() {
             int n = data.size(), k = 0;
             List<Point> H = new ArrayList<>();
-            for(int i = 0; i < 2*n; ++i) H.add(null);
-        	    //new ArrayList<Point>(2*n);
+            for (int i = 0; i < 2 * n; ++i) H.add(null);
+            //new ArrayList<Point>(2*n);
             data.sort(
                 new Comparator<Point>() {
 
@@ -325,24 +326,20 @@ public class GeoComp {
             );
             // build lower hull
             for (int i = 0; i < n; ++i) {
-                while ( k >= 2 ) {
+                while (k >= 2) {
                     Segment s = new Segment(H.get(k - 2), H.get(k - 1));
-                    if (!s.counterClockWise(data.get(i))) 
-                	--k;
-                    else break;
+                    if (!s.counterClockWise(data.get(i))) --k; else break;
                 }
-                
+
                 H.set(k, data.get(i));
                 k++;
             }
             // build upper hull
             for (int i = n - 2, t = k + 1; i >= 0; --i) {
-        	while (k >= t) {
-        	    Segment s = new Segment(H.get(k - 2), H.get(k - 1));
-        	    if (!s.counterClockWise(data.get(i))) 
-        		--k;
-                    else break;
-        	}
+                while (k >= t) {
+                    Segment s = new Segment(H.get(k - 2), H.get(k - 1));
+                    if (!s.counterClockWise(data.get(i))) --k; else break;
+                }
 
                 H.set(k, data.get(i));
                 k++;

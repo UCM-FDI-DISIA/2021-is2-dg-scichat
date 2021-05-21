@@ -229,18 +229,18 @@ public class Board implements Iterable<Cell> {
         switch (side) {
             // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
             // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
-        case Down:
-            return getCell(0, 6);
-        case DownLeft:
-            return getCell(4, 12);
-        case UpLeft:
-            return getCell(12, 12);
-        case Up:
-            return getCell(16, 6);
-        case UpRight:
-            return getCell(12, 0);
-        case DownRight:
-            return getCell(4, 0);
+            case Down:
+                return getCell(0, 6);
+            case DownLeft:
+                return getCell(4, 12);
+            case UpLeft:
+                return getCell(12, 12);
+            case Up:
+                return getCell(16, 6);
+            case UpRight:
+                return getCell(12, 0);
+            case DownRight:
+                return getCell(4, 0);
         }
         return null;
     }
