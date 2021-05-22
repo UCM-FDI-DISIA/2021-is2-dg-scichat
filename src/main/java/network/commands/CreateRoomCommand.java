@@ -41,7 +41,7 @@ public class CreateRoomCommand extends Command {
 
         /// Crear la sala con la configuración dada
         ServerRoom serverRoom = new ServerRoom(roomConfig);
-        server.getRooms().put(roomID, serverRoom);
+        server.addRoom(roomID, serverRoom);
 
         /// Avisar al cliente de que se ha creado la nueva habitación
         JSONObject data = roomConfig.toJSON();
