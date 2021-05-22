@@ -11,37 +11,71 @@ import org.json.JSONObject;
 
 public class SocketClient extends WebSocketClient {
     private boolean connected = false;
-    private List<SocketObserver> observers = new CopyOnWriteArrayList<>();
     private String clientID;
+
+    /// Se usa la clase CopyOnWriteArrayList para evitar problemas de modificación concurrente
+    private final List<SocketObserver> observers = new CopyOnWriteArrayList<>();
 
     public SocketClient(URI serverUri) {
         super(serverUri);
+        /// Método para configurar log4j, exigido por la librería de WebSocket que he usado
+        /// No es importante
         BasicConfigurator.configure();
     }
 
+    /**
+     * Añadir observador
+     *
+     * @param o instancia de observador
+     */
     public void addObserver(SocketObserver o) {
         if (this.observers.contains(o)) return;
         this.observers.add(o);
     }
 
+    /**
+     * Quitar observador
+     *
+     * @param o instancia de observador a quitar
+     */
     public void removeObserver(SocketObserver o) {
         this.observers.remove(o);
     }
 
+    /**
+     * Si está conectado el Socket con el servidor
+     */
     public boolean isConnected() {
         return this.connected;
     }
 
+    /**
+     * ID del cliente
+     * <p>
+     * Es diferente para cada conexión
+     *
+     * @return UUID del cliente
+     */
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * Evento para cuando se establece la conexión de forma correcta
+     *
+     * @param serverHandshake
+     */
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
         this.connected = true;
         for (SocketObserver o : this.observers) o.onOpen();
     }
 
+    /**
+     * Cuando recibe un mensaje del servidor
+     *
+     * @param s mensaje
+     */
     @Override
     public void onMessage(String s) {
         /// Parsear el mensaje como JSONObject, y emitir a los observadores
@@ -54,10 +88,12 @@ public class SocketClient extends WebSocketClient {
                 this.clientID = res.getJSONObject("data").getString("clientID");
                 this.onClientIDChange(clientID);
             } else if (type.equals("ERROR")) {
+                /// Se ha producido un error en el servidor
                 this.onError(
                         new Exception(res.getJSONObject("data").getString("message"))
                     );
             } else {
+                /// Resto tipo de mensajes
                 for (SocketObserver o : this.observers) o.onMessage(res);
             }
         } catch (JSONException e) {
