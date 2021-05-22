@@ -29,8 +29,8 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     private Command pieceMovedCommand = new PieceMovedCommand() {
 
         @Override
-        public void execute(JSONObject data, SocketClient connection) {
-            super.execute(data, connection);
+        public void execute(JSONObject req, SocketClient connection) {
+            super.execute(req, connection);
             try {
                 ctrl.onlineMovePiece(x1, y1, x2, y2, playerID);
             } catch (Exception e) {
@@ -42,8 +42,8 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
     private Command surrenderCommand = new SurrenderCommand() {
 
         @Override
-        public void execute(JSONObject data, SocketClient connection) {
-            super.execute(data, connection);
+        public void execute(JSONObject req, SocketClient connection) {
+            super.execute(req, connection);
             ctrl.surrender(getPlayerID());
         }
     };
@@ -97,7 +97,7 @@ public class OnlineGameWindow extends JPanel implements SocketObserver, GameObse
         String type = s.getString("type");
         try {
             Command command = commandParser.parse(type);
-            command.execute(s.getJSONObject("data"), this.sc);
+            command.execute(s, this.sc);
         } catch (Exception e) {}
     }
 

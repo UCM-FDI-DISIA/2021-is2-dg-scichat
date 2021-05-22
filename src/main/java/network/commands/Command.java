@@ -13,11 +13,17 @@ public abstract class Command {
         this.type = _type;
     }
 
-    /// Para enviar este commando al servidor
+    /**
+     * Método creado para mandar una petición al servidor, con los datos que lleva la instancia
+     *
+     * @param connection conexión de Socket
+     */
     public void send(SocketClient connection) {
         JSONObject req = new JSONObject();
         req.put("type", this.type);
         req.put("clientID", connection.getClientID());
+
+        /// El método getData lo tiene que sobreescribir cada comando, con los datos que quiere enviar
         req.put("data", this.getData());
 
         connection.send(req.toString());
@@ -27,12 +33,12 @@ public abstract class Command {
         return new JSONObject();
     }
 
-    /// Para cuando el cliente recibe el mensaje, parsear el componente
-    public void parseRequest(JSONObject data) {}
+    /// Para cuando el cliente recibe el mensaje, parsear la petición
+    public void parseRequest(JSONObject req) {}
 
     /// Para ejecutar en el cliente
-    public void execute(JSONObject data, SocketClient connection) {
-        this.parseRequest(data);
+    public void execute(JSONObject req, SocketClient connection) {
+        this.parseRequest(req);
     }
 
     /// Ejecutar para servidor

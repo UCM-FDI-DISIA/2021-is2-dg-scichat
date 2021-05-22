@@ -34,7 +34,9 @@ public class PieceMovedCommand extends Command {
     }
 
     @Override
-    public void parseRequest(JSONObject data) {
+    public void parseRequest(JSONObject req) {
+        JSONObject data = req.getJSONObject("data");
+
         JSONArray fromArray = data.getJSONArray("from");
         JSONArray toArray = data.getJSONArray("to");
 

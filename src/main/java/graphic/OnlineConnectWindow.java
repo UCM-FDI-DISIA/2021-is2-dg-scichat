@@ -38,13 +38,13 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     Command roomCreatedCommand = new Command("ROOM_CREATED") {
 
         @Override
-        public void parseRequest(JSONObject data) {
-            roomID = data.getString("roomID");
+        public void parseRequest(JSONObject req) {
+            roomID = req.getJSONObject("data").getString("roomID");
         }
 
         @Override
-        public void execute(JSONObject data, SocketClient connection) {
-            super.execute(data, connection);
+        public void execute(JSONObject req, SocketClient connection) {
+            super.execute(req, connection);
             sc.removeObserver(OnlineConnectWindow.this);
             status = true;
             dispose();
@@ -253,11 +253,9 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         System.out.println(s);
 
         String type = s.getString("type");
-        JSONObject data = s.getJSONObject("data");
-
         try {
             Command c = commandParser.parse(type);
-            c.execute(data, this.sc);
+            c.execute(s, this.sc);
         } catch (Exception e) {
             e.printStackTrace();
         }

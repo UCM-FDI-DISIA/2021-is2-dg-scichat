@@ -33,9 +33,9 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void parseRequest(JSONObject data) {
+    public void parseRequest(JSONObject req) {
         /// Cuando el cliente recibe este commando, tiene que parsear a un Room
-        this.room = new Room(data);
+        this.room = new Room(req.getJSONObject("data"));
     }
 
     @Override

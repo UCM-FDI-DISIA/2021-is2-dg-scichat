@@ -17,9 +17,9 @@ public class RoomInfoCommand extends Command {
     }
 
     @Override
-    public void parseRequest(JSONObject data) {
+    public void parseRequest(JSONObject req) {
         /// Si recibe una información de la habitación, actualizar el GUI
-        this.room = new Room(data);
+        this.room = new Room(req.getJSONObject("data"));
     }
 
     public Room getRoom() {
