@@ -74,7 +74,7 @@ public class Room implements SocketMessage {
         JSONObject players = new JSONObject();
 
         for (Map.Entry<String, PlayerConfig> entry : this.players.entrySet()) {
-            players.put(entry.getKey(), entry.getValue().toJSONObject());
+            players.put(entry.getKey(), entry.getValue().toJSON());
         }
 
         data.put("players", players);

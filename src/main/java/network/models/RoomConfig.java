@@ -61,7 +61,7 @@ public class RoomConfig implements SocketMessage {
         data.put("playerConfigs", new JSONArray());
 
         for (PlayerConfig p : this.playerConfigs) {
-            data.append("playerConfigs", p.toJSONObject());
+            data.append("playerConfigs", p.toJSON());
         }
 
         return data;

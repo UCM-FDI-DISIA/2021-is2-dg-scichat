@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.PieceColor;
 
-public class PlayerConfig {
+public class PlayerConfig implements SocketMessage {
     public final PieceColor color;
     public final Board.Side side;
     private String name;
@@ -41,7 +41,8 @@ public class PlayerConfig {
         return name;
     }
 
-    public JSONObject toJSONObject() {
+    @Override
+    public JSONObject toJSON() {
         JSONObject data = new JSONObject();
 
         data.put("color", this.color.toJSONArray());
