@@ -16,6 +16,16 @@ public class PieceMovedCommand extends Command {
         super("PIECE_MOVED");
     }
 
+    /**
+     * Constructor usado para enviar petición al servidor
+     *
+     * @param x1       coordenada x de posición original
+     * @param y1       coordenada y de posición original
+     * @param x2       coordenada x de posición nueva
+     * @param y2       coordenada y de posición nueva
+     * @param roomID   ID de la habitación
+     * @param playerID ID del jugador que ha realizado el movimiento
+     */
     public PieceMovedCommand(
         int x1,
         int y1,

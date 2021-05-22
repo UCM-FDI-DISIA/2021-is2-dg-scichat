@@ -84,8 +84,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
     }
 
     private void connectToRoom() {
-        new JoinRoomCommand(this.roomID, this.connection.getClientID(), name)
-        .send(this.connection);
+        new JoinRoomCommand(this.roomID, name).send(this.connection);
     }
 
     /// Crear el controlador con las configuraciones dadas

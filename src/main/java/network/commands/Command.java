@@ -29,25 +29,53 @@ public abstract class Command {
         connection.send(req.toString());
     }
 
+    /**
+     * @return JSONObject que se enviará en campo `data` de la petición al servidor
+     */
     public JSONObject getData() {
         return new JSONObject();
     }
 
-    /// Para cuando el cliente recibe el mensaje, parsear la petición
+    /**
+     * Para parsear la petición
+     *
+     * @param req petición en formato JSON
+     */
     public void parseRequest(JSONObject req) {}
 
-    /// Para ejecutar en el cliente
+    /**
+     * Acción a realizar por el cliente cuando recibe el comando
+     *
+     * @param req        cuerpo de petición en JSON
+     * @param connection conexión Socket
+     */
     public void execute(JSONObject req, SocketClient connection) {
         this.parseRequest(req);
     }
 
-    /// Ejecutar para servidor
-    public void execute(JSONObject data, Server server, WebSocket connection)
+    /**
+     * Acción a realizar por el servidor cuando recibe el comando
+     *
+     * @param req        cuerpo de petición
+     * @param server     instancia del servidor
+     * @param connection conexión de Socket con el emisor del mensaje
+     */
+    public void execute(JSONObject req, Server server, WebSocket connection)
         throws Exception {
         /// Por defecto, reenvía la información a todos los jugadores de la habitación
-        this.broadCast(data, server, connection, true);
+        this.broadCast(req, server, connection, true);
     }
 
+    /**
+     * Para reenviar la petición al resto de jugadores de la habitación
+     * <p>
+     * Para ello, la petición tiene que contener un atributo data.roomID
+     *
+     * @param req        cuerpo de petición
+     * @param server     instancia del servidor
+     * @param connection conexión del Socket con el emisor
+     * @param toSender   si se reenvía el mismo mensaje al emisor
+     */
     public final void broadCast(
         JSONObject req,
         Server server,
@@ -70,6 +98,12 @@ public abstract class Command {
         }
     }
 
+    /**
+     * Método para parsear el comando, usado por {@link CommandParser}
+     *
+     * @param _type string que representa el tipo del comando
+     * @return la instancia del comando, si coincide el tipo
+     */
     public final Command parseCommand(String _type) {
         if (this.type.equals(_type)) return this;
         return null;
