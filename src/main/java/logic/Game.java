@@ -21,12 +21,7 @@ import utils.Mode;
 import utils.PieceColor;
 
 public class Game {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
-    private static final long Botdelay = 200;
+    private final long Botdelay = 200;
 
     private Board board = new Board();
     private boolean stopped = false; /// Si el jugador ha parado el juego
@@ -218,10 +213,7 @@ public class Game {
             public void run() {
                 try {
                     if (moveBot()) {
-                        if (getCurrentPlayer().isAWinner()) setStopped(
-                            true,
-                            getCurrentPlayer()
-                        ); else advance();
+                        advance();
                     }
                 } catch (Exception e) {
                     System.out.println("Crap, esto no va");
@@ -323,10 +315,7 @@ public class Game {
         }
         try {
             if (this.moveBot()) {
-                if (getCurrentPlayer().isAWinner()) setStopped(
-                    true,
-                    getCurrentPlayer()
-                ); else advance();
+                advance();
             }
         } catch (InvalidMoveException e) {
             System.out.println("Crap, esto no va");
@@ -478,9 +467,12 @@ public class Game {
             getCurrentPlayer().getSelectedPiece().getPosition(),
             getCurrentPlayer().getId()
         );
-        if (getCurrentPlayer().isAWinner()) setStopped(true, getCurrentPlayer());
         if (System.currentTimeMillis() < timeAtStart + this.Botdelay) try {
             Thread.sleep(this.Botdelay - System.currentTimeMillis() + timeAtStart);
+            if (getCurrentPlayer().isAWinner()) {
+                setStopped(true, getCurrentPlayer());
+                return false;
+            }
         } catch (InterruptedException e) {
             // redundancia
             e.printStackTrace();
