@@ -307,16 +307,16 @@ public class Game {
      * @throws InvalidMoveException
      */
     public void advance() {
-        do {
-            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
-        } while (this.getCurrentPlayer().hasSurrendered());
-        for (GameObserver i : observers) {
-            i.onEndTurn(this);
-        }
         try {
-            if (this.moveBot()) {
-                advance();
-            }
+            do {
+                do {
+                    this.currentPlayerIndex =
+                        (this.currentPlayerIndex + 1) % this.players.size();
+                } while (this.getCurrentPlayer().hasSurrendered());
+                for (GameObserver i : observers) {
+                    i.onEndTurn(this);
+                }
+            } while (this.moveBot());
         } catch (InvalidMoveException e) {
             System.out.println("Crap, esto no va");
             System.out.println(e.getMessage());
