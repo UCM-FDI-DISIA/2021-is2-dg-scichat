@@ -13,6 +13,12 @@ public class CreateRoomCommand extends Command {
         super("CREATE_ROOM");
     }
 
+    /**
+     * Este constructor se usa para cuando hay que mandar petición al servidor
+     * Le pasamos los datos que necesitamos mandar
+     *
+     * @param _config configuración de la sala que queremos crear
+     */
     public CreateRoomCommand(RoomConfig _config) {
         this();
         this.config = _config;
@@ -27,12 +33,17 @@ public class CreateRoomCommand extends Command {
     public void execute(JSONObject req, Server server, WebSocket connection) {
         JSONObject _data = req.getJSONObject("data");
 
+        /// Parsear la configuración de la habitación
         RoomConfig roomConfig = new RoomConfig(_data);
+
+        /// Generar un ID aleatorio para la habitación
         String roomID = ServerRoom.generateRoomID();
 
+        /// Crear la sala con la configuración dada
         ServerRoom serverRoom = new ServerRoom(roomConfig);
-        server.getRooms().put(roomID, serverRoom);
+        server.addRoom(roomID, serverRoom);
 
+        /// Avisar al cliente de que se ha creado la nueva habitación
         JSONObject data = roomConfig.toJSON();
         data.put("roomID", roomID);
 

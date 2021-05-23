@@ -11,15 +11,10 @@ public class RoomInfoCommand extends Command {
     }
 
     @Override
-    public JSONObject getData() {
-        /// No se manda de momento esta petición al servidor
-        return new JSONObject();
-    }
-
-    @Override
-    public void parseRequest(JSONObject data) {
-        /// Si recibe una información de la habitación, actualizar el GUI
-        this.room = new Room(data);
+    public void parseRequest(JSONObject req) {
+        /// Esta petición solamente se manda del servidor al cliente
+        /// Con la información de la habitación (modo del juego, jugadores conectados, etc.)
+        this.room = new Room(req.getJSONObject("data"));
     }
 
     public Room getRoom() {

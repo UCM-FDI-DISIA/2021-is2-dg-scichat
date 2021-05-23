@@ -2,6 +2,9 @@ package network.client;
 
 import org.json.JSONObject;
 
+/**
+ * Interfaz de observador para recibir las actualizaciones del Socket
+ */
 public interface SocketObserver {
     default void onOpen() {}
 

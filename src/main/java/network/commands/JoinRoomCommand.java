@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 public class JoinRoomCommand extends Command {
     private String roomID;
-    private String clientID;
     private Room room;
     private String name;
 
@@ -16,10 +15,13 @@ public class JoinRoomCommand extends Command {
         super("JOIN_ROOM");
     }
 
-    public JoinRoomCommand(String roomID, String clientID, String name) {
+    /**
+     * @param roomID ID de la habitación que quiere entrar
+     * @param name   Nombre del jugador
+     */
+    public JoinRoomCommand(String roomID, String name) {
         this();
         this.roomID = roomID;
-        this.clientID = clientID;
         this.name = name;
     }
 
@@ -33,9 +35,9 @@ public class JoinRoomCommand extends Command {
     }
 
     @Override
-    public void parseRequest(JSONObject data) {
+    public void parseRequest(JSONObject req) {
         /// Cuando el cliente recibe este commando, tiene que parsear a un Room
-        this.room = new Room(data);
+        this.room = new Room(req.getJSONObject("data"));
     }
 
     @Override
@@ -49,6 +51,8 @@ public class JoinRoomCommand extends Command {
 
         ServerRoom serverRoom = server.getRoom(roomID);
 
+        /// Añadir el jugador a la habitación
+        /// También se enviará la actualización al resto de jugadores conectados
         serverRoom.addPlayer(clientID, name, connection);
     }
 }

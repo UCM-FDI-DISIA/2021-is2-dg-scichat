@@ -98,74 +98,8 @@ public class Board implements Iterable<Cell> {
         /* Getters */
 
         public static Side getSide(int side) {
-            switch (side) {
-                case (0):
-                    return Side.Down;
-                case (1):
-                    return Side.DownLeft;
-                case (2):
-                    return Side.UpLeft;
-                case (3):
-                    return Side.Up;
-                case (4):
-                    return Side.UpRight;
-                case (5):
-                    return Side.DownRight;
-            }
-            return null;
+            return Side.values()[side];
         }
-
-        @Deprecated // ¿Esto sirve para algo? Lo pongo para sentirme un puto pro
-        /* public Cell getOppositeCornerCell() {
-            Set<Cell> oppositeSideCells = new HashSet<Cell>();
-            switch (this.ordinal()) {
-                // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
-                // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.
-                case (0):
-                    oppositeSideCells = Down.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 0) {
-                            return cell;
-                        }
-                    }
-                case (1):
-                    oppositeSideCells = DownLeft.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 4 && cell.getCol() == 12) {
-                            return cell;
-                        }
-                    }
-                case (2):
-                    oppositeSideCells = UpLeft.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 12 && cell.getCol() == 12) {
-                            return cell;
-                        }
-                    }
-                case (3):
-                    oppositeSideCells = Up.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 16) {
-                            return cell;
-                        }
-                    }
-                case (4):
-                    oppositeSideCells = UpRight.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 12 && cell.getCol() == 0) {
-                            return cell;
-                        }
-                    }
-                case (5):
-                    oppositeSideCells = DownRight.getOpposingCells();
-                    for (Cell cell : oppositeSideCells) {
-                        if (cell.getRow() == 4 && cell.getCol() == 0) {
-                            return cell;
-                        }
-                    }
-            }
-            return null;
-        }*/
 
         public int getJSONValue() {
             return this.value;

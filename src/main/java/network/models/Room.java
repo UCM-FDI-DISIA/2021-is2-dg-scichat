@@ -6,20 +6,29 @@ import java.util.TreeMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Clase que representa una sala del juego
+ * Tiene una configuración de la sala, que lleva el modo del juego y la configuración de los jugadores
+ * Y un Map que hace la correspondencia entre ID del jugador y su configuración asignada
+ */
 public class Room implements SocketMessage {
-    protected RoomConfig roomConfig;
-    protected Map<String, PlayerConfig> players = new TreeMap<>();
+    protected final RoomConfig roomConfig;
+    protected final Map<String, PlayerConfig> players = new TreeMap<>();
 
     protected int connectedPlayers;
 
+    /**
+     * Crear una nueva sala con una configuración de sala
+     */
     public Room(RoomConfig config) {
         this.roomConfig = config;
     }
 
+    /**
+     * Parsear la información de sala a partir de la información enviada por el servidor
+     */
     public Room(JSONObject data) {
-        /// Crear el objeto a partir de JSONObject del servidor
         this.roomConfig = new RoomConfig(data);
-
         this.connectedPlayers = data.getInt("connectedPlayers");
 
         JSONArray playerIDs = data.getJSONObject("players").names();
@@ -57,6 +66,9 @@ public class Room implements SocketMessage {
         return this.getConnectedPlayers() == this.roomConfig.getNumPlayers();
     }
 
+    /**
+     * Método para generar un ID aleatorio para la sala, de 6 caracteres
+     */
     public static String generateRoomID() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
@@ -68,13 +80,16 @@ public class Room implements SocketMessage {
         return salt.toString();
     }
 
+    /**
+     * Serializar la información de sala en JSON
+     */
     public JSONObject toJSON() {
         JSONObject data = this.roomConfig.toJSON();
         data.put("connectedPlayers", this.getConnectedPlayers());
         JSONObject players = new JSONObject();
 
         for (Map.Entry<String, PlayerConfig> entry : this.players.entrySet()) {
-            players.put(entry.getKey(), entry.getValue().toJSONObject());
+            players.put(entry.getKey(), entry.getValue().toJSON());
         }
 
         data.put("players", players);

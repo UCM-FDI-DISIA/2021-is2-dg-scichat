@@ -15,10 +15,17 @@ import org.java_websocket.server.WebSocketServer;
 import org.json.JSONObject;
 
 public class Server extends WebSocketServer {
-    private int port;
-    private Map<String, ServerRoom> rooms = new HashMap<>();
-    private BiMap<String, WebSocket> clients = HashBiMap.create();
+    private final int port;
 
+    /// Map de RoomID -> Sala
+    private final Map<String, ServerRoom> rooms = new HashMap<>();
+
+    /// Map de ClientID -> Conexión de Socket de cada cliente
+    /// Se usa BiMap, para poder invertir este map
+    /// Porque cuando se desconecta el cliente, quiero poder saber su ID del cliente, para eliminarlo de la sala correspondiente
+    private final BiMap<String, WebSocket> clients = HashBiMap.create();
+
+    /// Contiene todos los comandos soportados por el servidor
     private CommandParser commandParser = new CommandParser() {
 
         @Override
@@ -39,8 +46,8 @@ public class Server extends WebSocketServer {
         this.port = port;
     }
 
-    public Map<String, ServerRoom> getRooms() {
-        return rooms;
+    public final void addRoom(String roomID, ServerRoom room) {
+        this.rooms.put(roomID, room);
     }
 
     public final ServerRoom getRoom(String roomID) throws Exception {
@@ -51,6 +58,11 @@ public class Server extends WebSocketServer {
         return this.rooms.get(roomID);
     }
 
+    /**
+     * Método para cuando se establece una nueva conexión de Socket con el cliente
+     *
+     * @param connection la nueva conexión
+     */
     @Override
     public void onOpen(WebSocket connection, ClientHandshake handshake) {
         /// Cuando se conecta un nuevo cliente, asignarle un UUID, y añadirlo a la lista de clientes
@@ -67,6 +79,11 @@ public class Server extends WebSocketServer {
         );
     }
 
+    /**
+     * Cuando se cierra una conexión Socket
+     *
+     * @param connection instancia de Socket que se ha cerrado
+     */
     @Override
     public void onClose(WebSocket connection, int code, String reason, boolean remote) {
         /// Cuando se desconecta, eliminar de la lista de clientes
@@ -82,6 +99,12 @@ public class Server extends WebSocketServer {
         System.out.printf("Cliente desconectado. UUID: %s \n", clientID);
     }
 
+    /**
+     * Cuando recibe un mensaje del Socket
+     *
+     * @param conn    Socket de donde ha recibido el mensaje
+     * @param message Mensaje
+     */
     @Override
     public void onMessage(WebSocket conn, String message) {
         System.out.println(message);
@@ -91,6 +114,8 @@ public class Server extends WebSocketServer {
             command.execute(body, this, conn);
         } catch (Exception e) {
             e.printStackTrace();
+
+            /// Informar al cliente de que se ha producido una excepción mientras procesa su petición
             conn.send(
                 new JSONObject()
                     .put("type", "ERROR")
@@ -100,6 +125,9 @@ public class Server extends WebSocketServer {
         }
     }
 
+    /**
+     * Cuando se produce un error en conexión Socket
+     */
     @Override
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();

@@ -34,8 +34,8 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
     Command roomInfoCommand = new RoomInfoCommand() {
 
         @Override
-        public void execute(JSONObject data, SocketClient connection) {
-            super.execute(data, connection);
+        public void execute(JSONObject req, SocketClient connection) {
+            super.execute(req, connection);
             OnlineWaitingWindow.this.room = this.getRoom();
             renderRoomInfo();
         }
@@ -73,7 +73,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
             new StartGameCommand(roomID) {
 
                 @Override
-                public void execute(JSONObject data, SocketClient connection) {
+                public void execute(JSONObject req, SocketClient connection) {
                     connection.removeObserver(OnlineWaitingWindow.this);
                     createGame();
                     status = true;
@@ -84,8 +84,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
     }
 
     private void connectToRoom() {
-        new JoinRoomCommand(this.roomID, this.connection.getClientID(), name)
-        .send(this.connection);
+        new JoinRoomCommand(this.roomID, name).send(this.connection);
     }
 
     /// Crear el controlador con las configuraciones dadas
@@ -223,7 +222,7 @@ public class OnlineWaitingWindow extends JDialog implements SocketObserver {
         String type = s.getString("type");
         try {
             Command command = commandParser.parse(type);
-            command.execute(s.getJSONObject("data"), this.connection);
+            command.execute(s, this.connection);
         } catch (Exception e) {}
     }
 
