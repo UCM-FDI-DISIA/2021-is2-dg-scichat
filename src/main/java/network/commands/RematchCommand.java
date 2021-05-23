@@ -9,6 +9,9 @@ public class RematchCommand extends Command {
         super("REMATCH");
     }
 
+    /**
+     * @param _roomID ID de la habitación
+     */
     public RematchCommand(String _roomID) {
         this();
         this.roomID = _roomID;

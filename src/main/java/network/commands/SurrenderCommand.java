@@ -10,6 +10,10 @@ public class SurrenderCommand extends Command {
         super("SURRENDER");
     }
 
+    /**
+     * @param _playerID ID del jugador que se ha rendido
+     * @param _roomID   ID de la habitación
+     */
     public SurrenderCommand(String _playerID, String _roomID) {
         this();
         this.playerID = _playerID;
@@ -27,7 +31,8 @@ public class SurrenderCommand extends Command {
     }
 
     @Override
-    public void parseRequest(JSONObject data) {
+    public void parseRequest(JSONObject req) {
+        JSONObject data = req.getJSONObject("data");
         this.playerID = data.getString("playerID");
     }
 

@@ -40,8 +40,8 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     private Command rematchCommand = new RematchCommand() {
 
         @Override
-        public void execute(JSONObject data, SocketClient connection) {
-            super.execute(data, connection);
+        public void execute(JSONObject req, SocketClient connection) {
+            super.execute(req, connection);
             initOnlineWaiting();
         }
     };
@@ -213,11 +213,10 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
     public void onMessage(JSONObject s) {
         System.out.println(s);
         String type = s.getString("type");
-        JSONObject data = s.getJSONObject("data");
 
         try {
             Command c = commandParser.parse(type);
-            c.execute(data, this.connection);
+            c.execute(s, this.connection);
         } catch (Exception e) {}
     }
 }
