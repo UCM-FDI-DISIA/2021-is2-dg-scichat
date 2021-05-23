@@ -2,6 +2,10 @@ package network.server;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import network.commands.*;
 import network.models.ServerRoom;
 import org.apache.log4j.BasicConfigurator;
@@ -9,11 +13,6 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.json.JSONObject;
-
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class Server extends WebSocketServer {
     private final int port;
@@ -31,13 +30,13 @@ public class Server extends WebSocketServer {
 
         @Override
         public Command[] getCommands() {
-            return new Command[]{
-                    new CreateRoomCommand(),
-                    new JoinRoomCommand(),
-                    new StartGameCommand(),
-                    new PieceMovedCommand(),
-                    new SurrenderCommand(),
-                    new RematchCommand()
+            return new Command[] {
+                new CreateRoomCommand(),
+                new JoinRoomCommand(),
+                new StartGameCommand(),
+                new PieceMovedCommand(),
+                new SurrenderCommand(),
+                new RematchCommand()
             };
         }
     };
@@ -73,10 +72,10 @@ public class Server extends WebSocketServer {
 
         /// Enviar este ID al cliente
         connection.send(
-                new JSONObject()
-                        .put("type", "SET_CLIENT_ID")
-                        .put("data", new JSONObject().put("clientID", clientID))
-                        .toString()
+            new JSONObject()
+                .put("type", "SET_CLIENT_ID")
+                .put("data", new JSONObject().put("clientID", clientID))
+                .toString()
         );
     }
 
@@ -118,10 +117,10 @@ public class Server extends WebSocketServer {
 
             /// Informar al cliente de que se ha producido una excepción mientras procesa su petición
             conn.send(
-                    new JSONObject()
-                            .put("type", "ERROR")
-                            .put("data", new JSONObject().put("message", e.getMessage()))
-                            .toString()
+                new JSONObject()
+                    .put("type", "ERROR")
+                    .put("data", new JSONObject().put("message", e.getMessage()))
+                    .toString()
             );
         }
     }
@@ -137,8 +136,8 @@ public class Server extends WebSocketServer {
     @Override
     public void onStart() {
         System.out.printf(
-                "Se ha abierto la conexión de WebSocket en el puerto %s \n",
-                this.port
+            "Se ha abierto la conexión de WebSocket en el puerto %s \n",
+            this.port
         );
     }
 

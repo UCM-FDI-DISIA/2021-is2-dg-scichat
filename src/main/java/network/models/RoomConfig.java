@@ -11,12 +11,23 @@ public class RoomConfig implements SocketMessage {
     protected int numPlayers;
     protected List<PlayerConfig> playerConfigs;
 
+    /**
+     * Crear la configuración de sala
+     * Usado en cliente
+     *
+     * @param _mode          modo del juego
+     * @param _playerConfigs lista de configuraciones de jugadores
+     */
     public RoomConfig(Mode _mode, List<PlayerConfig> _playerConfigs) {
         this.mode = _mode;
         this.playerConfigs = _playerConfigs;
         this.numPlayers = _playerConfigs.size();
     }
 
+    /**
+     * Parsear la configuración de sala
+     * Usado en el servidor
+     */
     public RoomConfig(JSONObject data) {
         int modeIndex = data.optInt("mode", 0);
         this.mode = Mode.values()[modeIndex];
@@ -36,14 +47,6 @@ public class RoomConfig implements SocketMessage {
 
     public void setMode(Mode mode) {
         this.mode = mode;
-    }
-
-    public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
-    }
-
-    public void setPlayerConfigs(LinkedList<PlayerConfig> playerConfigs) {
-        this.playerConfigs = playerConfigs;
     }
 
     public Mode getMode() {

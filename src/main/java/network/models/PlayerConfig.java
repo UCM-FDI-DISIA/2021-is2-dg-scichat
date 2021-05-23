@@ -10,6 +10,13 @@ public class PlayerConfig implements SocketMessage {
     public final Board.Side side;
     private String name;
 
+    /**
+     * Clase usada para transportar la información de configuración de un jugador
+     *
+     * @param _color color del jugador
+     * @param _side  lado del tablero
+     * @param _name  nombre
+     */
     public PlayerConfig(PieceColor _color, Board.Side _side, String _name) {
         this.color = _color;
         this.side = _side;
@@ -20,6 +27,11 @@ public class PlayerConfig implements SocketMessage {
         this(_color, _side, null);
     }
 
+    /**
+     * Este constructor se usa para parsear la información que se recibe de cliente / servidor
+     *
+     * @param data dato serializado en JSON
+     */
     public PlayerConfig(JSONObject data) {
         JSONArray colorArray = data.getJSONArray("color");
         int R = colorArray.getInt(0);
@@ -30,7 +42,7 @@ public class PlayerConfig implements SocketMessage {
 
         this.color = new PieceColor(R, G, B);
         this.side = Board.Side.values()[sideIndex];
-        if (data.has("name")) this.name = data.getString("name");
+        this.name = data.optString("name", null);
     }
 
     public void setName(String name) {
@@ -41,6 +53,13 @@ public class PlayerConfig implements SocketMessage {
         return name;
     }
 
+    /**
+     * Serializar la clase en JSON
+     * <p>
+     * Es importante que, el formato que se usa aquí pueda ser parseado correctamente con el constructor anterior
+     *
+     * @return clase serializada en JSON
+     */
     @Override
     public JSONObject toJSON() {
         JSONObject data = new JSONObject();
