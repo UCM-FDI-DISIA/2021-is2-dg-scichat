@@ -1,8 +1,7 @@
 import control.Controller;
 import exceptions.OccupiedCellException;
 import java.util.*;
-import java.util.Queue;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import logic.Board;
 import logic.Game;
 import utils.Mode;

@@ -2,7 +2,6 @@ package control.options;
 
 import java.util.Scanner;
 import logic.Game;
-import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Player;
 
 public class SurrenderOption extends Option {

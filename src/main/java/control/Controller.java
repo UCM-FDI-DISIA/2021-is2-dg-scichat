@@ -9,8 +9,6 @@ import java.util.Scanner;
 import javax.swing.*;
 import logic.Cell;
 import logic.Game;
-import logic.gameObjects.HumanPlayer;
-import logic.gameObjects.Player;
 
 public class Controller {
     private Game game;
