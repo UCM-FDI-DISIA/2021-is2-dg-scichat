@@ -6,8 +6,6 @@ import logic.Cell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.GeoComp.Line;
-import utils.GeoComp.Point;
 
 public class GeoCompTest {
     private List<GeoComp.Point> points;

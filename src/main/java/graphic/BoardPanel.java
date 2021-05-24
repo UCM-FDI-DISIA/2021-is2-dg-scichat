@@ -1,12 +1,12 @@
 package graphic;
 
 import control.Controller;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JPanel;
+import javax.swing.*;
 import logic.Board;
 import logic.Cell;
 import logic.Game;

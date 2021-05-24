@@ -1,6 +1,5 @@
 package logic.bots;
 
-import java.util.HashSet;
 import logic.Board;
 import logic.Cell;
 import logic.gameObjects.Piece;

@@ -1,9 +1,7 @@
 package utils;
 
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class Tools {
 
