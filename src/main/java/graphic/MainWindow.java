@@ -185,7 +185,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     public void initRematch() {
         if (connection != null) {
-            initOnlineWaiting();
+            initRematchOnline();
         } else {
             ctrl.softReset();
             initGame();

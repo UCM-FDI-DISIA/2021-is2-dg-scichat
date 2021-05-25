@@ -42,4 +42,8 @@ public interface Player {
     }
 
     default void setLastMovement(Cell cell) {}
+
+    default boolean isBot() {
+        return false;
+    }
 }

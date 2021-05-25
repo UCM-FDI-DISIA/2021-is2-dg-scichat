@@ -32,6 +32,7 @@ public class Game {
     private long timePlaying = 0;
     private long timeAtTurnStart = 0;
     private ArrayList<GameObserver> observers = new ArrayList<>();
+    private Thread botThread;
 
     public Game() {}
 
@@ -118,6 +119,9 @@ public class Game {
         this.stopped = stopped;
         if (winner != null) {
             setWinner(winner);
+        }
+        if (botThread != null) {
+            botThread.interrupt();
         }
         for (GameObserver i : observers) {
             i.onGameEnded(this);
@@ -208,20 +212,22 @@ public class Game {
         this.stopped = false;
         this.timeAtTurnStart = System.currentTimeMillis();
         for (GameObserver i : this.observers) i.onGameStart(this);
-        new Thread() {
+        botThread =
+            new Thread() {
 
-            public void run() {
-                try {
-                    if (moveBot()) {
-                        advance();
+                public void run() {
+                    try {
+                        if (moveBot()) {
+                            advance();
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Crap, esto no va");
+                        System.out.println(e.getMessage());
                     }
-                } catch (Exception e) {
-                    System.out.println("Crap, esto no va");
-                    System.out.println(e.getMessage());
+                    botThread = null;
                 }
-            }
-        }
-        .start();
+            };
+        botThread.start();
     }
 
     public Player currentPlayerSurrender() {
@@ -294,7 +300,7 @@ public class Game {
         Player out = null;
         for (Player i : players) {
             if (!i.hasSurrendered()) {
-                if (out != null) return null; else out = i;
+                if (out != null && !out.isBot()) return null; else out = i;
             }
         }
         return out;
@@ -307,7 +313,7 @@ public class Game {
      * @throws InvalidMoveException
      */
     public void advance() {
-        try {
+        if (botThread != null) try {
             do {
                 do {
                     this.currentPlayerIndex =
@@ -323,6 +329,30 @@ public class Game {
         } catch (NotSelectedPieceException e) {
             System.out.println("Crap, esto no va");
             System.out.println(e.getMessage());
+        } else {
+            do {
+                this.currentPlayerIndex =
+                    (this.currentPlayerIndex + 1) % this.players.size();
+            } while (this.getCurrentPlayer().hasSurrendered());
+            for (GameObserver i : observers) {
+                i.onEndTurn(this);
+            }
+            botThread =
+                new Thread() {
+
+                    public void run() {
+                        try {
+                            if (moveBot()) {
+                                advance();
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Crap, esto no va");
+                            System.out.println(e.getMessage());
+                        }
+                        botThread = null;
+                    }
+                };
+            botThread.start();
         }
     }
 
@@ -474,8 +504,7 @@ public class Game {
                 return false;
             }
         } catch (InterruptedException e) {
-            // redundancia
-            e.printStackTrace();
+            return false;
         }
         return true;
     }

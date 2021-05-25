@@ -46,6 +46,10 @@ public class Bot implements Player {
         }
     }
 
+    public boolean isBot() {
+        return true;
+    }
+
     public void prepare(Board board) {
         this.board = board;
     }

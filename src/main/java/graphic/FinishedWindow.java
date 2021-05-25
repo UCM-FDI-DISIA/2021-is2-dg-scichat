@@ -129,7 +129,7 @@ public class FinishedWindow extends JPanel {
         revengeButton.setContentAreaFilled(false);
         revengeButton.addActionListener(
             e -> {
-                father.initRematchOnline();
+                father.initRematch();
             }
         );
 
