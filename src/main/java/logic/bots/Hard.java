@@ -1,19 +1,11 @@
 package logic.bots;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import logic.Board;
-import logic.Board.Side;
 import logic.Cell;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
 import utils.GeoComp;
-import utils.GeoComp.Point;
-import utils.GeoComp.Poligono;
 
 public class Hard implements Strategy {
     private final int MAX_DIST = 16;
