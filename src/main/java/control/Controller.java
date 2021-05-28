@@ -12,6 +12,8 @@ import logic.Game;
 
 public class Controller {
     private Game game;
+
+    @Deprecated
     private Scanner scanner;
 
     public Controller() {
@@ -23,6 +25,7 @@ public class Controller {
         this.scanner = scanner;
     }
 
+    @Deprecated
     public void printGame() {
         System.out.println(this.game);
     }
@@ -35,6 +38,7 @@ public class Controller {
         game.addObserver(in);
     }
 
+    @Deprecated
     public void run() {
         boolean refreshDisplay = true;
 
