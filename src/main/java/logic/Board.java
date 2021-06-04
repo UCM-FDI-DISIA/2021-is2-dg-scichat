@@ -3,15 +3,12 @@ package logic;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import utils.PieceColor;
 
 public class Board implements Iterable<Cell> {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
-
     public static final int NUM_COL = 13;
     public static final int NUM_ROW = 17;
 
@@ -159,7 +156,6 @@ public class Board implements Iterable<Cell> {
     }
 
     public Cell getOppositeCornerCell(Side side) {
-        Set<Cell> oppositeSideCells = new HashSet<Cell>();
         switch (side) {
             // Para cada Side guardas el conjunto de celdas del lado contrario y lo recorres buscando la celda de la esquina correspondiente.
             // Antes devolvia cells[row][col] pero para eso tenía que ser static la matriz de celdas.

@@ -1,11 +1,6 @@
 import control.Controller;
-import exceptions.OccupiedCellException;
-import java.util.*;
 import javax.swing.*;
-import logic.Board;
 import logic.Game;
-import utils.Mode;
-import utils.PieceColor;
 
 public class Main {
 

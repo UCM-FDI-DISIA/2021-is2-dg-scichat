@@ -12,8 +12,6 @@ public class Cell {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
-
     private final int row;
     private final int col;
 
@@ -492,7 +490,7 @@ public class Cell {
             visited.add(current);
             // En candidates se guardan los posibles saltos que se pueden hacer desde
             // current sin encadenar saltos, i.e., máximo 6 saltos, uno para cada vecino
-            List<Cell> candidates = current.getLargeJumpPositions(current, jumpIsLimited);
+            List<Cell> candidates = Cell.getLargeJumpPositions(current, jumpIsLimited);
             // Tambien guardamos en candidates los vecinos vacios adyacentes
             for (Cell candidate : candidates) {
                 if (!visited.contains(candidate)) {

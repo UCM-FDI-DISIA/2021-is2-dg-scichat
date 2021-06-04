@@ -3,7 +3,6 @@ package control;
 import exceptions.ExecuteException;
 import graphic.GameObserver;
 import java.io.File;
-import java.util.Scanner;
 import javax.swing.*;
 import logic.Cell;
 import logic.Game;
@@ -11,8 +10,6 @@ import logic.Game;
 public class Controller {
     private Game game;
 
-    @Deprecated
-    private Scanner scanner;
 
     public Controller() {
         this.game = new Game();
