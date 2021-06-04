@@ -39,4 +39,9 @@ public class Normal implements Strategy {
 
         return result;
     }
+    
+    public String toString() {
+	return "normal";
+    }
+    
 }

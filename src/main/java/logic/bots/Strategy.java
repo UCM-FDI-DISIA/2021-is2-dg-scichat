@@ -15,4 +15,5 @@ public interface Strategy {
      * @return
      */
     Cell move(Player player, boolean jumpIsLimited, Board board);
+    String toString();
 }
