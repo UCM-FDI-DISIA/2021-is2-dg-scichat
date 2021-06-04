@@ -23,8 +23,6 @@ public class Bot implements Player {
     private Piece selectedPiece = null;
     private boolean surrender;
     private String id;
-    private boolean playing = false;
-    boolean jumpIsLimited;
     private String name;
     private Board board;
     private Cell lastMovement = null; // Esto es para notificar a los observadores desde el Game
@@ -143,7 +141,6 @@ public class Bot implements Player {
 
     @Override
     public void softReset() {
-        this.playing = false;
         this.selectedPiece = null;
         this.surrender = false;
 
@@ -167,7 +164,6 @@ public class Bot implements Player {
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);
-        jPlayer.put("playing", this.playing);
 
         JSONArray jPieces = new JSONArray();
 
