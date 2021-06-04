@@ -27,11 +27,10 @@ public class Bot implements Player {
     private Board board;
     private Cell lastMovement = null; // Esto es para notificar a los observadores desde el Game
 
-    public Bot(Strategy strat, PieceColor color, Side start, String id, Side playerSide, String name, Board board, HashSet<Piece> pieces) {
+    public Bot(Strategy strat, PieceColor color, String id, Side playerSide, String name, Board board, HashSet<Piece> pieces) {
 	this.strategy = strat;
 	this.strategy = strat;
         this.color = color;
-        this.playerSide = start;
         this.id = id;
         this.playerSide = playerSide;
         this.name = name;
