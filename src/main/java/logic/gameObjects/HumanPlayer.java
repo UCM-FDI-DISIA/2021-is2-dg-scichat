@@ -24,7 +24,6 @@ public class HumanPlayer implements Player {
     private Piece selectedPiece = null; // Pieza seleccionada
     private boolean surrender; //Jugador se ha rendido
     private String id; // Jugador numero id
-    private boolean playing = false;
     private String name;
 
     /*Constructores*/
@@ -47,7 +46,6 @@ public class HumanPlayer implements Player {
         PieceColor color,
         Side playerSide,
         String id,
-        boolean playing,
         HashSet<Piece> pieces,
         boolean surrender
     ) {
@@ -56,7 +54,6 @@ public class HumanPlayer implements Player {
         this.playerSide = playerSide;
         this.surrender = surrender;
         this.id = id;
-        this.playing = playing;
     }
 
     /**
@@ -116,7 +113,6 @@ public class HumanPlayer implements Player {
      * al iniciar la partida.
      */
     public void softReset() {
-        this.playing = false;
         this.selectedPiece = null;
         this.surrender = false;
 
@@ -220,7 +216,6 @@ public class HumanPlayer implements Player {
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);
-        jPlayer.put("playing", this.playing);
 
         JSONArray jPieces = new JSONArray();
 

@@ -76,7 +76,6 @@ public class Game {
                 color,
                 Side.getSide(jPlayer.getInt("playerSide")),
                 jPlayer.getString("id"),
-                jPlayer.getBoolean("playing"),
                 auxPieces,
                 jPlayer.getBoolean("surrender")
             );
