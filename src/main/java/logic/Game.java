@@ -162,28 +162,6 @@ public class Game {
 
     /* Métodos */
 
-    public void saveGame(File file) {
-        JSONObject jGame = this.toJSON();
-
-        try {
-            FileWriter exit = new FileWriter(file);
-            exit.append(jGame.toString());
-            exit.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    public Game loadGame(File file) {
-        JSONObject jGame = null;
-        try {
-            jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
-        } catch (Exception ex) {} // Cambiar luego
-
-        return new Game(jGame);
-    }
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
@@ -191,7 +169,6 @@ public class Game {
                 new HumanPlayer(color, side, new Integer(players.size() + 1).toString())
             );
     }
-
     /* Metodos de control de tiempo de juego */
 
     public long getTimePlaying() {

@@ -9,18 +9,21 @@ import logic.Game;
 
 public class Controller {
     private Game game;
-
+    private LoadSaveCaretaker caretaker;
 
     public Controller() {
         this.game = new Game();
+        this.caretaker = new LoadSaveCaretaker(game);
     }
 
     public Controller(Game game) {
         this.game = game;
+        this.caretaker = new LoadSaveCaretaker(game);
     }
 
     public void setGame(Game newGame) {
         game = newGame;
+        caretaker.setOriginator(game);
     }
 
     public void addObserver(GameObserver in) {
@@ -71,11 +74,11 @@ public class Controller {
     }
 
     public void loadGame(File file) {
-        this.game = game.loadGame(file);
+        this.game = caretaker.loadGame(file);
     }
 
     public void saveGame(File file) {
-        game.saveGame(file);
+        caretaker.saveGame(file);
     }
 
     public void showError(ExecuteException ex, String optTxt) {
