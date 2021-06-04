@@ -198,7 +198,8 @@ public class HumanPlayer implements Player {
         StringBuilder result = new StringBuilder();
 
         result.append(String.format("Color: %s", this.color));
-        result.append(String.format("Posición: %s", this.playerSide));
+        result.append(String.format(" Posición: %s", this.playerSide));
+        result.append(String.format(" ID: ", this.id));
 
         return result.toString();
     }
@@ -234,5 +235,9 @@ public class HumanPlayer implements Player {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean equals(HumanPlayer hpy) {
+        return this.color.equals(hpy.getColor()) && this.pieces.contains(hpy.getPieces());
     }
 }
