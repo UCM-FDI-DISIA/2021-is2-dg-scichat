@@ -1,6 +1,6 @@
 package logic;
 
-import control.options.Option.ExecuteException;
+import exceptions.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
@@ -161,29 +161,6 @@ public class Game {
     }
 
     /* Métodos */
-
-    public void saveGame(File file) {
-        JSONObject jGame = this.toJSON();
-
-        try {
-            FileWriter exit = new FileWriter(file);
-            exit.append(jGame.toString());
-            exit.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    public Game loadGame(File file) {
-        JSONObject jGame = null;
-        try {
-            jGame = new JSONObject(new JSONTokener(new FileInputStream(file)));
-        } catch (Exception ex) {} // Cambiar luego
-
-        return new Game(jGame);
-    }
 
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {

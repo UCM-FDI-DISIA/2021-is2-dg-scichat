@@ -1,68 +1,33 @@
 package control;
 
-import control.options.Option;
-import control.options.Option.ExecuteException;
-import control.options.OptionGenerator;
+import exceptions.ExecuteException;
 import graphic.GameObserver;
 import java.io.File;
-import java.util.Scanner;
 import javax.swing.*;
 import logic.Cell;
 import logic.Game;
 
 public class Controller {
     private Game game;
-
-    @Deprecated
-    private Scanner scanner;
+    private LoadSaveCaretaker caretaker;
 
     public Controller() {
         this.game = new Game();
+        this.caretaker = new LoadSaveCaretaker(game);
     }
 
-    public Controller(Game game, Scanner scanner) {
+    public Controller(Game game) {
         this.game = game;
-        this.scanner = scanner;
-    }
-
-    @Deprecated
-    public void printGame() {
-        System.out.println(this.game);
+        this.caretaker = new LoadSaveCaretaker(game);
     }
 
     public void setGame(Game newGame) {
         game = newGame;
+        caretaker.setOriginator(game);
     }
 
     public void addObserver(GameObserver in) {
         game.addObserver(in);
-    }
-
-    @Deprecated
-    public void run() {
-        boolean refreshDisplay = true;
-
-        while (!game.isFinished()) {
-            if (refreshDisplay) printGame();
-            refreshDisplay = false;
-
-            OptionGenerator.printOptions();
-
-            try {
-                Option option = OptionGenerator.parse(scanner);
-                System.out.format(
-                    "[DEBUG]: Se ha seleccionado la opción: [%s] \n\n",
-                    option.title
-                );
-                refreshDisplay = option.execute(game, scanner);
-                if (refreshDisplay) game.advance();
-            } catch (Exception ex) {
-                System.out.format(ex.getMessage() + "%n%n");
-            }
-        }
-
-        if (refreshDisplay) printGame();
-        System.out.println("[GAME OVER]");
     }
 
     public void handleClick(Cell position) {
@@ -109,11 +74,11 @@ public class Controller {
     }
 
     public void loadGame(File file) {
-        this.game = game.loadGame(file);
+        this.game = caretaker.loadGame(file);
     }
 
     public void saveGame(File file) {
-        game.saveGame(file);
+        caretaker.saveGame(file);
     }
 
     public void showError(ExecuteException ex, String optTxt) {

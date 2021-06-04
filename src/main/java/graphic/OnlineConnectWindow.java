@@ -157,7 +157,7 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
         //TODO
         newOnlineRoomButton.addActionListener(
             e -> {
-                NewGameWindow newGameWindow = new NewGameWindow(parent);
+                NewGameWindow newGameWindow = new NewGameWindow(parent, false);
                 if (newGameWindow.open() == 0) return;
 
                 Mode gameMode = newGameWindow.getGameMode();
