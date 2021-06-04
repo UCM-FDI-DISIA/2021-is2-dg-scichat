@@ -1,8 +1,6 @@
 package control;
 
-import control.options.Option;
-import control.options.Option.ExecuteException;
-import control.options.OptionGenerator;
+import exceptions.ExecuteException;
 import graphic.GameObserver;
 import java.io.File;
 import java.util.Scanner;
@@ -20,14 +18,8 @@ public class Controller {
         this.game = new Game();
     }
 
-    public Controller(Game game, Scanner scanner) {
+    public Controller(Game game) {
         this.game = game;
-        this.scanner = scanner;
-    }
-
-    @Deprecated
-    public void printGame() {
-        System.out.println(this.game);
     }
 
     public void setGame(Game newGame) {
@@ -36,33 +28,6 @@ public class Controller {
 
     public void addObserver(GameObserver in) {
         game.addObserver(in);
-    }
-
-    @Deprecated
-    public void run() {
-        boolean refreshDisplay = true;
-
-        while (!game.isFinished()) {
-            if (refreshDisplay) printGame();
-            refreshDisplay = false;
-
-            OptionGenerator.printOptions();
-
-            try {
-                Option option = OptionGenerator.parse(scanner);
-                System.out.format(
-                    "[DEBUG]: Se ha seleccionado la opción: [%s] \n\n",
-                    option.title
-                );
-                refreshDisplay = option.execute(game, scanner);
-                if (refreshDisplay) game.advance();
-            } catch (Exception ex) {
-                System.out.format(ex.getMessage() + "%n%n");
-            }
-        }
-
-        if (refreshDisplay) printGame();
-        System.out.println("[GAME OVER]");
     }
 
     public void handleClick(Cell position) {

@@ -1,6 +1,6 @@
 package logic;
 
-import control.options.Option.ExecuteException;
+import exceptions.ExecuteException;
 import exceptions.InvalidMoveException;
 import exceptions.NotSelectedPieceException;
 import exceptions.OccupiedCellException;
