@@ -162,13 +162,13 @@ public class Game {
 
     /* Métodos */
 
-
     public void addNewPlayer(PieceColor color, Board.Side side)
         throws OccupiedCellException {
         this.players.add(
                 new HumanPlayer(color, side, new Integer(players.size() + 1).toString())
             );
     }
+
     /* Metodos de control de tiempo de juego */
 
     public long getTimePlaying() {
