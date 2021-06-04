@@ -1,9 +1,20 @@
 package network.server;
 
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import logic.Board;
 import network.client.SocketClient;
 import network.client.SocketObserver;
 import network.commands.CreateRoomCommand;
+import network.commands.JoinRoomCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import org.json.JSONObject;
@@ -12,16 +23,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.Mode;
 import utils.PieceColor;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ServerTest {
     private static Server server;
@@ -69,17 +70,22 @@ class ServerTest {
      * Comprobar que se puede crear la habitación
      */
     @Test
-    void addRoom() {
+    String addRoom() {
         /// Cola de respuestas esperadas por la parte del servidor
         Queue<String> expectedResponseType = new LinkedList<>();
 
+        List<String> roomID = new ArrayList<>();
+
         SocketObserver observer = new SocketObserver() {
+
             @Override
             public void onMessage(JSONObject s) {
                 System.out.println(s);
                 String type = s.getString("type");
                 String expected = expectedResponseType.poll();
                 assertEquals(expected, type);
+
+                roomID.add(s.getJSONObject("data").getString("roomID"));
             }
         };
 
@@ -97,5 +103,47 @@ class ServerTest {
 
         /// Esperar a que procese todas las respuestas
         await().until(() -> expectedResponseType.isEmpty());
+
+        client.removeObserver(observer);
+
+        return roomID.get(0);
+    }
+
+    /**
+     * Probemos ahora a entrar en esa nueva sala
+     *
+     * @throws Exception
+     */
+    @Test
+    void joinRoom() throws Exception {
+        String newRoomID = addRoom();
+
+        assertNotNull(server.getRoom(newRoomID));
+
+        /// Cola de respuestas esperadas por la parte del servidor
+        Queue<String> expectedResponseType = new LinkedList<>();
+
+        SocketObserver observer = new SocketObserver() {
+
+            @Override
+            public void onMessage(JSONObject s) {
+                String type = s.getString("type");
+                String expected = expectedResponseType.poll();
+                assertEquals(expected, type);
+            }
+        };
+
+        client.addObserver(observer);
+
+        /// Cuando entra en una sala, recibe su información
+        expectedResponseType.add("ROOM_INFO");
+
+        /// Entrar en la sala
+        new JoinRoomCommand(newRoomID, "Hello").send(client);
+
+        /// Esperar a que procese todas las respuestas
+        await().until(() -> expectedResponseType.isEmpty());
+
+        client.removeObserver(observer);
     }
 }
