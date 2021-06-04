@@ -238,6 +238,6 @@ public class HumanPlayer implements Player {
     }
 
     public boolean equals(HumanPlayer hpy) {
-        return this.color.equals(hpy.getColor()) && this.pieces.contains(hpy.getPieces());
+        return this.playerSide.equals(hpy.getSide());
     }
 }

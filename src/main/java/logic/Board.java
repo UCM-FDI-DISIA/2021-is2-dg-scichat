@@ -153,6 +153,10 @@ public class Board implements Iterable<Cell> {
         public void clear() {
             sideCells.clear();
         }
+
+        public boolean equals(Side b) {
+            return this.value == b.value;
+        }
     }
 
     public Cell getOppositeCornerCell(Side side) {
