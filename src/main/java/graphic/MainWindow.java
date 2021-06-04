@@ -155,7 +155,7 @@ public class MainWindow extends JFrame implements GameObserver, SocketObserver {
 
     public void initGameOptions() {
         if (this.gameOptionsScreen == null) {
-            this.gameOptionsScreen = new NewGameWindow(this);
+            this.gameOptionsScreen = new NewGameWindow(this, true);
         }
         if (this.gameOptionsScreen.open() == 1) {
             Game newGame = new Game();
