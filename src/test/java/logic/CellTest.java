@@ -341,13 +341,13 @@ public class CellTest {
 
         assertEquals(board.getOppositeCornerCell(Side.DownRight), board.getCell(4, 0));
     }
-    
+
     @Test
     void getDistanceBetween() {
-	// La distancia entre las esquinas
-	assertEquals(board.getCell(0, 6).getDistanceBetween(board.getCell(16, 6)), 16);
-	//assertEquals(board.getCell(4, 12).getDistanceBetween(board.getCell(12, 0)), 16);
-	//assertEquals(board.getCell(12, 12).getDistanceBetween(board.getCell(4, 0)), 16);
+        // La distancia entre las esquinas
+        assertEquals(board.getCell(0, 6).getDistanceBetween(board.getCell(16, 6)), 16);
+        //assertEquals(board.getCell(4, 12).getDistanceBetween(board.getCell(12, 0)), 16);
+        //assertEquals(board.getCell(12, 12).getDistanceBetween(board.getCell(4, 0)), 16);
 
     }
 }

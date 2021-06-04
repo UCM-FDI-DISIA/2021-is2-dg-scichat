@@ -29,7 +29,7 @@ public class SaveLoadTest {
         );
 
         //Guardamos los valores para comparar después
-        boolean bfStopped = game.getStopped();
+        boolean bfStopped = game.isFinished();
         int bfcurrntePlayerIndex = game.getCurrentPlayerIndex();
         utils.Mode bfMode = game.getGameMode();
         ArrayList<Player> bfPlayers = game.getPlayers();
@@ -49,7 +49,7 @@ public class SaveLoadTest {
         //Comprobamos que los parámetros se han guardado y cargado bien
 
         assertTrue(
-            bfStopped == this.game.getStopped() &&
+            bfStopped == this.game.isFinished() &&
             bfcurrntePlayerIndex == game.getCurrentPlayerIndex()
         );
 
@@ -77,7 +77,7 @@ public class SaveLoadTest {
         );
 
         //Guardamos los valores para comparar después
-        boolean bfStopped = game.getStopped();
+        boolean bfStopped = game.isFinished();
         int bfcurrntePlayerIndex = game.getCurrentPlayerIndex();
         utils.Mode bfMode = game.getGameMode();
         ArrayList<Player> bfPlayers = game.getPlayers();
@@ -101,7 +101,7 @@ public class SaveLoadTest {
 
         //Comprobamosque los datos son distintos
         assertTrue(
-            bfStopped != this.game.getStopped() &&
+            bfStopped != this.game.isFinished() &&
             bfcurrntePlayerIndex != game.getCurrentPlayerIndex()
         );
 

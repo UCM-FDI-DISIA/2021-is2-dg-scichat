@@ -94,10 +94,6 @@ public class Game {
         return this.board.getCell(row, col);
     }
 
-    public boolean getStopped() {
-        return stopped;
-    }
-
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -170,7 +166,7 @@ public class Game {
 
     /* Metodos de control de tiempo de juego */
 
-    public long getTimePlaying() {
+    private long getTimePlaying() {
         return this.timePlaying - this.timeAtTurnStart + System.currentTimeMillis();
     }
 
@@ -339,10 +335,6 @@ public class Game {
      */
     public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
-    }
-
-    public Set<Piece> getCurrentPlayerPieces() {
-        return this.getCurrentPlayer().getPieces();
     }
 
     public boolean setSelectedPiece(Cell position) {

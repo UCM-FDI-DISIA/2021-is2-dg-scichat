@@ -42,8 +42,8 @@ public class Easy implements Strategy {
         }
         return result;
     }
-    
+
     public String toString() {
-	return "easy";
+        return "easy";
     }
 }

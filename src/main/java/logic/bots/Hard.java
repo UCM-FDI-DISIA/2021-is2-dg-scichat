@@ -145,9 +145,8 @@ public class Hard implements Strategy {
 
         return result;
     }
-    
+
     public String toString() {
-	return "hard";
+        return "hard";
     }
-    
 }
