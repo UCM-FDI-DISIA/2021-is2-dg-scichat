@@ -477,7 +477,7 @@ public class Cell {
             }
         }
 
-        //Anadimos la posici�n actual para inicializar la cola
+        //Anadimos la posicion actual para inicializar la cola
         posibleMovesChecking.add(this);
         // Con este bucle rellenas la lista de todos los posibles movimientos para luego
         // elegir el más cercano a target
