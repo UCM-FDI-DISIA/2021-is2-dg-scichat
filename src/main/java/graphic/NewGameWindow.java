@@ -34,12 +34,16 @@ public class NewGameWindow extends JDialog {
 
     private int status;
 
-    NewGameWindow(Frame parent) {
+    private boolean allowBots;
+
+    NewGameWindow(Frame parent, boolean _allowBots) {
         super(parent, "Nuevo Juego", true);
         this.numPlayers = 2;
         this.initGUI();
         /// Tamaño mínimo de 800x800
         this.setMinimumSize(new Dimension(600, 275));
+
+        this.allowBots = _allowBots;
     }
 
     private void initGUI() {
@@ -211,20 +215,26 @@ public class NewGameWindow extends JDialog {
             playerConfigPanel.add(playerName);
             playerConfigPanel.add(colorCombo);
 
-            JComboBox<String> botStrategyComboBox = new JComboBox<>(
-                new String[] { "Jugador Humano", "Facil", "Normal", "Dificl" }
-            );
-
             /// Por defecto, es jugador humano
             this.botStrategy.add(0);
 
-            botStrategyComboBox.addActionListener(
-                e -> {
-                    this.botStrategy.set(_index, botStrategyComboBox.getSelectedIndex());
-                }
-            );
+            if (allowBots) {
+                JComboBox<String> botStrategyComboBox = new JComboBox<>(
+                    new String[] { "Jugador Humano", "Facil", "Normal", "Dificl" }
+                );
 
-            playerConfigPanel.add(botStrategyComboBox);
+                botStrategyComboBox.addActionListener(
+                    e -> {
+                        this.botStrategy.set(
+                                _index,
+                                botStrategyComboBox.getSelectedIndex()
+                            );
+                    }
+                );
+
+                playerConfigPanel.add(botStrategyComboBox);
+            }
+
             this.playersConfigPanel.add(playerConfigPanel);
         }
 
@@ -325,6 +335,7 @@ public class NewGameWindow extends JDialog {
         this.status = 0;
         setLocation(getParent().getLocation().x + 50, getParent().getLocation().y + 50);
         pack();
+        initGUI();
         setVisible(true);
 
         return status;
