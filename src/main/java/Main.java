@@ -10,8 +10,6 @@ import utils.PieceColor;
 public class Main {
 
 
-
-
         /**
          * Método que inicializa la configuración de un nuevo juego
          */
