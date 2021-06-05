@@ -13,6 +13,7 @@ import network.client.SocketObserver;
 import network.commands.Command;
 import network.commands.CommandParser;
 import network.commands.CreateRoomCommand;
+import network.commands.RoomCreatedCommand;
 import network.models.PlayerConfig;
 import network.models.RoomConfig;
 import org.json.JSONObject;
@@ -35,16 +36,13 @@ public class OnlineConnectWindow extends JDialog implements SocketObserver {
     private MainWindow parent = null;
     private boolean status;
 
-    Command roomCreatedCommand = new Command("ROOM_CREATED") {
-
-        @Override
-        public void parseRequest(JSONObject req) {
-            roomID = req.getJSONObject("data").getString("roomID");
-        }
+    Command roomCreatedCommand = new RoomCreatedCommand() {
 
         @Override
         public void execute(JSONObject req, SocketClient connection) {
             super.execute(req, connection);
+            roomID = getRoomID();
+
             sc.removeObserver(OnlineConnectWindow.this);
             status = true;
             dispose();

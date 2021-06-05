@@ -30,6 +30,21 @@ public abstract class Command {
     }
 
     /**
+     * Método creado para mandar una respuesta al cliente, con los datos que lleva la instancia
+     *
+     * @param connection conexión de Socket con el cliente
+     */
+    public void send(WebSocket connection) {
+        JSONObject req = new JSONObject();
+        req.put("type", this.type);
+
+        /// El método getData lo tiene que sobreescribir cada comando, con los datos que quiere enviar
+        req.put("data", this.getData());
+
+        connection.send(req.toString());
+    }
+
+    /**
      * @return JSONObject que se enviará en campo `data` de la petición al servidor
      */
     public JSONObject getData() {
