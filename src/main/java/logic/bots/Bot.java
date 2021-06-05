@@ -185,7 +185,6 @@ public class Bot implements Player {
         jPlayer.put("id", this.id);
         jPlayer.put("typeOfPlayer", strategy.toString());
 
-
         JSONArray jPieces = new JSONArray();
 
         for (Piece piece : pieces) {
