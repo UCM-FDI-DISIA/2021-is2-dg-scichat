@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import logic.Board.Side;
+import logic.bots.Bot;
+import logic.bots.Easy;
+import logic.bots.Hard;
+import logic.bots.Normal;
 import logic.gameObjects.HumanPlayer;
 import logic.gameObjects.Piece;
 import logic.gameObjects.Player;
@@ -61,6 +65,12 @@ public class Game {
             int B = colorArray.getInt(2);
 
             PieceColor color = new PieceColor(R, G, B);
+            
+            String id = jPlayer.getString("id");
+            Side side = Side.getSide(jPlayer.getInt("playerSide"));
+            boolean surrender = jPlayer.getBoolean("surrender");
+            
+            String typeOfPlayer = jPlayer.getString("typeOfPlayer");
 
             for (int j = 0; j < jPieces.length(); ++j) {
                 JSONObject jPiece = jPieces.getJSONObject(j);
@@ -71,14 +81,28 @@ public class Game {
                 } catch (OccupiedCellException ex) {}
                 auxPieces.add(auxPiece);
             }
+            
+            Player auxPlayer = null;
+            
+            if(typeOfPlayer.equals("human")) {
+                auxPlayer = new HumanPlayer(
+                    color,
+                    side,
+                    id,
+                    auxPieces,
+                    surrender
+                );
+            }
+            else if(typeOfPlayer.equals("easy")) {
+        	auxPlayer = new Bot(new Easy(), color, id, side, null, this.board, auxPieces);
+            }
+            else if(typeOfPlayer.equals("normal")) {
+        	auxPlayer = new Bot(new Normal(), color, id, side, null, this.board, auxPieces);
 
-            Player auxPlayer = new HumanPlayer(
-                color,
-                Side.getSide(jPlayer.getInt("playerSide")),
-                jPlayer.getString("id"),
-                auxPieces,
-                jPlayer.getBoolean("surrender")
-            );
+            }
+            else if(typeOfPlayer.equals("hard")) {
+        	auxPlayer = new Bot(new Hard(), color, id, side, null, this.board, auxPieces);
+            }
 
             this.players.add(auxPlayer);
         }
