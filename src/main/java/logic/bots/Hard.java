@@ -14,6 +14,7 @@ public class Hard implements Strategy {
     private final int MAX_RANK = 1;
 
     private final double IMP_DIST = 10;
+    private final double IMP_DIST_ULT = 10;
     private final double IMP_DIAM = 2;
     private final double IMP_SPARSE = 0; // 3;
     private final double IMP_SYM = 5;
@@ -21,14 +22,14 @@ public class Hard implements Strategy {
 
     private double rankMove(Cell from, Cell to, Player player) {
         // Ranks move depending on if they start or end in the target triangle
-        // In → In or Out → Out ranks 0.5
-        // Out → In ranks 0
-        // In → Out ranks 1
+        // In -> In or Out -> Out ranks 0.5
+        // Out -> In ranks 0
+        // In -> Out ranks 1
         Set<Cell> targets = player.getSide().getOpposingCells();
         boolean fromOn = targets.contains(from), toOn = targets.contains(to);
-        if (fromOn == toOn) return 0.5; // In → In or Out → Out
-        else if (!fromOn && toOn) return 0; // Out → In
-        else return 1; // In → Out
+        if (fromOn == toOn) return 0.5; // In -> In or Out -> Out
+        else if (!fromOn && toOn) return 0; // Out -> In
+        else return 1; // In -> Out
     }
 
     private double heuristic(
@@ -41,20 +42,28 @@ public class Hard implements Strategy {
         Cell dest = board.getOppositeCornerCell(
             player.getSide()
         ), from = piece.getPosition();
+        List<Cell> finalPositions = new ArrayList<>();
+        for(Piece p1: player.getPieces())
+            if (p1 != piece) 
+            	finalPositions.add(p1.getPosition());
+        finalPositions.add(to);
 
         double dist = to.getDistanceBetween(dest); // Max should be 17, normal 4
+        
+        double dist_ult = dist;
+        for(Cell c : finalPositions) {
+        	dist_ult = Math.max(dist_ult, c.getDistanceBetween(dest));
+        }
 
         double diam = 0; // Max should be 17, normal 4
         List<GeoComp.Point> puntosPiezas = new ArrayList<>();
-        for (Piece p1 : player.getPieces()) {
-            Cell c1 = p1.getPosition();
-            if (p1 != piece) puntosPiezas.add(new GeoComp.Point(c1));
-            for (Piece p2 : player.getPieces()) {
-                Cell c2 = p2.getPosition();
-                if (!p1.equals(p2)) diam = Math.max(diam, c1.getDistanceBetween(c2));
+        for (Cell c1 : finalPositions) {
+            puntosPiezas.add(new GeoComp.Point(c1));
+            for (Cell c2 : finalPositions) {
+                if (!c1.equals(c2)) 
+                	diam = Math.max(diam, c1.getDistanceBetween(c2));
             }
         }
-        puntosPiezas.add(new GeoComp.Point(to));
 
         double sparse;
         GeoComp.Poligono polig = new GeoComp.Poligono(puntosPiezas);
@@ -62,21 +71,21 @@ public class Hard implements Strategy {
 
         double symmetry = 0;
         GeoComp.Line line = new GeoComp.Line(
-            new GeoComp.Point(from),
-            new GeoComp.Point(to)
+            new GeoComp.Point(board.getOppositeCornerCell(player.getSide().getOpposite())),
+            new GeoComp.Point(dest)
         );
-        for (Piece p : player.getPieces()) symmetry +=
-            line.dist(new GeoComp.Point(p.getPosition()));
-        // Max should be 68
+        for (Cell c : finalPositions) symmetry += line.dist(new GeoComp.Point(c));
 
-        double rank = rankMove(piece.getPosition(), to, player);
+        double rank = rankMove(from, to, player);
 
-        double dist_norm = (dist / MAX_DIST), diam_norm = (diam / MAX_DIST), sparse_norm =
-            (sparse / MAX_AREA), symmetry_norm = (symmetry / MAX_SYM), rank_norm =
-            (rank / MAX_RANK);
+        double dist_norm = (dist / MAX_DIST), dist_ult_norm = (dist_ult / MAX_DIST), 
+        	diam_norm = (diam / MAX_DIST), sparse_norm = (sparse / MAX_AREA), 
+        	symmetry_norm = (symmetry / MAX_SYM), rank_norm = (rank / MAX_RANK);
         System.out.println(
             "Distance factor: " +
             dist_norm +
+            "\nDistance max factor:" +
+            dist_ult_norm +
             "\nDiameter factor: " +
             diam_norm +
             "\nSparse factor: " +
@@ -89,6 +98,8 @@ public class Hard implements Strategy {
         return (
             dist_norm *
             IMP_DIST +
+            dist_ult_norm *
+            IMP_DIST_ULT + 
             diam_norm *
             IMP_DIST +
             sparse_norm *
