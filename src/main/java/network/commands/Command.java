@@ -19,14 +19,34 @@ public abstract class Command {
      * @param connection conexión de Socket
      */
     public void send(SocketClient connection) {
+        JSONObject req = this.toJSON();
+        req.put("clientID", connection.getClientID());
+
+        connection.send(req.toString());
+    }
+
+    /**
+     * Método creado para mandar una respuesta al cliente, con los datos que lleva la instancia
+     *
+     * @param connection conexión de Socket con el cliente
+     */
+    public void send(WebSocket connection) {
+        connection.send(this.toJSON().toString());
+    }
+
+    public JSONObject toJSON() {
         JSONObject req = new JSONObject();
         req.put("type", this.type);
-        req.put("clientID", connection.getClientID());
 
         /// El método getData lo tiene que sobreescribir cada comando, con los datos que quiere enviar
         req.put("data", this.getData());
 
-        connection.send(req.toString());
+        return req;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJSON().toString();
     }
 
     /**

@@ -44,12 +44,7 @@ public class CreateRoomCommand extends Command {
         server.addRoom(roomID, serverRoom);
 
         /// Avisar al cliente de que se ha creado la nueva habitación
-        JSONObject data = roomConfig.toJSON();
-        data.put("roomID", roomID);
-
-        connection.send(
-            new JSONObject().put("type", "ROOM_CREATED").put("data", data).toString()
-        );
+        new RoomCreatedCommand(roomID).send(connection);
 
         System.out.println("Se ha creado una nueva habitación: ");
         System.out.println(_data);

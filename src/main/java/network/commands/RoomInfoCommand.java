@@ -10,6 +10,16 @@ public class RoomInfoCommand extends Command {
         super("ROOM_INFO");
     }
 
+    public RoomInfoCommand(Room _room) {
+        this();
+        this.room = _room;
+    }
+
+    @Override
+    public JSONObject getData() {
+        return this.room.toJSON();
+    }
+
     @Override
     public void parseRequest(JSONObject req) {
         /// Esta petición solamente se manda del servidor al cliente

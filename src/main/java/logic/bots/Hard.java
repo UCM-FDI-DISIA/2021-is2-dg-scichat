@@ -67,7 +67,7 @@ public class Hard implements Strategy {
 
         double sparse;
         GeoComp.Poligono polig = new GeoComp.Poligono(puntosPiezas);
-        sparse = (IMP_SPARSE == 0 ? 0 : polig.convexHull().area()); 
+        sparse = (IMP_SPARSE == 0 ? 0 : polig.convexHull().area());
 
         double symmetry = 0;
         GeoComp.Line line = new GeoComp.Line(

@@ -2,8 +2,9 @@ package network.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import network.commands.RoomInfoCommand;
+import network.commands.SurrenderCommand;
 import org.java_websocket.WebSocket;
-import org.json.JSONObject;
 
 /**
  * Versión en servidor del modelo Room
@@ -79,10 +80,7 @@ public class ServerRoom extends network.models.Room {
 
         /// Mandar un mensaje de rendirse a todos los jugadores
         /// No se tendría en cuenta este mensaje, salvo cuando están en la mitad de partida
-        JSONObject req = new JSONObject();
-        req.put("type", "SURRENDER");
-        req.put("data", new JSONObject().put("playerID", uuid));
-        broadCast(req.toString(), null);
+        broadCast(new SurrenderCommand(uuid, null).toString(), null);
 
         broadCastRoomInfo();
     }
@@ -91,13 +89,7 @@ public class ServerRoom extends network.models.Room {
      * Enviar la información de la sala a todos los jugadores conectados
      */
     public void broadCastRoomInfo() {
-        JSONObject res = new JSONObject();
-        res.put("type", "ROOM_INFO");
-
-        JSONObject resData = this.toJSON();
-        res.put("data", resData);
-
-        broadCast(res.toString(), null);
+        broadCast(new RoomInfoCommand(this).toString(), null);
     }
 
     /**

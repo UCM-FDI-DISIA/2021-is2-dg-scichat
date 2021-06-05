@@ -216,6 +216,7 @@ public class HumanPlayer implements Player {
         jPlayer.put("playerSide", this.playerSide.getJSONValue());
         jPlayer.put("surrender", this.surrender);
         jPlayer.put("id", this.id);
+        jPlayer.put("typeOfPlayer", "human");
 
         JSONArray jPieces = new JSONArray();
 
