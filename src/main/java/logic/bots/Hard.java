@@ -22,13 +22,13 @@ public class Hard implements Strategy {
     private double rankMove(Cell from, Cell to, Player player) {
         // Ranks move depending on if they start or end in the target triangle
         // In → In or Out → Out ranks 0.5
-        // Out → In ranks 1
-        // In → Out ranks 0
+        // Out → In ranks 0
+        // In → Out ranks 1
         Set<Cell> targets = player.getSide().getOpposingCells();
         boolean fromOn = targets.contains(from), toOn = targets.contains(to);
         if (fromOn == toOn) return 0.5; // In → In or Out → Out
-        else if (!fromOn && toOn) return 1; // Out → In
-        else return 0; // In → Out
+        else if (!fromOn && toOn) return 0; // Out → In
+        else return 1; // In → Out
     }
 
     private double heuristic(
@@ -58,7 +58,7 @@ public class Hard implements Strategy {
 
         double sparse;
         GeoComp.Poligono polig = new GeoComp.Poligono(puntosPiezas);
-        sparse = (IMP_SPARSE == 0 ? 0 : polig.convexHull().area()); // Max should be 169, min 8
+        sparse = (IMP_SPARSE == 0 ? 0 : polig.convexHull().area()); 
 
         double symmetry = 0;
         GeoComp.Line line = new GeoComp.Line(
