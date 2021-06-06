@@ -43,16 +43,16 @@ public class Hard implements Strategy {
             player.getSide()
         ), from = piece.getPosition();
         List<Cell> finalPositions = new ArrayList<>();
-        for(Piece p1: player.getPieces())
-            if (p1 != piece) 
-            	finalPositions.add(p1.getPosition());
+        for (Piece p1 : player.getPieces()) if (p1 != piece) finalPositions.add(
+            p1.getPosition()
+        );
         finalPositions.add(to);
 
         double dist = to.getDistanceBetween(dest); // Max should be 17, normal 4
-        
+
         double dist_ult = dist;
-        for(Cell c : finalPositions) {
-        	dist_ult = Math.max(dist_ult, c.getDistanceBetween(dest));
+        for (Cell c : finalPositions) {
+            dist_ult = Math.max(dist_ult, c.getDistanceBetween(dest));
         }
 
         double diam = 0; // Max should be 17, normal 4
@@ -60,8 +60,7 @@ public class Hard implements Strategy {
         for (Cell c1 : finalPositions) {
             puntosPiezas.add(new GeoComp.Point(c1));
             for (Cell c2 : finalPositions) {
-                if (!c1.equals(c2)) 
-                	diam = Math.max(diam, c1.getDistanceBetween(c2));
+                if (!c1.equals(c2)) diam = Math.max(diam, c1.getDistanceBetween(c2));
             }
         }
 
@@ -71,16 +70,19 @@ public class Hard implements Strategy {
 
         double symmetry = 0;
         GeoComp.Line line = new GeoComp.Line(
-            new GeoComp.Point(board.getOppositeCornerCell(player.getSide().getOpposite())),
+            new GeoComp.Point(
+                board.getOppositeCornerCell(player.getSide().getOpposite())
+            ),
             new GeoComp.Point(dest)
         );
         for (Cell c : finalPositions) symmetry += line.dist(new GeoComp.Point(c));
 
         double rank = rankMove(from, to, player);
 
-        double dist_norm = (dist / MAX_DIST), dist_ult_norm = (dist_ult / MAX_DIST), 
-        	diam_norm = (diam / MAX_DIST), sparse_norm = (sparse / MAX_AREA), 
-        	symmetry_norm = (symmetry / MAX_SYM), rank_norm = (rank / MAX_RANK);
+        double dist_norm = (dist / MAX_DIST), dist_ult_norm =
+            (dist_ult / MAX_DIST), diam_norm = (diam / MAX_DIST), sparse_norm =
+            (sparse / MAX_AREA), symmetry_norm = (symmetry / MAX_SYM), rank_norm =
+            (rank / MAX_RANK);
         System.out.println(
             "Distance factor: " +
             dist_norm +
@@ -99,7 +101,7 @@ public class Hard implements Strategy {
             dist_norm *
             IMP_DIST +
             dist_ult_norm *
-            IMP_DIST_ULT + 
+            IMP_DIST_ULT +
             diam_norm *
             IMP_DIST +
             sparse_norm *
