@@ -8,6 +8,24 @@ Vamos a desarrollar un juego de [damas chinas](https://es.wikipedia.org/wiki/Dam
 
 El proyecto se va a desarrollar utilizando como lenguaje de programación Java 8. Para la parte de interfaz gráfica, se utilizará [Swing](https://es.wikipedia.org/wiki/Swing_(biblioteca_gr%C3%A1fica)). 
 
+## Configurar el entorno de desarrollo
+
+Para empezar a contribuir en este proyecto, primero debes hacer un clone de este repositorio en tu ordenador:
+
+```bash
+git clone https://github.com/UCM-FDI-DISIA/2021-is2-dg-scichat
+```
+
+Luego, **abrirlo en tu entorno de desarrollo**. En este caso vamos a hacer un ejemplo con Eclipse.
+
+Antes de poder ejecutarlo, necesitas **descargar las dependencias de Maven**. Para ello:
+
+![](https://user-images.githubusercontent.com/5889006/111280682-683e3880-863c-11eb-9f23-1440776748c5.png)
+
+Primero haces click derecho sobre el proyecto -> Maven -> Update Project, y luego pulsa `download sources`.
+
+Una vez hecho eso, dirígete al archivo `src/main/java/Main.java`, hacer click derecho sobre él, `Run As -> Run As Java Application`
+
 ## Normas de contribución
 
 Antes de realizar un commit, **se debe garantizar que los cambios que se ha hecho no vulnera ningún test**. Una vez subido el commit al repositorio, se comprobará GitHub Action de forma automática los casos de prueba. Pero conviene haber revisado antes de subirlo.
@@ -17,6 +35,6 @@ En el caso de la creación de una nueva clase, conviene crear casos de prueba co
 ## Estilos de código
 
 * Indent de 4 espacios
-* Nombrar atributos y métodos en inglés, con camel case
+* Nombrar atributos y métodos en inglés, con camelcase
 
 IDE recomendado para el proyecto: IntelliJ IDEA o Eclipse
