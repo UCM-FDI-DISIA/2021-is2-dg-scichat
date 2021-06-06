@@ -28,7 +28,7 @@ Una vez hecho eso, dirígete al archivo `src/main/java/Main.java`, hacer click d
 
 ## Normas de contribución
 
-Antes de realizar un commit, **se debe garantizar que los cambios que se ha hecho no vulnera ningún test**. Una vez subido el commit al repositorio, se comprobará GitHub Action de forma automática los casos de prueba. Pero conviene haber revisado antes de subirlo.
+Antes de realizar un commit, **se debe garantizar que los cambios que se ha hecho no vulnera ningún test**. Una vez subido el commit al repositorio, GitHub Actions comprobará de forma automática los casos de prueba. Pero conviene haber revisado antes de subirlo.
 
 En el caso de la creación de una nueva clase, conviene crear casos de prueba correspondiente utilizando [JUnit 5](https://junit.org/junit5/). Echar un vistazo a la [página de wiki](https://github.com/UCM-FDI-DISIA/2021-is2-dg-scichat/wiki/Integraci%C3%B3n-con-Maven) correspondeinte.
 
