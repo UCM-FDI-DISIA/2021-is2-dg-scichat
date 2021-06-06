@@ -26,6 +26,8 @@ Primero haces click derecho sobre el proyecto -> Maven -> Update Project, y lueg
 
 Una vez hecho eso, dirígete al archivo `src/main/java/Main.java`, hacer click derecho sobre él, `Run As -> Run As Java Application`
 
+Para crear el servidor, ejecuta la clase `src/main/java/network/server/Server.java`.
+
 ## Normas de contribución
 
 Antes de realizar un commit, **se debe garantizar que los cambios que se ha hecho no vulnera ningún test**. Una vez subido el commit al repositorio, GitHub Actions comprobará de forma automática los casos de prueba. Pero conviene haber revisado antes de subirlo.
