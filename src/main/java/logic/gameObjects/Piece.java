@@ -53,7 +53,7 @@ public class Piece {
      *                                   posible
      */
     @Deprecated
-    public void tryToMoveTo(Cell targetPosition) throws InvalidMoveException {
+    public void tryToMoveTo_OLD(Cell targetPosition) throws InvalidMoveException {
         if (targetPosition.equals(this.position) || !targetPosition.isEmpty()) { // Comprobamos que la posición que queremos alcanzar no es la de
             // partida
             throw new InvalidMoveException();
@@ -135,8 +135,8 @@ public class Piece {
      * @throws InvalidOperationException Salta cuando el Movimiento que queremos
      *                                   llevar a cabo no es posible
      */
-    public void tryToMoveFast(Cell targetPosition) throws InvalidMoveException {
-        tryToMoveFast(targetPosition, false);
+    public void tryToMove(Cell targetPosition) throws InvalidMoveException {
+        tryToMove(targetPosition, false);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Piece {
      * @param jumpIsLimited
      * @throws InvalidMoveException Salta cuando el movimiento que queremos llevar a cabo no es posible
      */
-    public void tryToMoveFast(Cell targetPosition, boolean jumpIsLimited)
+    public void tryToMove(Cell targetPosition, boolean jumpIsLimited)
         throws InvalidMoveException {
         // TODO todo
         if (targetPosition.equals(this.position) || !targetPosition.isEmpty()) { /// La posición destino esta ocupada
@@ -196,7 +196,7 @@ public class Piece {
             //     playMode == Mode.Fast
             // ) tryToMoveFast(targetPosition);
 
-            tryToMoveFast(targetPosition, playMode == Mode.Traditional);
+            tryToMove(targetPosition, playMode == Mode.Traditional);
             this.position.removePiece(); // Actualizamos las posiciones(celdas)
             this.position = targetPosition;
             this.position.putPiece(this);
