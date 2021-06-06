@@ -395,6 +395,14 @@ public class Game {
         observers = new ArrayList<>();
         winner = null;
         this.timePlaying = 0;
+
+        // Añadir valores por defecto de los atributos
+        currentPlayerIndex = 0;
+        winner = null;
+        gameMode = null;
+        timePlaying = 0;
+        timeAtTurnStart = 0;
+        botThread = null;
     }
 
     public JSONObject toJSON() {
