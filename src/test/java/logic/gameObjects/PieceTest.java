@@ -49,7 +49,7 @@ class PieceTest {
         Assertions.assertThrows(
             InvalidMoveException.class,
             () -> {
-                piece.tryToMoveTo(posAux);
+                piece.tryToMove(posAux);
             }
         );
         // Nos movemos a una posición adyacente
@@ -57,26 +57,26 @@ class PieceTest {
             () -> {
                 posAux = posAux.getUpperRight();
 
-                piece.tryToMoveTo(posAux);
+                piece.tryToMove(posAux);
             }
         );
         // Nos movemos realizando un salto
         Assertions.assertDoesNotThrow(
             () -> {
-                piece.tryToMoveTo(piece2.getPosition().getUpperLeft());
+                piece.tryToMove(piece2.getPosition().getUpperLeft());
             }
         );
         // Nos movemos realizando un doble salto
         Assertions.assertDoesNotThrow(
             () -> {
-                piece.tryToMoveTo(piece3.getPosition().getUpperRight());
+                piece.tryToMove(piece3.getPosition().getUpperRight());
             }
         );
         // Tratamos de movernos a una posición inválida por estar ocupada por otra pieza
         Assertions.assertThrows(
             InvalidMoveException.class,
             () -> {
-                piece.tryToMoveTo(piece3.getPosition());
+                piece.tryToMove(piece3.getPosition());
             }
         );
         // Tratamos de movernos a una posición inválida por no ser adyacente a ninguna
@@ -84,7 +84,7 @@ class PieceTest {
         Assertions.assertThrows(
             InvalidMoveException.class,
             () -> {
-                piece.tryToMoveTo(piece2.getPosition().getLowerLeft(2));
+                piece.tryToMove(piece2.getPosition().getLowerLeft(2));
             }
         );
     }
